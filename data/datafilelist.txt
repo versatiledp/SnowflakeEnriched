@@ -1,0 +1,21 @@
+This is the list of data files/data folders used to load.  
+
+      HD2017.csv  (file)
+      HD2018.csv
+      HD2019.csv
+      
+      effy2017_rv.json    (file)
+      effy2018_rv.json 
+      effy2019_rv.json
+         
+      ic2017_ay_orc  (folder)
+      ic2018_ay_orc
+      ic2019_ay_orc
+      
+      adm2017.parquet(folder)
+      adm2018.parquet
+      adm2019.parquet
+      
+      CodeMappingData.txt (file)
+
+Download all these files/folder into C:\snowflake\data\input\ on local drive to load data into snowflake instance

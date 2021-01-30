@@ -1,0 +1,1638 @@
+<html xmlns:v="urn:schemas-microsoft-com:vml"
+xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:x="urn:schemas-microsoft-com:office:excel"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=Excel.Sheet>
+<meta name=Generator content="Microsoft Excel 15">
+<link id=Main-File rel=Main-File href="../Enrollment.htm">
+<link rel=File-List href=filelist.xml>
+<link rel=Stylesheet href=stylesheet.css>
+<style>
+<!--table
+	{mso-displayed-decimal-separator:"\.";
+	mso-displayed-thousand-separator:"\,";}
+@page
+	{margin:.75in .7in .75in .7in;
+	mso-header-margin:.3in;
+	mso-footer-margin:.3in;}
+-->
+</style>
+<![if !supportTabStrip]><script language="JavaScript">
+<!--
+function fnUpdateTabs()
+ {
+  if (parent.window.g_iIEVer>=4) {
+   if (parent.document.readyState=="complete"
+    && parent.frames['frTabs'].document.readyState=="complete")
+   parent.fnSetActiveSheet(0);
+  else
+   window.setTimeout("fnUpdateTabs();",150);
+ }
+}
+
+if (window.name!="frSheet")
+ window.location.replace("../Enrollment.htm");
+else
+ fnUpdateTabs();
+//-->
+</script>
+<![endif]>
+</head>
+
+<body link="#0563C1" vlink="#954F72">
+
+<table border=0 cellpadding=0 cellspacing=0 width=1315 style='border-collapse:
+ collapse;table-layout:fixed;width:985pt'>
+ <col width=40 style='mso-width-source:userset;mso-width-alt:1360;width:30pt'>
+ <col width=102 style='mso-width-source:userset;mso-width-alt:3422;width:76pt'>
+ <col width=134 style='mso-width-source:userset;mso-width-alt:4500;width:100pt'>
+ <col width=398 style='mso-width-source:userset;mso-width-alt:13392;width:298pt'>
+ <col width=198 style='mso-width-source:userset;mso-width-alt:6669;width:149pt'>
+ <col width=67 style='width:50pt'>
+ <col width=123 style='mso-width-source:userset;mso-width-alt:4136;width:92pt'>
+ <col width=253 style='mso-width-source:userset;mso-width-alt:8528;width:190pt'>
+ <tr height=19 style='height:14.4pt'>
+  <td height=19 width=40 style='height:14.4pt;width:30pt'></td>
+  <td width=102 style='width:76pt'></td>
+  <td width=134 style='width:100pt'></td>
+  <td width=398 style='width:298pt'></td>
+  <td width=198 style='width:149pt'></td>
+  <td width=67 style='width:50pt'></td>
+  <td width=123 style='width:92pt'></td>
+  <td width=253 style='width:190pt'></td>
+ </tr>
+ <tr height=20 style='height:14.7pt'>
+  <td height=20 colspan=8 style='height:14.7pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=39 style='height:29.4pt'>
+  <td height=39 style='height:29.4pt'></td>
+  <td class=xl82 width=102 style='width:76pt;font-size:11.0pt;color:#0D0D0D;
+  font-weight:700;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border:1.5pt solid windowtext;
+  background:#D9D9D9;mso-pattern:black none'>CSV file column Identifier</td>
+  <td class=xl82 width=134 style='border-left:none;width:100pt;font-size:11.0pt;
+  color:#0D0D0D;font-weight:700;text-decoration:none;text-underline-style:none;
+  text-line-through:none;font-family:Calibri, sans-serif;border:1.5pt solid windowtext;
+  background:#D9D9D9;mso-pattern:black none'>Snowflake staged column identifier ID</td>
+  <td class=xl82 width=398 style='border-left:none;width:298pt;font-size:11.0pt;
+  color:#0D0D0D;font-weight:700;text-decoration:none;text-underline-style:none;
+  text-line-through:none;font-family:Calibri, sans-serif;border:1.5pt solid windowtext;
+  background:#D9D9D9;mso-pattern:black none'>Snowflake extract load - Entity
+  mapping</td>
+  <td class=xl82 width=198 style='border-left:none;width:149pt;font-size:11.0pt;
+  color:#0D0D0D;font-weight:700;text-decoration:none;text-underline-style:none;
+  text-line-through:none;font-family:Calibri, sans-serif;border:1.5pt solid windowtext;
+  background:#D9D9D9;mso-pattern:black none'>Snowflake transformation</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=20 style='height:15.0pt'>
+  <td height=20 style='height:15.0pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>UNITID</td>
+  <td class=xl71 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:UNITID</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>InstitutionIdentifier</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td></td>
+  <td colspan=2 class=xl81 style='border-right:1.5pt solid black'>Extract load
+  transform (ELT) steps</td>
+ </tr>
+ <tr height=20 style='height:15.0pt'>
+  <td height=20 style='height:15.0pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>EFFYLEV</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:EFFYLEV</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>LevelOfStudent</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td></td>
+  <td rowspan=2 class=xl79 width=123 style='border-top:none;width:92pt'>JSON
+  file</td>
+  <td rowspan=2 class=xl78 width=253 style='border-top:none;width:190pt'>EFFYxxx_rv.json
+  (xxxx - reporting year) <font class="font8">Enrollment file full year</font></td>
+ </tr>
+ <tr height=20 style='height:15.0pt'>
+  <td height=20 style='height:15.0pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>EFYTOTLM</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:EFYTOTLM</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>TotalMen</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td></td>
+ </tr>
+ <tr height=20 style='height:15.0pt'>
+  <td height=20 style='height:15.0pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>EFYTOTLT</td>
+  <td class=xl71 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:EFYTOTLT</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>Total</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td></td>
+  <td rowspan=2 class=xl73 style='border-top:none'>Staging area</td>
+  <td rowspan=2 class=xl77 style='border-top:none'>@IPEDS_EFFY</td>
+ </tr>
+ <tr height=20 style='height:15.0pt'>
+  <td height=20 style='height:15.0pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>EFYTOTLW</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:EFYTOTLW</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>TotalWomen</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td></td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 style='height:15.0pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>EFYWHITM</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:EFYWHITM</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>WhiteMen</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td></td>
+  <td rowspan=2 class=xl76 width=123 style='border-top:none;width:92pt'>Extract
+  load table</td>
+  <td rowspan=2 class=xl75 style='border-top:none'>OD_Enrollment</td>
+ </tr>
+ <tr height=20 style='height:15.0pt'>
+  <td height=20 style='height:15.0pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>EFYWHITT</td>
+  <td class=xl71 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:EFYWHITT</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>WhiteTotal</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td></td>
+ </tr>
+ <tr height=20 style='height:15.0pt'>
+  <td height=20 style='height:15.0pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>EFYWHITW</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:EFYWHITW</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>WhiteWomen</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td></td>
+  <td rowspan=2 class=xl74 width=123 style='border-top:none;width:92pt'>Transformed
+  Entity</td>
+  <td rowspan=2 class=xl73 style='border-top:none'>Enrollment</td>
+ </tr>
+ <tr height=20 style='height:15.0pt'>
+  <td height=20 style='height:15.0pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>EFYBKAAM</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:EFYBKAAM</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>AfricanAmericanMen</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td></td>
+ </tr>
+ <tr height=20 style='height:14.7pt'>
+  <td height=20 style='height:14.7pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>EFYBKAAT</td>
+  <td class=xl71 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:EFYBKAAT</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>AfricanAmericanTotal</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.4pt'>
+  <td height=19 style='height:14.4pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>EFYBKAAW</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:EFYBKAAW</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>AfricanAmericanWomen</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.4pt'>
+  <td height=19 style='height:14.4pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>EFYAIANM</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:EFYAIANM</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>AmericanIndianOrAlaskaNativeMen	</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.4pt'>
+  <td height=19 style='height:14.4pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>EFYAIANT</td>
+  <td class=xl71 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:EFYAIANT</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>AmericanIndianOrAlaskaNativeTotal
+  	</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.4pt'>
+  <td height=19 style='height:14.4pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>EFYAIANW</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:EFYAIANW</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>AmericanIndianOrAlaskaNativeWomen
+  	</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.4pt'>
+  <td height=19 style='height:14.4pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>EFYASIAM</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:EFYASIAM</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>AsianMen</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.4pt'>
+  <td height=19 style='height:14.4pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>EFYASIAT</td>
+  <td class=xl71 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:EFYASIAT</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>AsianTotal</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.4pt'>
+  <td height=19 style='height:14.4pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>EFYASIAW</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:EFYASIAW</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>AsianWomen</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.4pt'>
+  <td height=19 style='height:14.4pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>EFYHISPM</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:EFYHISPM</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>HispanicOrLatinoMen</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.4pt'>
+  <td height=19 style='height:14.4pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>EFYHISPT</td>
+  <td class=xl71 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:EFYHISPT</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>HispanicOrLatinoTotal</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.4pt'>
+  <td height=19 style='height:14.4pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>EFYHISPW</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:EFYHISPW</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>HispanicOrLatinoWomen</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.4pt'>
+  <td height=19 style='height:14.4pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>EFYNHPIM</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:EFYNHPIM</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>HawaiianPacificIslanderMen</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.4pt'>
+  <td height=19 style='height:14.4pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>EFYNHPIT</td>
+  <td class=xl71 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:EFYNHPIT</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>HawaiianPacificIslanderTotal</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.4pt'>
+  <td height=19 style='height:14.4pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>EFYNHPIW</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:EFYNHPIW</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>HawaiianPacificIslanderWomen</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.4pt'>
+  <td height=19 style='height:14.4pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>EFYNRALM</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:EFYNRALM</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>NonresidentAlienMen</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.4pt'>
+  <td height=19 style='height:14.4pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>EFYNRALT</td>
+  <td class=xl71 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:EFYNRALT</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>NonresidentAlienTotal</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.4pt'>
+  <td height=19 style='height:14.4pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>EFYNRALW</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:EFYNRALW</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>NonresidentAlienWomen</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.4pt'>
+  <td height=19 style='height:14.4pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>EFY2MORM</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:EFY2MORM</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>TwoOrMoreRacesMen	</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.4pt'>
+  <td height=19 style='height:14.4pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>EFY2MORT</td>
+  <td class=xl71 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:EFY2MORT</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>TwoOrMoreRacesTotal</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.4pt'>
+  <td height=19 style='height:14.4pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>EFY2MORW</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:EFY2MORW</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>TwoOrMoreRacesWomen</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.4pt'>
+  <td height=19 style='height:14.4pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>EFYUNKNM</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:EFYUNKNM</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>RaceEthnicityUnknownMen</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.4pt'>
+  <td height=19 style='height:14.4pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>EFYUNKNT</td>
+  <td class=xl71 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:EFYUNKNT</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>RaceEthnicityUnknownTotal</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.4pt'>
+  <td height=19 style='height:14.4pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>EFYUNKNW</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:EFYUNKNW</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>RaceEthnicityUnknownWomen</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=20 style='height:14.7pt'>
+  <td height=20 style='height:14.7pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>LSTUDY</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:LSTUDY</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>OriginalLevelOfStudyOnSurveyForm</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=20 style='height:14.7pt'>
+  <td height=20 style='height:14.7pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>XEFY2MOM</td>
+  <td class=xl71 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:XEFY2MOM</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>ImputationVarTwoOrMoreRacesMen</td>
+  <td class=xl72 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:1.5pt solid windowtext;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.4pt'>
+  <td height=19 style='height:14.4pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>XEFY2MOT</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:XEFY2MOT</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>ImputationVarTwoOrMoreRacesTotal</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.4pt'>
+  <td height=19 style='height:14.4pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>XEFY2MOW</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:XEFY2MOW</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>ImputationVarTwoOrMoreRacesWomen</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.4pt'>
+  <td height=19 style='height:14.4pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>XEYTOTLM</td>
+  <td class=xl71 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:XEYTOTLM</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>ImputationVarTotalMen</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.4pt'>
+  <td height=19 style='height:14.4pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>XEYTOTLT</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:XEYTOTLT</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>ImputationVarTotal</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.4pt'>
+  <td height=19 style='height:14.4pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>XEYTOTLW</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:XEYTOTLW</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>ImputationVarTotalWomen</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.4pt'>
+  <td height=19 style='height:14.4pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>XEFYWHIM</td>
+  <td class=xl71 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:XEFYWHIM</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>ImputationVarWhiteMen</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.4pt'>
+  <td height=19 style='height:14.4pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>XEFYWHIT</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:XEFYWHIT</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>ImputationVarWhiteTotal</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.4pt'>
+  <td height=19 style='height:14.4pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>XEFYWHIW</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:XEFYWHIW</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>ImputationVarWhiteWomen</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.4pt'>
+  <td height=19 style='height:14.4pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>XEFYBKAM</td>
+  <td class=xl71 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:XEFYBKAM</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>ImputationVarAfricanAmericanMen</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.4pt'>
+  <td height=19 style='height:14.4pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>XEFYBKAT</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:XEFYBKAT</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>ImputationVarAfricanAmericanTotal</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.4pt'>
+  <td height=19 style='height:14.4pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>XEFYBKAW</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:XEFYBKAW</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>ImputationVarAfricanAmericanWomen</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.4pt'>
+  <td height=19 style='height:14.4pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>XEFYAIAM</td>
+  <td class=xl71 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:XEFYAIAM</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>ImputationVarAmericanIndianOrAlaskaNativeMen</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.4pt'>
+  <td height=19 style='height:14.4pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>XEFYAIAT</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:XEFYAIAT</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>ImputationVarAmericanIndianOrAlaskaNativeTotal</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.4pt'>
+  <td height=19 style='height:14.4pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>XEFYAIAW</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:XEFYAIAW</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>ImputationVarAmericanIndianOrAlaskaNativeWomen</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.4pt'>
+  <td height=19 style='height:14.4pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>XEFYASIM</td>
+  <td class=xl71 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:XEFYASIM</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>ImputationVarAsianMen</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>Transform to multiple measures</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.4pt'>
+  <td height=19 style='height:14.4pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>XEFYASIT</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:XEFYASIT</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>ImputationVarAsianTotal</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>- based on Imputation</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.4pt'>
+  <td height=19 style='height:14.4pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>XEFYASIW</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:XEFYASIW</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>ImputationVarAsianWomen</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.4pt'>
+  <td height=19 style='height:14.4pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>XEFYHISM</td>
+  <td class=xl71 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:XEFYHISM</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>ImputationVarHispanicOrLatinoMen</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.4pt'>
+  <td height=19 style='height:14.4pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>XEFYHIST</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:XEFYHIST</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>ImputationVarHispanicOrLatinoTotal</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.4pt'>
+  <td height=19 style='height:14.4pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>XEFYHISW</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:XEFYHISW</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>ImputationVarHispanicOrLatinoWomen</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.4pt'>
+  <td height=19 style='height:14.4pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>XEFYNHPM</td>
+  <td class=xl71 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:XEFYNHPM</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>ImputationVarHawaiianPacificIslanderMen</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.4pt'>
+  <td height=19 style='height:14.4pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>XEFYNHPT</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:XEFYNHPT</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>ImputationVarHawaiianPacificIslanderTotal</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.4pt'>
+  <td height=19 style='height:14.4pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>XEFYNHPW</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:XEFYNHPW</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>ImputationVarHawaiianPacificIslanderWomen</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.4pt'>
+  <td height=19 style='height:14.4pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>XEYNRALM</td>
+  <td class=xl71 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:XEYNRALM</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>ImputationVarNonresidentAlienMen</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.4pt'>
+  <td height=19 style='height:14.4pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>XEYNRALT</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:XEYNRALT</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>ImputationVarNonresidentAlienTotal</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.4pt'>
+  <td height=19 style='height:14.4pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>XEYNRALW</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:XEYNRALW</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>ImputationVarNonresidentAlienWomen</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.4pt'>
+  <td height=19 style='height:14.4pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>XEYUNKNM</td>
+  <td class=xl71 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:XEYUNKNM</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>ImputationVarRaceEthnicityUnknownMen</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.4pt'>
+  <td height=19 style='height:14.4pt'></td>
+  <td class=xl70 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>XEYUNKNT</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>$1:XEYUNKNT</td>
+  <td class=xl69 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>ImputationVarRaceEthnicityUnknownTotal</td>
+  <td class=xl68 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:none;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=20 style='height:14.7pt'>
+  <td height=20 style='height:14.7pt'></td>
+  <td class=xl67 style='font-size:11.0pt;color:black;font-weight:400;
+  text-decoration:none;text-underline-style:none;text-line-through:none;
+  font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;border-right:
+  1.5pt solid windowtext;border-bottom:1.5pt solid windowtext;border-left:1.5pt solid windowtext;
+  background:#F2F2F2;mso-pattern:black none'>XEYUNKNW</td>
+  <td class=xl66 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:1.5pt solid windowtext;
+  border-left:1.5pt solid windowtext;background:#F2F2F2;mso-pattern:black none'>$1:XEYUNKNW</td>
+  <td class=xl66 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:1.5pt solid windowtext;
+  border-left:1.5pt solid windowtext;background:#F2F2F2;mso-pattern:black none'>ImputationVarRaceEthnicityUnknownWomen</td>
+  <td class=xl65 style='border-left:none;font-size:11.0pt;color:black;
+  font-weight:400;text-decoration:none;text-underline-style:none;text-line-through:
+  none;font-family:Calibri, sans-serif;border-top:.5pt solid #A5A5A5;
+  border-right:1.5pt solid windowtext;border-bottom:1.5pt solid windowtext;
+  border-left:1.5pt solid windowtext;background:#F2F2F2;mso-pattern:black none'>&nbsp;</td>
+  <td colspan=3 style='mso-ignore:colspan'></td>
+ </tr>
+ <tr height=20 style='height:14.7pt'>
+  <td height=20 colspan=8 style='height:14.7pt;mso-ignore:colspan'></td>
+ </tr>
+ <![if supportMisalignedColumns]>
+ <tr height=0 style='display:none'>
+  <td width=40 style='width:30pt'></td>
+  <td width=102 style='width:76pt'></td>
+  <td width=134 style='width:100pt'></td>
+  <td width=398 style='width:298pt'></td>
+  <td width=198 style='width:149pt'></td>
+  <td width=67 style='width:50pt'></td>
+  <td width=123 style='width:92pt'></td>
+  <td width=253 style='width:190pt'></td>
+ </tr>
+ <![endif]>
+</table>
+
+</body>
+
+</html>
