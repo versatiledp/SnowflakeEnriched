@@ -1,0 +1,696 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Parquet ingestion &#8212; Snowflake Enriched 9/28/2020 documentation</title>
+    <link rel="stylesheet" href="static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="static/my.css" type="text/css" />
+    <link rel="stylesheet" href="static/copybutton.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="static/documentation_options.js"></script>
+    <script src="static/jquery.js"></script>
+    <script src="static/underscore.js"></script>
+    <script src="static/doctools.js"></script>
+    <script src="static/language_data.js"></script>
+    <script src="static/clipboard.min.js"></script>
+    <script src="static/copybutton.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Semi-structured data Load" href="SemiStructuredDataIngestion.html" />
+    <link rel="prev" title="ORC ingestion" href="ORCIngestion.html" />
+   
+  <link rel="stylesheet" href="static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="parquet-ingestion">
+<h1>Parquet ingestion<a class="headerlink" href="#parquet-ingestion" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="admission-statistics">
+<h2>Admission statistics<a class="headerlink" href="#admission-statistics" title="Permalink to this headline">¶</a></h2>
+<p>The admission statistics contain information about the number of applicants by various categories,
+admission test scores, SAT/ACT percentile scores and so on.
+These statistics are stored by institution and year.
+Admission statistics files are received in the Parquet format.</p>
+<p>We will learn how to:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Use ingested Parquet files from the staged Snowflake region.</p></li>
+<li><p>Transform data using the Snowflake JavaScript stored procedures.</p></li>
+<li><p>Call the stored procedures.</p></li>
+</ul>
+</div></blockquote>
+<p>The staged file for keeping track of institution admission statistics is <strong>&#64;IPEDS_ADM</strong>.
+Please note that the columns are selected using <strong>$1 :&lt;column_name&gt;</strong>.
+This is because data files used here are in the Parquet format.
+We can retrieve the details of a particular year as below.</p>
+<div class="toggle docutils container">
+<div class="header docutils container">
+<p>Show/Hide Select staged Parquet dataset</p>
+</div>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>SELECT
+$1:UNITID::INTEGER AS
+ InstitutionIdentifier,
+$1:ADMCON1::INTEGER AS
+ SecondarySchoolGPA,
+$1:ADMCON2::INTEGER AS
+ SecondarySchoolRank,
+$1:ADMCON3::INTEGER AS
+ SecondarySchoolRecord,
+$1:ADMCON4::INTEGER AS
+ CompletionOfCollegePreparatoryProgram,
+$1:ADMCON5::INTEGER AS
+ Recommendations,
+$1:ADMCON6::INTEGER AS
+ FormalDemonstrationOfCompetencies,
+$1:ADMCON7::INTEGER AS
+ AdmissionTestScores,
+$1:ADMCON8::INTEGER AS
+ Toefl,
+$1:ADMCON9::INTEGER AS
+ OtherTest,
+$1:APPLCN::INTEGER AS
+ ApplicantsTotal,
+$1:APPLCNM::INTEGER AS
+ ApplicantsMen,
+$1:APPLCNW::INTEGER AS
+ ApplicantsWomen,
+$1:ADMSSN::INTEGER AS
+ AdmissionsTotal,
+$1:ADMSSNM::INTEGER AS
+ AdmissionsMen,
+$1:ADMSSNW::INTEGER AS
+ AdmissionsWomen,
+$1:ENRLT::INTEGER AS
+ EnrolledTotal,
+$1:ENRLM::INTEGER AS
+ EnrolledMen,
+$1:ENRLW::INTEGER AS
+ EnrolledWomen,
+$1:ENRLFT::INTEGER AS
+ EnrolledFullTimeTotal,
+$1:ENRLFTM::INTEGER AS
+ EnrolledFullTimeMen,
+$1:ENRLFTW::INTEGER AS
+ EnrolledFullTimeWomen,
+$1:ENRLPT::INTEGER AS
+ EnrolledPartTimeTotal,
+$1:ENRLPTM::INTEGER AS
+ EnrolledPartTimeMen,
+$1:ENRLPTW::INTEGER AS
+ EnrolledPartTimeWomen,
+$1:SATNUM::INTEGER AS
+ FirstTimeDegreeOrCertificateSeekingStudentsSubmittingSATScores,
+$1:SATPCT::INTEGER AS
+ PercentFirstTimeDegreeOrCertificateSeekingStudentsSubmittingSATScores,
+$1:ACTNUM::INTEGER AS
+ FirstTimeDegreeOrCertificateSeekingStudentsSubmittingACTScores,
+$1:ACTPCT::INTEGER AS
+ PercentOfFirstTimeDegreeOrCertificateSeekingStudentsSubmittingACTScores,
+$1:SATVR25::INTEGER AS
+ SATEvidenceBasedReadingWriting25thPercentileScore,
+$1:SATVR75::INTEGER AS
+ SATEvidenceBasedReadingWriting75thPercentileScore,
+$1:SATMT25::INTEGER AS
+ SATMath25thPercentileScore,
+$1:SATMT75::INTEGER AS
+ SATMath75thPercentileScore,
+$1:ACTCM25::INTEGER AS
+ ACTComposite25thPercentileScore,
+$1:ACTCM75::INTEGER AS
+ ACTComposite75thPercentileScore,
+$1:ACTEN25::INTEGER AS
+ ACTEnglish25thPercentileScore,
+$1:ACTEN75::INTEGER AS
+ ACTEnglish75thPercentileScore,
+$1:ACTMT25::INTEGER AS
+ ACTMath25thPercentileScore,
+$1:ACTMT75::INTEGER AS
+ ACTMath75thPercentileScore,
+LEFT(METADATA$FileName,4)::INTEGER AS
+ AcademicYear,
+metadata$filename::VARCHAR AS
+ IngestedFileName,
+metadata$file_row_number::INTEGER AS
+ RowNumber
+FROM
+@IPEDS_ADM
+WHERE CAST(LEFT(METADATA$FileName,4) AS
+ VARCHAR) = &#39;2017&#39;;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="od-table-for-admission-statistics">
+<h2>OD table for admission statistics<a class="headerlink" href="#od-table-for-admission-statistics" title="Permalink to this headline">¶</a></h2>
+<p>To keep track of admission statistics by year,
+we have created an operational data table called <strong>od_AdmissionStat</strong>.
+We have added 3 additional columns AcademicYear, IngestedFileName, and RowNumber for this OD table as well.
+When processing the Parquet data, all the partitions from the staged location are used. The staged location metadata also contains
+part of the partition key. In our case the first 4 characters contains year in a YYYY format.</p>
+<p>Snowflake SQL script for creating this table is given below.</p>
+<div class="toggle docutils container">
+<div class="header docutils container">
+<p>Show/Hide Create OD AdmissionStat entity</p>
+</div>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CREATE</span> <span class="n">OR</span> <span class="n">REPLACE</span> <span class="n">TABLE</span> <span class="n">od_AdmissionStat</span> <span class="p">(</span>
+<span class="n">InstitutionIdentifier</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">SecondarySchoolGPA</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">SecondarySchoolRank</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">SecondarySchoolRecord</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">CompletionOfCollegePreparatoryProgram</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">Recommendations</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">FormalDemonstrationOfCompetencies</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">AdmissionTestScores</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">TOEFL</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">OtherTest</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">ApplicantsTotal</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">ApplicantsMen</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">ApplicantsWomen</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">AdmissionsTotal</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">AdmissionsMen</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">AdmissionsWomen</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">EnrolledTotal</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">EnrolledMen</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">EnrolledWomen</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">EnrolledFullTimeTotal</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">EnrolledFullTimeMen</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">EnrolledFullTimeWomen</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">EnrolledPartTimeTotal</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">EnrolledPartTimeMen</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">EnrolledPartTimeWomen</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">FirstTimeDegreeOrCertificateSeekingStudentsSubmittingSATScores</span>
+        <span class="n">STRING</span><span class="p">,</span>
+<span class="n">PercentFirstTimeDegreeOrCertificateSeekingStudentsSubmittingSATScores</span>
+        <span class="n">STRING</span><span class="p">,</span>
+<span class="n">FirstTimeDegreeOrCertificateSeekingStudentsSubmittingACTScores</span>
+        <span class="n">STRING</span><span class="p">,</span>
+<span class="n">PercentOfFirstTimeDegreeOrCertificateSeekingStudentsSubmittingACTScores</span>
+        <span class="n">STRING</span><span class="p">,</span>
+<span class="n">SATEvidenceBasedReadingWriting25thPercentileScore</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">SATEvidenceBasedReadingWriting75thPercentileScore</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">SATMath25thPercentileScore</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">SATMath75thPercentileScore</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">ACTComposite25thPercentileScore</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">ACTComposite75thPercentileScore</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">ACTEnglish25thPercentileScore</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">ACTEnglish75thPercentileScore</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">ACTMath25thPercentileScore</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">ACTMath75thPercentileScore</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">AcademicYear</span> <span class="n">INTEGER</span><span class="p">,</span>
+<span class="n">IngestedFileName</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">RowNumber</span> <span class="n">INTEGER</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="stored-procedure-for-staging-table">
+<h2>Stored procedure for staging table<a class="headerlink" href="#stored-procedure-for-staging-table" title="Permalink to this headline">¶</a></h2>
+<p>Once the staging table is created, we need to populate the table
+with admission statistics data for each year from the staged file.
+For that purpose, we’ve created a stored procedure called <strong>pr_od_AdmissionStat_Load</strong>.
+This stored procedure takes the YEAR parameter and retrieves the records from the staged file for that year.
+The parameter YEAR is compared against the first 4 characters of <strong>METADATA$FileName</strong> of the staging file
+and retrieves records for that year.</p>
+<p>Here is the script for creating the stored procedure.</p>
+<div class="toggle docutils container">
+<div class="header docutils container">
+<p>Show/Hide Create OD AdmissionStat load stored procedure</p>
+</div>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>CREATE OR REPLACE PROCEDURE pr_od_AdmissionStat_Load(YEAR FLOAT)
+RETURNS STRING
+LANGUAGE javascript
+EXECUTE AS OWNER
+AS
+$$
+var sql_command = `
+INSERT INTO od_AdmissionStat
+ (
+  InstitutionIdentifier,
+  SecondarySchoolGPA,
+  SecondarySchoolRank,
+  SecondarySchoolRecord,
+  CompletionOfCollegePreparatoryProgram,
+  Recommendations,
+  FormalDemonstrationOfCompetencies,
+  AdmissionTestScores,
+  TOEFL,
+  OtherTest,
+  ApplicantsTotal,
+  ApplicantsMen,
+  ApplicantsWomen,
+  AdmissionsTotal,
+  AdmissionsMen,
+  AdmissionsWomen,
+  EnrolledTotal,
+  EnrolledMen,
+  EnrolledWomen,
+  EnrolledFullTimeTotal,
+  EnrolledFullTimeMen,
+  EnrolledFullTimeWomen,
+  EnrolledPartTimeTotal,
+  EnrolledPartTimeMen,
+  EnrolledPartTimeWomen,
+  FirstTimeDegreeOrCertificateSeekingStudentsSubmittingSATScores,
+  PercentFirstTimeDegreeOrCertificateSeekingStudentsSubmittingSATScores,
+  FirstTimeDegreeOrCertificateSeekingStudentsSubmittingACTScores,
+  PercentOfFirstTimeDegreeOrCertificateSeekingStudentsSubmittingACTScores,
+  SATEvidenceBasedReadingWriting25thPercentileScore,
+  SATEvidenceBasedReadingWriting75thPercentileScore,
+  SATMath25thPercentileScore,
+  SATMath75thPercentileScore,
+  ACTComposite25thPercentileScore,
+  ACTComposite75thPercentileScore,
+  ACTEnglish25thPercentileScore,
+  ACTEnglish75thPercentileScore,
+  ACTMath25thPercentileScore,
+  ACTMath75thPercentileScore,
+  AcademicYear,
+  IngestedFileName,
+  RowNumber
+)
+SELECT
+$1:UNITID::INTEGER AS InstitutionIdentifier,
+$1:ADMCON1::INTEGER AS SecondarySchoolGPA,
+$1:ADMCON2::INTEGER AS SecondarySchoolRank,
+$1:ADMCON3::INTEGER AS SecondarySchoolRecord,
+$1:ADMCON4::INTEGER AS CompletionOfCollegePreparatoryProgram,
+$1:ADMCON5::INTEGER AS Recommendations,
+$1:ADMCON6::INTEGER AS FormalDemonstrationOfCompetencies,
+$1:ADMCON7::INTEGER AS AdmissionTestScores,
+$1:ADMCON8::INTEGER AS Toefl,
+$1:ADMCON9::INTEGER AS OtherTest,
+$1:APPLCN::INTEGER AS ApplicantsTotal,
+$1:APPLCNM::INTEGER AS ApplicantsMen,
+$1:APPLCNW::INTEGER AS ApplicantsWomen,
+$1:ADMSSN::INTEGER AS AdmissionsTotal,
+$1:ADMSSNM::INTEGER AS AdmissionsMen,
+$1:ADMSSNW::INTEGER AS AdmissionsWomen,
+$1:ENRLT::INTEGER AS EnrolledTotal,
+$1:ENRLM::INTEGER AS EnrolledMen,
+$1:ENRLW::INTEGER AS EnrolledWomen,
+$1:ENRLFT::INTEGER AS EnrolledFullTimeTotal,
+$1:ENRLFTM::INTEGER AS EnrolledFullTimeMen,
+$1:ENRLFTW::INTEGER AS EnrolledFullTimeWomen,
+$1:ENRLPT::INTEGER AS EnrolledPartTimeTotal,
+$1:ENRLPTM::INTEGER AS EnrolledPartTimeMen,
+$1:ENRLPTW::INTEGER AS EnrolledPartTimeWomen,
+$1:SATNUM::INTEGER AS
+FirstTimeDegreeOrCertificateSeekingStudentsSubmittingSATScores,
+$1:SATPCT::INTEGER AS
+PercentFirstTimeDegreeOrCertificateSeekingStudentsSubmittingSATScores,
+$1:ACTNUM::INTEGER AS
+FirstTimeDegreeOrCertificateSeekingStudentsSubmittingACTScores,
+$1:ACTPCT::INTEGER AS
+PercentOfFirstTimeDegreeOrCertificateSeekingStudentsSubmittingACTScores,
+$1:SATVR25::INTEGER AS
+SATEvidenceBasedReadingWriting25thPercentileScore,
+$1:SATVR75::INTEGER AS SATEvidenceBasedReadingWriting75thPercentileScore,
+$1:SATMT25::INTEGER AS SATMath25thPercentileScore,
+$1:SATMT75::INTEGER AS SATMath75thPercentileScore,
+$1:ACTCM25::INTEGER AS ACTComposite25thPercentileScore,
+$1:ACTCM75::INTEGER AS ACTComposite75thPercentileScore,
+$1:ACTEN25::INTEGER AS ACTEnglish25thPercentileScore,
+$1:ACTEN75::INTEGER AS ACTEnglish75thPercentileScore,
+$1:ACTMT25::INTEGER AS ACTMath25thPercentileScore,
+$1:ACTMT75::INTEGER AS ACTMath75thPercentileScore,
+LEFT(METADATA$FileName,4)::INTEGER AS AcademicYear,
+metadata$filename::VARCHAR AS IngestedFileName,
+metadata$file_row_number::INTEGER AS RowNumber
+FROM
+  @IPEDS_ADM
+WHERE CAST(LEFT(METADATA$FileName,4) AS VARCHAR) = ` + YEAR.toString()+`;`
+
+    try {
+        snowflake.execute (
+          {sqlText: sql_command}
+          );
+        }
+    catch (err) {
+        return &quot;Failed: &quot; + err;  // Return a success/error indicator.
+        }
+    return &quot;Success.&quot;;  // Return a success/error indicator.
+$$
+;
+</pre></div>
+</div>
+</div>
+<p>The OD table is truncated and loaded by calling the stored procedure as below.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">TRUNCATE</span> <span class="n">TABLE</span> <span class="n">od_AdmissionStat</span><span class="p">;</span>
+
+<span class="n">CALL</span> <span class="n">pr_od_AdmissionStat_Load</span><span class="p">(</span><span class="mi">2017</span><span class="p">::</span><span class="n">FLOAT</span><span class="p">);</span>
+<span class="n">CALL</span> <span class="n">pr_od_AdmissionStat_Load</span><span class="p">(</span><span class="mi">2018</span><span class="p">::</span><span class="n">FLOAT</span><span class="p">);</span>
+<span class="n">CALL</span> <span class="n">pr_od_AdmissionStat_Load</span><span class="p">(</span><span class="mi">2019</span><span class="p">::</span><span class="n">FLOAT</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>In a production environment, we would process one file at a time all the way through the servicing layer.</p>
+</div>
+<div class="section" id="admission-statistics-servicing-layer">
+<h2>Admission statistics servicing layer<a class="headerlink" href="#admission-statistics-servicing-layer" title="Permalink to this headline">¶</a></h2>
+<p>Servicing layer tables or fact tables are mostly final layer tables
+in a data warehouse environment. These tables are directly consumed
+by the end users or visualization team. We have created a fact table for
+admission statistics called <strong>AdmissionStat</strong>. This table has links to the
+dimension table <strong>AcademicInstitution</strong> using a star schema in
+dimensional modelling architecture. This is made possible by
+adding the surrogate key column (<strong>AcademicInstitutionUniqueDWSID</strong>)
+of the dimension table AcademicInstitution to the fact table AdmissionStat.</p>
+<p>Here is the script for creating the table AdmissionStat in Snowflake.</p>
+<div class="toggle docutils container">
+<div class="header docutils container">
+<p>Show/Hide Create AdmissionStat entity</p>
+</div>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">DROP</span> <span class="n">TABLE</span> <span class="n">IF</span> <span class="n">EXISTS</span> <span class="n">AdmissionStat</span><span class="p">;</span>
+
+<span class="n">CREATE</span> <span class="n">TABLE</span> <span class="n">AdmissionStat</span><span class="p">(</span>
+<span class="n">AcademicInstitutionUniqueDWSID</span> <span class="n">INTEGER</span><span class="p">,</span>
+<span class="n">InstitutionIdentifier</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">AcademicYear</span> <span class="n">INTEGER</span><span class="p">,</span>
+<span class="n">SecondarySchoolGPA</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">SecondarySchoolRank</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">SecondarySchoolRecord</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">CompletionOfCollegePreparatoryProgram</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">Recommendations</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">FormalDemonstrationOfCompetencies</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">AdmissionTestScores</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">Toefl</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">OtherTest</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">ApplicantsTotal</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">ApplicantsMen</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">ApplicantsWomen</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">AdmissionsTotal</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">AdmissionsMen</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">AdmissionsWomen</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">EnrolledTotal</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">EnrolledMen</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">EnrolledWomen</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">EnrolledFullTimeTotal</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">EnrolledFullTimeMen</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">EnrolledFullTimeWomen</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">EnrolledPartTimeTotal</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">EnrolledPartTimeMen</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">EnrolledPartTimeWomen</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">FirstTimeDegreeOrCertificateSeekingStudentsSubmittingSATScores</span>
+        <span class="n">STRING</span><span class="p">,</span>
+<span class="n">PercentFirstTimeDegreeOrCertificateSeekingStudentsSubmittingSATScores</span>
+        <span class="n">STRING</span><span class="p">,</span>
+<span class="n">FirstTimeDegreeOrCertificateSeekingStudentsSubmittingACTScores</span>
+        <span class="n">STRING</span><span class="p">,</span>
+<span class="n">PercentOfFirstTimeDegreeOrCertificateSeekingStudentsSubmittingACTScores</span>
+        <span class="n">STRING</span><span class="p">,</span>
+<span class="n">SATEvidenceBasedReadingWriting25thPercentileScore</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">SATEvidenceBasedReadingWriting75thPercentileScore</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">SATMath25thPercentileScore</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">SATMath75thPercentileScore</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">ACTComposite25thPercentileScore</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">ACTComposite75thPercentileScore</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">ACTEnglish25thPercentileScore</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">ACTEnglish75thPercentileScore</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">ACTMath25thPercentileScore</span> <span class="n">STRING</span><span class="p">,</span>
+<span class="n">ACTMath75thPercentileScore</span> <span class="n">STRING</span>
+<span class="p">)</span>
+<span class="p">;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="admission-statistics-load-data">
+<h2>Admission statistics load data<a class="headerlink" href="#admission-statistics-load-data" title="Permalink to this headline">¶</a></h2>
+<p>The service layer/fact table <strong>AdmissionStat</strong> is loaded from the OD table <strong>od_AdmissionStat</strong> by year.
+Every time this fact table is updated, it’s loaded with the latest data for that year.
+We need to take enough precautions to ensure the quality of data being loaded in the ETL process.
+Therefore, we have to delete old data loaded for that year and new data is loaded from the OD table.
+We’ve created a stored procedure <strong>pr_AdmissionStat_Load</strong> using the Snowflake. Inside the JavaScript,
+we have used 2 variables, <strong>sql_DelCommand</strong> and <strong>sql_Command</strong>.
+The variable sql_DelCommand contains the SQL commands to delete the records from the fact table for the year passed to the stored procedure.
+The other variable sql_Command contains the main logic for updating the fact table for that year.</p>
+<p>We’ve used a <strong>LEFT OUTER JOIN</strong> with AcademicInstitution on InstitutionIdentifier to get the matching
+surrogate key from the dimension table AcademicInstitution.
+In any case, if we couldn’t find the matching record, we are updating the AcademicInstitutionUniqueDWSID in the fact table with -1.
+To achieve this, we have used Snowflake <strong>IFNULL</strong> command as <strong>IFNULL(D.AcademicInstitutionUniqueDWSID, - 1)</strong></p>
+<p>Here is the Snowflake stored procedure for processing the AdmissionStat table.</p>
+<div class="toggle docutils container">
+<div class="header docutils container">
+<p>Show/Hide Create AdmissionStat entity</p>
+</div>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>CREATE OR REPLACE PROCEDURE
+        pr_AdmissionStat_Load (YEAR FLOAT)
+RETURNS string
+LANGUAGE javascript
+EXECUTE AS OWNER
+AS
+$$
+var sql_DelCommand =
+`DELETE FROM AdmissionStat WHERE AcademicYear = `+ YEAR.toString()
+var sql_Command =
+`
+INSERT INTO
+AdmissionStat
+(
+AcademicInstitutionUniqueDWSID,
+InstitutionIdentifier,
+AcademicYear  ,
+SecondarySchoolGPA,
+SecondarySchoolRank,
+SecondarySchoolRecord,
+CompletionOfCollegePreparatoryProgram,
+Recommendations,
+FormalDemonstrationOfCompetencies,
+AdmissionTestScores,
+Toefl,
+OtherTest,
+ApplicantsTotal,
+ApplicantsMen,
+ApplicantsWomen,
+AdmissionsTotal,
+AdmissionsMen,
+AdmissionsWomen,
+EnrolledTotal,
+EnrolledMen,
+EnrolledWomen,
+EnrolledFullTimeTotal,
+EnrolledFullTimeMen,
+EnrolledFullTimeWomen,
+EnrolledPartTimeTotal,
+EnrolledPartTimeMen,
+EnrolledPartTimeWomen,
+FirstTimeDegreeOrCertificateSeekingStudentsSubmittingSATScores,
+PercentFirstTimeDegreeOrCertificateSeekingStudentsSubmittingSATScores,
+FirstTimeDegreeOrCertificateSeekingStudentsSubmittingACTScores,
+PercentOfFirstTimeDegreeOrCertificateSeekingStudentsSubmittingACTScores,
+SATEvidenceBasedReadingWriting25thPercentileScore,
+SATEvidenceBasedReadingWriting75thPercentileScore,
+SATMath25thPercentileScore,
+SATMath75thPercentileScore,
+ACTComposite25thPercentileScore,
+ACTComposite75thPercentileScore,
+ACTEnglish25thPercentileScore,
+ACTEnglish75thPercentileScore,
+ACTMath25thPercentileScore,
+ACTMath75thPercentileScore)
+SELECT
+IFNULL(D.AcademicInstitutionUniqueDWSID, - 1),
+S.InstitutionIdentifier,
+S.AcademicYear ,
+S.SecondarySchoolGPA,
+S.SecondarySchoolRank,
+S.SecondarySchoolRecord,
+S.CompletionOfCollegePreparatoryProgram,
+S.Recommendations,
+S.FormalDemonstrationOfCompetencies,
+S.AdmissionTestScores,
+S.Toefl,
+S.OtherTest,
+S.ApplicantsTotal,
+S.ApplicantsMen,
+S.ApplicantsWomen,
+S.AdmissionsTotal,
+S.AdmissionsMen,
+S.AdmissionsWomen,
+S.EnrolledTotal,
+S.EnrolledMen,
+S.EnrolledWomen,
+S.EnrolledFullTimeTotal,
+S.EnrolledFullTimeMen,
+S.EnrolledFullTimeWomen,
+S.EnrolledPartTimeTotal,
+S.EnrolledPartTimeMen,
+S.EnrolledPartTimeWomen,
+S.FirstTimeDegreeOrCertificateSeekingStudentsSubmittingSATScores,
+S.PercentFirstTimeDegreeOrCertificateSeekingStudentsSubmittingSATScores,
+S.FirstTimeDegreeOrCertificateSeekingStudentsSubmittingACTScores,
+S.PercentOfFirstTimeDegreeOrCertificateSeekingStudentsSubmittingACTScores,
+S.SATEvidenceBasedReadingWriting25thPercentileScore,
+S.SATEvidenceBasedReadingWriting75thPercentileScore,
+S.SATMath25thPercentileScore,
+S.SATMath75thPercentileScore,
+S.ACTComposite25thPercentileScore,
+S.ACTComposite75thPercentileScore,
+S.ACTEnglish25thPercentileScore,
+S.ACTEnglish75thPercentileScore,
+S.ACTMath25thPercentileScore,
+S.ACTMath75thPercentileScore
+FROM
+od_AdmissionStat S
+LEFT OUTER JOIN AcademicInstitution D
+        ON S.InstitutionIdentifier = D.InstitutionIdentifier
+WHERE S.AcademicYear = ` + YEAR.toString()
+
+var arrSqlCmd =[2];
+arrSqlCmd[0] = sql_DelCommand
+arrSqlCmd[1] = sql_Command
+var sql_ExecCommand =&#39;&#39;;
+for (var j=0;j&lt;arrSqlCmd.length; j++)
+{
+sql_ExecCommand = arrSqlCmd[j]
+try
+{
+        snowflake.execute(
+                {sqlText: sql_ExecCommand}
+        );
+}
+catch(err)
+{
+        return &quot;Failed :&quot; + err;
+}
+}
+return &quot;success&quot;
+$$;
+</pre></div>
+</div>
+</div>
+<p>Here is code to load historical data for Admission stat table.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CALL</span> <span class="n">pr_AdmissionStat_Load</span><span class="p">(</span><span class="mi">2017</span><span class="p">::</span><span class="n">FLOAT</span><span class="p">);</span>
+<span class="n">CALL</span> <span class="n">pr_AdmissionStat_Load</span><span class="p">(</span><span class="mi">2018</span><span class="p">::</span><span class="n">FLOAT</span><span class="p">);</span>
+<span class="n">CALL</span> <span class="n">pr_AdmissionStat_Load</span><span class="p">(</span><span class="mi">2019</span><span class="p">::</span><span class="n">FLOAT</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<p>In this chapter, we have gone through the data load process for the Parquet files in Snowflake.
+Data processing architecture for the Parquet file format, reamins very similar to CSV and
+Snowflake makes it easy to consume this data.  The admission
+statistics table is used by various institutions.
+We loaded 3 years of admission statistics in the stage file. From the
+staged file, we created and loaded the OD table and later the fact table for the servicing layer.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Code is available to download at:
+<a class="reference external" href="https://github.com/versatiledp/ExperimentsSnowflake/tree/main/source/code/SQL/AdmissionStat">ExperimentsSnowflake/tree/main/source/code/SQL/AdmissionStat</a></p>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference external" href="./index.html">Table of Contents</a></p></td>
+<td><p><a class="reference external" href="./ORC_Ingestion.html">Previous Chapter</a></p></td>
+<td><p><a class="reference external" href="./Semi_structured_data_Load.html">Next Chapter</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Snowflake Enriched</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="IntroducingSnowflake.html">Introducing Snowflake</a></li>
+<li class="toctree-l1"><a class="reference internal" href="IntroducingDataplatform.html">Introducing data platform</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CSVIngestion.html">CSV ingestion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="JSONIngestion.html">JSON ingestion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ORCIngestion.html">ORC ingestion</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Parquet ingestion</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#admission-statistics">Admission statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#od-table-for-admission-statistics">OD table for admission statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#stored-procedure-for-staging-table">Stored procedure for staging table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#admission-statistics-servicing-layer">Admission statistics servicing layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#admission-statistics-load-data">Admission statistics load data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#summary">Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="SemiStructuredDataIngestion.html">Semi-structured data Load</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PipelineOrchestration.html">Pipeline orchestration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BusinessInsights.html">Business insights</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Abberivations.html">Abberivations</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="ORCIngestion.html" title="previous chapter">ORC ingestion</a></li>
+      <li>Next: <a href="SemiStructuredDataIngestion.html" title="next chapter">Semi-structured data Load</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+  </body>
+</html>

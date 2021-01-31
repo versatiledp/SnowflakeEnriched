@@ -1,0 +1,536 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pipeline orchestration &#8212; Snowflake Enriched 9/28/2020 documentation</title>
+    <link rel="stylesheet" href="static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="static/my.css" type="text/css" />
+    <link rel="stylesheet" href="static/copybutton.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="static/documentation_options.js"></script>
+    <script src="static/jquery.js"></script>
+    <script src="static/underscore.js"></script>
+    <script src="static/doctools.js"></script>
+    <script src="static/language_data.js"></script>
+    <script src="static/clipboard.min.js"></script>
+    <script src="static/copybutton.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Business insights" href="BusinessInsights.html" />
+    <link rel="prev" title="Semi-structured data Load" href="SemiStructuredDataIngestion.html" />
+   
+  <link rel="stylesheet" href="static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="pipeline-orchestration">
+<h1>Pipeline orchestration<a class="headerlink" href="#pipeline-orchestration" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="workflow">
+<h2>Workflow<a class="headerlink" href="#workflow" title="Permalink to this headline">¶</a></h2>
+<p>In this chapter, we are going to administer all the Snowflake transformation through single point of entry without using any
+third party tools.</p>
+<dl class="simple">
+<dt>Workflow is divided into three stages:</dt><dd><ul class="simple">
+<li><p>Workflow Configuration/Definition</p></li>
+<li><p>Workflow Execution</p></li>
+<li><p>Workflow Audit</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Workflow configuration/definition</strong>
+Workflow configuration is done by listing the Snowflake procedures to
+execute in pre defined sequential order. Source and destination tables used in the transformation are
+listed in the configuration table along
+with stored procedure.</p>
+<p><strong>Workflow execution</strong>
+Workflow executes the list of stored procedures in the order of execution defined in
+IPEDS_Workflow table. For each procedure execution, it checks the row counts from the source and destination tables.
+At the end of each executions, it logs the details in the IPEDS_Audit table for further analysis.</p>
+<p><strong>Workflow audit</strong>
+Workflow audit provides the details of the executions, row counts before and after.
+This audit table can be used to identify the number of records processed in each execution.</p>
+<p>The steps laid out here are easy to navigate, provide full control over sequencing. These steps can be easily extended to accommodate
+other needs as per different requirements.</p>
+<p>We have added a workflow table with attributes given below.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>StageName - Description of the pipeline</p></li>
+<li><p>ProcedureName - Name of stored procedure to be called</p></li>
+<li><p>SourceTableName - Input table used in Snowflake data transformation</p></li>
+<li><p>TargetTableName - Destination table for data used in the above procedure</p></li>
+<li><p>ExecutionOrder - What is sequence for this step to be executed</p></li>
+</ul>
+</div></blockquote>
+<p>The following script is used to create the <strong>IPEDS_Workflow</strong> table.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CREATE</span> <span class="n">OR</span> <span class="n">REPLACE</span> <span class="n">TABLE</span> <span class="n">IPEDS_Workflow</span>
+<span class="p">(</span> <span class="n">StageName</span> <span class="n">STRING</span><span class="p">,</span>
+  <span class="n">ProcedureName</span> <span class="n">STRING</span><span class="p">,</span>
+  <span class="n">SourceTableName</span> <span class="n">STRING</span><span class="p">,</span>
+  <span class="n">TargetTableName</span> <span class="n">STRING</span><span class="p">,</span>
+  <span class="n">ExecutionOrder</span> <span class="n">NUMBER</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+<p>We can easily enhance this framework from this chapter with additional functionality, like actions on success/failure
+and parallel processing.
+The results of workflow steps are stored in the <strong>IPEDS_Audit</strong> table.
+The IPDS_Audit table holds information around steps executed, including:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>row count from the source table</p></li>
+<li><p>row count before the process in the destination table</p></li>
+<li><p>row count after the step execution in the destination table</p></li>
+<li><p>date and time when the step finishes execution</p></li>
+</ul>
+</div></blockquote>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CREATE</span> <span class="n">OR</span> <span class="n">REPLACE</span> <span class="n">TABLE</span> <span class="n">IPEDS_Audit</span>
+<span class="p">(</span> <span class="n">StageName</span> <span class="n">STRING</span><span class="p">,</span>
+  <span class="n">ProcedureName</span> <span class="n">STRING</span><span class="p">,</span>
+  <span class="n">SourceTableName</span> <span class="n">STRING</span><span class="p">,</span>
+  <span class="n">SourceRowCount</span> <span class="n">NUMBER</span><span class="p">,</span>
+  <span class="n">TargetTableName</span> <span class="n">STRING</span><span class="p">,</span>
+  <span class="n">PreRowCount</span> <span class="n">NUMBER</span><span class="p">,</span>
+  <span class="n">PostRowCount</span> <span class="n">NUMBER</span><span class="p">,</span>
+  <span class="n">ProcessDateTime</span> <span class="n">DATETIME</span> <span class="n">default</span> <span class="n">current_timestamp</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+<p>The following script is used to populate  <strong>IPEDS_Workflow</strong>.
+The script populates the workflow control table. Workflow control table contians information about
+the Stored procedure to be called, the input table name,
+the output table name, and sequence number to execute this SP.</p>
+<div class="toggle docutils container">
+<div class="header docutils container">
+<p>Show/Hide Load Workflow data</p>
+</div>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">TRUNCATE</span> <span class="n">TABLE</span> <span class="n">IPEDS_Workflow</span><span class="p">;</span>
+
+<span class="n">INSERT</span> <span class="n">INTO</span> <span class="n">IPEDS_Workflow</span> <span class="p">(</span>
+        <span class="n">StageName</span>
+        <span class="p">,</span><span class="n">ProcedureName</span>
+        <span class="p">,</span><span class="n">SourceTableName</span>
+        <span class="p">,</span><span class="n">TargetTableName</span>
+        <span class="p">,</span><span class="n">ExecutionOrder</span>
+        <span class="p">)</span>
+<span class="n">SELECT</span> <span class="s1">&#39;OD_TRUNCATE&#39;</span> <span class="n">AS</span> <span class="n">StageName</span>
+        <span class="p">,</span><span class="s1">&#39;pr_od_Truncate()&#39;</span> <span class="n">AS</span> <span class="n">ProcedureName</span>
+        <span class="p">,</span><span class="s1">&#39;&#39;</span> <span class="n">AS</span> <span class="n">SourceTableName</span>
+        <span class="p">,</span><span class="s1">&#39;&#39;</span> <span class="n">TargetTableName</span>
+        <span class="p">,</span><span class="mi">0</span> <span class="n">ExecutionOrder</span>
+
+<span class="n">UNION</span> <span class="n">ALL</span>
+
+<span class="n">SELECT</span> <span class="s1">&#39;OD_HDR&#39;</span> <span class="n">AS</span> <span class="n">StageName</span>
+        <span class="p">,</span><span class="s1">&#39;pr_od_AcademicInstitution_Load(@Year)&#39;</span> <span class="n">AS</span> <span class="n">ProcedureName</span>
+        <span class="p">,</span><span class="s1">&#39;&#39;</span> <span class="n">AS</span> <span class="n">SourceTableName</span>
+        <span class="p">,</span><span class="s1">&#39;od_AcademicInstitution&#39;</span> <span class="n">TargetTableName</span>
+        <span class="p">,</span><span class="mi">1</span> <span class="n">ExecutionOrder</span>
+
+<span class="n">UNION</span> <span class="n">ALL</span>
+
+<span class="n">SELECT</span> <span class="s1">&#39;SL_HDR&#39;</span> <span class="n">AS</span> <span class="n">StageName</span>
+        <span class="p">,</span><span class="s1">&#39;pr_AcademicInstitution_Load(@Year)&#39;</span> <span class="n">AS</span> <span class="n">ProcedureName</span>
+        <span class="p">,</span><span class="s1">&#39;od_AcademicInstitution&#39;</span> <span class="n">AS</span> <span class="n">SourceTableName</span>
+        <span class="p">,</span><span class="s1">&#39;AcademicInstitution&#39;</span> <span class="n">TargetTableName</span>
+        <span class="p">,</span><span class="mi">2</span> <span class="n">ExecutionOrder</span>
+
+<span class="n">UNION</span> <span class="n">ALL</span>
+
+<span class="n">SELECT</span> <span class="s1">&#39;OD_EFFY&#39;</span> <span class="n">AS</span> <span class="n">StageName</span>
+        <span class="p">,</span><span class="s1">&#39;pr_od_Enrollment_Load(@Year)&#39;</span> <span class="n">AS</span> <span class="n">ProcedureName</span>
+        <span class="p">,</span><span class="s1">&#39;&#39;</span> <span class="n">AS</span> <span class="n">SourceTableName</span>
+        <span class="p">,</span><span class="s1">&#39;od_Enrollment&#39;</span> <span class="n">TargetTableName</span>
+        <span class="p">,</span><span class="mi">3</span> <span class="n">ExecutionOrder</span>
+
+<span class="n">UNION</span> <span class="n">ALL</span>
+
+<span class="n">SELECT</span> <span class="s1">&#39;SL_EFFY&#39;</span> <span class="n">AS</span> <span class="n">StageName</span>
+        <span class="p">,</span><span class="s1">&#39;pr_Enrollment_Load(@Year)&#39;</span> <span class="n">AS</span> <span class="n">ProcedureName</span>
+        <span class="p">,</span><span class="s1">&#39;od_Enrollment&#39;</span> <span class="n">AS</span> <span class="n">SourceTableName</span>
+        <span class="p">,</span><span class="s1">&#39;Enrollment&#39;</span> <span class="n">TargetTableName</span>
+        <span class="p">,</span><span class="mi">4</span> <span class="n">ExecutionOrder</span>
+
+<span class="n">UNION</span> <span class="n">ALL</span>
+
+<span class="n">SELECT</span> <span class="s1">&#39;OD_IC&#39;</span> <span class="n">AS</span> <span class="n">StageName</span>
+        <span class="p">,</span><span class="s1">&#39;pr_od_InstitutionalCharge_Load(@Year)&#39;</span> <span class="n">AS</span> <span class="n">ProcedureName</span>
+        <span class="p">,</span><span class="s1">&#39;&#39;</span> <span class="n">AS</span> <span class="n">SourceTableName</span>
+        <span class="p">,</span><span class="s1">&#39;od_InstitutionalCharge&#39;</span> <span class="n">TargetTableName</span>
+        <span class="p">,</span><span class="mi">5</span> <span class="n">ExecutionOrder</span>
+
+<span class="n">UNION</span> <span class="n">ALL</span>
+
+<span class="n">SELECT</span> <span class="s1">&#39;SL_IC&#39;</span> <span class="n">AS</span> <span class="n">StageName</span>
+        <span class="p">,</span><span class="s1">&#39;pr_InstitutionalCharge_Load(@Year)&#39;</span> <span class="n">AS</span> <span class="n">ProcedureName</span>
+        <span class="p">,</span><span class="s1">&#39;od_InstitutionalCharge&#39;</span> <span class="n">AS</span> <span class="n">SourceTableName</span>
+        <span class="p">,</span><span class="s1">&#39;InstitutionalCharge&#39;</span> <span class="n">TargetTableName</span>
+        <span class="p">,</span><span class="mi">6</span> <span class="n">ExecutionOrder</span>
+
+<span class="n">UNION</span> <span class="n">ALL</span>
+
+<span class="n">SELECT</span> <span class="s1">&#39;SL_ICBranch&#39;</span> <span class="n">AS</span> <span class="n">StageName</span>
+        <span class="p">,</span><span class="s1">&#39;pr_InstitutionalChargeByAcademicBranch_Load(@Year)&#39;</span> <span class="n">AS</span>
+        <span class="n">ProcedureName</span>
+        <span class="p">,</span><span class="s1">&#39;&#39;</span> <span class="n">AS</span> <span class="n">SourceTableName</span>
+        <span class="p">,</span><span class="s1">&#39;InstitutionalChargeByAcademicBranch&#39;</span> <span class="n">TargetTableName</span>
+        <span class="p">,</span><span class="mi">7</span> <span class="n">ExecutionOrder</span>
+
+<span class="n">UNION</span> <span class="n">ALL</span>
+
+<span class="n">SELECT</span> <span class="s1">&#39;SL_ICPublication&#39;</span> <span class="n">AS</span> <span class="n">StageName</span>
+        <span class="p">,</span><span class="s1">&#39;pr_InstitutionalChargeByPublication_Load(@Year)&#39;</span> <span class="n">AS</span> <span class="n">ProcedureName</span>
+        <span class="p">,</span><span class="s1">&#39;&#39;</span> <span class="n">AS</span> <span class="n">SourceTableName</span>
+        <span class="p">,</span><span class="s1">&#39;InstitutionalChargeByPublication&#39;</span> <span class="n">TargetTableName</span>
+        <span class="p">,</span><span class="mi">8</span> <span class="n">ExecutionOrder</span>
+
+<span class="n">UNION</span> <span class="n">ALL</span>
+
+<span class="n">SELECT</span> <span class="s1">&#39;SL_ICCategory&#39;</span> <span class="n">AS</span> <span class="n">StageName</span>
+        <span class="p">,</span><span class="s1">&#39;pr_InstitutionalChargeByCategory_Load(@Year)&#39;</span> <span class="n">AS</span> <span class="n">ProcedureName</span>
+        <span class="p">,</span><span class="s1">&#39;&#39;</span> <span class="n">AS</span> <span class="n">SourceTableName</span>
+        <span class="p">,</span><span class="s1">&#39;InstitutionalChargeByCategory&#39;</span> <span class="n">TargetTableName</span>
+        <span class="p">,</span><span class="mi">9</span> <span class="n">ExecutionOrder</span>
+
+<span class="n">UNION</span> <span class="n">ALL</span>
+
+<span class="n">SELECT</span> <span class="s1">&#39;OD_ADM&#39;</span> <span class="n">AS</span> <span class="n">StageName</span>
+        <span class="p">,</span><span class="s1">&#39;pr_od_AdmissionStat_Load(@Year)&#39;</span> <span class="n">AS</span> <span class="n">ProcedureName</span>
+        <span class="p">,</span><span class="s1">&#39;&#39;</span> <span class="n">AS</span> <span class="n">SourceTableName</span>
+        <span class="p">,</span><span class="s1">&#39;od_AdmissionStat&#39;</span> <span class="n">TargetTableName</span>
+        <span class="p">,</span><span class="mi">10</span> <span class="n">ExecutionOrder</span>
+
+<span class="n">UNION</span> <span class="n">ALL</span>
+
+<span class="n">SELECT</span> <span class="s1">&#39;SL_ADM&#39;</span> <span class="n">AS</span> <span class="n">StageName</span>
+        <span class="p">,</span><span class="s1">&#39;pr_AdmissionStat_Load(@Year)&#39;</span> <span class="n">AS</span> <span class="n">ProcedureName</span>
+        <span class="p">,</span><span class="s1">&#39;od_AdmissionStat&#39;</span> <span class="n">AS</span> <span class="n">SourceTableName</span>
+        <span class="p">,</span><span class="s1">&#39;AdmissionStat&#39;</span> <span class="n">TargetTableName</span>
+        <span class="p">,</span><span class="mi">11</span> <span class="n">ExecutionOrder</span>
+
+<span class="n">UNION</span> <span class="n">ALL</span>
+
+<span class="n">SELECT</span> <span class="s1">&#39;OD_CM&#39;</span> <span class="n">AS</span> <span class="n">StageName</span>
+        <span class="p">,</span><span class="s1">&#39;pr_od_CodeMapping_Load()&#39;</span> <span class="n">AS</span> <span class="n">ProcedureName</span>
+        <span class="p">,</span><span class="s1">&#39;&#39;</span> <span class="n">AS</span> <span class="n">SourceTableName</span>
+        <span class="p">,</span><span class="s1">&#39;&#39;</span> <span class="n">TargetTableName</span>
+        <span class="p">,</span><span class="mi">12</span> <span class="n">ExecutionOrder</span>
+
+<span class="n">UNION</span> <span class="n">ALL</span>
+
+<span class="n">SELECT</span> <span class="s1">&#39;SL_CM&#39;</span> <span class="n">AS</span> <span class="n">StageName</span>
+        <span class="p">,</span><span class="s1">&#39;pr_CodeMapping_Load()&#39;</span> <span class="n">AS</span> <span class="n">ProcedureName</span>
+        <span class="p">,</span><span class="s1">&#39;&#39;</span> <span class="n">AS</span> <span class="n">SourceTableName</span>
+        <span class="p">,</span><span class="s1">&#39;&#39;</span> <span class="n">TargetTableName</span>
+        <span class="p">,</span><span class="mi">13</span> <span class="n">ExecutionOrder</span><span class="p">;</span>
+</pre></div>
+</div>
+</div>
+<p>The following code can help to understand the steps that will be executed</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SELECT</span> <span class="o">*</span> <span class="n">FROM</span> <span class="n">IPEDS_Workflow</span> <span class="n">ORDER</span> <span class="n">BY</span> <span class="n">ExecutionOrder</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>The stored procedure <strong>pr_IPEDS_Process</strong> is used as a master controller.
+When we call this controller the following steps are executed.</p>
+<p>All data from the <strong>IPEDS_Workflow</strong> table is read in order of ExecutionOrder.
+For each of the rows,</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>It will record the row count from the source and destination table.</p></li>
+<li><p>It will execute the stored procedure in the ProcedureName attribute.</p></li>
+<li><p>It will record the row count on the destination table.</p></li>
+</ul>
+</div></blockquote>
+<div class="toggle docutils container">
+<div class="header docutils container">
+<p>Show/Hide Process data stored procedure</p>
+</div>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>CREATE
+        OR REPLACE PROCEDURE pr_IPEDS_Process (YEAR FLOAT)
+RETURNS STRING LANGUAGE javascript AS $$
+        var sql_WF = `SELECT StageName
+                                                ,ProcedureName
+                                                ,SourceTableName
+                                                ,TargetTableName
+                                                ,ExecutionOrder
+                                        FROM IPEDS_Workflow
+                                        ORDER BY ExecutionOrder`;
+
+CmdSql = {sqlText: sql_WF};
+
+StmtSql = snowflake.createStatement(CmdSql);
+
+rsSql = StmtSql.execute();
+
+try{
+
+WHILE (rsSql.NEXT ()) {
+        var strSourceTable =
+                rsSql.getColumnValue(&quot;SOURCETABLENAME&quot;);
+        var strTargetTable =
+                rsSql.getColumnValue(&quot;TARGETTABLENAME&quot;);
+
+        var strProcedureName = &#39;&#39;;
+
+        var sourceCount = preCount = postCount = &#39;NULL&#39;;
+
+        var sqlSourceRowCount = SqlRowCount = stmtRowCount = &#39;&#39;;
+
+        var rsPreRowCount
+                ,rsPostRowCount;
+
+        // Get source rowcount if the source table is provided.
+        IF (strSourceTable != &#39;&#39;)
+                { sqlSourceRowCount =
+                                `SELECT Count(1) AS Counts
+                                 FROM ` + strSourceTable +
+                                ` WHERE AcademicYear = ` + YEAR.toString() + `;
+                `;
+                var stmtSourceRowCount
+                        = snowflake.createStatement({sqlText:
+                                sqlSourceRowCount});
+
+                var rsSourceRowCount = stmtSourceRowCount.execute();
+
+                IF (rsSourceRowCount.NEXT ()) { sourceCount =
+                        rsSourceRowCount.getColumnValue(&quot;COUNTS&quot;);
+                }
+        }
+
+        // Get Pre rowcount if the target table is provided.
+        IF (strTargetTable != &#39;&#39;) { SqlRowCount =
+                `SELECT COUNT(1) AS Counts
+                FROM ` + strTargetTable + `
+                WHERE AcademicYear = `
+                + YEAR.toString() + `;
+                `;
+
+                stmtRowCount =
+                snowflake.createStatement({sqlText: SqlRowCount});
+
+                rsPreRowCount = stmtRowCount.execute();
+
+                IF (rsPreRowCount.NEXT ()) {
+                        preCount = rsPreRowCount.getColumnValue(&quot;COUNTS&quot;);
+                }
+        }
+
+        //Execute processing procedure
+        strProcedureName = `CALL `
+                + rsSql.getColumnValue(&quot;PROCEDURENAME&quot;).
+                replace(&#39;@Year&#39;, YEAR.toString()) + `;
+                `;
+
+        var stmtProcessData = snowflake.createStatement({sqlText:
+                strProcedureName});
+
+        stmtProcessData.execute ();
+
+        // Get Post rowcount if the target table is provided.
+        IF (SqlRowCount != &#39;&#39;) {
+                rsPostRowCount = stmtRowCount.execute();
+
+                IF (rsPostRowCount.NEXT ()) {
+                postCount = rsPostRowCount.getColumnValue(&quot;COUNTS&quot;) }
+        }
+        var sql_Audit =
+        `INSERT INTO IPEDS_Audit(StageName, ProcedureName,
+        SourceTableName, SourceRowCount, TargetTableName, PreRowCount,
+        PostRowCount) VALUES (
+        &#39;` + rsSql.getColumnValue(&quot;STAGENAME&quot;) + `&#39;
+        ,&#39;`+ strProcedureName
+                  +`&#39;
+        ,&#39;`+ strSourceTable +`&#39;
+        ,` + sourceCount + `
+        ,&#39;`+ strTargetTable + `&#39;
+        ,` + preCount + `
+        ,` + postCount + `
+        );
+`;
+
+var stmt = snowflake.createStatement({sqlText: sql_Audit});
+
+stmt.execute ();
+
+} // End While.
+}
+catch(err) {
+
+return &quot;Failed:&quot; + err.toString();
+
+}
+
+return &#39;Success&#39;;
+$$;
+</pre></div>
+</div>
+</div>
+<p>These row counts with additional information are written to <strong>IPEDS_Audit</strong> table.</p>
+<p>The stored procedure <strong>pr_od_Truncate</strong> is written to truncate all the OD tables before we load data.
+Code for the stored procedure <strong>pr_od_Truncate</strong> is given below.</p>
+<div class="toggle docutils container">
+<div class="header docutils container">
+<p>Show/Hide Truncate OD workflow tables stored procedure</p>
+</div>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>CREATE OR REPLACE PROCEDURE pr_od_Truncate()
+RETURNS STRING
+LANGUAGE javascript
+AS
+$$
+
+var arrTableName =[4];
+    arrTableName[0] = &#39;od_AcademicInstitution&#39;
+    arrTableName[1] = &#39;od_Enrollment&#39;
+    arrTableName[2] = &#39;od_InstitutionalCharge&#39;
+    arrTableName[3] = &#39;od_AdmissionStat&#39;
+
+
+    var tableName =&#39;&#39;;
+    for (var j=0;j&lt;arrTableName.length; j++)
+    {
+        tableName = arrTableName[j]
+        try
+        {
+            snowflake.execute(
+                {sqlText: `TRUNCATE TABLE `+tableName +`;`}
+            );
+      }
+        catch(err)
+        {
+            return &quot;Failed :&quot; + err;
+        }
+    }
+    return &quot;success&quot;
+$$;
+</pre></div>
+</div>
+</div>
+<p>The combination of truncate OD table and load data from IPEDS dataset into the staging files is performed
+with the following code.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CALL</span> <span class="n">pr_od_Truncate</span><span class="p">();</span>
+<span class="n">CALL</span> <span class="n">pr_IPEDS_Process</span><span class="p">(</span><span class="mi">2017</span><span class="p">::</span><span class="n">FLOAT</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<p>In this chapter we learned how to build workflow management tool using Snowflake. This process helps to navigate through data lineage across
+staged files, operational data tables, and servicing layer entities.
+The process outlined in this chapter will work for the cases where we have one-to-one mapping between source and destination table.
+We can easily enhance this process to accommodate data lineage tracking for multiple input to one destination
+as well as one input to mulitple destination.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Code is available to download at:
+<a class="reference external" href="https://github.com/versatiledp/ExperimentsSnowflake/tree/main/source/code/SQL/Workflow">ExperimentsSnowflake/tree/main/source/code/SQL/Workflow</a></p>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference external" href="./index.html">Table of Contents</a></p></td>
+<td><p><a class="reference external" href="./Semi_structured_data_Load.html">Previous Chapter</a></p></td>
+<td><p><a class="reference external" href="./Business_Insights.html">Next Chapter</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Snowflake Enriched</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="IntroducingSnowflake.html">Introducing Snowflake</a></li>
+<li class="toctree-l1"><a class="reference internal" href="IntroducingDataplatform.html">Introducing data platform</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CSVIngestion.html">CSV ingestion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="JSONIngestion.html">JSON ingestion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ORCIngestion.html">ORC ingestion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ParquetIngestion.html">Parquet ingestion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SemiStructuredDataIngestion.html">Semi-structured data Load</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Pipeline orchestration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#workflow">Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#summary">Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="BusinessInsights.html">Business insights</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Abberivations.html">Abberivations</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="SemiStructuredDataIngestion.html" title="previous chapter">Semi-structured data Load</a></li>
+      <li>Next: <a href="BusinessInsights.html" title="next chapter">Business insights</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+  </body>
+</html>

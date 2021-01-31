@@ -1,0 +1,222 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Introduction &#8212; Snowflake Enriched 9/28/2020 documentation</title>
+    <link rel="stylesheet" href="static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="static/my.css" type="text/css" />
+    <link rel="stylesheet" href="static/copybutton.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="static/documentation_options.js"></script>
+    <script src="static/jquery.js"></script>
+    <script src="static/underscore.js"></script>
+    <script src="static/doctools.js"></script>
+    <script src="static/language_data.js"></script>
+    <script src="static/clipboard.min.js"></script>
+    <script src="static/copybutton.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Introducing Snowflake" href="IntroducingSnowflake.html" />
+    <link rel="prev" title="Snowflake Enriched" href="index.html" />
+   
+  <link rel="stylesheet" href="static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="introduction">
+<h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<p><strong>Snowflake Enriched</strong> is written to provide a practical guide to create and execute every step of developing a data
+analytical platform, including design, data collection, ingestion, transformation, and visualization.</p>
+<div class="section" id="objectives">
+<h2>Objectives<a class="headerlink" href="#objectives" title="Permalink to this headline">¶</a></h2>
+<p>We will cover the following topics in this book.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Learning Snowflake features</p></li>
+<li><p>Exploring the modern big data platform</p></li>
+<li><p>Working with different data formats</p></li>
+<li><p>Collecting data from the public domain</p></li>
+<li><p>Ingesting a variety of data formats</p></li>
+<li><p>Creating database objects like tables, views, and stored procedures</p></li>
+<li><p>Transforming data</p></li>
+<li><p>Scheduling the data pipeline execution</p></li>
+<li><p>Managing historical data loads</p></li>
+<li><p>Creating data analytics insight to answer business questions</p></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="preface">
+<h2>Preface<a class="headerlink" href="#preface" title="Permalink to this headline">¶</a></h2>
+<p>It was a autumn day of 2020 with COVID lockdown, our office team was working on data engineering research using
+Databricks. Having always believed in the power of education, Raj began considering writing a book
+on Databricks data engineering aspects. He met with his colleague Babu over coffee in the evening and talked about it.</p>
+<p>Raj and Babu decided to take upon the venture of writing a book on Snowflake for the SQL developer community, and
+eventually asked another colleague Siva to join along in the journey.
+Together, we made a commitment of three hours a day, three days a week, over the next three months of our lives to make our dream come true.
+Looking back, our experience has taught us that one only needs dedication to achieve success.</p>
+<p>Through this all, we have shared a common goal of contributing to the society we migrated from: India.
+So, we will use any proceeds/donations we collect from this book to fund NGOs working to better Indian education.</p>
+<p>The main objective in the book is to lay-out a complete data platform solution that solves business stakeholders’ needs.
+We include hands-on code throughout the book, so that the user community can take the book’s datasets and execute the code
+to get a better sense of the solution.</p>
+<p>Many existing books have scattered examples to cover different aspects of the underlying technology.
+We instead wanted to employ a project-driven approach, consisting of data collection, modeling, ingestion, transformation,
+and visualization. To the current developer community using SQL for existing relational database solutions,
+this book will serve as a tool for software development using Snowflake.</p>
+<p>We hope readers will find this book easy to follow and helpful for learning Snowflake and project-based learning.</p>
+</div>
+<div class="section" id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
+<p>The only prerequisite to follow along with this book is account with Snowflake and Google.
+Readers can use Snowflake free trial services and try out all the samples from start
+to finish, while the Google account will be needed to execute the colab Juypter notebook.</p>
+<p>We also assume that readers have had some working experience in database programming fields.
+They should be familiar with any relational database engine and high level programming lanaguge.</p>
+</div>
+<div class="section" id="about-the-authors">
+<h2>About the authors<a class="headerlink" href="#about-the-authors" title="Permalink to this headline">¶</a></h2>
+<p><strong>Raj Rathi</strong> has been working in data management and data science, designing solutions from the ground
+up over the last 20+ years. His design thinking in data domain is completely based on
+the business-first approach. He was the founder of an analytical company that helped credit unions align
+business processes closely though data analytics. He has a dual-degree MBA and a Master’s in engineering, holds a CFA charter, and
+is always interested in trying out new technology to help business grow.</p>
+<p><strong>Babu Abraham</strong> is a Senior Data Engineer and Architect with hands-on experience in designing and
+refactoring large enterprise data warehouses and associated ETLs for 15+ years.
+He is an engineering graduate in Computer Science, who has demonstrated strength by undertaking
+some of the challenging data warehouse projects in various business domains like healthcare,
+manufacturing, wholesale, and insurance using best practices.</p>
+<p><strong>Siva Pentela</strong> has been working in data analytics and enterprise application development over the last
+15 years. He is involved in the development of innovative solutions from design, development to the final deployment.
+He is passionate about data engineering, automation, and process simplification.
+He has a master’s degree in computer science.</p>
+</div>
+<div class="section" id="acknowledgments">
+<h2>Acknowledgments<a class="headerlink" href="#acknowledgments" title="Permalink to this headline">¶</a></h2>
+<p>We also want to thank the open-source community for making the necessary tools readily available.</p>
+<p>Special thanks to :</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Python community</p></li>
+<li><p>Rst2html project</p></li>
+<li><p>Rst2pdf project</p></li>
+<li><p>Sphinx project</p></li>
+<li><p>Anthony Scopatz repo on hidden-code</p></li>
+<li><p>Sphinx Copy-button</p></li>
+<li><p>Github.com providing a wonderful place to host the pages</p></li>
+<li><p>Google colab nurturing data science by providing a free platform for experiments</p></li>
+</ul>
+</div></blockquote>
+<p>Finally, thanks to Snowflake for making data warehousing extremely easy for all SQL communities.</p>
+<p>Raj wants to provide special thanks to</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>His wonderful children Pranjali, Praneet, and Vedant for helping on multiple fronts, and constantly providing positive critics</p></li>
+<li><p>Brian Starr from McGrawHill, who motivated him to use public domain data (IPED)</p></li>
+<li><p>Baxter Credit Union for bringing his analytical skillsets to the front and center, and encouraging new initiatives to solve business problems.</p></li>
+</ul>
+</div></blockquote>
+<p>Babu also wants to thank his family for their support, especially his younger son Rohan for all the help during this journey.</p>
+<p>We would like to thank our employer, CUNA Mutual Group, for always exploring technology initiatives
+while creating new software solutions in the marketplace. That has provided us encouragement to think outside the
+box and do something for our community.</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Snowflake Enriched</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#objectives">Objectives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#preface">Preface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#about-the-authors">About the authors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#acknowledgments">Acknowledgments</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="IntroducingSnowflake.html">Introducing Snowflake</a></li>
+<li class="toctree-l1"><a class="reference internal" href="IntroducingDataplatform.html">Introducing data platform</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CSVIngestion.html">CSV ingestion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="JSONIngestion.html">JSON ingestion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ORCIngestion.html">ORC ingestion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ParquetIngestion.html">Parquet ingestion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SemiStructuredDataIngestion.html">Semi-structured data Load</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PipelineOrchestration.html">Pipeline orchestration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BusinessInsights.html">Business insights</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Abberivations.html">Abberivations</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Snowflake Enriched</a></li>
+      <li>Next: <a href="IntroducingSnowflake.html" title="next chapter">Introducing Snowflake</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+  </body>
+</html>

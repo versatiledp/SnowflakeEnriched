@@ -1,0 +1,779 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Business insights &#8212; Snowflake Enriched 9/28/2020 documentation</title>
+    <link rel="stylesheet" href="static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="static/my.css" type="text/css" />
+    <link rel="stylesheet" href="static/copybutton.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="static/documentation_options.js"></script>
+    <script src="static/jquery.js"></script>
+    <script src="static/underscore.js"></script>
+    <script src="static/doctools.js"></script>
+    <script src="static/language_data.js"></script>
+    <script src="static/clipboard.min.js"></script>
+    <script src="static/copybutton.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Summary" href="Summary.html" />
+    <link rel="prev" title="Pipeline orchestration" href="PipelineOrchestration.html" />
+   
+  <link rel="stylesheet" href="static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="business-insights">
+<h1>Business insights<a class="headerlink" href="#business-insights" title="Permalink to this headline">¶</a></h1>
+<p>We have been asked to create the following dashboards using all the data accumulated in the Snowflake servicing layer.</p>
+<ul class="simple">
+<li><p>Total number of Institutiuons by category like Public/Private, economic region, and educational offerings.</p></li>
+<li><p>On the USA map, display enrollment numbers and percentages by state.</p></li>
+<li><p>Data table with the state codes and enrollment segments.</p></li>
+<li><p>Tution cost details by various public colleges.</p></li>
+</ul>
+<p>All the business insights are generated using Google colab, which provides Jupyter notebook environment.
+For running these insights from
+colab, we need to install the pre-requisites <strong>Snowflake connector drivers to python</strong>.</p>
+<p>From colab, connect to Snowflake database using Snowflake account, username, password, warehouse, database and schema.</p>
+<p>Snowflake SQL execution steps:</p>
+<ul class="simple">
+<li><p>Connect to snowflake with required credentials</p></li>
+<li><p>Create cursor</p></li>
+<li><p>Execute SQL statements</p></li>
+<li><p>Fetch result</p></li>
+<li><p>Close cursor</p></li>
+<li><p>Close connection</p></li>
+</ul>
+<p>Following example provides how to create connection object using login parameters.</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>conn = snowflake.connector.connect(
+                user=&#39;USER&#39;,
+                password=&#39;PASSWORD&#39;,
+                account=&#39;ACCOUNT&#39;,
+                warehouse=&#39;WAREHOUSE&#39;,
+                database=&#39;DATABASE&#39;,
+                schema=&#39;SCHEMA&#39;
+                )
+</pre></div>
+</div>
+<p>Widgets are python objects that have a representation in the browser, often as a control like a slider, textbox, etc. We are using ipywidgets
+to control parameters for dashboards. We are also using these widgets to build interactive GUIs for our notebooks.</p>
+<p>Data from Snowflake cursor is copied to pandas dataframe. All data manipulation is done using pandas dataframe in the notebook
+before presenting data.
+We have used <strong>matplotlib</strong> and <strong>plotly</strong> to create data visualization. These two libraries
+provides a powerful tool to explore, understand, and communicate the valuable insights.</p>
+<div class="section" id="institution-reporting">
+<h2>Institution reporting<a class="headerlink" href="#institution-reporting" title="Permalink to this headline">¶</a></h2>
+<p>This visual is targeted to present academic institution information based
+on various segments using bar, donut and pie charts.</p>
+<p>Total institute count is segmented by:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Economic region</p></li>
+<li><p>Education offering</p></li>
+<li><p>Institution type</p></li>
+<li><p>Program offering</p></li>
+</ul>
+</div></blockquote>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">snowflake</span><span class="o">-</span><span class="n">connector</span><span class="o">-</span><span class="n">python</span><span class="o">==</span><span class="mf">2.3</span><span class="o">.</span><span class="mi">6</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#read required information to connect to Snowflake database</span>
+<span class="kn">from</span> <span class="nn">getpass</span> <span class="kn">import</span> <span class="n">getpass</span>
+<span class="n">accountName</span> <span class="o">=</span> <span class="n">getpass</span><span class="p">(</span><span class="s1">&#39;Enter Snowflake account name:&#39;</span><span class="p">)</span>
+<span class="n">userName</span> <span class="o">=</span> <span class="n">getpass</span><span class="p">(</span><span class="s1">&#39;Enter Snowflake user name:&#39;</span><span class="p">)</span>
+<span class="n">password</span> <span class="o">=</span> <span class="n">getpass</span><span class="p">(</span><span class="s1">&#39;Enter Snowflake password:&#39;</span><span class="p">)</span>
+
+<span class="n">databaseName</span> <span class="o">=</span> <span class="s1">&#39;ipeds&#39;</span> <span class="c1">#@param {type:&quot;string&quot;}</span>
+<span class="n">sourceSchema</span><span class="o">=</span><span class="s1">&#39;Public&#39;</span><span class="c1">#@param {type:&quot;string&quot;}</span>
+<span class="n">warehouseName</span> <span class="o">=</span> <span class="s1">&#39;COMPUTE_WH&#39;</span><span class="c1">#@param{type:&quot;string&quot;}</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Enter Snowflake account name:··········
+Enter Snowflake user name:··········
+Enter Snowflake password:··········
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Source System to gather Statistics from</span>
+<span class="kn">import</span> <span class="nn">snowflake.connector</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">ipywidgets</span> <span class="kn">import</span> <span class="n">interactive</span>
+
+<span class="kn">import</span> <span class="nn">ipywidgets</span> <span class="k">as</span> <span class="nn">widgets</span>
+
+<span class="c1"># Gets the version</span>
+<span class="n">ctx</span> <span class="o">=</span> <span class="n">snowflake</span><span class="o">.</span><span class="n">connector</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+    <span class="n">user</span><span class="o">=</span><span class="n">userName</span><span class="p">,</span>
+    <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">,</span>
+    <span class="n">account</span><span class="o">=</span><span class="n">accountName</span><span class="p">,</span>
+    <span class="n">database</span><span class="o">=</span><span class="n">databaseName</span><span class="p">,</span>
+    <span class="n">warehouse</span><span class="o">=</span><span class="n">warehouseName</span>
+    <span class="p">)</span>
+<span class="n">cs</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+
+<span class="k">try</span><span class="p">:</span>
+  <span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">SELECT</span>
+<span class="s2">    CASE TRIM(EB.DESCRIPTION)</span>
+<span class="s2">        WHEN &#39;US Service schools&#39; THEN &#39;US Service schools&#39;</span>
+<span class="s2">        WHEN &#39;New England CT ME MA NH RI VT&#39; THEN &#39;New England&#39;</span>
+<span class="s2">        WHEN &#39;Mid East DE DC MD NJ NY PA&#39; THEN &#39;Mid East&#39;</span>
+<span class="s2">        WHEN &#39;Great Lakes IL IN MI OH WI&#39; THEN &#39;Great Lakes&#39;</span>
+<span class="s2">        WHEN &#39;Plains IA KS MN MO NE ND SD&#39; THEN &#39;Plains&#39;</span>
+<span class="s2">        WHEN &#39;Southeast AL AR FL GA KY LA MS NC SC TN VA WV&#39;</span>
+<span class="s2">                    THEN &#39;Southeast&#39;</span>
+<span class="s2">        WHEN &#39;Southwest AZ NM OK TX&#39; THEN &#39;Southwest&#39;</span>
+<span class="s2">        WHEN &#39;Rocky Mountains CO ID MT UT WY&#39;</span>
+<span class="s2">                    THEN &#39;Rocky Mountains&#39;</span>
+<span class="s2">        WHEN &#39;Far West AK CA HI NV OR WA&#39; THEN &#39;Far West&#39;</span>
+<span class="s2">        WHEN &#39;Outlying areas AS FM GU MH MP PR PW VI&#39;</span>
+<span class="s2">                    THEN &#39;Outlying areas&#39;</span>
+<span class="s2">    END &quot;Economic Region&quot;</span>
+<span class="s2">    ,CASE</span>
+<span class="s2">        WHEN IC.DESCRIPTION LIKE &#39;Degree-granting</span><span class="si">%a</span><span class="s2">ssociate%&#39; </span><span class="se">\</span>
+<span class="s2">                    THEN &#39;Associate degree granting&#39;</span>
+<span class="s2">        WHEN IC.DESCRIPTION LIKE &#39;Degree-granting%&#39;</span>
+<span class="s2">                    THEN &#39;Degree granting&#39;</span>
+<span class="s2">        ELSE &#39;Non Degree granting&#39;</span>
+<span class="s2">    END &quot;Education offering&quot;</span>
+<span class="s2">    ,ICL.DESCRIPTION &quot;Institution Type&quot;</span>
+<span class="s2">    ,IL.DESCRIPTION &quot;Program Offering&quot;</span>
+<span class="s2">    ,CASE INSTITUTIONHASHOSPITAL</span>
+<span class="s2">        WHEN 1 THEN &#39;Yes&#39;</span>
+<span class="s2">        ELSE &#39;No&#39;</span>
+<span class="s2">    END &quot;Institute has hospital&quot;</span>
+<span class="s2">    ,CASE INSTITUTIONGRANTSMEDICALDEGREE</span>
+<span class="s2">        WHEN 1 THEN &#39;Yes&#39;</span>
+<span class="s2">        ELSE &#39;No&#39;</span>
+<span class="s2">    END &quot;Institute grant Medical degree&quot;</span>
+<span class="s2">    ,1 &quot;Count&quot;</span>
+<span class="s2">    ,CITY &quot;City&quot;</span>
+<span class="s2">    ,STATE &quot;State Code&quot;</span>
+<span class="s2">FROM ACADEMICINSTITUTION</span>
+<span class="s2">INNER JOIN ECONOMICBUREAUREGION EB</span>
+<span class="s2">    ON EB.CODE=ECONOMICANALYSISREGIONS</span>
+<span class="s2">INNER JOIN HIGHESTLEVELOFFERING HLO</span>
+<span class="s2">    ON HLO.CODE = HIGHESTLEVELOFOFFERING</span>
+<span class="s2">INNER JOIN INSTITUTIONALCATEGORY IC</span>
+<span class="s2">    ON IC.CODE=INSTITUTIONALCATEGORY</span>
+<span class="s2">INNER JOIN INSTITUTIONCONTROL ICL</span>
+<span class="s2">    ON ICL.CODE=CONTROLOFINSTITUTION</span>
+<span class="s2">INNER JOIN INSTITUTIONLEVEL IL</span>
+<span class="s2">    ON IL.CODE=LEVELOFINSTITUTION</span>
+<span class="s2">WHERE INSTITUTIONISACTIVE = 1</span>
+<span class="s2">    AND HLO.CODE &gt; 0 AND EB.CODE &gt; 0;</span>
+<span class="s2">&quot;&quot;&quot;</span>
+  <span class="c1">#print (sql)</span>
+  <span class="n">cs</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+  <span class="n">records</span> <span class="o">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+  <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">cs</span><span class="o">.</span><span class="n">description</span><span class="p">]</span>
+  <span class="n">dfInst</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">records</span><span class="p">,</span><span class="n">columns</span> <span class="o">=</span> <span class="n">names</span><span class="p">)</span>
+<span class="k">finally</span><span class="p">:</span>
+    <span class="n">cs</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">ctx</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="n">dfER</span> <span class="o">=</span> <span class="n">dfInst</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Economic Region&#39;</span><span class="p">]</span>
+                      <span class="p">,</span><span class="n">as_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="s1">&#39;Count&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">dfER</span> <span class="o">=</span> <span class="n">dfER</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Count&#39;</span><span class="p">],</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">x1</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">dfER</span><span class="p">[</span><span class="s1">&#39;Economic Region&#39;</span><span class="p">])</span>
+<span class="n">y1</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">dfER</span><span class="p">[</span><span class="s1">&#39;Count&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Economic Region&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;c&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+
+<span class="c1">#plt.xlabel(&quot;bar height&quot;)</span>
+<span class="c1">#plt.ylabel(&quot;bar number&quot;)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Number of academic instittue by economic region&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="images/output_4_0.png" src="images/output_4_0.png" />
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Education offering</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="n">dfER</span> <span class="o">=</span> <span class="n">dfInst</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Education offering&#39;</span><span class="p">]</span>
+                      <span class="p">,</span><span class="n">as_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="s1">&#39;Count&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">dfER</span> <span class="o">=</span> <span class="n">dfER</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Count&#39;</span><span class="p">],</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">dfER</span><span class="p">[</span><span class="s1">&#39;Education offering&#39;</span><span class="p">])</span>
+<span class="n">sections</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">dfER</span><span class="p">[</span><span class="s1">&#39;Count&#39;</span><span class="p">])</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Purple&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">]</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">pie</span><span class="p">(</span><span class="n">sections</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span>
+        <span class="n">startangle</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span><span class="n">explode</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.1</span><span class="p">,</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span><span class="n">shadow</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">,</span><span class="n">pctdistance</span><span class="o">=</span><span class="mf">0.80</span><span class="p">,</span> <span class="n">counterclock</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">autopct</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%1.0f%%</span><span class="s1">&#39;</span><span class="p">);</span>
+<span class="n">circle</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">Circle</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span><span class="mf">0.65</span><span class="p">,</span><span class="n">fc</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
+<span class="n">donut</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gcf</span><span class="p">()</span>
+<span class="n">donut</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">add_artist</span><span class="p">(</span><span class="n">circle</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span> <span class="c1"># Try commenting this out.</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Number of academic institute </span><span class="se">\</span>
+<span class="s1">split % by education offering&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="images/output_5_0.png" src="images/output_5_0.png" />
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Institution Type.</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="n">dfER</span> <span class="o">=</span> <span class="n">dfInst</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Institution Type&#39;</span><span class="p">]</span>
+                      <span class="p">,</span><span class="n">as_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="s1">&#39;Count&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">dfER</span> <span class="o">=</span> <span class="n">dfER</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Institution Type&#39;</span><span class="p">])</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">dfER</span><span class="p">[</span><span class="s1">&#39;Institution Type&#39;</span><span class="p">])</span>
+<span class="n">sections</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">dfER</span><span class="p">[</span><span class="s1">&#39;Count&#39;</span><span class="p">])</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">]</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">pie</span><span class="p">(</span><span class="n">sections</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span>
+        <span class="p">,</span><span class="n">autopct</span><span class="o">=</span><span class="s1">&#39;%0.f</span><span class="si">%%</span><span class="s1">&#39;</span><span class="p">,</span><span class="n">counterclock</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="p">,</span><span class="n">shadow</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">startangle</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span> <span class="n">pctdistance</span><span class="o">=</span><span class="mf">0.80</span>
+        <span class="p">,</span><span class="n">explode</span> <span class="o">=</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span><span class="mf">0.1</span><span class="p">,</span><span class="mf">0.1</span><span class="p">),</span><span class="n">radius</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">circle</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">Circle</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span><span class="mf">0.65</span><span class="p">,</span><span class="n">fc</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
+<span class="n">donut</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gcf</span><span class="p">()</span>
+<span class="n">donut</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">add_artist</span><span class="p">(</span><span class="n">circle</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Institution Type&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="images/output_6_0.png" src="images/output_6_0.png" />
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Program Offering.</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="n">dfER</span> <span class="o">=</span> <span class="n">dfInst</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Program Offering&#39;</span><span class="p">]</span>
+                      <span class="p">,</span><span class="n">as_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="s1">&#39;Count&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">dfER</span> <span class="o">=</span> <span class="n">dfER</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Count&#39;</span><span class="p">],</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">dfER</span><span class="p">[</span><span class="s1">&#39;Program Offering&#39;</span><span class="p">])</span>
+<span class="n">sections</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">dfER</span><span class="p">[</span><span class="s1">&#39;Count&#39;</span><span class="p">])</span>
+<span class="c1">#colors = [&#39;c&#39;, &#39;g&#39;, &#39;y&#39;]</span>
+<span class="c1">#plt.pie(sections, labels=labels, colors=colors,</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">pie</span><span class="p">(</span><span class="n">sections</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">startangle</span><span class="o">=</span><span class="mi">90</span>
+        <span class="p">,</span><span class="n">explode</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.02</span><span class="p">,</span><span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">)</span>
+        <span class="p">,</span><span class="n">counterclock</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="p">,</span><span class="n">autopct</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%1.0f%%</span><span class="s1">&#39;</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span> <span class="c1"># Try commenting this out.</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Program Offering&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="images/output_7_0.png" src="images/output_7_0.png" />
+</div>
+<div class="section" id="enrollment-segment-by-state">
+<h2>Enrollment segment by state<a class="headerlink" href="#enrollment-segment-by-state" title="Permalink to this headline">¶</a></h2>
+<p>In this visual, we are presenting state wise enrollments details for the segments as listed below:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Total men</p></li>
+<li><p>Total women</p></li>
+<li><p>White men</p></li>
+<li><p>White women</p></li>
+<li><p>Black/African american men</p></li>
+<li><p>Black/African american women</p></li>
+<li><p>Hispanic/Latino men</p></li>
+<li><p>Hispanic/Latino women</p></li>
+<li><p>Non resident alien men</p></li>
+<li><p>Non resident alien women</p></li>
+<li><p>Asian men</p></li>
+<li><p>Asian women</p></li>
+<li><p>American Indian &amp; Alaska native men</p></li>
+<li><p>American Indian &amp; Alaska native women</p></li>
+<li><p>Native Hawaiian men</p></li>
+<li><p>Native Hawaiian women</p></li>
+</ul>
+</div></blockquote>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">snowflake</span><span class="o">-</span><span class="n">connector</span><span class="o">-</span><span class="n">python</span><span class="o">==</span><span class="mf">2.3</span><span class="o">.</span><span class="mi">6</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get Snowflake credentials</span>
+<span class="kn">from</span> <span class="nn">getpass</span> <span class="kn">import</span> <span class="n">getpass</span>
+<span class="n">accountName</span> <span class="o">=</span> <span class="n">getpass</span><span class="p">(</span><span class="s1">&#39;Enter Snowflake account name&#39;</span><span class="p">)</span>
+<span class="n">userName</span> <span class="o">=</span> <span class="n">getpass</span><span class="p">(</span><span class="s1">&#39;Enter Snowflake user name:&#39;</span><span class="p">)</span>
+<span class="n">password</span> <span class="o">=</span> <span class="n">getpass</span><span class="p">(</span><span class="s1">&#39;Enter Snowflake password&#39;</span><span class="p">)</span>
+<span class="n">databaseName</span> <span class="o">=</span> <span class="s1">&#39;ipeds&#39;</span> <span class="c1">#@param {type:&quot;string&quot;}</span>
+<span class="n">sourceSchema</span> <span class="o">=</span> <span class="s2">&quot;Public&quot;</span> <span class="c1">#@param {type:&quot;string&quot;}</span>
+<span class="n">warehouseName</span> <span class="o">=</span> <span class="s2">&quot;COMPUTE_WH&quot;</span> <span class="c1">#@param {type:&quot;string&quot;}</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Enter Snowflake account name··········
+Enter Snowflake user name:··········
+Enter Snowflake password··········
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Connect to snowflake and execute the query</span>
+<span class="c1"># Create dataframe from dataset</span>
+<span class="c1"># Close all the open connection</span>
+
+<span class="kn">import</span> <span class="nn">snowflake.connector</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">ipywidgets</span> <span class="kn">import</span> <span class="n">interactive</span>
+
+<span class="kn">import</span> <span class="nn">ipywidgets</span> <span class="k">as</span> <span class="nn">widgets</span>
+
+<span class="c1">#get Snowflake version</span>
+<span class="n">ctx</span> <span class="o">=</span> <span class="n">snowflake</span><span class="o">.</span><span class="n">connector</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+    <span class="n">user</span><span class="o">=</span><span class="n">userName</span><span class="p">,</span>
+    <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">,</span>
+    <span class="n">account</span><span class="o">=</span><span class="n">accountName</span><span class="p">,</span>
+    <span class="n">database</span><span class="o">=</span><span class="n">databaseName</span><span class="p">,</span>
+    <span class="n">warehouse</span><span class="o">=</span><span class="n">warehouseName</span>
+<span class="p">)</span>
+<span class="n">cs</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+<span class="k">try</span><span class="p">:</span>
+  <span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">  SELECT</span>
+<span class="s2">    EN.AcademicYear</span>
+<span class="s2">    ,Inst.State</span>
+<span class="s2">    ,SUM(TOTALMEN) AS &quot;Total Men&quot;</span>
+<span class="s2">    ,SUM(TOTALWOMEN) AS &quot;Total Women&quot;</span>
+<span class="s2">    ,SUM(EN.WhiteMen) AS &quot;White Men&quot;</span>
+<span class="s2">    ,SUM(EN.WhiteWomen) AS &quot;White Women&quot;</span>
+<span class="s2">    ,SUM(EN.NonresidentAlienMen) AS &quot;Non resident alien Men&quot;</span>
+<span class="s2">    ,SUM(EN.NonresidentAlienWomen) AS &quot;Non resident alien Women&quot;</span>
+<span class="s2">    ,SUM(EN.AFRICANAMERICANMEN) AS &quot;Black/AfricanAmerican Men&quot;</span>
+<span class="s2">    ,SUM(EN.AFRICANAMERICANWOMEN) AS &quot;Black/AfricanAmerican Women&quot;</span>
+<span class="s2">    ,SUM(EN.HispanicOrLatinoMen) AS &quot;Hispanic Men&quot;</span>
+<span class="s2">    ,SUM(EN.HispanicOrLatinoWomen) AS &quot;Hispanic Women&quot;</span>
+<span class="s2">    ,SUM(EN.AsianMen) AS &quot;Asian Men&quot;</span>
+<span class="s2">    ,SUM(EN.AsianWomen) AS &quot;Asian Women&quot;</span>
+<span class="s2">    ,SUM(EN.AmericanIndianOrAlaskaNativeMen) AS &quot;American </span><span class="se">\</span>
+<span class="s2">          Indian /Alaska Native Men&quot;</span>
+<span class="s2">    ,SUM(EN.AmericanIndianOrAlaskaNativeWomen) AS &quot;American </span><span class="se">\</span>
+<span class="s2">          Indian /Alaska Native Women&quot;</span>
+<span class="s2">    ,SUM(EN.HAWAIIANPACIFICISLANDERMEN) AS &quot;Native Hawaiian Men&quot;</span>
+<span class="s2">    ,SUM(EN.HAWAIIANPACIFICISLANDERWOMEN)</span>
+<span class="s2">        AS &quot;Native Hawaiian Women&quot;</span>
+<span class="s2">  FROM ENROLLMENT EN</span>
+<span class="s2">  INNER JOIN ACADEMICINSTITUTION Inst</span>
+<span class="s2">    ON EN.INSTITUTIONIDENTIFIER = Inst.INSTITUTIONIDENTIFIER</span>
+<span class="s2">  WHERE Inst.DEGREEGRANTINGSTATUS = 1</span>
+<span class="s2">  AND Inst.State IN (&#39;TX&#39;,&#39;FL&#39;,&#39;CA&#39;,&#39;NY&#39;,&#39;PA&#39;,&#39;IL&#39;,&#39;OH&#39;,&#39;GA&#39;,&#39;NC&#39;</span><span class="se">\</span>
+<span class="s2">      ,&#39;MI&#39;,&#39;NJ&#39;,&#39;VA&#39;,&#39;WA&#39;,&#39;AZ&#39;,&#39;MA&#39;,&#39;TN&#39;,&#39;IN&#39;,&#39;MO&#39;,&#39;WI&#39;,&#39;MD&#39;)</span>
+<span class="s2">  GROUP BY EN.AcademicYear,Inst.State ;</span>
+<span class="s2"> &quot;&quot;&quot;</span>
+  <span class="n">cs</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+  <span class="n">records</span> <span class="o">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+  <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">cs</span><span class="o">.</span><span class="n">description</span><span class="p">]</span>
+  <span class="n">df1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">records</span><span class="p">,</span><span class="n">columns</span><span class="o">=</span><span class="n">names</span><span class="p">)</span>
+<span class="k">finally</span><span class="p">:</span>
+    <span class="n">cs</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">ctx</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Convert all the integer columns to float.</span>
+<span class="c1"># Float allows to use the formatting while printing dataframe</span>
+<span class="k">for</span> <span class="p">(</span><span class="n">columnName</span><span class="p">,</span> <span class="n">columnData</span><span class="p">)</span> <span class="ow">in</span> <span class="n">df1</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+   <span class="c1">#print(&#39;Colunm Name : &#39;, columnName)</span>
+   <span class="k">if</span> <span class="p">(</span><span class="n">columnName</span> <span class="o">!=</span> <span class="s1">&#39;ACADEMICYEAR&#39;</span> <span class="ow">and</span> <span class="n">columnName</span> <span class="o">!=</span> <span class="s1">&#39;STATE&#39;</span><span class="p">)</span> <span class="p">:</span>
+     <span class="n">df1</span><span class="p">[</span><span class="n">columnName</span><span class="p">]</span> <span class="o">=</span> <span class="n">df1</span><span class="p">[</span><span class="n">columnName</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Select the year for report</span>
+<span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">Year</span><span class="p">):</span>
+  <span class="k">return</span> <span class="n">Year</span>
+
+<span class="n">w</span> <span class="o">=</span> <span class="n">interactive</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">Year</span> <span class="o">=</span> <span class="n">df1</span><span class="o">.</span><span class="n">ACADEMICYEAR</span> <span class="o">.</span><span class="n">unique</span><span class="p">());</span>
+<span class="n">display</span><span class="p">(</span><span class="n">w</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Filter data for the year selected by user &amp; drop</span>
+<span class="c1"># the data column not used in reporting layer</span>
+<span class="n">dfFilter</span> <span class="o">=</span> <span class="n">df1</span><span class="p">[</span><span class="n">df1</span><span class="o">.</span><span class="n">ACADEMICYEAR</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">result</span><span class="p">)]</span>
+<span class="n">dfFilter</span><span class="o">=</span><span class="n">dfFilter</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;ACADEMICYEAR&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Transpose data from rows to column</span>
+<span class="c1"># The first row has column name , use the column names from first row</span>
+<span class="c1"># Create data frame, rename the first column</span>
+<span class="c1"># Sort the column 1 to n so state codes comes in desired order and print</span>
+
+<span class="n">dft</span><span class="o">=</span><span class="n">dfFilter</span><span class="o">.</span><span class="n">T</span>
+<span class="n">dft</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="n">dft</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="c1">#dft.reindex(columns=sorted(dft.iloc[1:]))</span>
+<span class="n">new_df</span>  <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">dft</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">columns</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+
+<span class="n">new_df</span> <span class="o">=</span> <span class="n">new_df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;STATE&quot;</span><span class="p">:</span><span class="s2">&quot;Segment&quot;</span><span class="p">})</span>
+
+<span class="n">new_columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">new_df</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+<span class="n">new_columns</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">new_df</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span>
+<span class="n">new_df</span> <span class="o">=</span> <span class="n">new_df</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">new_columns</span><span class="p">)</span>
+
+<span class="n">pd</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">float_format</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{:,.0f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">HTML</span>
+<span class="n">HTML</span><span class="p">(</span><span class="n">new_df</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Output:</p>
+<div class="figure align-center">
+<img alt="images/BusinessInsights01.JPG" src="images/BusinessInsights01.JPG" />
+</div>
+</div>
+<div class="section" id="enrollment-by-geo-location">
+<h2>Enrollment by Geo location<a class="headerlink" href="#enrollment-by-geo-location" title="Permalink to this headline">¶</a></h2>
+<p>In this visual, we are presenting state wise total enrollment and percentage.
+Enrollment percentage is calculated dividing state level enrollment by national enrollment.</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">snowflake</span><span class="o">-</span><span class="n">connector</span><span class="o">-</span><span class="n">python</span><span class="o">==</span><span class="mf">2.3</span><span class="o">.</span><span class="mi">6</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#read required information to connect to Snowflake database</span>
+<span class="kn">from</span> <span class="nn">getpass</span> <span class="kn">import</span> <span class="n">getpass</span>
+<span class="n">accountName</span> <span class="o">=</span> <span class="n">getpass</span><span class="p">(</span><span class="s1">&#39;Enter Snowflake account name:&#39;</span><span class="p">)</span>
+<span class="n">userName</span> <span class="o">=</span> <span class="n">getpass</span><span class="p">(</span><span class="s1">&#39;Enter Snowflake user name:&#39;</span><span class="p">)</span>
+<span class="n">password</span> <span class="o">=</span> <span class="n">getpass</span><span class="p">(</span><span class="s1">&#39;Enter Snowflake password:&#39;</span><span class="p">)</span>
+
+<span class="n">databaseName</span> <span class="o">=</span> <span class="s1">&#39;ipeds&#39;</span> <span class="c1">#@param {type:&quot;string&quot;}</span>
+<span class="n">sourceSchema</span><span class="o">=</span><span class="s1">&#39;Public&#39;</span><span class="c1">#@param {type:&quot;string&quot;}</span>
+<span class="n">warehouseName</span> <span class="o">=</span> <span class="s1">&#39;COMPUTE_WH&#39;</span><span class="c1">#@param{type:&quot;string&quot;}</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Enter Snowflake account name:··········
+Enter Snowflake user name:··········
+Enter Snowflake password:··········
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get data from snowflake</span>
+<span class="kn">import</span> <span class="nn">snowflake.connector</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">ipywidgets</span> <span class="kn">import</span> <span class="n">interactive</span>
+
+<span class="kn">import</span> <span class="nn">ipywidgets</span> <span class="k">as</span> <span class="nn">widgets</span>
+
+<span class="c1"># Gets the version</span>
+<span class="n">ctx</span> <span class="o">=</span> <span class="n">snowflake</span><span class="o">.</span><span class="n">connector</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+    <span class="n">user</span><span class="o">=</span><span class="n">userName</span><span class="p">,</span>
+    <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">,</span>
+    <span class="n">account</span><span class="o">=</span><span class="n">accountName</span><span class="p">,</span>
+    <span class="n">database</span><span class="o">=</span><span class="n">databaseName</span><span class="p">,</span>
+    <span class="n">warehouse</span><span class="o">=</span><span class="n">warehouseName</span>
+    <span class="p">)</span>
+<span class="n">cs</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+
+<span class="k">try</span><span class="p">:</span>
+  <span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">  WITH CTE_ENROLLMENT AS</span>
+<span class="s2">  (</span>
+<span class="s2">  SELECT   A.ACADEMICYEAR AS YEAR</span>
+<span class="s2">          ,B.STATE AS STATE</span>
+<span class="s2">          ,SUM(A.TOTALMEN+A.TOTALWOMEN) AS ENROLLMENT</span>
+<span class="s2">    FROM ENROLLMENT A</span>
+<span class="s2">    INNER JOIN ACADEMICINSTITUTION B</span>
+<span class="s2">      ON A.INSTITUTIONIDENTIFIER = B.INSTITUTIONIDENTIFIER</span>
+<span class="s2">  GROUP BY YEAR, STATE</span>
+<span class="s2">  )</span>
+<span class="s2">  SELECT YEAR, STATE, ENROLLMENT</span>
+<span class="s2">    ,ROUND(100.00 * (RATIO_TO_REPORT(ENROLLMENT) OVER </span><span class="se">\</span>
+<span class="s2">            (PARTITION BY YEAR)),2) AS PctOfTotal</span>
+<span class="s2">  FROM CTE_ENROLLMENT</span>
+<span class="s2">  ORDER BY YEAR, STATE;</span>
+<span class="s2">        &quot;&quot;&quot;</span>
+  <span class="c1">#print (sql)</span>
+  <span class="n">cs</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+  <span class="n">records</span> <span class="o">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+  <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">cs</span><span class="o">.</span><span class="n">description</span><span class="p">]</span>
+  <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">records</span><span class="p">,</span><span class="n">columns</span> <span class="o">=</span> <span class="n">names</span><span class="p">)</span>
+<span class="k">finally</span><span class="p">:</span>
+    <span class="n">cs</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">ctx</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add formatted column to panda DF to be used for hoverinfo in the map</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;ENROL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;ENROLLMENT&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{:,}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create the map and render</span>
+<span class="kn">import</span> <span class="nn">plotly.graph_objects</span> <span class="k">as</span> <span class="nn">go</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">ipywidgets</span> <span class="kn">import</span> <span class="n">interact</span><span class="p">,</span> <span class="n">interactive</span><span class="p">,</span> <span class="n">fixed</span><span class="p">,</span> <span class="n">interact_manual</span>
+
+<span class="k">def</span> <span class="nf">color_million_red</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+  <span class="k">if</span> <span class="n">value</span> <span class="o">&gt;</span> <span class="mi">1000000</span><span class="p">:</span>
+    <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;red&#39;</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;black&#39;</span>
+  <span class="k">return</span> <span class="s1">&#39;color: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">color</span>
+
+<span class="k">def</span> <span class="nf">plot_graph</span><span class="p">(</span><span class="n">Year</span><span class="p">):</span>
+  <span class="n">newdf</span> <span class="o">=</span> <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="o">.</span><span class="n">YEAR</span> <span class="o">==</span> <span class="n">Year</span><span class="p">)]</span>
+
+  <span class="n">fig</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">go</span><span class="o">.</span><span class="n">Choropleth</span><span class="p">(</span>
+    <span class="n">locations</span><span class="o">=</span><span class="n">newdf</span><span class="p">[</span><span class="s1">&#39;STATE&#39;</span><span class="p">],</span> <span class="c1"># Spatial coordinates</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">newdf</span><span class="p">[</span><span class="s1">&#39;ENROLLMENT&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">),</span> <span class="c1"># Data to be color-coded</span>
+    <span class="c1"># set of locations match entries in `locations`</span>
+    <span class="n">locationmode</span> <span class="o">=</span> <span class="s1">&#39;USA-states&#39;</span><span class="p">,</span>
+    <span class="n">colorscale</span> <span class="o">=</span> <span class="s1">&#39;Earth&#39;</span><span class="p">,</span>
+    <span class="n">colorbar_title</span> <span class="o">=</span> <span class="s2">&quot;Millions&quot;</span><span class="p">,</span>
+    <span class="c1">#text = newdf[&quot;PCTOFTOTAL&quot;],</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">newdf</span><span class="p">[</span><span class="s1">&#39;STATE&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;&lt;br&gt;&#39;</span> <span class="o">+</span> <span class="s1">&#39;Enrollment : &#39;</span> \
+                          <span class="o">+</span> <span class="n">newdf</span><span class="p">[</span><span class="s1">&#39;ENROL&#39;</span><span class="p">]</span> \
+                          <span class="o">+</span> <span class="s1">&#39;&lt;br&gt;&#39;</span> <span class="o">+</span> <span class="s1">&#39;Percent of enrollment : &#39;</span> \
+                          <span class="o">+</span> <span class="n">newdf</span><span class="p">[</span><span class="s1">&#39;PCTOFTOTAL&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; %&#39;</span><span class="p">,</span>
+    <span class="n">hoverinfo</span><span class="o">=</span><span class="s2">&quot;text&quot;</span><span class="p">,</span>
+  <span class="p">))</span>
+
+  <span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+    <span class="n">title_text</span> <span class="o">=</span> <span class="s1">&#39;&lt;b&gt;&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">Year</span><span class="p">)</span>\
+    <span class="o">+</span> <span class="s1">&#39; Institution Enrollment by State&lt;/b&gt;</span><span class="se">\</span>
+<span class="s1">    &lt;br&gt;(Hover for breakdown)&#39;</span><span class="p">,</span>
+    <span class="n">geo_scope</span><span class="o">=</span><span class="s1">&#39;usa&#39;</span><span class="p">,</span> <span class="c1"># limite map scope to USA</span>
+    <span class="n">autosize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">margin</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;r&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="s2">&quot;t&quot;</span><span class="p">:</span><span class="mi">80</span><span class="p">,</span><span class="s2">&quot;l&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">},</span>
+  <span class="p">)</span>
+
+  <span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="n">interact</span><span class="p">(</span><span class="n">plot_graph</span><span class="p">,</span> <span class="n">Year</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">YEAR</span><span class="o">.</span><span class="n">unique</span><span class="p">());</span>
+</pre></div>
+</div>
+<p>Output:</p>
+<div class="figure align-center">
+<img alt="images/BusinessInsights02.JPG" src="images/BusinessInsights02.JPG" />
+</div>
+</div>
+<div class="section" id="public-college-tuition-cost">
+<h2>Public college tuition cost<a class="headerlink" href="#public-college-tuition-cost" title="Permalink to this headline">¶</a></h2>
+<p>This visual generate the list of the public institutions having highest in-state tution for the selected year.
+Result is displayed in HTML table format.</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">snowflake</span><span class="o">-</span><span class="n">connector</span><span class="o">-</span><span class="n">python</span><span class="o">==</span><span class="mf">2.3</span><span class="o">.</span><span class="mi">6</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#read required information to connect to Snowflake database</span>
+<span class="kn">from</span> <span class="nn">getpass</span> <span class="kn">import</span> <span class="n">getpass</span>
+<span class="n">accountName</span> <span class="o">=</span> <span class="n">getpass</span><span class="p">(</span><span class="s1">&#39;Enter Snowflake account name:&#39;</span><span class="p">)</span>
+<span class="n">userName</span> <span class="o">=</span> <span class="n">getpass</span><span class="p">(</span><span class="s1">&#39;Enter Snowflake user name:&#39;</span><span class="p">)</span>
+<span class="n">password</span> <span class="o">=</span> <span class="n">getpass</span><span class="p">(</span><span class="s1">&#39;Enter Snowflake password:&#39;</span><span class="p">)</span>
+
+<span class="n">databaseName</span> <span class="o">=</span> <span class="s1">&#39;ipeds&#39;</span> <span class="c1">#@param {type:&quot;string&quot;}</span>
+<span class="n">sourceSchema</span><span class="o">=</span><span class="s1">&#39;Public&#39;</span><span class="c1">#@param {type:&quot;string&quot;}</span>
+<span class="n">warehouseName</span> <span class="o">=</span> <span class="s1">&#39;COMPUTE_WH&#39;</span><span class="c1">#@param{type:&quot;string&quot;}</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Enter Snowflake account name:··········
+Enter Snowflake user name:··········
+Enter Snowflake password:··········
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Source System to gather Statistics from</span>
+<span class="kn">import</span> <span class="nn">snowflake.connector</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">ipywidgets</span> <span class="kn">import</span> <span class="n">interactive</span>
+
+<span class="kn">import</span> <span class="nn">ipywidgets</span> <span class="k">as</span> <span class="nn">widgets</span>
+
+<span class="c1"># Gets the version</span>
+<span class="n">ctx</span> <span class="o">=</span> <span class="n">snowflake</span><span class="o">.</span><span class="n">connector</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+    <span class="n">user</span><span class="o">=</span><span class="n">userName</span><span class="p">,</span>
+    <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">,</span>
+    <span class="n">account</span><span class="o">=</span><span class="n">accountName</span><span class="p">,</span>
+    <span class="n">database</span><span class="o">=</span><span class="n">databaseName</span><span class="p">,</span>
+    <span class="n">warehouse</span><span class="o">=</span><span class="n">warehouseName</span>
+    <span class="p">)</span>
+<span class="n">cs</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+
+<span class="k">try</span><span class="p">:</span>
+  <span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">  WITH CTE_Tution AS</span>
+<span class="s2">  (</span>
+<span class="s2">  SELECT</span>
+<span class="s2">     A.ACADEMICYEAR</span>
+<span class="s2">    ,A.INSTITUTIONIDENTIFIER AS ID</span>
+<span class="s2">    ,B.INSTITUTIONNAME AS NAME</span>
+<span class="s2">    ,B.STATE</span>
+<span class="s2">    ,SUM(A.INSTATEAVERAGETUITIONFULLTIMEUNDERGRADUATES)</span>
+<span class="s2">                        AS InStateTution</span>
+<span class="s2">    ,SUM(A.OUTOFSTATEAVERAGETUITIONFULLTIMEUNDERGRADUATES)</span>
+<span class="s2">                        AS OutOfStateTution</span>
+<span class="s2">    ,ROW_NUMBER() OVER (PARTITION BY A.ACADEMICYEAR </span><span class="se">\</span>
+<span class="s2">              ORDER BY InStateTution DESC) AS MaxFeeCounter</span>
+<span class="s2">  FROM INSTITUTIONALCHARGE A</span>
+<span class="s2">  INNER JOIN ACADEMICINSTITUTION B</span>
+<span class="s2">    ON A.INSTITUTIONIDENTIFIER = B.INSTITUTIONIDENTIFIER</span>
+<span class="s2">  INNER JOIN INSTITUTIONCONTROL ICTR</span>
+<span class="s2">    ON ICTR.CODE = B.CONTROLOFINSTITUTION</span>
+<span class="s2">  WHERE UPPER(ICTR.DESCRIPTION) LIKE &#39;%PUBLIC%&#39;</span>
+<span class="s2">       AND B.DEGREEGRANTINGSTATUS = 1</span>
+<span class="s2">  GROUP BY A.ACADEMICYEAR,ID,NAME,B.STATE</span>
+<span class="s2">)</span>
+<span class="s2">SELECT ACADEMICYEAR,</span>
+<span class="s2">        ID AS &quot;Institution ID&quot;,</span>
+<span class="s2">        NAME &quot;Instituon Name&quot;,</span>
+<span class="s2">        STATE &quot;State Code&quot;,</span>
+<span class="s2">        InStateTution AS &quot;In State Tution($)&quot;,</span>
+<span class="s2">        OutOfStateTution &quot;Out Of State Tution($)&quot; ,</span>
+<span class="s2">        MaxFeeCounter &quot;in-state-tution_index&quot;</span>
+<span class="s2">FROM CTE_Tution ;</span>
+<span class="s2">&quot;&quot;&quot;</span>
+  <span class="c1">#print (sql)</span>
+  <span class="n">cs</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+  <span class="n">records</span> <span class="o">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+  <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">cs</span><span class="o">.</span><span class="n">description</span><span class="p">]</span>
+  <span class="n">df1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">records</span><span class="p">,</span><span class="n">columns</span> <span class="o">=</span> <span class="n">names</span><span class="p">)</span>
+<span class="k">finally</span><span class="p">:</span>
+    <span class="n">cs</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">ctx</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Select the year for report</span>
+<span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">Year</span><span class="p">):</span>
+  <span class="k">return</span> <span class="n">Year</span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">interactive</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">Year</span> <span class="o">=</span> <span class="n">df1</span><span class="o">.</span><span class="n">ACADEMICYEAR</span> <span class="o">.</span><span class="n">unique</span><span class="p">());</span>
+<span class="n">display</span><span class="p">(</span><span class="n">w</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Select number of institute to be displayed</span>
+<span class="n">slider</span><span class="o">=</span><span class="n">widgets</span><span class="o">.</span><span class="n">IntSlider</span><span class="p">(</span>
+    <span class="nb">min</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="nb">max</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+    <span class="n">step</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Number of Institutiuons to be displayed </span><span class="se">\</span>
+<span class="s1">        on the report &#39;</span><span class="p">,</span>
+    <span class="n">value</span><span class="o">=</span><span class="mi">3</span>
+<span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">slider</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add formatting to dataset</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+<span class="n">dfFilter</span> <span class="o">=</span> <span class="n">df1</span><span class="p">[</span><span class="n">df1</span><span class="o">.</span><span class="n">ACADEMICYEAR</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">result</span><span class="p">)]</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">float_format</span> <span class="o">=</span> <span class="s1">&#39;$</span><span class="si">{:,.2f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span>
+<span class="n">dfFilter</span><span class="p">[</span><span class="s1">&#39;In State Tution($)&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dfFilter</span><span class="p">[</span><span class="s1">&#39;In State </span><span class="se">\</span>
+<span class="s1">Tution($)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+<span class="n">dfFilter</span><span class="p">[</span><span class="s1">&#39;Out Of State Tution($)&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dfFilter</span><span class="p">[</span><span class="s1">&#39;Out Of </span><span class="se">\</span>
+<span class="s1">State Tution($)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+<span class="c1">#print(dfFilter)</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Apply fiter and display the results</span>
+<span class="n">topn</span><span class="o">=</span><span class="n">slider</span><span class="o">.</span><span class="n">value</span>
+<span class="n">dfFilter</span><span class="o">=</span><span class="n">dfFilter</span><span class="o">.</span><span class="n">nlargest</span><span class="p">(</span><span class="n">topn</span><span class="p">,</span><span class="s1">&#39;In State Tution($)&#39;</span><span class="p">)</span>
+<span class="n">dfFilter</span><span class="o">=</span><span class="n">dfFilter</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;in-state-tution_index&#39;</span><span class="p">])</span>
+<span class="n">dfFilter</span> <span class="o">=</span> <span class="n">dfFilter</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span> <span class="o">=</span> \
+                <span class="p">{</span><span class="s2">&quot;ACADEMICYEAR&quot;</span><span class="p">:</span><span class="s2">&quot;Academic Year&quot;</span><span class="p">})</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">HTML</span>
+<span class="n">HTML</span><span class="p">(</span><span class="n">dfFilter</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Output:</p>
+<div class="figure align-center">
+<img alt="images/BusinessInsights03.JPG" src="images/BusinessInsights03.JPG" />
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Code is available to download at:
+<a class="reference external" href="https://github.com/versatiledp/ExperimentsSnowflake/tree/main/source/code/IPYNB">ExperimentsSnowflake/tree/main/source/code/IPYNB</a></p>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference external" href="./index.html">Table of Contents</a></p></td>
+<td><p><a class="reference external" href="./Pipeline_Orchestration.html">Previous Chapter</a></p></td>
+<td><p><a class="reference external" href="./Summary.html">Next Chapter</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Snowflake Enriched</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="IntroducingSnowflake.html">Introducing Snowflake</a></li>
+<li class="toctree-l1"><a class="reference internal" href="IntroducingDataplatform.html">Introducing data platform</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CSVIngestion.html">CSV ingestion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="JSONIngestion.html">JSON ingestion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ORCIngestion.html">ORC ingestion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ParquetIngestion.html">Parquet ingestion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SemiStructuredDataIngestion.html">Semi-structured data Load</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PipelineOrchestration.html">Pipeline orchestration</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Business insights</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#institution-reporting">Institution reporting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#enrollment-segment-by-state">Enrollment segment by state</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#enrollment-by-geo-location">Enrollment by Geo location</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#public-college-tuition-cost">Public college tuition cost</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Abberivations.html">Abberivations</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="PipelineOrchestration.html" title="previous chapter">Pipeline orchestration</a></li>
+      <li>Next: <a href="Summary.html" title="next chapter">Summary</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+  </body>
+</html>

@@ -1,0 +1,368 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Introducing Snowflake &#8212; Snowflake Enriched 9/28/2020 documentation</title>
+    <link rel="stylesheet" href="static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="static/my.css" type="text/css" />
+    <link rel="stylesheet" href="static/copybutton.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="static/documentation_options.js"></script>
+    <script src="static/jquery.js"></script>
+    <script src="static/underscore.js"></script>
+    <script src="static/doctools.js"></script>
+    <script src="static/language_data.js"></script>
+    <script src="static/clipboard.min.js"></script>
+    <script src="static/copybutton.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Introducing data platform" href="IntroducingDataplatform.html" />
+    <link rel="prev" title="Introduction" href="Introduction.html" />
+   
+  <link rel="stylesheet" href="static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="introducing-snowflake">
+<h1>Introducing Snowflake<a class="headerlink" href="#introducing-snowflake" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="snowflake">
+<h2>Snowflake<a class="headerlink" href="#snowflake" title="Permalink to this headline">¶</a></h2>
+<p>Snowflake is a cloud-based SaaS (Software-as-a-Service) data management
+solution that makes it possible for organizations to:</p>
+<ul class="simple">
+<li><p>Bring all of their business data together in one place for analysis.</p></li>
+<li><p>Allow all analysts, applications or even customers to have shared access to the data.</p></li>
+<li><p>Focus on analyzing data without worrying about hardware, software, or database tuning.</p></li>
+<li><p>Utilize the SQL skills we already have.</p></li>
+<li><p>Leverage the existing ecosystem of tools to manage extract transform load (ETL) or extract load transform (ELT) process.</p></li>
+<li><p>Integrate the current business intelligence stack like Tableau, PowerBI, and other open source tools seamlessly.</p></li>
+</ul>
+<div class="section" id="snowflake-advantages">
+<h3>Snowflake advantages<a class="headerlink" href="#snowflake-advantages" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Faster, easier to use, scalable, and far more flexible than other data platforms.</p></li>
+<li><p>Can be started quickly and delivers high-quality performance.</p></li>
+<li><p>Solves concurrency issues with its multi-cluster warehouse architecture.</p></li>
+<li><p>Loads and processes the data quickly.</p></li>
+<li><p>Supports auto-scaling, big data workload, and data sharing.</p></li>
+<li><p>Allows a user to scale up the virtual warehouse and provides elasticity as per needs.</p></li>
+<li><p>Intuitive and simple interface.</p></li>
+<li><p>Fully automated platform.</p></li>
+</ul>
+</div>
+<div class="section" id="snowflake-architecture">
+<h3>Snowflake architecture<a class="headerlink" href="#snowflake-architecture" title="Permalink to this headline">¶</a></h3>
+<p>The Snowflake architecture consists of three layers:</p>
+<p><strong>Database Storage:</strong>  The actual underlying file system in Snowflake is backed by Snowflake’s account, in which
+all data is encrypted, compressed, and distributed to optimize performance.
+Snowflake also provides excellent data durability and availability.</p>
+<p><strong>Query Processing:</strong> Snowflake provides the ability to create virtual warehouses,
+which are basically compute clusters provisioned behind the scenes.
+These virtual warehouses are used to load data, run queries, or do both concurrently.</p>
+<p><strong>Cloud Services:</strong> This layer coordinates and handles all other services in Snowflake,
+including sessions, authentication, SQL compilation, encryption, etc.</p>
+<p>These layers are independently scalable, so organizations can adjust resources as they need and pay only for what they consumed.</p>
+<p>The following diagram shows Snowflake architecture.</p>
+<div class="figure align-center">
+<img alt="images/snowflakeArchitecture.JPG" src="images/snowflakeArchitecture.JPG" />
+</div>
+<p>Source: <a class="reference external" href="https://www.snowflake.com/blog/5-reasons-to-love-snowflakes-architecture-for-your-data-warehouse/">https://www.snowflake.com/blog/5-reasons-to-love-snowflakes-architecture-for-your-data-warehouse/</a></p>
+</div>
+<div class="section" id="connecting-to-snowflake">
+<h3>Connecting to Snowflake<a class="headerlink" href="#connecting-to-snowflake" title="Permalink to this headline">¶</a></h3>
+<p>Snowflake provides a few different methods to create database connectivity:</p>
+<ul class="simple">
+<li><p>ODBC and JDBC drivers can directly access a Snowflake instance.</p></li>
+<li><p>Web based worksheets can be leveraged within the Snowflake account.</p></li>
+<li><p>SnowSQL CLI is also used to establish connectivity to Snowflake.</p></li>
+</ul>
+</div>
+<div class="section" id="snowflake-data-features">
+<h3>Snowflake data features<a class="headerlink" href="#snowflake-data-features" title="Permalink to this headline">¶</a></h3>
+<p>In Snowflake, data can be ingested from a variety of data
+formats like CSV, Parquet, ORC, and XML data sources.
+It supports JSON to a great extent, and furthermore:</p>
+<ul class="simple">
+<li><p>Provides full support to create views on different data formats.</p></li>
+<li><p>Allows data sharing support for securely sharing data with other Snowflake accounts.</p></li>
+<li><p>Permits replication and syncing databases across multiple accounts in different regions.</p></li>
+<li><p>Enables time travel functions to query the history of data changes over a period of time.</p></li>
+</ul>
+<p>Snowflake is a cloud-agnostic platform providing unified data management across multiple cloud service providers like Azure,
+AWS, and GCP. In other words, the Snowflake data warehouse can be built on top of Amazon web services, Microsoft Azure
+cloud infrastructure, or Google cloud.</p>
+</div>
+<div class="section" id="setting-virtual-warehouse">
+<h3>Setting virtual warehouse<a class="headerlink" href="#setting-virtual-warehouse" title="Permalink to this headline">¶</a></h3>
+<p>Snowflake defines a virtual warehouse as a cluster of compute resources.
+The warehouse provides all the resources like CPU, memory, and temporary storage
+required to start using Snowflake.</p>
+<p>Snowflake provides free trial credit, during which it will create a small instance
+of the warehouse for our subscription. This warehouse defaults to auto-suspend mode if there are no activities.</p>
+<p>All data in Snowflake is maintained in databases. Each database consists of one or more schemas.
+Schemas are logical groupings of database objects like tables, views, and functions.</p>
+<p>Snowflake enables data lakes, data sharing, data visualizations, data science, and data engineering for organizations.
+We will be working with real world business use-cases, starting with data collection
+from various sources and presenting insights regarding the utilization of Snowflake.</p>
+</div>
+</div>
+<div class="section" id="snowflake-data-load">
+<h2>Snowflake data load<a class="headerlink" href="#snowflake-data-load" title="Permalink to this headline">¶</a></h2>
+<p>Snowflake data load can be achieved using:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Web interface to load small amount of data.</p></li>
+<li><p>SnowSQL CLI for bulk load.</p></li>
+<li><p>Snowpipe to automate the load of large data set across multiple platforms.</p></li>
+</ul>
+</div></blockquote>
+<p>Snowflake supports a wide range of third party tools like Informatica, Talend, and Azure Data Factory.</p>
+<div class="section" id="snowsql-ui">
+<h3>SnowSQL UI<a class="headerlink" href="#snowsql-ui" title="Permalink to this headline">¶</a></h3>
+<p>The Snowflake web interface provides a convenient wizard which
+allows to select specific tables.
+Using the LOAD button we can easily ingest a limited amount of data.
+The wizard simplifies the load by combining the staging and data loading phases into a single
+operation. Also, it automatically deletes the staged file after loading.</p>
+</div>
+<div class="section" id="snowsql-cli">
+<h3>SnowSQL CLI<a class="headerlink" href="#snowsql-cli" title="Permalink to this headline">¶</a></h3>
+<p>SnowSQL CLI is the command line client interface for Snowflake. It executes SQL queries
+and performs all DDL and DML operations. It is an easy way to access Snowflake from the command line and has
+the same capabilities as the Snowflake UI.</p>
+</div>
+</div>
+<div class="section" id="installing-snowflake-cli">
+<h2>Installing Snowflake CLI<a class="headerlink" href="#installing-snowflake-cli" title="Permalink to this headline">¶</a></h2>
+<p>Login into Snowflake and download the Snowflake CLI.</p>
+<div class="figure align-center">
+<img alt="images/SnowflakeCLI.png" src="images/SnowflakeCLI.png" />
+</div>
+<p>The SnowSQL CLI can also be downloaded from:</p>
+<p><a class="reference external" href="https://Snowflakesolutions.net/snow-sql-cliclient/">https://Snowflakesolutions.net/snow-sql-cliclient/</a></p>
+<div class="figure align-center">
+<img alt="images/SnowflakeCLI_Source.png" src="images/SnowflakeCLI_Source.png" />
+</div>
+<p>SnowSQL CLI gets invoked with snowsql.exe.</p>
+<p><strong>SnowSQL Command Usage</strong></p>
+<p>We can use the following command to connect to Snowflake using SnowSQL.</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>snowsql -a accountName -u userName -d databaseName -s schemaName
+</pre></div>
+</div>
+<p>Alternatively, use the following command to connect Snowflake from Windows Command line.</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>snowsql -a xxxxxx.us-east-1 -u xxxxxx -d demo_db -s public
+Password:<span class="gs">*****</span>*
+</pre></div>
+</div>
+<div class="section" id="snowpipe">
+<h3>Snowpipe<a class="headerlink" href="#snowpipe" title="Permalink to this headline">¶</a></h3>
+<p>Snowpipe is a mechanism to load high frequency or streaming data.
+It can load data in a near real-time manner. It also allows for the processing of data in micro-batches.
+Micro-batch processing is very similar to traditional batch processing in that data is usually processed as a group.
+Snowpipe is a serverless architecture
+and does not use virtual warehouse resources. It has its own resources that are managed by Snowflakes instances.</p>
+<p>Snowpipe makes REST API available to load data from:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Amazon Web Services (AWS) - Amazon S3</p></li>
+<li><p>Google Cloud Platform - Cloud Storage</p></li>
+<li><p>Microsoft Azure Blob Storage, and Azure Data Lake Storage Gen2 (ADLS-gen2)</p></li>
+<li><p>Hadoop and Spark big data platforms</p></li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="snowflake-staged-area">
+<h2>Snowflake staged area<a class="headerlink" href="#snowflake-staged-area" title="Permalink to this headline">¶</a></h2>
+<p>Snowflake allows several types of staged file areas. A stage is a temporary storage area in the Snowflake warehouse.</p>
+<p>Snowflake supports external and internal staged files.</p>
+<p>External stages are storage locations outside the Snowflake environment in another cloud storage location.
+It could be Amazon S3 storage, Microsoft Azure storage, or Google Cloud Storage buckets. This provides greater
+flexibility for accessing the data in Snowflake.</p>
+<div class="line-block">
+<div class="line">The internal stage stores data files within Snowflake. Internal stages can be either permanent or temporary.</div>
+</div>
+<div class="line-block">
+<div class="line">Internal storage is classified into three categories.</div>
+</div>
+<div class="section" id="user-stage">
+<h3>User stage<a class="headerlink" href="#user-stage" title="Permalink to this headline">¶</a></h3>
+<p>Each Snowflake user is attached to the default stage to store the file. User stage is only accessible by the specific user.</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>put file://D:\Snowflake\sample_file.csv @~/staged;
+</pre></div>
+</div>
+<p>The file will be uploaded to the user stage and a user can verify the same using LIST command.</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>list @~/staged;
+</pre></div>
+</div>
+<p>The user stages are referenced using &#64;~.</p>
+<p>For example, use list &#64;~ to list the files in a user stage.</p>
+</div>
+<div class="section" id="table-stage">
+<h3>Table stage<a class="headerlink" href="#table-stage" title="Permalink to this headline">¶</a></h3>
+<p>Each table has a Snowflake stage allocated for storing files. Multiple users can access a single table stage area.</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>put file://D:\Snowflake\sample_file.csv @%test;
+</pre></div>
+</div>
+<p>Users can also specify the subfolder within the table stage to upload the files.</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>put file://D:\Snowflake\sample_file.csv @%test/sample_csv/;
+</pre></div>
+</div>
+<p>The table stages are referenced using <strong>&#64;%&lt;tableName&gt;</strong>.</p>
+<p>For example, to list the files in a table stage:</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>list @%test
+</pre></div>
+</div>
+<p>Table stages have the same name as the table. The table stages cannot be altered or dropped.</p>
+<p>Table stages do not support setting file format options. Instead, they specify file format details in the COPY command.</p>
+</div>
+<div class="section" id="internal-named-stage">
+<h3>Internal named stage<a class="headerlink" href="#internal-named-stage" title="Permalink to this headline">¶</a></h3>
+<p>Internal stages are named database objects. They are the recommended stage for loading, and can do so for
+multiple tables. They are accessible by multiple users. File formats can be specified while creating an internal named stage.</p>
+<p>Internal storage copies data within the Snowflake warehouse as shown below.</p>
+<div class="figure align-center">
+<img alt="images/InternalStorage.png" src="images/InternalStorage.png" />
+</div>
+</div>
+</div>
+<div class="section" id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<p>This chapter has covered Snowflake architectural components, data features, and the various tools used in data loading.
+Introducing multiple ways of connecting to Snowflake services alongside learning about the supported data formats
+provides a better understanding of the data platform
+project outlined in this book. The chapter also summarized various methods for loading files into
+Snowflake using the user stage, table stage, and internal named stage database objects.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference external" href="./index.html">Table of Contents</a></p></td>
+<td><p><a class="reference external" href="./IntroducingSnowflake.html">Previous Chapter</a></p></td>
+<td><p><a class="reference external" href="./IntroducingDataplatform.html">Next Chapter</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Snowflake Enriched</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Introduction.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Introducing Snowflake</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#snowflake">Snowflake</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#snowflake-advantages">Snowflake advantages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#snowflake-architecture">Snowflake architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#connecting-to-snowflake">Connecting to Snowflake</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#snowflake-data-features">Snowflake data features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setting-virtual-warehouse">Setting virtual warehouse</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#snowflake-data-load">Snowflake data load</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#snowsql-ui">SnowSQL UI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#snowsql-cli">SnowSQL CLI</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#installing-snowflake-cli">Installing Snowflake CLI</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#snowpipe">Snowpipe</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#snowflake-staged-area">Snowflake staged area</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#user-stage">User stage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#table-stage">Table stage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#internal-named-stage">Internal named stage</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#summary">Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="IntroducingDataplatform.html">Introducing data platform</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CSVIngestion.html">CSV ingestion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="JSONIngestion.html">JSON ingestion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ORCIngestion.html">ORC ingestion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ParquetIngestion.html">Parquet ingestion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SemiStructuredDataIngestion.html">Semi-structured data Load</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PipelineOrchestration.html">Pipeline orchestration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BusinessInsights.html">Business insights</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Abberivations.html">Abberivations</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="Introduction.html" title="previous chapter">Introduction</a></li>
+      <li>Next: <a href="IntroducingDataplatform.html" title="next chapter">Introducing data platform</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+  </body>
+</html>

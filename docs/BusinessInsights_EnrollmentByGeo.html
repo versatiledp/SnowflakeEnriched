@@ -1,0 +1,235 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Enrollment by Geo location &#8212; Snowflake Enriched 9/28/2020 documentation</title>
+    <link rel="stylesheet" href="static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="static/my.css" type="text/css" />
+    <link rel="stylesheet" href="static/copybutton.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="static/documentation_options.js"></script>
+    <script src="static/jquery.js"></script>
+    <script src="static/underscore.js"></script>
+    <script src="static/doctools.js"></script>
+    <script src="static/language_data.js"></script>
+    <script src="static/clipboard.min.js"></script>
+    <script src="static/copybutton.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="enrollment-by-geo-location">
+<h1>Enrollment by Geo location<a class="headerlink" href="#enrollment-by-geo-location" title="Permalink to this headline">¶</a></h1>
+<p>In this visual, we are presenting state wise total enrollment and percentage.
+Enrollment percentage is calculated dividing state level enrollment by national enrollment.</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">snowflake</span><span class="o">-</span><span class="n">connector</span><span class="o">-</span><span class="n">python</span><span class="o">==</span><span class="mf">2.3</span><span class="o">.</span><span class="mi">6</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#read required information to connect to Snowflake database</span>
+<span class="kn">from</span> <span class="nn">getpass</span> <span class="kn">import</span> <span class="n">getpass</span>
+<span class="n">accountName</span> <span class="o">=</span> <span class="n">getpass</span><span class="p">(</span><span class="s1">&#39;Enter Snowflake account name:&#39;</span><span class="p">)</span>
+<span class="n">userName</span> <span class="o">=</span> <span class="n">getpass</span><span class="p">(</span><span class="s1">&#39;Enter Snowflake user name:&#39;</span><span class="p">)</span>
+<span class="n">password</span> <span class="o">=</span> <span class="n">getpass</span><span class="p">(</span><span class="s1">&#39;Enter Snowflake password:&#39;</span><span class="p">)</span>
+
+<span class="n">databaseName</span> <span class="o">=</span> <span class="s1">&#39;ipeds&#39;</span> <span class="c1">#@param {type:&quot;string&quot;}</span>
+<span class="n">sourceSchema</span><span class="o">=</span><span class="s1">&#39;Public&#39;</span><span class="c1">#@param {type:&quot;string&quot;}</span>
+<span class="n">warehouseName</span> <span class="o">=</span> <span class="s1">&#39;COMPUTE_WH&#39;</span><span class="c1">#@param{type:&quot;string&quot;}</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Enter Snowflake account name:··········
+Enter Snowflake user name:··········
+Enter Snowflake password:··········
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get data from snowflake</span>
+<span class="kn">import</span> <span class="nn">snowflake.connector</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">ipywidgets</span> <span class="kn">import</span> <span class="n">interactive</span>
+
+<span class="kn">import</span> <span class="nn">ipywidgets</span> <span class="k">as</span> <span class="nn">widgets</span>
+
+<span class="c1"># Gets the version</span>
+<span class="n">ctx</span> <span class="o">=</span> <span class="n">snowflake</span><span class="o">.</span><span class="n">connector</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+    <span class="n">user</span><span class="o">=</span><span class="n">userName</span><span class="p">,</span>
+    <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">,</span>
+    <span class="n">account</span><span class="o">=</span><span class="n">accountName</span><span class="p">,</span>
+    <span class="n">database</span><span class="o">=</span><span class="n">databaseName</span><span class="p">,</span>
+    <span class="n">warehouse</span><span class="o">=</span><span class="n">warehouseName</span>
+    <span class="p">)</span>
+<span class="n">cs</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+
+<span class="k">try</span><span class="p">:</span>
+  <span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">  WITH CTE_ENROLLMENT AS</span>
+<span class="s2">  (</span>
+<span class="s2">  SELECT   A.ACADEMICYEAR AS YEAR</span>
+<span class="s2">          ,B.STATE AS STATE</span>
+<span class="s2">          ,SUM(A.TOTALMEN+A.TOTALWOMEN) AS ENROLLMENT</span>
+<span class="s2">    FROM ENROLLMENT A</span>
+<span class="s2">    INNER JOIN ACADEMICINSTITUTION B</span>
+<span class="s2">      ON A.INSTITUTIONIDENTIFIER = B.INSTITUTIONIDENTIFIER</span>
+<span class="s2">  GROUP BY YEAR, STATE</span>
+<span class="s2">  )</span>
+<span class="s2">  SELECT YEAR, STATE, ENROLLMENT</span>
+<span class="s2">    ,ROUND(100.00 * (RATIO_TO_REPORT(ENROLLMENT) OVER </span><span class="se">\</span>
+<span class="s2">            (PARTITION BY YEAR)),2) AS PctOfTotal</span>
+<span class="s2">  FROM CTE_ENROLLMENT</span>
+<span class="s2">  ORDER BY YEAR, STATE;</span>
+<span class="s2">        &quot;&quot;&quot;</span>
+  <span class="c1">#print (sql)</span>
+  <span class="n">cs</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+  <span class="n">records</span> <span class="o">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+  <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">cs</span><span class="o">.</span><span class="n">description</span><span class="p">]</span>
+  <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">records</span><span class="p">,</span><span class="n">columns</span> <span class="o">=</span> <span class="n">names</span><span class="p">)</span>
+<span class="k">finally</span><span class="p">:</span>
+    <span class="n">cs</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">ctx</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add formatted column to panda DF to be used for hoverinfo in the map</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;ENROL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;ENROLLMENT&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{:,}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create the map and render</span>
+<span class="kn">import</span> <span class="nn">plotly.graph_objects</span> <span class="k">as</span> <span class="nn">go</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">ipywidgets</span> <span class="kn">import</span> <span class="n">interact</span><span class="p">,</span> <span class="n">interactive</span><span class="p">,</span> <span class="n">fixed</span><span class="p">,</span> <span class="n">interact_manual</span>
+
+<span class="k">def</span> <span class="nf">color_million_red</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+  <span class="k">if</span> <span class="n">value</span> <span class="o">&gt;</span> <span class="mi">1000000</span><span class="p">:</span>
+    <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;red&#39;</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;black&#39;</span>
+  <span class="k">return</span> <span class="s1">&#39;color: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">color</span>
+
+<span class="k">def</span> <span class="nf">plot_graph</span><span class="p">(</span><span class="n">Year</span><span class="p">):</span>
+  <span class="n">newdf</span> <span class="o">=</span> <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="o">.</span><span class="n">YEAR</span> <span class="o">==</span> <span class="n">Year</span><span class="p">)]</span>
+
+  <span class="n">fig</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">go</span><span class="o">.</span><span class="n">Choropleth</span><span class="p">(</span>
+    <span class="n">locations</span><span class="o">=</span><span class="n">newdf</span><span class="p">[</span><span class="s1">&#39;STATE&#39;</span><span class="p">],</span> <span class="c1"># Spatial coordinates</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">newdf</span><span class="p">[</span><span class="s1">&#39;ENROLLMENT&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">),</span> <span class="c1"># Data to be color-coded</span>
+    <span class="c1"># set of locations match entries in `locations`</span>
+    <span class="n">locationmode</span> <span class="o">=</span> <span class="s1">&#39;USA-states&#39;</span><span class="p">,</span>
+    <span class="n">colorscale</span> <span class="o">=</span> <span class="s1">&#39;Earth&#39;</span><span class="p">,</span>
+    <span class="n">colorbar_title</span> <span class="o">=</span> <span class="s2">&quot;Millions&quot;</span><span class="p">,</span>
+    <span class="c1">#text = newdf[&quot;PCTOFTOTAL&quot;],</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">newdf</span><span class="p">[</span><span class="s1">&#39;STATE&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;&lt;br&gt;&#39;</span> <span class="o">+</span> <span class="s1">&#39;Enrollment : &#39;</span> \
+                          <span class="o">+</span> <span class="n">newdf</span><span class="p">[</span><span class="s1">&#39;ENROL&#39;</span><span class="p">]</span> \
+                          <span class="o">+</span> <span class="s1">&#39;&lt;br&gt;&#39;</span> <span class="o">+</span> <span class="s1">&#39;Percent of enrollment : &#39;</span> \
+                          <span class="o">+</span> <span class="n">newdf</span><span class="p">[</span><span class="s1">&#39;PCTOFTOTAL&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; %&#39;</span><span class="p">,</span>
+    <span class="n">hoverinfo</span><span class="o">=</span><span class="s2">&quot;text&quot;</span><span class="p">,</span>
+  <span class="p">))</span>
+
+  <span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+    <span class="n">title_text</span> <span class="o">=</span> <span class="s1">&#39;&lt;b&gt;&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">Year</span><span class="p">)</span>\
+    <span class="o">+</span> <span class="s1">&#39; Institution Enrollment by State&lt;/b&gt;</span><span class="se">\</span>
+<span class="s1">    &lt;br&gt;(Hover for breakdown)&#39;</span><span class="p">,</span>
+    <span class="n">geo_scope</span><span class="o">=</span><span class="s1">&#39;usa&#39;</span><span class="p">,</span> <span class="c1"># limite map scope to USA</span>
+    <span class="n">autosize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">margin</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;r&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="s2">&quot;t&quot;</span><span class="p">:</span><span class="mi">80</span><span class="p">,</span><span class="s2">&quot;l&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">},</span>
+  <span class="p">)</span>
+
+  <span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="n">interact</span><span class="p">(</span><span class="n">plot_graph</span><span class="p">,</span> <span class="n">Year</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">YEAR</span><span class="o">.</span><span class="n">unique</span><span class="p">());</span>
+</pre></div>
+</div>
+<p>Output:</p>
+<div class="figure align-center">
+<img alt="images/BusinessInsights02.JPG" src="images/BusinessInsights02.JPG" />
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Snowflake Enriched</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Table of Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="IntroducingSnowflake.html">Introducing Snowflake</a></li>
+<li class="toctree-l1"><a class="reference internal" href="IntroducingDataplatform.html">Introducing data platform</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CSVIngestion.html">CSV ingestion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="JSONIngestion.html">JSON ingestion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ORCIngestion.html">ORC ingestion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ParquetIngestion.html">Parquet ingestion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SemiStructuredDataIngestion.html">Semi-structured data Load</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PipelineOrchestration.html">Pipeline orchestration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BusinessInsights.html">Business insights</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Abberivations.html">Abberivations</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+  </body>
+</html>

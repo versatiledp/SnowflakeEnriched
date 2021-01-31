@@ -1,0 +1,2796 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSV ingestion &#8212; Snowflake Enriched 9/28/2020 documentation</title>
+    <link rel="stylesheet" href="static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="static/my.css" type="text/css" />
+    <link rel="stylesheet" href="static/copybutton.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="static/documentation_options.js"></script>
+    <script src="static/jquery.js"></script>
+    <script src="static/underscore.js"></script>
+    <script src="static/doctools.js"></script>
+    <script src="static/language_data.js"></script>
+    <script src="static/clipboard.min.js"></script>
+    <script src="static/copybutton.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="JSON ingestion" href="JSONIngestion.html" />
+    <link rel="prev" title="Introducing data platform" href="IntroducingDataplatform.html" />
+   
+  <link rel="stylesheet" href="static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="csv-ingestion">
+<h1>CSV ingestion<a class="headerlink" href="#csv-ingestion" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="academic-institution">
+<h2>Academic institution<a class="headerlink" href="#academic-institution" title="Permalink to this headline">¶</a></h2>
+<p>The academic institution files contain high level information about institutions in the US
+for the years 2017, 2018 and 2019, respectively.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>HD2017.csv</p></li>
+<li><p>HD2018.csv</p></li>
+<li><p>HD2019.csv</p></li>
+</ul>
+</div></blockquote>
+<p>We will learn how to:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Use ingested CSV files from the staged Snowflake region.</p></li>
+<li><p>Transform data using Snowflake JavaScript stored procedures.</p></li>
+<li><p>Execute stored procedures.</p></li>
+<li><p>Build views in Snowflake.</p></li>
+<li><p>Manage schema drifts from one file to another file.</p></li>
+<li><p>Build processes so that the schema drift does not interfere with the processing of historical data.</p></li>
+<li><p>Combine column attributes to form JSON objects as part of the transformation.</p></li>
+<li><p>Perform SQL MERGE using hash key.</p></li>
+</ul>
+</div></blockquote>
+<p>In staged files, data can be located in an internal stage (in a Snowflake database)
+or an external named stage (Amazon S3, Google Cloud Storage, or Microsoft Azure).
+Staged files are identified by the &#64; character prefixed to the name.
+Academic institution data files are received in CSV format.</p>
+<p>In this case, <strong>&#64;IPEDS_HD</strong>  is the staged file containing information about the academic institutions.
+From the staged files created using CSV format, data is retrieved using the SQL command <strong>SELECT $&lt;column_number&gt;</strong>.
+The <strong>&lt;column_number&gt;</strong> represents the order in which the columns are available in the text file starting with the number 1.
+In other words, $1 refers to first column values, $2 refers to second column values, and $n refers to nth column values from the staged file.
+For example: SELECT $1, $2 FROM &#64;IPEDS_HD;</p>
+<p>The above command returns the first and second column values of the institution file.</p>
+<p>Here is the output from &#64;IPEDS_HD using the SQL command. The header record from the input file is presented as a data record:</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT $1,$2,$3,$4,$5,$6,$7,<span class="ge">***</span>*,$71,$72 FROM @IPEDS_HD;
+</pre></div>
+</div>
+<div class="figure align-center">
+<img alt="images/IPEDTableData.jpg" src="images/IPEDTableData.jpg" />
+</div>
+<p>To ignore header records from loading into the data table, we can skip the header information row of the staged file as below.</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT $1,$2,$3,$4,$5,$6,$7,<span class="ge">***</span>*,$71,$72
+FROM @IPEDS_HD WHERE metadata$file_row_number &gt; 1;
+</pre></div>
+</div>
+<div class="figure align-center">
+<img alt="images/IPEDTableData_AA.jpg" src="images/IPEDTableData_AA.jpg" />
+</div>
+<p>The attributes from the the staged file do not hold column names and types. We need to create a schema on the read
+for each of the $1, $2,,, $n columns in the staged file &#64;IPEDS_HD. This is accomplished by using mapping documents
+between the staged layer and column names in OD tables.</p>
+</div>
+<div class="section" id="od-table-for-academic-institution">
+<h2>OD table for academic institution<a class="headerlink" href="#od-table-for-academic-institution" title="Permalink to this headline">¶</a></h2>
+<p>Operational data (OD) tables are physical tables populated from the corresponding staged files.
+The ELT process will copy the data from staged files to OD tables.
+OD tables are defined by column types and descriptive column names.
+We can add more columns to
+the OD table if necessary. We have added 3 additional columns, namely AcademicYear,
+IngestedFileName, and RowNumber, to the OD table, for use in the ETL/ELT process and audit purpose.</p>
+<p>Once the column mapping is clearly defined, we have to populate our
+operational data table for academic institutions called <strong>od_AcademicInstitution</strong>
+out of this staged file <strong>&#64;IPEDS_HD</strong>.</p>
+<p>Here is the SQL command to create an OD table <strong>od_AcademicInstitution</strong>.</p>
+<div class="toggle docutils container">
+<div class="header docutils container">
+<p>Show/Hide Create OD AcademicInstitution Entity</p>
+</div>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">DROP</span> <span class="n">TABLE</span> <span class="n">IF</span> <span class="n">EXISTS</span> <span class="n">od_AcademicInstitution</span><span class="p">;</span>
+
+<span class="n">CREATE</span> <span class="n">TABLE</span> <span class="n">od_AcademicInstitution</span> <span class="p">(</span>
+  <span class="n">InstitutionIdentifier</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">InstitutionName</span> <span class="n">STRING</span><span class="p">,</span>
+  <span class="n">InstitutionNameAlias</span> <span class="n">STRING</span><span class="p">,</span>
+  <span class="n">StreetAddress</span> <span class="n">STRING</span><span class="p">,</span>
+  <span class="n">City</span> <span class="n">STRING</span><span class="p">,</span>
+  <span class="n">State</span> <span class="n">VARCHAR</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span>
+  <span class="n">ZipCode</span> <span class="n">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span>
+  <span class="n">StateCode</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">EconomicAnalysisRegions</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">ChiefAdministrator</span> <span class="n">STRING</span><span class="p">,</span>
+  <span class="n">ChiefAdministratorTitle</span> <span class="n">STRING</span><span class="p">,</span>
+  <span class="n">TelephoneNumber</span> <span class="n">STRING</span><span class="p">,</span>
+  <span class="n">EmployerIdentificationNumber</span> <span class="n">STRING</span><span class="p">,</span>
+  <span class="n">DunBradstreetNumbers</span> <span class="n">STRING</span><span class="p">,</span>
+  <span class="n">PostsecondaryEducationIDNumber</span> <span class="n">STRING</span><span class="p">,</span>
+  <span class="n">TitleIVEligibilityIndicatorCode</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">InstitutionsWebAddress</span> <span class="n">STRING</span><span class="p">,</span>
+  <span class="n">AdmissionsOfficeWebAddress</span> <span class="n">STRING</span><span class="p">,</span>
+  <span class="n">FinancialAidOfficeWebAddress</span> <span class="n">STRING</span><span class="p">,</span>
+  <span class="n">OnlineApplicationWebAddress</span> <span class="n">STRING</span><span class="p">,</span>
+  <span class="n">NetPriceCalculatorWebAddress</span> <span class="n">STRING</span><span class="p">,</span>
+  <span class="n">VeteransMilitaryServiceTuitionPoliciesWebAddress</span> <span class="n">STRING</span><span class="p">,</span>
+  <span class="n">StudentRightAthleteGraduationRateWebAddress</span> <span class="n">STRING</span><span class="p">,</span>
+  <span class="n">DisabilityServicesWebAddress</span> <span class="n">STRING</span><span class="p">,</span>
+  <span class="n">SectorOfInstitution</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">LevelOfInstitution</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">ControlOfInstitution</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">HighestLevelOfOffering</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">UndergraduateOffering</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">GraduateOffering</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">HighestDegreeOffered</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">DegreeGrantingStatus</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">HistoricallyBlackCollegeOrUniversity</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">InstitutionHasHospital</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">InstitutionGrantsMedicalDegree</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">TribalCollege</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">DegreeOfUrbanization</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">InstitutionOpenToGeneralPublic</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">StatusOfInstitution</span> <span class="n">VARCHAR</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span>
+  <span class="n">UnitidForMergedSchools</span> <span class="n">STRING</span><span class="p">,</span>
+  <span class="n">YearInstitutionWasDeletedFromIPEDS</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">DateInstitutionClosed</span> <span class="n">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span>
+  <span class="n">InstitutionIsActive</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">PrimarilyPostsecondaryIndicator</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">PostsecondaryInstitutionIndicator</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">PostsecondaryAndTitleIvInstitutionIndicator</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">ReportingMethodForStudentCharges</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">InstitutionalCategory</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">CarnegieClassification2015Basic</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">CarnegieClassification2015UndergraduateProgram</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">CarnegieClassification2015GraduateProgram</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">CarnegieClassification2015UndergraduateProfile</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">CarnegieClassification2015EnrollmentProfile</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">CarnegieClassification2015SizeSetting</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">CarnegieClassification20052010Basic</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">CarnegieClassification2000</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">LandGrantInstitution</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">InstitutionSizeCategory</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">MultiCampusOrganization</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">NameOfMultiCampusOrganization</span> <span class="n">STRING</span><span class="p">,</span>
+  <span class="n">IdentificationNumberOfMultiCampusOrganization</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">CoreBasedStatisticalArea</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">CBSATypeMetropolitanMicropolitan</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">CombinedStatisticalArea</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">NewEnglandCityAndTownArea</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">FIPSCountyCode</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">CountyName</span> <span class="n">STRING</span><span class="p">,</span>
+  <span class="n">StateAnd114thCongressionalDistrictID</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">LongitudeLocation</span> <span class="n">NUMBER</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+  <span class="n">LatitudeLocation</span> <span class="n">NUMBER</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+  <span class="n">NCESGroupCategory</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">DataFeedbackReport</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">AcademicYear</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">IngestedFileName</span> <span class="n">STRING</span><span class="p">,</span>
+  <span class="n">RowNumber</span> <span class="n">INTEGER</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<p>The additional columns like AcademicYear, IngestedFileName, and RowNumber
+are derived from the metadata of the staged file.</p>
+<p>We used the metadata columns <strong>METADATA$FILENAME</strong>, and <strong>METADATA$FILE_ROW_NUMBER</strong> for populating the new columns.</p>
+<p>Please note that, for the files having header rows, column names will be on the first row,
+and the data will start from the second row.</p>
+<p>The following Snowflake SQL will get us the filename and row number from the staged file.</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT METADATA$FILENAME, METADATA$FILE_ROW_NUMBER
+FROM @IPEDS_HD;
+</pre></div>
+</div>
+<p>Here is the mapping for additional columns in the case of academic institution staged files.</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>AcademicYear ⇒ SUBSTRING(METADATA$FILENAME,3,4)
+IngestedFileName ⇒ METADATA$FILENAME
+RowNumber  ⇒ METADATA$FILE_ROW_NUMBER
+</pre></div>
+</div>
+</div>
+<div class="section" id="snowflake-view-and-stored-procedure">
+<h2>Snowflake view and stored procedure<a class="headerlink" href="#snowflake-view-and-stored-procedure" title="Permalink to this headline">¶</a></h2>
+<p>We have introduced a Snowflake view and a stored procedure in between
+the staged files and operational data (OD) table to manage data processing using extract load and transfer (ELT).
+The view is built on top of the staged file to do necessary mapping and create
+appropriate column names for the result set. Then, the stored procedure consumes this
+view and loads the OD table for a specific year.</p>
+</div>
+<div class="section" id="managing-metadata-of-staged-file">
+<h2>Managing metadata of staged file<a class="headerlink" href="#managing-metadata-of-staged-file" title="Permalink to this headline">¶</a></h2>
+<p>The academic institution information for the years 2017, 2018, and 2019 is now available in the staged file.
+The view <strong>v_od_AcademicInstitution</strong> is added using the mapping table defined earlier for the staged file &#64;IPEDS_HD.
+Later, this view will be used for populating the staging table.</p>
+<p>3 additional columns (AcademicYear, IngestedFileName, and RowNumber) required for the staging table
+are also defined in the view.</p>
+<p>Here is the Snowflake command to create the view.</p>
+<div class="toggle docutils container">
+<div class="header docutils container">
+<p>Show/Hide Create OD AcademicInstitution View</p>
+</div>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>DROP VIEW IF EXISTS v_od_AcademicInstitution;
+
+CREATE OR REPLACE VIEW v_od_AcademicInstitution  AS
+SELECT
+t.$1  AS InstitutionIdentifier,
+t.$2  AS InstitutionName,
+t.$3  AS InstitutionNameAlias,
+t.$4  AS StreetAddress,
+t.$5  AS City,
+t.$6  AS State,
+t.$7  AS ZipCode,
+t.$8  AS StateCode,
+t.$9  AS EconomicAnalysisRegions,
+t.$10 AS ChiefAdministrator,
+t.$11 AS ChiefAdministratorTitle,
+t.$12 AS TelephoneNumber,
+t.$13 AS EmployerIdentificationNumber,
+t.$14 AS DunBradstreetNumbers,
+t.$15 AS PostsecondaryEducationIDNumber,
+t.$16 AS TitleIVEligibilityIndicatorCode,
+t.$17 AS InstitutionsWebAddress,
+t.$18 AS AdmissionsOfficeWebAddress,
+t.$19 AS FinancialAidOfficeWebAddress,
+t.$20 AS OnlineApplicationWebAddress,
+t.$21 AS NetPriceCalculatorWebAddress,
+t.$22 AS VeteransMilitaryServiceTuitionPoliciesWebAddress,
+t.$23 AS StudentRightAthleteGraduationRateWebAddress,
+t.$24 AS DisabilityServicesWebAddress,
+t.$25 AS SectorOfInstitution,
+t.$26 AS LevelOfInstitution,
+t.$27 AS ControlOfInstitution,
+t.$28 AS HighestLevelOfOffering,
+t.$29 AS UndergraduateOffering,
+t.$30 AS GraduateOffering,
+t.$31 AS HighestDegreeOffered,
+t.$32 AS DegreeGrantingStatus,
+t.$33 AS HistoricallyBlackCollegeOrUniversity,
+t.$34 AS InstitutionHasHospital,
+t.$35 AS InstitutionGrantsMedicalDegree,
+t.$36 AS TribalCollege,
+t.$37 AS DegreeOfUrbanization,
+t.$38 AS InstitutionOpenToGeneralPublic,
+t.$39 AS StatusOfInstitution,
+t.$40 AS UnitidForMergedSchools,
+t.$41 AS YearInstitutionWasDeletedFromIPEDS,
+t.$42 AS DateInstitutionClosed,
+t.$43 AS InstitutionIsActive,
+t.$44 AS PrimarilyPostsecondaryIndicator,
+t.$45 AS PostsecondaryInstitutionIndicator,
+t.$46 AS PostsecondaryAndTitleIvInstitutionIndicator,
+t.$47 AS ReportingMethodForStudentCharges,
+t.$48 AS InstitutionalCategory,
+t.$49 AS CarnegieClassification2015Basic,
+t.$50 AS CarnegieClassification2015UndergraduateProgram,
+t.$51 AS CarnegieClassification2015GraduateProgram,
+t.$52 AS CarnegieClassification2015UndergraduateProfile,
+t.$53 AS CarnegieClassification2015EnrollmentProfile,
+t.$54 AS CarnegieClassification2015SizeSetting,
+t.$55 AS CarnegieClassification20052010Basic,
+t.$56 AS CarnegieClassification2000,
+t.$57 AS LandGrantInstitution,
+t.$58 AS InstitutionSizeCategory,
+t.$59 AS MultiCampusOrganization,
+t.$60 AS NameOfMultiCampusOrganization,
+t.$61 AS IdentificationNumberOfMultiCampusOrganization,
+t.$62 AS CoreBasedStatisticalArea,
+t.$63 AS CBSATypeMetropolitanMicropolitan,
+t.$64 AS CombinedStatisticalArea,
+t.$65 AS NewEnglandCityAndTownArea,
+t.$66 AS FIPSCountyCode,
+t.$67 AS CountyName,
+t.$68 AS StateAnd114thCongressionalDistrictID,
+t.$69 AS LongitudeLocation,
+t.$70 AS LatitudeLocation,
+t.$71 AS NCESGroupCategory,
+t.$72 AS DataFeedbackReport,
+CAST(substring(metadata$filename, 3, 4) AS INTEGER)
+                        AcademicYear,
+metadata$filename IngestedFileName,
+metadata$file_row_number-1 RowNumber
+FROM
+   @IPEDS_HD t
+WHERE
+   metadata$file_row_number &gt; 1;
+</pre></div>
+</div>
+</div>
+<p>** If the internal staged area has multiple files, the view created on staged will have access to all underlying files ingested.**</p>
+<p>In Snowflake, views behave just like tables and we can retrieve the records for a
+given academic year using the view v_od_AcademicInstitution, as below. As we ingest three files from the source system,
+&#64;IPEDS_HD will have data from all academic years.</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT TOP 100 * FROM v_od_AcademicInstitution
+WHERE AcademicYear = 2017;
+</pre></div>
+</div>
+<p>The ETL process can ingest data for one year at a time and process it. It can drop
+the ingested file from the staged area and process the next year’s data.</p>
+</div>
+<div class="section" id="stored-procedure-for-od-table-load">
+<h2>Stored procedure for OD table load<a class="headerlink" href="#stored-procedure-for-od-table-load" title="Permalink to this headline">¶</a></h2>
+<p>Stored procedures are created to perform one or more DML operations.
+They are simply a group of SQL statements that accept some input, perform some task, and may or may not return a value.
+In Snowflake, stored procedures are similar to functions, and can be executed multiple times.</p>
+<p>Stored procedures allow us to extend Snowflake SQL by combining it with JavaScript.
+It is created with a CREATE PROCEDURE command and is executed with a CALL command.</p>
+<p>We’ve created a process to load the OD table od_AcademicInstitution data from the view,
+one year’s data at a time. For this purpose, we have created a stored procedure
+<strong>pr_od_AcademicInstitution_Load</strong>. This stored procedure takes a parameter
+YEAR and retrieves the data from the view <strong>v_od_AcademicInstitution</strong>  for that year.
+The retrieved records are then inserted into the OD table.</p>
+<p>Here is the script for creating the Snowflake stored procedure pr_od_AcademicInstitution_Load.</p>
+<div class="toggle docutils container">
+<div class="header docutils container">
+<p>Show/Hide Create OD AcademicInstitution load stored procedure</p>
+</div>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>CREATE OR REPLACE PROCEDURE
+        pr_od_AcademicInstitution_Load (YEAR FLOAT)
+RETURNS STRING
+LANGUAGE javascript
+EXECUTE AS OWNER
+AS
+$$
+var sql_command = `
+   INSERT INTO   od_AcademicInstitution
+    (InstitutionIdentifier,
+    InstitutionName,
+    InstitutionNameAlias,
+    StreetAddress,
+    City,
+    State,
+    ZipCode,
+    StateCode,
+    EconomicAnalysisRegions,
+    ChiefAdministrator,
+    ChiefAdministratorTitle,
+    TelephoneNumber,
+    EmployerIdentificationNumber,
+    DunBradstreetNumbers,
+    PostsecondaryEducationIDNumber,
+    TitleIVEligibilityIndicatorCode,
+    InstitutionsWebAddress,
+    AdmissionsOfficeWebAddress,
+    FinancialAidOfficeWebAddress,
+    OnlineApplicationWebAddress,
+    NetPriceCalculatorWebAddress,
+    VeteransMilitaryServiceTuitionPoliciesWebAddress,
+    StudentRightAthleteGraduationRateWebAddress,
+    DisabilityServicesWebAddress,
+    SectorOfInstitution,
+    LevelOfInstitution,
+    ControlOfInstitution,
+    HighestLevelOfOffering,
+    UndergraduateOffering,
+    GraduateOffering,
+    HighestDegreeOffered,
+    DegreeGrantingStatus,
+    HistoricallyBlackCollegeOrUniversity,
+    InstitutionHasHospital,
+    InstitutionGrantsMedicalDegree,
+    TribalCollege,
+    DegreeOfUrbanization,
+    InstitutionOpenToGeneralPublic,
+    StatusOfInstitution,
+    UnitidForMergedSchools,
+    YearInstitutionWasDeletedFromIPEDS,
+    DateInstitutionClosed,
+    InstitutionIsActive,
+    PrimarilyPostsecondaryIndicator,
+    PostsecondaryInstitutionIndicator,
+    PostsecondaryAndTitleIvInstitutionIndicator,
+    ReportingMethodForStudentCharges,
+    InstitutionalCategory,
+    CarnegieClassification2015UndergraduateProgram,
+    CarnegieClassification2015GraduateProgram,
+    CarnegieClassification2015UndergraduateProfile,
+    CarnegieClassification2015EnrollmentProfile,
+    CarnegieClassification2015SizeSetting,
+    CarnegieClassification2015Basic,
+    CarnegieClassification20052010Basic,
+    CarnegieClassification2000,
+    LandGrantInstitution,
+    InstitutionSizeCategory,
+    MultiCampusOrganization,
+    NameOfMultiCampusOrganization,
+    IdentificationNumberOfMultiCampusOrganization,
+    CoreBasedStatisticalArea,
+    CBSATypeMetropolitanMicropolitan,
+    CombinedStatisticalArea,
+    NewEnglandCityAndTownArea,
+    FIPSCountyCode,
+    CountyName,
+    StateAnd114thCongressionalDistrictID,
+    LongitudeLocation,
+    LatitudeLocation,
+    NCESGroupCategory,
+    DataFeedbackReport,
+    AcademicYear,
+    IngestedFileName,
+    RowNumber  )
+        SELECT
+          InstitutionIdentifier,
+          InstitutionName,
+          InstitutionNameAlias,
+          StreetAddress,
+          City,
+          State,
+          ZipCode,
+          StateCode,
+          EconomicAnalysisRegions,
+          ChiefAdministrator,
+          ChiefAdministratorTitle,
+          TelephoneNumber,
+          EmployerIdentificationNumber,
+          DunBradstreetNumbers,
+          PostsecondaryEducationIDNumber,
+          TitleIVEligibilityIndicatorCode,
+          InstitutionsWebAddress,
+          AdmissionsOfficeWebAddress,
+          FinancialAidOfficeWebAddress,
+          OnlineApplicationWebAddress,
+          NetPriceCalculatorWebAddress,
+          VeteransMilitaryServiceTuitionPoliciesWebAddress,
+          StudentRightAthleteGraduationRateWebAddress,
+          DisabilityServicesWebAddress,
+          SectorOfInstitution,
+          LevelOfInstitution,
+          ControlOfInstitution,
+          HighestLevelOfOffering,
+          UndergraduateOffering,
+          GraduateOffering,
+          HighestDegreeOffered,
+          DegreeGrantingStatus,
+          HistoricallyBlackCollegeOrUniversity,
+          InstitutionHasHospital,
+          InstitutionGrantsMedicalDegree,
+          TribalCollege,
+          DegreeOfUrbanization,
+          InstitutionOpenToGeneralPublic,
+          StatusOfInstitution,
+          UnitidForMergedSchools,
+          YearInstitutionWasDeletedFromIPEDS,
+          DateInstitutionClosed,
+          InstitutionIsActive,
+          PrimarilyPostsecondaryIndicator,
+          PostsecondaryInstitutionIndicator,
+          PostsecondaryAndTitleIvInstitutionIndicator,
+          ReportingMethodForStudentCharges,
+          InstitutionalCategory,
+          CarnegieClassification2015UndergraduateProgram,
+          CarnegieClassification2015GraduateProgram,
+          CarnegieClassification2015UndergraduateProfile,
+          CarnegieClassification2015EnrollmentProfile,
+          CarnegieClassification2015SizeSetting,
+          CarnegieClassification2015Basic,
+          CarnegieClassification20052010Basic,
+          CarnegieClassification2000,
+          LandGrantInstitution,
+          InstitutionSizeCategory,
+          MultiCampusOrganization,
+          NameOfMultiCampusOrganization,
+          IdentificationNumberOfMultiCampusOrganization,
+          CoreBasedStatisticalArea,
+          CBSATypeMetropolitanMicropolitan,
+          CombinedStatisticalArea,
+          NewEnglandCityAndTownArea,
+          FIPSCountyCode,
+          CountyName,
+          StateAnd114thCongressionalDistrictID,
+          LongitudeLocation,
+          LatitudeLocation,
+          NCESGroupCategory,
+          DataFeedbackReport,
+          AcademicYear,
+          IngestedFileName,
+          RowNumber
+        FROM
+          v_od_AcademicInstitution
+    WHERE AcademicYear = ` + YEAR.toString()+`;`
+
+    try {
+        snowflake.execute (
+          {sqlText: sql_command}
+          );
+        return &quot;Succeeded.&quot;;  // Return a success/error indicator.
+        }
+    catch (err) {
+        return &quot;Failed: &quot; + err;  // Return a success/error indicator.
+        }
+$$
+;
+</pre></div>
+</div>
+</div>
+<p>The orchestration engine needs to delete old data from the OD table and load new data.</p>
+<p>The OD table is truncated and data for 2017 is loaded as below.</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>TRUNCATE TABLE od_AcademicInstitution;
+CALL pr_od_AcademicInstitution_Load(2017::FLOAT);
+</pre></div>
+</div>
+<p>Now, the OD table is filled with Academic Institution data for the year 2017.</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT TOP 50 * FROM od_AcademicInstitution;
+</pre></div>
+</div>
+<p>Here is the sample data retrieved using the SQL query above.</p>
+<div class="figure align-center">
+<img alt="images/academicInstitute.jpg" src="images/academicInstitute.jpg" />
+</div>
+</div>
+<div class="section" id="academic-institution-data-processing">
+<h2>Academic institution data processing<a class="headerlink" href="#academic-institution-data-processing" title="Permalink to this headline">¶</a></h2>
+<p>Using the academic institution files, we have built a dimension table called <strong>AcademicInstitution</strong>.
+This dimension table will be used by fact tables at the servicing layer in forthcoming chapters.</p>
+<p>In general, a dimension table contains keys, columns, and other attributes which are associated with the business key.
+A system-generated key (primary key) is used to uniquely identify a row in the dimension, and is known as a surrogate key. In a dimensional data warehouse architecture,
+the surrogate key is placed in the fact table and a foreign key is defined to establish the relationship between the two tables.</p>
+<p>In the case of the dimension table AcademicInstitution, we have defined the
+column <strong>AcademicInstitutionUniqueDWSID</strong> as the primary key.
+This primary key gets a unique sequence value for every record inserted.
+The automatic sequencing is achieved in Snowflake by defining <strong>SEQUENCE</strong> and <strong>NEXTVAL</strong>.</p>
+<p>Here is the script for creating the sequence SEQ_IPEDS.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CREATE</span> <span class="n">OR</span> <span class="n">REPLACE</span> <span class="n">SEQUENCE</span>
+        <span class="n">SEQ_IPEDS_HD</span> <span class="n">START</span> <span class="o">=</span> <span class="mi">1</span> <span class="n">INCREMENT</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>The following Snowflake SQL script is used for creating the AcademicInstitution dimension.</p>
+<div class="toggle docutils container">
+<div class="header docutils container">
+<p>Show/Hide Create AcademicInstitution entity</p>
+</div>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">DROP</span> <span class="n">TABLE</span> <span class="n">IF</span> <span class="n">EXISTS</span> <span class="n">AcademicInstitution</span><span class="p">;</span>
+
+<span class="n">CREATE</span> <span class="n">TABLE</span> <span class="n">AcademicInstitution</span> <span class="p">(</span>
+  <span class="n">AcademicInstitutionUniqueDWSID</span> <span class="n">INTEGER</span>
+                <span class="n">NOT</span> <span class="n">NULL</span> <span class="n">DEFAULT</span> <span class="n">SEQ_IPEDS_HD</span><span class="o">.</span><span class="n">NEXTVAL</span><span class="p">,</span>
+  <span class="n">InstitutionIdentifier</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">InstitutionName</span> <span class="n">VARCHAR</span><span class="p">(</span><span class="mi">2000</span><span class="p">),</span>
+  <span class="n">InstitutionNameAlias</span> <span class="n">VARCHAR</span><span class="p">(</span><span class="mi">2000</span><span class="p">),</span>
+  <span class="n">StreetAddress</span> <span class="n">VARCHAR</span><span class="p">(</span><span class="mi">500</span><span class="p">),</span>
+  <span class="n">City</span> <span class="n">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+  <span class="n">State</span> <span class="n">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span>
+  <span class="n">ZipCode</span> <span class="n">VARCHAR</span><span class="p">(</span><span class="mi">15</span><span class="p">),</span>
+  <span class="n">StateCode</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">EconomicAnalysisRegions</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">ChiefAdministrator</span> <span class="n">VARCHAR</span><span class="p">(</span><span class="mi">500</span><span class="p">),</span>
+  <span class="n">ChiefAdministratorTitle</span> <span class="n">VARCHAR</span><span class="p">(</span><span class="mi">500</span><span class="p">),</span>
+  <span class="n">TelephoneNumber</span> <span class="n">VARCHAR</span><span class="p">(</span><span class="mi">15</span><span class="p">),</span>
+  <span class="n">EmployerIdentificationNumber</span> <span class="n">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span>
+  <span class="n">DunBradstreetNumbers</span> <span class="n">VARCHAR</span><span class="p">(</span><span class="mi">2000</span><span class="p">),</span>
+  <span class="n">PostsecondaryEducationIDNumber</span> <span class="n">VARCHAR</span><span class="p">(</span><span class="mi">8</span><span class="p">),</span>
+  <span class="n">TitleIVEligibilityIndicatorCode</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">SectorOfInstitution</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">LevelOfInstitution</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">ControlOfInstitution</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">HighestLevelOfOffering</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">UndergraduateOffering</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">GraduateOffering</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">HighestDegreeOffered</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">DegreeGrantingStatus</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">HistoricallyBlackCollegeOrUniversity</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">InstitutionHasHospital</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">InstitutionGrantsMedicalDegree</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">TribalCollege</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">DegreeOfUrbanization</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">InstitutionOpenToGeneralPublic</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">StatusOfInstitution</span> <span class="n">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+  <span class="n">UnitidForMergedSchools</span> <span class="n">VARCHAR</span><span class="p">(</span><span class="mi">2000</span><span class="p">),</span>
+  <span class="n">YearInstitutionWasDeletedFromIPEDS</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">DateInstitutionClosed</span> <span class="n">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+  <span class="n">InstitutionIsActive</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">PrimarilyPostsecondaryIndicator</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">PostsecondaryInstitutionIndicator</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">PostsecondaryAndTitleIvInstitutionIndicator</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">ReportingMethodForStudentCharges</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">InstitutionalCategory</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">LandGrantInstitution</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">InstitutionSizeCategory</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">MultiCampusOrganization</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">NameOfMultiCampusOrganization</span> <span class="n">VARCHAR</span><span class="p">(</span><span class="mi">800</span><span class="p">),</span>
+  <span class="n">IdentificationNumberOfMultiCampusOrganization</span> <span class="n">VARCHAR</span><span class="p">(</span><span class="mi">60</span><span class="p">),</span>
+  <span class="n">CoreBasedStatisticalArea</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">CBSATypeMetropolitanMicropolitan</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">CombinedStatisticalArea</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">NewEnglandCityAndTownArea</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">FIPSCountyCode</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">CountyName</span> <span class="n">VARCHAR</span><span class="p">(</span><span class="mi">300</span><span class="p">),</span>
+  <span class="n">StateAnd114thCongressionalDistrictID</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">LongitudeLocation</span> <span class="n">NUMBER</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+  <span class="n">LatitudeLocation</span> <span class="n">NUMBER</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+  <span class="n">NCESGroupCategory</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">CarnegieClassification</span> <span class="n">VARIANT</span><span class="p">,</span>
+  <span class="n">WebAddress</span> <span class="n">VARIANT</span><span class="p">,</span>
+  <span class="n">DataFeedbackReport</span> <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">AcademicYear</span>  <span class="n">INTEGER</span><span class="p">,</span>
+  <span class="n">RecordCreateDateTime</span> <span class="n">DATETIME</span><span class="p">,</span>
+  <span class="n">RecordUpdateDateTime</span> <span class="n">DATETIME</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The VARIANT columns (CarnegieClassification, WebAddress) are added to the dimension table.
+These columns are used to store JSON data in the table.
+The DATETIME columns RecordCreateDateTime and RecordUpdateDateTime are added for auditing data Upserts.</p>
+</div>
+<div class="section" id="carnegie-classification-transformation">
+<h3>Carnegie classification transformation<a class="headerlink" href="#carnegie-classification-transformation" title="Permalink to this headline">¶</a></h3>
+<p>We have grouped together certain columns from the OD table.
+The following columns belong to CarnegieClassification and are stored in the dimension table in JSON format.
+Hence, the column CarnegieClassification is created with the VARIANT data type.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>CarnegieClassification2000</p></li>
+<li><p>CarnegieClassification20052010Basic</p></li>
+<li><p>CarnegieClassification2015Basic</p></li>
+<li><p>CarnegieClassification2015UndergraduateProgram</p></li>
+<li><p>CarnegieClassification2015GraduateProgram</p></li>
+<li><p>CarnegieClassification2015UndergraduateProfile</p></li>
+<li><p>CarnegieClassification2015EnrollmentProfile</p></li>
+<li><p>CarnegieClassification2015SizeSetting</p></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="web-address-transformation">
+<h3>Web address transformation<a class="headerlink" href="#web-address-transformation" title="Permalink to this headline">¶</a></h3>
+<p>Similarly, we have grouped together the below columns holding various web addresses
+under the name WebAddress and stored in a JSON format. Thus another VARIANT data type column WebAddress is also created.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>InstitutionsWebAddress</p></li>
+<li><p>AdmissionsOfficeWebAddress</p></li>
+<li><p>FinancialAidOfficeWebAddress</p></li>
+<li><p>OnlineApplicationWebAddress</p></li>
+<li><p>NetPriceCalculatorWebAddress</p></li>
+<li><p>VeteransMilitaryServiceTuitionPoliciesWebAddress</p></li>
+<li><p>StudentRightAthleteGraduationRateWebAddress</p></li>
+<li><p>DisabilityServicesWebAddress</p></li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="load-dimension-table">
+<h2>Load dimension table<a class="headerlink" href="#load-dimension-table" title="Permalink to this headline">¶</a></h2>
+<p>Once the dimension table is created, we need to load the dimension table <strong>AcademicInstitution</strong>
+with data from the operational data table <strong>od_AcademicInstitution</strong>.
+This is made possible by using the Snowflake MERGE command.</p>
+<p>The MERGE command uses source and target tables for the merge operation.
+In our case, the OD table <strong>od_AcademicInstitution</strong> is the source
+table and the dimension table <strong>AcademicInstitution</strong> is the target table.
+The business key <strong>InstitutionIdentifier</strong> is used for the dimension <strong>AcademicInstitution</strong> MERGE.</p>
+<p>MERGE in Snowflake works similar to the standard SQL MERGE.
+We join the source and target using the business key.
+Then, we compare the new data in the OD table against the existing column values in the dimension table.
+If any of the column values are updated in the OD table, that value is updated in the dimension table.
+If the business key <strong>InstitutionIdentifier</strong> is not present in the dimension table (new records in the OD table),
+that record is inserted into the dimension table.</p>
+<p>We are using Type 1 slowly changing dimension, in which new data overwrites existing data.
+However, Snowflake’s time travel feature can be used to view the original data before the update.</p>
+<p>We have created a stored procedure <strong>pr_AcademicInstitution_Load</strong> for merging data from the staging
+table <strong>od_AcademicInstitution</strong> to the dimension table <strong>AcademicInstitution</strong>.
+The script to create the stored procedure is given below.</p>
+<div class="toggle docutils container">
+<div class="header docutils container">
+<p>Show/Hide Create AcademicInstitution load stored procedure</p>
+</div>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>CREATE OR REPLACE PROCEDURE
+        pr_AcademicInstitution_Load(YEAR FLOAT)
+  RETURNS STRING
+  LANGUAGE javascript
+  EXECUTE AS OWNER
+  AS
+  $$
+var sql_command =
+`
+MERGE INTO AcademicInstitution T USING (
+SELECT  * FROM  od_AcademicInstitution
+WHERE  ACADEMICYEAR = ` + YEAR.toString() +`
+) S ON T.InstitutionIdentifier = S.InstitutionIdentifier
+WHEN MATCHED
+AND (
+  IFNULL(T.InstitutionName, &#39;&#39;) &lt;&gt; IFNULL(S.InstitutionName, &#39;&#39;)
+  OR IFNULL(T.InstitutionNameAlias, &#39;&#39;)
+        &lt;&gt; IFNULL(S.InstitutionNameAlias, &#39;&#39;)
+  OR IFNULL(T.StreetAddress, &#39;&#39;) &lt;&gt; IFNULL(S.StreetAddress, &#39;&#39;)
+  OR IFNULL(T.City, &#39;&#39;) &lt;&gt; IFNULL(S.City, &#39;&#39;)
+  OR IFNULL(T.State, &#39;&#39;) &lt;&gt; IFNULL(S.State, &#39;&#39;)
+  OR IFNULL(T.ZipCode, &#39;&#39;) &lt;&gt; IFNULL(S.ZipCode, &#39;&#39;)
+  OR IFNULL(T.StateCode, 0) &lt;&gt; IFNULL(S.StateCode, 0)
+  OR IFNULL(T.EconomicAnalysisRegions, 0)
+        &lt;&gt; IFNULL(S.EconomicAnalysisRegions, 0)
+  OR IFNULL(T.ChiefAdministrator, &#39;&#39;)
+        &lt;&gt; IFNULL(S.ChiefAdministrator, &#39;&#39;)
+  OR IFNULL(T.ChiefAdministratorTitle, &#39;&#39;)
+        &lt;&gt; IFNULL(S.ChiefAdministratorTitle, &#39;&#39;)
+  OR IFNULL(T.TelephoneNumber, &#39;&#39;) &lt;&gt; IFNULL(S.TelephoneNumber, &#39;&#39;)
+  OR IFNULL(T.EmployerIdentificationNumber, &#39;&#39;)
+        &lt;&gt; IFNULL(S.EmployerIdentificationNumber, &#39;&#39;)
+  OR IFNULL(T.DunBradstreetNumbers, &#39;&#39;)
+        &lt;&gt; IFNULL(S.DunBradstreetNumbers, &#39;&#39;)
+  OR IFNULL(T.PostsecondaryEducationIDNumber, &#39;&#39;)
+        &lt;&gt; IFNULL(S.PostsecondaryEducationIDNumber, &#39;&#39;)
+  OR IFNULL(T.TitleIVEligibilityIndicatorCode, 0)
+        &lt;&gt; IFNULL(S.TitleIVEligibilityIndicatorCode, 0)
+  OR IFNULL(T.SectorOfInstitution, 0)
+        &lt;&gt; IFNULL(S.SectorOfInstitution, 0)
+  OR IFNULL(T.LevelOfInstitution, 0)
+        &lt;&gt; IFNULL(S.LevelOfInstitution, 0)
+  OR IFNULL(T.ControlOfInstitution, 0)
+        &lt;&gt; IFNULL(S.ControlOfInstitution, 0)
+  OR IFNULL(T.HighestLevelOfOffering, 0)
+        &lt;&gt; IFNULL(S.HighestLevelOfOffering, 0)
+  OR IFNULL(T.UndergraduateOffering, 0)
+        &lt;&gt; IFNULL(S.UndergraduateOffering, 0)
+  OR IFNULL(T.GraduateOffering, 0)
+        &lt;&gt; IFNULL(S.GraduateOffering, 0)
+  OR IFNULL(T.HighestDegreeOffered, 0)
+        &lt;&gt; IFNULL(S.HighestDegreeOffered, 0)
+  OR IFNULL(T.DegreeGrantingStatus, 0)
+        &lt;&gt; IFNULL(S.DegreeGrantingStatus, 0)
+  OR IFNULL(T.HistoricallyBlackCollegeOrUniversity, 0)
+        &lt;&gt; IFNULL(S.HistoricallyBlackCollegeOrUniversity, 0)
+  OR IFNULL(T.InstitutionHasHospital, 0)
+        &lt;&gt; IFNULL(S.InstitutionHasHospital, 0)
+  OR IFNULL(T.InstitutionGrantsMedicalDegree, 0)
+        &lt;&gt; IFNULL(S.InstitutionGrantsMedicalDegree, 0)
+  OR IFNULL(T.TribalCollege, 0) &lt;&gt; IFNULL(S.TribalCollege, 0)
+  OR IFNULL(T.DegreeOfUrbanization, 0)
+        &lt;&gt; IFNULL(S.DegreeOfUrbanization, 0)
+  OR IFNULL(T.InstitutionOpenToGeneralPublic, 0)
+        &lt;&gt; IFNULL(S.InstitutionOpenToGeneralPublic, 0)
+  OR IFNULL(T.StatusOfInstitution, &#39;&#39;)
+        &lt;&gt; IFNULL(S.StatusOfInstitution, &#39;&#39;)
+  OR IFNULL(T.UnitidForMergedSchools, 0)
+        &lt;&gt; IFNULL(S.UnitidForMergedSchools, 0)
+  OR IFNULL(T.YearInstitutionWasDeletedFromIPEDS, 0)
+        &lt;&gt; IFNULL(S.YearInstitutionWasDeletedFromIPEDS, 0)
+  OR IFNULL(T.DateInstitutionClosed, &#39;&#39;)
+        &lt;&gt; IFNULL(S.DateInstitutionClosed, &#39;&#39;)
+  OR IFNULL(T.InstitutionIsActive, 0)
+        &lt;&gt; IFNULL(S.InstitutionIsActive, 0)
+  OR IFNULL(T.PrimarilyPostsecondaryIndicator, 0)
+        &lt;&gt; IFNULL(S.PrimarilyPostsecondaryIndicator, 0)
+  OR IFNULL(T.PostsecondaryInstitutionIndicator, 0)
+        &lt;&gt; IFNULL(S.PostsecondaryInstitutionIndicator, 0)
+  OR IFNULL(T.PostsecondaryAndTitleIvInstitutionIndicator, 0)
+        &lt;&gt; IFNULL(S.PostsecondaryAndTitleIvInstitutionIndicator, 0)
+  OR IFNULL(T.ReportingMethodForStudentCharges, 0)
+        &lt;&gt; IFNULL(S.ReportingMethodForStudentCharges, 0)
+  OR IFNULL(T.InstitutionalCategory, 0)
+        &lt;&gt; IFNULL(S.InstitutionalCategory, 0)
+  OR IFNULL(T.LandGrantInstitution, 0)
+        &lt;&gt; IFNULL(S.LandGrantInstitution, 0)
+  OR IFNULL(T.InstitutionSizeCategory, 0)
+        &lt;&gt; IFNULL(S.InstitutionSizeCategory, 0)
+  OR IFNULL(T.MultiCampusOrganization, 0)
+        &lt;&gt; IFNULL(S.MultiCampusOrganization, 0)
+  OR IFNULL(T.NameOfMultiCampusOrganization, &#39;&#39;)
+        &lt;&gt; IFNULL(S.NameOfMultiCampusOrganization, &#39;&#39;)
+  OR IFNULL(T.IdentificationNumberOfMultiCampusOrganization, &#39;&#39;)
+        &lt;&gt; IFNULL(S.IdentificationNumberOfMultiCampusOrganization,&#39;&#39;)
+  OR IFNULL(T.CoreBasedStatisticalArea, 0)
+        &lt;&gt; IFNULL(S.CoreBasedStatisticalArea, 0)
+  OR IFNULL(T.CBSATypeMetropolitanMicropolitan, 0)
+        &lt;&gt; IFNULL(S.CBSATypeMetropolitanMicropolitan, 0)
+  OR IFNULL(T.CombinedStatisticalArea, 0)
+        &lt;&gt; IFNULL(S.CombinedStatisticalArea, 0)
+  OR IFNULL(T.NewEnglandCityAndTownArea, 0)
+        &lt;&gt; IFNULL(S.NewEnglandCityAndTownArea, 0)
+  OR IFNULL(T.FIPSCountyCode, 0) &lt;&gt; IFNULL(S.FIPSCountyCode, 0)
+  OR IFNULL(T.CountyName, &#39;&#39;) &lt;&gt; IFNULL(S.CountyName, &#39;&#39;)
+  OR IFNULL(T.StateAnd114thCongressionalDistrictID, 0)
+        &lt;&gt; IFNULL(S.StateAnd114thCongressionalDistrictID, 0)
+  OR IFNULL(T.LongitudeLocation, 0.0)
+        &lt;&gt; IFNULL(S.LongitudeLocation, 0.0)
+  OR IFNULL(T.LatitudeLocation, 0.0)
+        &lt;&gt; IFNULL(S.LatitudeLocation, 0.0)
+  OR IFNULL(T.NCESGroupCategory, 0)
+        &lt;&gt; IFNULL(S.NCESGroupCategory, 0)
+  OR IFNULL(T.DataFeedbackReport, 0)
+        &lt;&gt; IFNULL(S.DataFeedbackReport, 0)
+  OR CarnegieClassification  &lt;&gt; OBJECT_CONSTRUCT (
+        &#39;AcademicInstitutionIdentifier&#39;
+                ,S.InstitutionIdentifier,
+        &#39;CarnegieClassification2000&#39;
+                ,S.CarnegieClassification2000,
+        &#39;CarnegieClassification20052010Basic&#39;
+                ,S.CarnegieClassification20052010Basic,
+        &#39;CarnegieClassification2015Basic&#39;
+                ,S.CarnegieClassification2015Basic,
+        &#39;CarnegieClassification2015UndergraduateProgram&#39;
+                ,S.CarnegieClassification2015UndergraduateProgram,
+        &#39;CarnegieClassification2015GraduateProgram&#39;
+                ,S.CarnegieClassification2015GraduateProgram,
+        &#39;CarnegieClassification2015UndergraduateProfile&#39;
+                ,S.CarnegieClassification2015UndergraduateProfile,
+        &#39;CarnegieClassification2015EnrollmentProfile&#39;
+                ,S.CarnegieClassification2015EnrollmentProfile,
+        &#39;CarnegieClassification2015SizeSetting&#39;
+                ,S.CarnegieClassification2015SizeSetting
+                           )
+  OR WebAddress &lt;&gt; OBJECT_CONSTRUCT (
+        &#39;AcademicInstitutionIdentifier&#39;
+                ,S.InstitutionIdentifier,
+        &#39;InstitutionsWebAddress&#39;
+                ,S.InstitutionsWebAddress,
+        &#39;AdmissionsOfficeWebAddress&#39;
+                ,S.AdmissionsOfficeWebAddress,
+        &#39;FinancialAidOfficeWebAddress&#39;
+                ,S.FinancialAidOfficeWebAddress,
+        &#39;OnlineApplicationWebAddress&#39;
+                ,S.OnlineApplicationWebAddress,
+        &#39;NetPriceCalculatorWebAddress&#39;
+                ,S.NetPriceCalculatorWebAddress,
+        &#39;VeteransMilitaryServiceTuitionPoliciesWebAddress&#39;
+                ,S.VeteransMilitaryServiceTuitionPoliciesWebAddress,
+        &#39;StudentRightAthleteGraduationRateWebAddress&#39;
+                ,S.StudentRightAthleteGraduationRateWebAddress,
+        &#39;DisabilityServicesWebAddress&#39;
+                ,S.DisabilityServicesWebAddress
+                   )
+
+) THEN
+UPDATE
+SET
+  InstitutionIdentifier = S.InstitutionIdentifier,
+  InstitutionName = S.InstitutionName,
+  InstitutionNameAlias = S.InstitutionNameAlias,
+  StreetAddress = S.StreetAddress,
+  City = S.City,
+  State = S.State,
+  ZipCode = S.ZipCode,
+  StateCode = S.StateCode,
+  EconomicAnalysisRegions = S.EconomicAnalysisRegions,
+  ChiefAdministrator = S.ChiefAdministrator,
+  ChiefAdministratorTitle = S.ChiefAdministratorTitle,
+  TelephoneNumber = S.TelephoneNumber,
+  EmployerIdentificationNumber =
+                S.EmployerIdentificationNumber,
+  DunBradstreetNumbers = S.DunBradstreetNumbers,
+  PostsecondaryEducationIDNumber =
+                S.PostsecondaryEducationIDNumber,
+  TitleIVEligibilityIndicatorCode =
+                S.TitleIVEligibilityIndicatorCode,
+  SectorOfInstitution = S.SectorOfInstitution,
+  LevelOfInstitution = S.LevelOfInstitution,
+  ControlOfInstitution = S.ControlOfInstitution,
+  HighestLevelOfOffering = S.HighestLevelOfOffering,
+  UndergraduateOffering = S.UndergraduateOffering,
+  GraduateOffering = S.GraduateOffering,
+  HighestDegreeOffered = S.HighestDegreeOffered,
+  DegreeGrantingStatus = S.DegreeGrantingStatus,
+  HistoricallyBlackCollegeOrUniversity
+                = S.HistoricallyBlackCollegeOrUniversity,
+  InstitutionHasHospital =
+                S.InstitutionHasHospital,
+  InstitutionGrantsMedicalDegree =
+                S.InstitutionGrantsMedicalDegree,
+  TribalCollege = S.TribalCollege,
+  DegreeOfUrbanization = S.DegreeOfUrbanization,
+  InstitutionOpenToGeneralPublic =
+                S.InstitutionOpenToGeneralPublic,
+  StatusOfInstitution = S.StatusOfInstitution,
+  UnitidForMergedSchools = S.UnitidForMergedSchools,
+  YearInstitutionWasDeletedFromIPEDS
+                = S.YearInstitutionWasDeletedFromIPEDS,
+  DateInstitutionClosed = S.DateInstitutionClosed,
+  InstitutionIsActive = S.InstitutionIsActive,
+  PrimarilyPostsecondaryIndicator =
+                S.PrimarilyPostsecondaryIndicator,
+  PostsecondaryInstitutionIndicator =
+                S.PostsecondaryInstitutionIndicator,
+  PostsecondaryAndTitleIvInstitutionIndicator
+                = S.PostsecondaryAndTitleIvInstitutionIndicator,
+  ReportingMethodForStudentCharges
+                = S.ReportingMethodForStudentCharges,
+  InstitutionalCategory = S.InstitutionalCategory,
+  LandGrantInstitution = S.LandGrantInstitution,
+  InstitutionSizeCategory = S.InstitutionSizeCategory,
+  MultiCampusOrganization = S.MultiCampusOrganization,
+  NameOfMultiCampusOrganization =
+                S.NameOfMultiCampusOrganization,
+  IdentificationNumberOfMultiCampusOrganization
+                = S.IdentificationNumberOfMultiCampusOrganization,
+  CoreBasedStatisticalArea =
+                S.CoreBasedStatisticalArea,
+  CBSATypeMetropolitanMicropolitan =
+                S.CBSATypeMetropolitanMicropolitan,
+  CombinedStatisticalArea = S.CombinedStatisticalArea,
+  NewEnglandCityAndTownArea = S.NewEnglandCityAndTownArea,
+  FIPSCountyCode = S.FIPSCountyCode,
+  CountyName = S.CountyName,
+  StateAnd114thCongressionalDistrictID
+                = S.StateAnd114thCongressionalDistrictID,
+  LongitudeLocation = S.LongitudeLocation,
+  LatitudeLocation = S.LatitudeLocation,
+  NCESGroupCategory = S.NCESGroupCategory,
+  DataFeedbackReport = S.DataFeedbackReport,
+  CarnegieClassification =OBJECT_CONSTRUCT (
+        &#39;AcademicInstitutionIdentifier&#39;
+                ,S.InstitutionIdentifier,
+        &#39;CarnegieClassification2000&#39;
+                ,S.CarnegieClassification2000,
+        &#39;CarnegieClassification20052010Basic&#39;
+                ,S.CarnegieClassification20052010Basic,
+        &#39;CarnegieClassification2015Basic&#39;
+                ,S.CarnegieClassification2015Basic,
+        &#39;CarnegieClassification2015UndergraduateProgram&#39;
+                ,S.CarnegieClassification2015UndergraduateProgram,
+        &#39;CarnegieClassification2015GraduateProgram&#39;
+                ,S.CarnegieClassification2015GraduateProgram,
+        &#39;CarnegieClassification2015UndergraduateProfile&#39;
+                ,S.CarnegieClassification2015UndergraduateProfile,
+        &#39;CarnegieClassification2015EnrollmentProfile&#39;
+                ,S.CarnegieClassification2015EnrollmentProfile,
+        &#39;CarnegieClassification2015SizeSetting&#39;
+                ,S.CarnegieClassification2015SizeSetting
+           ),
+  WebAddress=OBJECT_CONSTRUCT (
+        &#39;AcademicInstitutionIdentifier&#39;
+                ,S.InstitutionIdentifier,
+        &#39;InstitutionsWebAddress&#39;
+                ,S.InstitutionsWebAddress,
+        &#39;AdmissionsOfficeWebAddress&#39;
+                ,S.AdmissionsOfficeWebAddress,
+        &#39;FinancialAidOfficeWebAddress&#39;
+                ,S.FinancialAidOfficeWebAddress,
+        &#39;OnlineApplicationWebAddress&#39;
+                ,S.OnlineApplicationWebAddress,
+        &#39;NetPriceCalculatorWebAddress&#39;
+                ,S.NetPriceCalculatorWebAddress,
+        &#39;VeteransMilitaryServiceTuitionPoliciesWebAddress&#39;
+                ,S.VeteransMilitaryServiceTuitionPoliciesWebAddress,
+        &#39;StudentRightAthleteGraduationRateWebAddress&#39;
+                ,S.StudentRightAthleteGraduationRateWebAddress,
+        &#39;DisabilityServicesWebAddress&#39;
+                ,S.DisabilityServicesWebAddress
+           ),
+  AcademicYear=S.AcademicYear,
+  RecordUpdateDateTime = CURRENT_TIMESTAMP
+  WHEN NOT MATCHED THEN
+INSERT
+  (
+        InstitutionIdentifier,
+        InstitutionName,
+        InstitutionNameAlias,
+        StreetAddress,
+        City,
+        State,
+        ZipCode,
+        StateCode,
+        EconomicAnalysisRegions,
+        ChiefAdministrator,
+        ChiefAdministratorTitle,
+        TelephoneNumber,
+        EmployerIdentificationNumber,
+        DunBradstreetNumbers,
+        PostsecondaryEducationIDNumber,
+        TitleIVEligibilityIndicatorCode,
+        SectorOfInstitution,
+        LevelOfInstitution,
+        ControlOfInstitution,
+        HighestLevelOfOffering,
+        UndergraduateOffering,
+        GraduateOffering,
+        HighestDegreeOffered,
+        DegreeGrantingStatus,
+        HistoricallyBlackCollegeOrUniversity,
+        InstitutionHasHospital,
+        InstitutionGrantsMedicalDegree,
+        TribalCollege,
+        DegreeOfUrbanization,
+        InstitutionOpenToGeneralPublic,
+        StatusOfInstitution,
+        UnitidForMergedSchools,
+        YearInstitutionWasDeletedFromIPEDS,
+        DateInstitutionClosed,
+        InstitutionIsActive,
+        PrimarilyPostsecondaryIndicator,
+        PostsecondaryInstitutionIndicator,
+        PostsecondaryAndTitleIvInstitutionIndicator,
+        ReportingMethodForStudentCharges,
+        InstitutionalCategory,
+        LandGrantInstitution,
+        InstitutionSizeCategory,
+        MultiCampusOrganization,
+        NameOfMultiCampusOrganization,
+        IdentificationNumberOfMultiCampusOrganization,
+        CoreBasedStatisticalArea,
+        CBSATypeMetropolitanMicropolitan,
+        CombinedStatisticalArea,
+        NewEnglandCityAndTownArea,
+        FIPSCountyCode,
+        CountyName,
+        StateAnd114thCongressionalDistrictID,
+        LongitudeLocation,
+        LatitudeLocation,
+        NCESGroupCategory,
+        DataFeedbackReport,
+        AcademicYear,
+        CarnegieClassification,
+        WebAddress,
+        RecordCreateDateTime)
+VALUES
+  (
+        S.InstitutionIdentifier,
+        S.InstitutionName,
+        S.InstitutionNameAlias,
+        S.StreetAddress,
+        S.City,
+        S.State,
+        S.ZipCode,
+        S.StateCode,
+        S.EconomicAnalysisRegions,
+        S.ChiefAdministrator,
+        S.ChiefAdministratorTitle,
+        S.TelephoneNumber,
+        S.EmployerIdentificationNumber,
+        S.DunBradstreetNumbers,
+        S.PostsecondaryEducationIDNumber,
+        S.TitleIVEligibilityIndicatorCode,
+        S.SectorOfInstitution,
+        S.LevelOfInstitution,
+        S.ControlOfInstitution,
+        S.HighestLevelOfOffering,
+        S.UndergraduateOffering,
+        S.GraduateOffering,
+        S.HighestDegreeOffered,
+        S.DegreeGrantingStatus,
+        S.HistoricallyBlackCollegeOrUniversity,
+        S.InstitutionHasHospital,
+        S.InstitutionGrantsMedicalDegree,
+        S.TribalCollege,
+        S.DegreeOfUrbanization,
+        S.InstitutionOpenToGeneralPublic,
+        S.StatusOfInstitution,
+        S.UnitidForMergedSchools,
+        S.YearInstitutionWasDeletedFromIPEDS,
+        S.DateInstitutionClosed,
+        S.InstitutionIsActive,
+        S.PrimarilyPostsecondaryIndicator,
+        S.PostsecondaryInstitutionIndicator,
+        S.PostsecondaryAndTitleIvInstitutionIndicator,
+        S.ReportingMethodForStudentCharges,
+        S.InstitutionalCategory,
+        S.LandGrantInstitution,
+        S.InstitutionSizeCategory,
+        S.MultiCampusOrganization,
+        S.NameOfMultiCampusOrganization,
+        S.IdentificationNumberOfMultiCampusOrganization,
+        S.CoreBasedStatisticalArea,
+        S.CBSATypeMetropolitanMicropolitan,
+        S.CombinedStatisticalArea,
+        S.NewEnglandCityAndTownArea,
+        S.FIPSCountyCode,
+        S.CountyName,
+        S.StateAnd114thCongressionalDistrictID,
+        S.LongitudeLocation,
+        S.LatitudeLocation,
+        S.NCESGroupCategory,
+        S.DataFeedbackReport,
+        S.AcademicYear  ,
+        OBJECT_CONSTRUCT (
+        &#39;AcademicInstitutionIdentifier&#39;
+                ,S.InstitutionIdentifier,
+        &#39;CarnegieClassification2000&#39;
+                ,S.CarnegieClassification2000,
+        &#39;CarnegieClassification20052010Basic&#39;
+                ,S.CarnegieClassification20052010Basic,
+        &#39;CarnegieClassification2015Basic&#39;
+                ,S.CarnegieClassification2015Basic,
+        &#39;CarnegieClassification2015UndergraduateProgram&#39;
+                ,S.CarnegieClassification2015UndergraduateProgram,
+        &#39;CarnegieClassification2015GraduateProgram&#39;
+                ,S.CarnegieClassification2015GraduateProgram,
+        &#39;CarnegieClassification2015UndergraduateProfile&#39;
+                ,S.CarnegieClassification2015UndergraduateProfile,
+        &#39;CarnegieClassification2015EnrollmentProfile&#39;
+                ,S.CarnegieClassification2015EnrollmentProfile,
+        &#39;CarnegieClassification2015SizeSetting&#39;
+                ,S.CarnegieClassification2015SizeSetting
+           ),
+        OBJECT_CONSTRUCT (
+        &#39;AcademicInstitutionIdentifier&#39;
+                ,S.InstitutionIdentifier,
+        &#39;InstitutionsWebAddress&#39;
+                ,S.InstitutionsWebAddress,
+        &#39;AdmissionsOfficeWebAddress&#39;
+                ,S.AdmissionsOfficeWebAddress,
+        &#39;FinancialAidOfficeWebAddress&#39;
+                ,S.FinancialAidOfficeWebAddress,
+        &#39;OnlineApplicationWebAddress&#39;
+                ,S.OnlineApplicationWebAddress,
+        &#39;NetPriceCalculatorWebAddress&#39;
+                ,S.NetPriceCalculatorWebAddress,
+        &#39;VeteransMilitaryServiceTuitionPoliciesWebAddress&#39;
+                ,S.VeteransMilitaryServiceTuitionPoliciesWebAddress,
+        &#39;StudentRightAthleteGraduationRateWebAddress&#39;
+                ,S.StudentRightAthleteGraduationRateWebAddress,
+        &#39;DisabilityServicesWebAddress&#39;
+                ,S.DisabilityServicesWebAddress
+                       ),
+                        CURRENT_TIMESTAMP
+                  );
+        `
+try {
+    snowflake.execute (
+      {sqlText: sql_command}
+      );
+    return &quot;Succeeded.&quot;;  // Return a success/error indicator.
+    }
+  catch (err) {
+    return &quot;Failed: &quot; + err;  // Return a success/error indicator.
+    }
+  $$
+  ;
+</pre></div>
+</div>
+</div>
+<p>And the stored procedure is called to load the AcademicInstitution table from OD.</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>CALL pr_AcademicInstitution_Load(2017::FLOAT) ;
+-- Check data on underlying table
+SELECT * FROM AcademicInstitution
+</pre></div>
+</div>
+<p>The following diagram shows the AcademicInstitution table updated with new data.</p>
+<div class="figure align-center">
+<img alt="images/IPEDTableData_BB.JPG" src="images/IPEDTableData_BB.JPG" />
+</div>
+</div>
+<div class="section" id="schema-drift">
+<h2>Schema drift<a class="headerlink" href="#schema-drift" title="Permalink to this headline">¶</a></h2>
+<p>Structural changes in the incoming data files are very common in a data warehouse environment.
+In our case, from 2018 we have noticed the following structural
+changes in the input files generated from source system.</p>
+<p>The following new columns are added to files from 2018 onwards.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>CarnegieClassification2018Basic</p></li>
+<li><p>CarnegieClassification2018UndergraduateProgram</p></li>
+<li><p>CarnegieClassification2018GraduateProgram</p></li>
+<li><p>CarnegieClassification2018UndergraduateProfile</p></li>
+<li><p>CarnegieClassification2018EnrollmentProfile</p></li>
+<li><p>CarnegieClassification2018SizeSetting</p></li>
+</ul>
+</div></blockquote>
+<p>And the following columns are deleted from the academic institution files from 2018 onwards.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>CarnegieClassification2015UndergraduateProgram</p></li>
+<li><p>CarnegieClassification2015GraduateProgram</p></li>
+<li><p>CarnegieClassification2015UndergraduateProfile</p></li>
+<li><p>CarnegieClassification2015EnrollmentProfile</p></li>
+<li><p>CarnegieClassification2015SizeSetting</p></li>
+</ul>
+</div></blockquote>
+<p>Also, there are some changes in the position of a few existing columns in the file.</p>
+<p>Our goal is to process both old and new files using the same process to load <strong>od_AcademicInstitution</strong>.
+We have added the new columns to the OD table using ALTER TABLE as below.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ALTER</span> <span class="n">TABLE</span>  <span class="n">od_AcademicInstitution</span>
+<span class="n">ADD</span> <span class="p">(</span>
+<span class="n">CarnegieClassification2018Basic</span> <span class="n">INTEGER</span><span class="p">,</span>
+<span class="n">CarnegieClassification2018UndergraduateProgram</span> <span class="n">INTEGER</span><span class="p">,</span>
+<span class="n">CarnegieClassification2018GraduateProgram</span> <span class="n">INTEGER</span><span class="p">,</span>
+<span class="n">CarnegieClassification2018UndergraduateProfile</span> <span class="n">INTEGER</span><span class="p">,</span>
+<span class="n">CarnegieClassification2018EnrollmentProfile</span> <span class="n">INTEGER</span><span class="p">,</span>
+<span class="n">CarnegieClassification2018SizeSetting</span> <span class="n">INTEGER</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Also, we updated the view <strong>v_od_AcademicInstitution</strong>  to include newly added columns using the Snowflake
+UNION command as below.
+This has made it possible to ingest files with different structures for 2017 and more recent years.</p>
+<p>The deleted columns are populated with NULL values for the year greater than 2017.
+Newly added columns are mapped with NULL for the year 2017.</p>
+<p>We have to modify the following Snowflake data objects (views/stored procedures) to incorporate the above structural
+change along with table change in the tables <strong>od_AcademicInstitution</strong> and <strong>AcademicInstitution</strong> .</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>View : v_od_AcademicInstitution</p></li>
+<li><p>Stored procedure for loading staging table : pr_od_AcademicInstitution_Load</p></li>
+<li><p>Stored procedure for processing dimension table : pr_AcademicInstitution_Load</p></li>
+</ul>
+</div></blockquote>
+<p><strong>Modify the view from the staged file</strong></p>
+<div class="toggle docutils container">
+<div class="header docutils container">
+<p>Show/Hide Alter OD AcademicInstitution view</p>
+</div>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>DROP VIEW IF EXISTS v_od_AcademicInstitution;
+
+CREATE OR REPLACE VIEW v_od_AcademicInstitution  AS
+SELECT
+  t.$1  AS InstitutionIdentifier,
+  t.$2  AS InstitutionName,
+  t.$3  AS InstitutionNameAlias,
+  t.$4  AS StreetAddress,
+  t.$5  AS City,
+  t.$6  AS State,
+  t.$7  AS ZipCode,
+  t.$8  AS StateCode,
+  t.$9  AS EconomicAnalysisRegions,
+  t.$10 AS ChiefAdministrator,
+  t.$11 AS ChiefAdministratorTitle,
+  t.$12 AS TelephoneNumber,
+  t.$13 AS EmployerIdentificationNumber,
+  t.$14 AS DunBradstreetNumbers,
+  t.$15 AS PostsecondaryEducationIDNumber,
+  t.$16 AS TitleIVEligibilityIndicatorCode,
+  t.$17 AS InstitutionsWebAddress,
+  t.$18 AS AdmissionsOfficeWebAddress,
+  t.$19 AS FinancialAidOfficeWebAddress,
+  t.$20 AS OnlineApplicationWebAddress,
+  t.$21 AS NetPriceCalculatorWebAddress,
+  t.$22 AS VeteransMilitaryServiceTuitionPoliciesWebAddress,
+  t.$23 AS StudentRightAthleteGraduationRateWebAddress,
+  t.$24 AS DisabilityServicesWebAddress,
+  t.$25 AS SectorOfInstitution,
+  t.$26 AS LevelOfInstitution,
+  t.$27 AS ControlOfInstitution,
+  t.$28 AS HighestLevelOfOffering,
+  t.$29 AS UndergraduateOffering,
+  t.$30 AS GraduateOffering,
+  t.$31 AS HighestDegreeOffered,
+  t.$32 AS DegreeGrantingStatus,
+  t.$33 AS HistoricallyBlackCollegeOrUniversity,
+  t.$34 AS InstitutionHasHospital,
+  t.$35 AS InstitutionGrantsMedicalDegree,
+  t.$36 AS TribalCollege,
+  t.$37 AS DegreeOfUrbanization,
+  t.$38 AS InstitutionOpenToGeneralPublic,
+  t.$39 AS StatusOfInstitution,
+  t.$40 AS UnitidForMergedSchools,
+  t.$41 AS YearInstitutionWasDeletedFromIPEDS,
+  t.$42 AS DateInstitutionClosed,
+  t.$43 AS InstitutionIsActive,
+  t.$44 AS PrimarilyPostsecondaryIndicator,
+  t.$45 AS PostsecondaryInstitutionIndicator,
+  t.$46 AS PostsecondaryAndTitleIvInstitutionIndicator,
+  t.$47 AS ReportingMethodForStudentCharges,
+  t.$48 AS InstitutionalCategory,
+  t.$49 AS CarnegieClassification2015Basic,
+  t.$50 AS CarnegieClassification2015UndergraduateProgram,
+  t.$51 AS CarnegieClassification2015GraduateProgram,
+  t.$52 AS CarnegieClassification2015UndergraduateProfile,
+  t.$53 AS CarnegieClassification2015EnrollmentProfile,
+  t.$54 AS CarnegieClassification2015SizeSetting,
+  NULL  AS CarnegieClassification2018Basic,
+  NULL  AS CarnegieClassification2018UndergraduateProgram,
+  NULL  AS CarnegieClassification2018GraduateProgram,
+  NULL  AS CarnegieClassification2018UndergraduateProfile,
+  NULL  AS CarnegieClassification2018EnrollmentProfile,
+  NULL  AS CarnegieClassification2018SizeSetting,
+  t.$55 AS CarnegieClassification20052010Basic,
+  t.$56 AS CarnegieClassification2000,
+  t.$57 AS LandGrantInstitution,
+  t.$58 AS InstitutionSizeCategory,
+  t.$59 AS MultiCampusOrganization,
+  t.$60 AS NameOfMultiCampusOrganization,
+  t.$61 AS IdentificationNumberOfMultiCampusOrganization,
+  t.$62 AS CoreBasedStatisticalArea,
+  t.$63 AS CBSATypeMetropolitanMicropolitan,
+  t.$64 AS CombinedStatisticalArea,
+  t.$65 AS NewEnglandCityAndTownArea,
+  t.$66 AS FIPSCountyCode,
+  t.$67 AS CountyName,
+  t.$68 AS StateAnd114thCongressionalDistrictID,
+  t.$69 AS LongitudeLocation,
+  t.$70 AS LatitudeLocation,
+  t.$71 AS NCESGroupCategory,
+  t.$72 AS DataFeedbackReport,
+  CAST(substring(metadata$filename, 3, 4) AS INTEGER) AcademicYear,
+  metadata$filename IngestedFileName,
+  metadata$file_row_number RowNumber
+FROM  @IPEDS_HD t
+WHERE
+  metadata$file_row_number &gt; 1
+  AND CAST(substring(metadata$filename, 3, 4) AS INTEGER) &lt; 2018
+UNION ALL
+SELECT
+  t.$1  AS InstitutionIdentifier,
+  t.$2  AS InstitutionName,
+  t.$3  AS InstitutionNameAlias,
+  t.$4  AS StreetAddress,
+  t.$5  AS City,
+  t.$6  AS State,
+  t.$7  AS ZipCode,
+  t.$8  AS StateCode,
+  t.$9  AS EconomicAnalysisRegions,
+  t.$10 AS ChiefAdministrator,
+  t.$11 AS ChiefAdministratorTitle,
+  t.$12 AS TelephoneNumber,
+  t.$13 AS EmployerIdentificationNumber,
+  t.$14 AS DunBradstreetNumbers,
+  t.$15 AS PostsecondaryEducationIDNumber,
+  t.$16 AS TitleIVEligibilityIndicatorCode,
+  t.$17 AS InstitutionsWebAddress,
+  t.$18 AS AdmissionsOfficeWebAddress,
+  t.$19 AS FinancialAidOfficeWebAddress,
+  t.$20 AS OnlineApplicationWebAddress,
+  t.$21 AS NetPriceCalculatorWebAddress,
+  t.$22 AS VeteransMilitaryServiceTuitionPoliciesWebAddress,
+  t.$23 AS StudentRightAthleteGraduationRateWebAddress,
+  t.$24 AS DisabilityServicesWebAddress,
+  t.$25 AS SectorOfInstitution,
+  t.$26 AS LevelOfInstitution,
+  t.$27 AS ControlOfInstitution,
+  t.$28 AS HighestLevelOfOffering,
+  t.$29 AS UndergraduateOffering,
+  t.$30 AS GraduateOffering,
+  t.$31 AS HighestDegreeOffered,
+  t.$32 AS DegreeGrantingStatus,
+  t.$33 AS HistoricallyBlackCollegeOrUniversity,
+  t.$34 AS InstitutionHasHospital,
+  t.$35 AS InstitutionGrantsMedicalDegree,
+  t.$36 AS TribalCollege,
+  t.$37 AS DegreeOfUrbanization,
+  t.$38 AS InstitutionOpenToGeneralPublic,
+  t.$39 AS StatusOfInstitution,
+  t.$40 AS UnitidForMergedSchools,
+  t.$41 AS YearInstitutionWasDeletedFromIPEDS,
+  t.$42 AS DateInstitutionClosed,
+  t.$43 AS InstitutionIsActive,
+  t.$44 AS PrimarilyPostsecondaryIndicator,
+  t.$45 AS PostsecondaryInstitutionIndicator,
+  t.$46 AS PostsecondaryAndTitleIvInstitutionIndicator,
+  t.$47 AS ReportingMethodForStudentCharges,
+  t.$48 AS InstitutionalCategory,
+  t.$55 AS CarnegieClassification2015Basic,
+  NULL  AS CarnegieClassification2015UndergraduateProgram,
+  NULL  AS CarnegieClassification2015GraduateProgram,
+  NULL  AS CarnegieClassification2015UndergraduateProfile,
+  NULL  AS CarnegieClassification2015EnrollmentProfile,
+  NULL  AS CarnegieClassification2015SizeSetting,
+  t.$49 AS CarnegieClassification2018Basic,
+  t.$50 AS CarnegieClassification2018UndergraduateProgram,
+  t.$51 AS CarnegieClassification2018GraduateProgram,
+  t.$52 AS CarnegieClassification2018UndergraduateProfile,
+  t.$53 AS CarnegieClassification2018EnrollmentProfile,
+  t.$54 AS CarnegieClassification2018SizeSetting,
+  t.$56 AS CarnegieClassification20052010Basic,
+  t.$57 AS CarnegieClassification2000,
+  t.$58 AS LandGrantInstitution,
+  t.$59 AS InstitutionSizeCategory,
+  t.$60 AS MultiCampusOrganization,
+  t.$61 AS NameOfMultiCampusOrganization,
+  t.$62 AS IdentificationNumberOfMultiCampusOrganization,
+  t.$63 AS CoreBasedStatisticalArea,
+  t.$64 AS CBSATypeMetropolitanMicropolitan,
+  t.$65 AS CombinedStatisticalArea,
+  t.$66 AS NewEnglandCityAndTownArea,
+  t.$67 AS FIPSCountyCode,
+  t.$68 AS CountyName,
+  t.$69 AS StateAnd114thCongressionalDistrictID,
+  t.$70 AS LongitudeLocation,
+  t.$71 AS LatitudeLocation,
+  t.$72 AS NCESGroupCategory,
+  t.$73 AS DataFeedbackReport,
+  CAST(substring(metadata$filename, 3, 4) AS INTEGER)
+                AcademicYear,
+  metadata$filename IngestedFileName,
+  metadata$file_row_number RowNumber
+FROM
+  @IPEDS_HD t
+WHERE
+  metadata$file_row_number &gt; 1
+  AND CAST(substring(metadata$filename, 3, 4) AS INTEGER) &gt; 2017;
+</pre></div>
+</div>
+</div>
+<p><strong>Modify stored procedure for the OD table load</strong></p>
+<p>The code below the modification of pr_od_AcademicInstitution_Load to accommodate
+for structural changes in the files 2018 and onwards.</p>
+<div class="toggle docutils container">
+<div class="header docutils container">
+<p>Show/Hide Alter OD AcademicInstitution load stored procedure</p>
+</div>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>CREATE OR REPLACE PROCEDURE pr_od_AcademicInstitution_Load(YEAR FLOAT)
+RETURNS STRING
+LANGUAGE javascript
+EXECUTE AS OWNER
+AS
+$$
+var sql_command = `
+    INSERT INTO
+          Od_AcademicInstitution (
+                InstitutionIdentifier,
+                InstitutionName,
+                InstitutionNameAlias,
+                StreetAddress,
+                City,
+                State,
+                ZipCode,
+                StateCode,
+                EconomicAnalysisRegions,
+                ChiefAdministrator,
+                ChiefAdministratorTitle,
+                TelephoneNumber,
+                EmployerIdentificationNumber,
+                DunBradstreetNumbers,
+                PostsecondaryEducationIDNumber,
+                TitleIVEligibilityIndicatorCode,
+                InstitutionsWebAddress,
+                AdmissionsOfficeWebAddress,
+                FinancialAidOfficeWebAddress,
+                OnlineApplicationWebAddress,
+                NetPriceCalculatorWebAddress,
+                VeteransMilitaryServiceTuitionPoliciesWebAddress,
+                StudentRightAthleteGraduationRateWebAddress,
+                DisabilityServicesWebAddress,
+                SectorOfInstitution,
+                LevelOfInstitution,
+                ControlOfInstitution,
+                HighestLevelOfOffering,
+                UndergraduateOffering,
+                GraduateOffering,
+                HighestDegreeOffered,
+                DegreeGrantingStatus,
+                HistoricallyBlackCollegeOrUniversity,
+                InstitutionHasHospital,
+                InstitutionGrantsMedicalDegree,
+                TribalCollege,
+                DegreeOfUrbanization,
+                InstitutionOpenToGeneralPublic,
+                StatusOfInstitution,
+                UnitidForMergedSchools,
+                YearInstitutionWasDeletedFromIPEDS,
+                DateInstitutionClosed,
+                InstitutionIsActive,
+                PrimarilyPostsecondaryIndicator,
+                PostsecondaryInstitutionIndicator,
+                PostsecondaryAndTitleIvInstitutionIndicator,
+                ReportingMethodForStudentCharges,
+                InstitutionalCategory,
+                CarnegieClassification2015UndergraduateProgram,
+                CarnegieClassification2015GraduateProgram,
+                CarnegieClassification2015UndergraduateProfile,
+                CarnegieClassification2015EnrollmentProfile,
+                CarnegieClassification2015SizeSetting,
+                CarnegieClassification2018Basic,
+                CarnegieClassification2018UndergraduateProgram,
+                CarnegieClassification2018GraduateProgram,
+                CarnegieClassification2018UndergraduateProfile,
+                CarnegieClassification2018EnrollmentProfile,
+                CarnegieClassification2018SizeSetting,
+                CarnegieClassification2015Basic,
+                CarnegieClassification20052010Basic,
+                CarnegieClassification2000,
+                LandGrantInstitution,
+                InstitutionSizeCategory,
+                MultiCampusOrganization,
+                NameOfMultiCampusOrganization,
+                IdentificationNumberOfMultiCampusOrganization,
+                CoreBasedStatisticalArea,
+                CBSATypeMetropolitanMicropolitan,
+                CombinedStatisticalArea,
+                NewEnglandCityAndTownArea,
+                FIPSCountyCode,
+                CountyName,
+                StateAnd114thCongressionalDistrictID,
+                LongitudeLocation,
+                LatitudeLocation,
+                NCESGroupCategory,
+                DataFeedbackReport,
+                AcademicYear,
+                IngestedFileName,
+                RowNumber
+          )
+        SELECT
+          InstitutionIdentifier,
+          InstitutionName,
+          InstitutionNameAlias,
+          StreetAddress,
+          City,
+          State,
+          ZipCode,
+          StateCode,
+          EconomicAnalysisRegions,
+          ChiefAdministrator,
+          ChiefAdministratorTitle,
+          TelephoneNumber,
+          EmployerIdentificationNumber,
+          DunBradstreetNumbers,
+          PostsecondaryEducationIDNumber,
+          TitleIVEligibilityIndicatorCode,
+          InstitutionsWebAddress,
+          AdmissionsOfficeWebAddress,
+          FinancialAidOfficeWebAddress,
+          OnlineApplicationWebAddress,
+          NetPriceCalculatorWebAddress,
+          VeteransMilitaryServiceTuitionPoliciesWebAddress,
+          StudentRightAthleteGraduationRateWebAddress,
+          DisabilityServicesWebAddress,
+          SectorOfInstitution,
+          LevelOfInstitution,
+          ControlOfInstitution,
+          HighestLevelOfOffering,
+          UndergraduateOffering,
+          GraduateOffering,
+          HighestDegreeOffered,
+          DegreeGrantingStatus,
+          HistoricallyBlackCollegeOrUniversity,
+          InstitutionHasHospital,
+          InstitutionGrantsMedicalDegree,
+          TribalCollege,
+          DegreeOfUrbanization,
+          InstitutionOpenToGeneralPublic,
+          StatusOfInstitution,
+          UnitidForMergedSchools,
+          YearInstitutionWasDeletedFromIPEDS,
+          DateInstitutionClosed,
+          InstitutionIsActive,
+          PrimarilyPostsecondaryIndicator,
+          PostsecondaryInstitutionIndicator,
+          PostsecondaryAndTitleIvInstitutionIndicator,
+          ReportingMethodForStudentCharges,
+          InstitutionalCategory,
+          CarnegieClassification2015UndergraduateProgram,
+          CarnegieClassification2015GraduateProgram,
+          CarnegieClassification2015UndergraduateProfile,
+          CarnegieClassification2015EnrollmentProfile,
+          CarnegieClassification2015SizeSetting,
+          CarnegieClassification2018Basic,
+          CarnegieClassification2018UndergraduateProgram,
+          CarnegieClassification2018GraduateProgram,
+          CarnegieClassification2018UndergraduateProfile,
+          CarnegieClassification2018EnrollmentProfile,
+          CarnegieClassification2018SizeSetting,
+          CarnegieClassification2015Basic,
+          CarnegieClassification20052010Basic,
+          CarnegieClassification2000,
+          LandGrantInstitution,
+          InstitutionSizeCategory,
+          MultiCampusOrganization,
+          NameOfMultiCampusOrganization,
+          IdentificationNumberOfMultiCampusOrganization,
+          CoreBasedStatisticalArea,
+          CBSATypeMetropolitanMicropolitan,
+          CombinedStatisticalArea,
+          NewEnglandCityAndTownArea,
+          FIPSCountyCode,
+          CountyName,
+          StateAnd114thCongressionalDistrictID,
+          LongitudeLocation,
+          LatitudeLocation,
+          NCESGroupCategory,
+          DataFeedbackReport,
+          AcademicYear,
+          IngestedFileName,
+          RowNumber
+        FROM
+          v_od_AcademicInstitution
+    WHERE AcademicYear = ` + YEAR.toString()+`;`
+
+    try {
+        snowflake.execute (
+          {sqlText: sql_command}
+          );
+        return &quot;Succeeded.&quot;;  // Return a success/error indicator.
+        }
+    catch (err) {
+        return &quot;Failed: &quot; + err;  // Return a success/error indicator.
+        }
+$$
+;
+</pre></div>
+</div>
+</div>
+<p>We can load the academic institution data for 2018 and 2019 into the staging table as below.</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>TRUNCATE TABLE od_AcademicInstitution;
+CALL pr_od_AcademicInstitution_Load(2018::FLOAT);
+CALL pr_od_AcademicInstitution_Load(2019::FLOAT);
+</pre></div>
+</div>
+<p>We can also load multiple files into the same OD table.
+In this book, we don’t truncate the OD table from one academic year to the next, but
+in practice we would process only one year of data at a time.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><em>Because of the change in the source file, it is necessary to manage metadata as well
+as changes in ELT and the transformation layer. If data is processed without the change in code,
+it will result into bad attribute value mapping.</em></p>
+</div>
+<p>The stored procedure pr_AcademicInstitution_Load is modified to accommodate for the new columns added.</p>
+<div class="toggle docutils container">
+<div class="header docutils container">
+<p>Show/Hide Alter AcademicInstitution load stored procedure</p>
+</div>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>CREATE OR REPLACE PROCEDURE
+                pr_AcademicInstitution_Load(YEAR FLOAT)
+  RETURNS STRING
+  LANGUAGE javascript
+  EXECUTE AS OWNER
+  AS
+  $$
+  var sql_command = `
+ MERGE INTO AcademicInstitution T USING (
+  SELECT  *  FROM  Od_AcademicInstitution
+  WHERE   ACADEMICYEAR = ` + YEAR.toString() +`
+) S ON T.InstitutionIdentifier
+                = S.InstitutionIdentifier
+WHEN MATCHED
+AND (
+  IFNULL(T.InstitutionName, &#39;&#39;)
+                &lt;&gt; IFNULL(S.InstitutionName, &#39;&#39;)
+  OR IFNULL(T.InstitutionNameAlias, &#39;&#39;)
+                &lt;&gt; IFNULL(S.InstitutionNameAlias, &#39;&#39;)
+  OR IFNULL(T.StreetAddress, &#39;&#39;)
+                &lt;&gt; IFNULL(S.StreetAddress, &#39;&#39;)
+  OR IFNULL(T.City, &#39;&#39;) &lt;&gt; IFNULL(S.City, &#39;&#39;)
+  OR IFNULL(T.State, &#39;&#39;) &lt;&gt; IFNULL(S.State, &#39;&#39;)
+  OR IFNULL(T.ZipCode, &#39;&#39;) &lt;&gt; IFNULL(S.ZipCode, &#39;&#39;)
+  OR IFNULL(T.StateCode, 0) &lt;&gt; IFNULL(S.StateCode, 0)
+  OR IFNULL(T.EconomicAnalysisRegions, 0)
+                &lt;&gt; IFNULL(S.EconomicAnalysisRegions, 0)
+  OR IFNULL(T.ChiefAdministrator, &#39;&#39;)
+                &lt;&gt; IFNULL(S.ChiefAdministrator, &#39;&#39;)
+  OR IFNULL(T.ChiefAdministratorTitle, &#39;&#39;)
+                &lt;&gt; IFNULL(S.ChiefAdministratorTitle, &#39;&#39;)
+  OR IFNULL(T.TelephoneNumber, &#39;&#39;)
+                &lt;&gt; IFNULL(S.TelephoneNumber, &#39;&#39;)
+  OR IFNULL(T.EmployerIdentificationNumber, &#39;&#39;)
+                &lt;&gt; IFNULL(S.EmployerIdentificationNumber, &#39;&#39;)
+  OR IFNULL(T.DunBradstreetNumbers, &#39;&#39;)
+                &lt;&gt; IFNULL(S.DunBradstreetNumbers, &#39;&#39;)
+  OR IFNULL(T.PostsecondaryEducationIDNumber, &#39;&#39;)
+                &lt;&gt; IFNULL(S.PostsecondaryEducationIDNumber, &#39;&#39;)
+  OR IFNULL(T.TitleIVEligibilityIndicatorCode, 0)
+                &lt;&gt; IFNULL(S.TitleIVEligibilityIndicatorCode, 0)
+  OR IFNULL(T.SectorOfInstitution, 0)
+                &lt;&gt; IFNULL(S.SectorOfInstitution, 0)
+  OR IFNULL(T.LevelOfInstitution, 0)
+                &lt;&gt; IFNULL(S.LevelOfInstitution, 0)
+  OR IFNULL(T.ControlOfInstitution, 0)
+                &lt;&gt; IFNULL(S.ControlOfInstitution, 0)
+  OR IFNULL(T.HighestLevelOfOffering, 0)
+                &lt;&gt; IFNULL(S.HighestLevelOfOffering, 0)
+  OR IFNULL(T.UndergraduateOffering, 0)
+                &lt;&gt; IFNULL(S.UndergraduateOffering, 0)
+  OR IFNULL(T.GraduateOffering, 0)
+                &lt;&gt; IFNULL(S.GraduateOffering, 0)
+  OR IFNULL(T.HighestDegreeOffered, 0)
+                &lt;&gt; IFNULL(S.HighestDegreeOffered, 0)
+  OR IFNULL(T.DegreeGrantingStatus, 0)
+                &lt;&gt; IFNULL(S.DegreeGrantingStatus, 0)
+  OR IFNULL(T.HistoricallyBlackCollegeOrUniversity, 0)
+                &lt;&gt; IFNULL(S.HistoricallyBlackCollegeOrUniversity, 0)
+  OR IFNULL(T.InstitutionHasHospital, 0)
+                &lt;&gt; IFNULL(S.InstitutionHasHospital, 0)
+  OR IFNULL(T.InstitutionGrantsMedicalDegree, 0)
+                &lt;&gt; IFNULL(S.InstitutionGrantsMedicalDegree, 0)
+  OR IFNULL(T.TribalCollege, 0)
+                &lt;&gt; IFNULL(S.TribalCollege, 0)
+  OR IFNULL(T.DegreeOfUrbanization, 0)
+                &lt;&gt; IFNULL(S.DegreeOfUrbanization, 0)
+  OR IFNULL(T.InstitutionOpenToGeneralPublic, 0)
+                &lt;&gt; IFNULL(S.InstitutionOpenToGeneralPublic, 0)
+  OR IFNULL(T.StatusOfInstitution, &#39;&#39;)
+                &lt;&gt; IFNULL(S.StatusOfInstitution, &#39;&#39;)
+  OR IFNULL(T.UnitidForMergedSchools, 0)
+                &lt;&gt; IFNULL(S.UnitidForMergedSchools, 0)
+  OR IFNULL(T.YearInstitutionWasDeletedFromIPEDS, 0)
+                &lt;&gt; IFNULL(S.YearInstitutionWasDeletedFromIPEDS, 0)
+  OR IFNULL(T.DateInstitutionClosed, &#39;&#39;)
+                &lt;&gt; IFNULL(S.DateInstitutionClosed, &#39;&#39;)
+  OR IFNULL(T.InstitutionIsActive, 0)
+                &lt;&gt; IFNULL(S.InstitutionIsActive, 0)
+  OR IFNULL(T.PrimarilyPostsecondaryIndicator, 0)
+                &lt;&gt; IFNULL(S.PrimarilyPostsecondaryIndicator, 0)
+  OR IFNULL(T.PostsecondaryInstitutionIndicator, 0)
+                &lt;&gt; IFNULL(S.PostsecondaryInstitutionIndicator, 0)
+  OR IFNULL(T.PostsecondaryAndTitleIvInstitutionIndicator, 0)
+        &lt;&gt; IFNULL(S.PostsecondaryAndTitleIvInstitutionIndicator, 0)
+  OR IFNULL(T.ReportingMethodForStudentCharges, 0)
+                &lt;&gt; IFNULL(S.ReportingMethodForStudentCharges, 0)
+  OR IFNULL(T.InstitutionalCategory, 0)
+                &lt;&gt; IFNULL(S.InstitutionalCategory, 0)
+  OR IFNULL(T.LandGrantInstitution, 0)
+                &lt;&gt; IFNULL(S.LandGrantInstitution, 0)
+  OR IFNULL(T.InstitutionSizeCategory, 0)
+                &lt;&gt; IFNULL(S.InstitutionSizeCategory, 0)
+  OR IFNULL(T.MultiCampusOrganization, 0)
+                &lt;&gt; IFNULL(S.MultiCampusOrganization, 0)
+  OR IFNULL(T.NameOfMultiCampusOrganization, &#39;&#39;)
+                &lt;&gt; IFNULL(S.NameOfMultiCampusOrganization, &#39;&#39;)
+  OR IFNULL(T.IdentificationNumberOfMultiCampusOrganization, &#39;&#39;  )
+        &lt;&gt; IFNULL(S.IdentificationNumberOfMultiCampusOrganization,&#39;&#39;)
+  OR IFNULL(T.CoreBasedStatisticalArea, 0)
+                &lt;&gt; IFNULL(S.CoreBasedStatisticalArea, 0)
+  OR IFNULL(T.CBSATypeMetropolitanMicropolitan, 0)
+                &lt;&gt; IFNULL(S.CBSATypeMetropolitanMicropolitan, 0)
+  OR IFNULL(T.CombinedStatisticalArea, 0)
+                &lt;&gt; IFNULL(S.CombinedStatisticalArea, 0)
+  OR IFNULL(T.NewEnglandCityAndTownArea, 0)
+                &lt;&gt; IFNULL(S.NewEnglandCityAndTownArea, 0)
+  OR IFNULL(T.FIPSCountyCode, 0) &lt;&gt; IFNULL(S.FIPSCountyCode, 0)
+  OR IFNULL(T.CountyName, &#39;&#39;) &lt;&gt; IFNULL(S.CountyName, &#39;&#39;)
+  OR IFNULL(T.StateAnd114thCongressionalDistrictID, 0)
+                &lt;&gt; IFNULL(S.StateAnd114thCongressionalDistrictID, 0)
+  OR IFNULL(T.LongitudeLocation, 0.0)
+                &lt;&gt; IFNULL(S.LongitudeLocation, 0.0)
+  OR IFNULL(T.LatitudeLocation, 0.0)
+                &lt;&gt; IFNULL(S.LatitudeLocation, 0.0)
+  OR IFNULL(T.NCESGroupCategory, 0)
+                &lt;&gt; IFNULL(S.NCESGroupCategory, 0)
+  OR IFNULL(T.DataFeedbackReport, 0)
+                &lt;&gt; IFNULL(S.DataFeedbackReport, 0)
+  OR CarnegieClassification  &lt;&gt; OBJECT_CONSTRUCT (
+        &#39;AcademicInstitutionIdentifier&#39;,
+                S.InstitutionIdentifier,
+        &#39;CarnegieClassification2000&#39; ,
+                S.CarnegieClassification2000,
+        &#39;CarnegieClassification20052010Basic&#39; ,
+                S.CarnegieClassification20052010Basic,
+        &#39;CarnegieClassification2015Basic&#39; ,
+                S.CarnegieClassification2015Basic,
+        &#39;CarnegieClassification2015UndergraduateProgram&#39; ,
+                S.CarnegieClassification2015UndergraduateProgram,
+        &#39;CarnegieClassification2015GraduateProgram&#39; ,
+                S.CarnegieClassification2015GraduateProgram,
+        &#39;CarnegieClassification2015UndergraduateProfile&#39; ,
+                S.CarnegieClassification2015UndergraduateProfile,
+        &#39;CarnegieClassification2015EnrollmentProfile&#39; ,
+                S.CarnegieClassification2015EnrollmentProfile,
+        &#39;CarnegieClassification2015SizeSetting&#39; ,
+                S.CarnegieClassification2015SizeSetting ,
+        &#39;CarnegieClassification2018Basic&#39;,
+                S.CarnegieClassification2018Basic,
+        &#39;CarnegieClassification2018UndergraduateProgram&#39; ,
+                S.CarnegieClassification2018UndergraduateProgram,
+        &#39;CarnegieClassification2018GraduateProgram&#39;,
+                S.CarnegieClassification2018GraduateProgram,
+        &#39;CarnegieClassification2018UndergraduateProfile&#39; ,
+                S.CarnegieClassification2018UndergraduateProfile,
+        &#39;CarnegieClassification2018EnrollmentProfile&#39;,
+                S.CarnegieClassification2018EnrollmentProfile,
+        &#39;CarnegieClassification2018SizeSetting&#39; ,
+                S.CarnegieClassification2018SizeSetting
+                       )
+  OR WebAddress&lt;&gt;OBJECT_CONSTRUCT (
+        &#39;AcademicInstitutionIdentifier&#39;,
+                S.InstitutionIdentifier,
+        &#39;InstitutionsWebAddress&#39;,
+                S.InstitutionsWebAddress,
+        &#39;AdmissionsOfficeWebAddress&#39;,
+                S.AdmissionsOfficeWebAddress,
+        &#39;FinancialAidOfficeWebAddress&#39;,
+                S.FinancialAidOfficeWebAddress,
+        &#39;OnlineApplicationWebAddress&#39;,
+                S.OnlineApplicationWebAddress,
+        &#39;NetPriceCalculatorWebAddress&#39;,
+                S.NetPriceCalculatorWebAddress,
+        &#39;VeteransMilitaryServiceTuitionPoliciesWebAddress&#39;,
+                S.VeteransMilitaryServiceTuitionPoliciesWebAddress,
+        &#39;StudentRightAthleteGraduationRateWebAddress&#39;,
+                S.StudentRightAthleteGraduationRateWebAddress,
+        &#39;DisabilityServicesWebAddress&#39;,
+                S.DisabilityServicesWebAddress
+                       )
+
+) THEN
+UPDATE
+SET
+  InstitutionIdentifier = S.InstitutionIdentifier,
+  InstitutionName = S.InstitutionName,
+  InstitutionNameAlias = S.InstitutionNameAlias,
+  StreetAddress = S.StreetAddress,
+  City = S.City,
+  State = S.State,
+  ZipCode = S.ZipCode,
+  StateCode = S.StateCode,
+  EconomicAnalysisRegions = S.EconomicAnalysisRegions,
+  ChiefAdministrator = S.ChiefAdministrator,
+  ChiefAdministratorTitle = S.ChiefAdministratorTitle,
+  TelephoneNumber = S.TelephoneNumber,
+  EmployerIdentificationNumber
+                = S.EmployerIdentificationNumber,
+  DunBradstreetNumbers = S.DunBradstreetNumbers,
+  PostsecondaryEducationIDNumber
+                = S.PostsecondaryEducationIDNumber,
+  TitleIVEligibilityIndicatorCode
+                = S.TitleIVEligibilityIndicatorCode,
+  SectorOfInstitution = S.SectorOfInstitution,
+  LevelOfInstitution = S.LevelOfInstitution,
+  ControlOfInstitution = S.ControlOfInstitution,
+  HighestLevelOfOffering = S.HighestLevelOfOffering,
+  UndergraduateOffering = S.UndergraduateOffering,
+  GraduateOffering = S.GraduateOffering,
+  HighestDegreeOffered = S.HighestDegreeOffered,
+  DegreeGrantingStatus = S.DegreeGrantingStatus,
+  HistoricallyBlackCollegeOrUniversity
+                = S.HistoricallyBlackCollegeOrUniversity,
+  InstitutionHasHospital = S.InstitutionHasHospital,
+  InstitutionGrantsMedicalDegree
+                = S.InstitutionGrantsMedicalDegree,
+  TribalCollege = S.TribalCollege,
+  DegreeOfUrbanization = S.DegreeOfUrbanization,
+  InstitutionOpenToGeneralPublic
+                = S.InstitutionOpenToGeneralPublic,
+  StatusOfInstitution = S.StatusOfInstitution,
+  UnitidForMergedSchools = S.UnitidForMergedSchools,
+  YearInstitutionWasDeletedFromIPEDS
+                = S.YearInstitutionWasDeletedFromIPEDS,
+  DateInstitutionClosed = S.DateInstitutionClosed,
+  InstitutionIsActive = S.InstitutionIsActive,
+  PrimarilyPostsecondaryIndicator
+                = S.PrimarilyPostsecondaryIndicator,
+  PostsecondaryInstitutionIndicator
+                = S.PostsecondaryInstitutionIndicator,
+  PostsecondaryAndTitleIvInstitutionIndicator
+                = S.PostsecondaryAndTitleIvInstitutionIndicator,
+  ReportingMethodForStudentCharges
+                = S.ReportingMethodForStudentCharges,
+  InstitutionalCategory = S.InstitutionalCategory,
+  LandGrantInstitution = S.LandGrantInstitution,
+  InstitutionSizeCategory = S.InstitutionSizeCategory,
+  MultiCampusOrganization = S.MultiCampusOrganization,
+  NameOfMultiCampusOrganization
+                = S.NameOfMultiCampusOrganization,
+  IdentificationNumberOfMultiCampusOrganization
+                = S.IdentificationNumberOfMultiCampusOrganization,
+  CoreBasedStatisticalArea
+                = S.CoreBasedStatisticalArea,
+  CBSATypeMetropolitanMicropolitan
+                = S.CBSATypeMetropolitanMicropolitan,
+  CombinedStatisticalArea = S.CombinedStatisticalArea,
+  NewEnglandCityAndTownArea = S.NewEnglandCityAndTownArea,
+  FIPSCountyCode = S.FIPSCountyCode,
+  CountyName = S.CountyName,
+  StateAnd114thCongressionalDistrictID
+                = S.StateAnd114thCongressionalDistrictID,
+  LongitudeLocation = S.LongitudeLocation,
+  LatitudeLocation = S.LatitudeLocation,
+  NCESGroupCategory = S.NCESGroupCategory,
+  DataFeedbackReport = S.DataFeedbackReport,
+  AcademicYear=S.AcademicYear,
+  CarnegieClassification =OBJECT_CONSTRUCT (
+  &#39;AcademicInstitutionIdentifier&#39;,
+                S.InstitutionIdentifier,
+        &#39;CarnegieClassification2000&#39; ,
+                S.CarnegieClassification2000,
+        &#39;CarnegieClassification20052010Basic&#39; ,
+                S.CarnegieClassification20052010Basic,
+        &#39;CarnegieClassification2015Basic&#39; ,
+                S.CarnegieClassification2015Basic,
+        &#39;CarnegieClassification2015UndergraduateProgram&#39; ,
+                S.CarnegieClassification2015UndergraduateProgram,
+        &#39;CarnegieClassification2015GraduateProgram&#39; ,
+                S.CarnegieClassification2015GraduateProgram,
+        &#39;CarnegieClassification2015UndergraduateProfile&#39; ,
+                S.CarnegieClassification2015UndergraduateProfile,
+        &#39;CarnegieClassification2015EnrollmentProfile&#39; ,
+                S.CarnegieClassification2015EnrollmentProfile,
+        &#39;CarnegieClassification2015SizeSetting&#39; ,
+                S.CarnegieClassification2015SizeSetting ,
+        &#39;CarnegieClassification2018Basic&#39;,
+                S.CarnegieClassification2018Basic,
+        &#39;CarnegieClassification2018UndergraduateProgram&#39; ,
+                S.CarnegieClassification2018UndergraduateProgram,
+        &#39;CarnegieClassification2018GraduateProgram&#39;,
+                S.CarnegieClassification2018GraduateProgram,
+        &#39;CarnegieClassification2018UndergraduateProfile&#39; ,
+                S.CarnegieClassification2018UndergraduateProfile,
+        &#39;CarnegieClassification2018EnrollmentProfile&#39;,
+                S.CarnegieClassification2018EnrollmentProfile,
+        &#39;CarnegieClassification2018SizeSetting&#39; ,
+                S.CarnegieClassification2018SizeSetting
+                       ),
+        WebAddress=OBJECT_CONSTRUCT (
+        &#39;AcademicInstitutionIdentifier&#39;,
+                S.InstitutionIdentifier,
+        &#39;InstitutionsWebAddress&#39;,
+                S.InstitutionsWebAddress,
+        &#39;AdmissionsOfficeWebAddress&#39;,
+                S.AdmissionsOfficeWebAddress,
+        &#39;FinancialAidOfficeWebAddress&#39;,
+                S.FinancialAidOfficeWebAddress,
+        &#39;OnlineApplicationWebAddress&#39;,
+                S.OnlineApplicationWebAddress,
+        &#39;NetPriceCalculatorWebAddress&#39;,
+                S.NetPriceCalculatorWebAddress,
+        &#39;VeteransMilitaryServiceTuitionPoliciesWebAddress&#39;,
+                S.VeteransMilitaryServiceTuitionPoliciesWebAddress,
+        &#39;StudentRightAthleteGraduationRateWebAddress&#39;,
+                S.StudentRightAthleteGraduationRateWebAddress,
+        &#39;DisabilityServicesWebAddress&#39;,
+                S.DisabilityServicesWebAddress
+                       ),
+  RecordUpdateDateTime = CURRENT_TIMESTAMP
+WHEN NOT MATCHED THEN
+        INSERT   (
+    InstitutionIdentifier,
+    InstitutionName,
+    InstitutionNameAlias,
+    StreetAddress,
+    City,
+    State,
+    ZipCode,
+    StateCode,
+    EconomicAnalysisRegions,
+    ChiefAdministrator,
+    ChiefAdministratorTitle,
+    TelephoneNumber,
+    EmployerIdentificationNumber,
+    DunBradstreetNumbers,
+    PostsecondaryEducationIDNumber,
+    TitleIVEligibilityIndicatorCode,
+    SectorOfInstitution,
+    LevelOfInstitution,
+    ControlOfInstitution,
+    HighestLevelOfOffering,
+    UndergraduateOffering,
+    GraduateOffering,
+    HighestDegreeOffered,
+    DegreeGrantingStatus,
+    HistoricallyBlackCollegeOrUniversity,
+    InstitutionHasHospital,
+    InstitutionGrantsMedicalDegree,
+    TribalCollege,
+    DegreeOfUrbanization,
+    InstitutionOpenToGeneralPublic,
+    StatusOfInstitution,
+    UnitidForMergedSchools,
+    YearInstitutionWasDeletedFromIPEDS,
+    DateInstitutionClosed,
+    InstitutionIsActive,
+    PrimarilyPostsecondaryIndicator,
+    PostsecondaryInstitutionIndicator,
+    PostsecondaryAndTitleIvInstitutionIndicator,
+    ReportingMethodForStudentCharges,
+    InstitutionalCategory,
+    LandGrantInstitution,
+    InstitutionSizeCategory,
+    MultiCampusOrganization,
+    NameOfMultiCampusOrganization,
+    IdentificationNumberOfMultiCampusOrganization,
+    CoreBasedStatisticalArea,
+    CBSATypeMetropolitanMicropolitan,
+    CombinedStatisticalArea,
+    NewEnglandCityAndTownArea,
+    FIPSCountyCode,
+    CountyName,
+    StateAnd114thCongressionalDistrictID,
+    LongitudeLocation,
+    LatitudeLocation,
+    NCESGroupCategory,
+    DataFeedbackReport,
+    AcademicYear,
+        CarnegieClassification,
+        WebAddress,
+    RecordCreateDateTime)
+VALUES  (
+    S.InstitutionIdentifier,
+    S.InstitutionName,
+    S.InstitutionNameAlias,
+    S.StreetAddress,
+    S.City,
+    S.State,
+    S.ZipCode,
+    S.StateCode,
+    S.EconomicAnalysisRegions,
+    S.ChiefAdministrator,
+    S.ChiefAdministratorTitle,
+    S.TelephoneNumber,
+    S.EmployerIdentificationNumber,
+    S.DunBradstreetNumbers,
+    S.PostsecondaryEducationIDNumber,
+    S.TitleIVEligibilityIndicatorCode,
+    S.SectorOfInstitution,
+    S.LevelOfInstitution,
+    S.ControlOfInstitution,
+    S.HighestLevelOfOffering,
+    S.UndergraduateOffering,
+    S.GraduateOffering,
+    S.HighestDegreeOffered,
+    S.DegreeGrantingStatus,
+    S.HistoricallyBlackCollegeOrUniversity,
+    S.InstitutionHasHospital,
+    S.InstitutionGrantsMedicalDegree,
+    S.TribalCollege,
+    S.DegreeOfUrbanization,
+    S.InstitutionOpenToGeneralPublic,
+    S.StatusOfInstitution,
+    S.UnitidForMergedSchools,
+    S.YearInstitutionWasDeletedFromIPEDS,
+    S.DateInstitutionClosed,
+    S.InstitutionIsActive,
+    S.PrimarilyPostsecondaryIndicator,
+    S.PostsecondaryInstitutionIndicator,
+    S.PostsecondaryAndTitleIvInstitutionIndicator,
+    S.ReportingMethodForStudentCharges,
+    S.InstitutionalCategory,
+    S.LandGrantInstitution,
+    S.InstitutionSizeCategory,
+    S.MultiCampusOrganization,
+    S.NameOfMultiCampusOrganization,
+    S.IdentificationNumberOfMultiCampusOrganization,
+    S.CoreBasedStatisticalArea,
+    S.CBSATypeMetropolitanMicropolitan,
+    S.CombinedStatisticalArea,
+    S.NewEnglandCityAndTownArea,
+    S.FIPSCountyCode,
+    S.CountyName,
+    S.StateAnd114thCongressionalDistrictID,
+    S.LongitudeLocation,
+    S.LatitudeLocation,
+    S.NCESGroupCategory,
+    S.DataFeedbackReport,
+    S.AcademicYear,
+        OBJECT_CONSTRUCT (
+        &#39;AcademicInstitutionIdentifier&#39;,
+                S.InstitutionIdentifier,
+        &#39;CarnegieClassification2000&#39; ,
+                S.CarnegieClassification2000,
+        &#39;CarnegieClassification20052010Basic&#39; ,
+                S.CarnegieClassification20052010Basic,
+        &#39;CarnegieClassification2015Basic&#39; ,
+                S.CarnegieClassification2015Basic,
+        &#39;CarnegieClassification2015UndergraduateProgram&#39; ,
+                S.CarnegieClassification2015UndergraduateProgram,
+        &#39;CarnegieClassification2015GraduateProgram&#39; ,
+                S.CarnegieClassification2015GraduateProgram,
+        &#39;CarnegieClassification2015UndergraduateProfile&#39; ,
+                S.CarnegieClassification2015UndergraduateProfile,
+        &#39;CarnegieClassification2015EnrollmentProfile&#39; ,
+                S.CarnegieClassification2015EnrollmentProfile,
+        &#39;CarnegieClassification2015SizeSetting&#39; ,
+                S.CarnegieClassification2015SizeSetting ,
+        &#39;CarnegieClassification2018Basic&#39;,
+                S.CarnegieClassification2018Basic,
+        &#39;CarnegieClassification2018UndergraduateProgram&#39; ,
+                S.CarnegieClassification2018UndergraduateProgram,
+        &#39;CarnegieClassification2018GraduateProgram&#39;,
+                S.CarnegieClassification2018GraduateProgram,
+        &#39;CarnegieClassification2018UndergraduateProfile&#39; ,
+                S.CarnegieClassification2018UndergraduateProfile,
+        &#39;CarnegieClassification2018EnrollmentProfile&#39;,
+                S.CarnegieClassification2018EnrollmentProfile,
+        &#39;CarnegieClassification2018SizeSetting&#39; ,
+                S.CarnegieClassification2018SizeSetting
+                          ) ,
+        OBJECT_CONSTRUCT (
+
+        &#39;AcademicInstitutionIdentifier&#39;,
+                S.InstitutionIdentifier,
+        &#39;InstitutionsWebAddress&#39;,
+                S.InstitutionsWebAddress,
+        &#39;AdmissionsOfficeWebAddress&#39;,
+                S.AdmissionsOfficeWebAddress,
+        &#39;FinancialAidOfficeWebAddress&#39;,
+                S.FinancialAidOfficeWebAddress,
+        &#39;OnlineApplicationWebAddress&#39;,
+                S.OnlineApplicationWebAddress,
+        &#39;NetPriceCalculatorWebAddress&#39;,
+                S.NetPriceCalculatorWebAddress,
+        &#39;VeteransMilitaryServiceTuitionPoliciesWebAddress&#39;,
+                S.VeteransMilitaryServiceTuitionPoliciesWebAddress,
+        &#39;StudentRightAthleteGraduationRateWebAddress&#39;,
+                S.StudentRightAthleteGraduationRateWebAddress,
+        &#39;DisabilityServicesWebAddress&#39;,
+                S.DisabilityServicesWebAddress
+                       ),
+    CURRENT_TIMESTAMP
+        );
+`
+try {
+    snowflake.execute (
+      {sqlText: sql_command}
+      );
+    return &quot;Succeeded.&quot;;
+    }
+  catch (err) {
+    return &quot;Failed: &quot; + err;
+    }
+  $$
+  ;
+</pre></div>
+</div>
+</div>
+<p>We are able to ingest all the files from 2017 through 2019 with the above schema drift code changes.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">TRUNCATE</span> <span class="n">TABLE</span> <span class="n">od_AcademicInstitution</span><span class="p">;</span>
+    <span class="n">CALL</span> <span class="n">pr_od_AcademicInstitution_Load</span><span class="p">(</span><span class="mi">2017</span><span class="p">::</span><span class="n">FLOAT</span><span class="p">);</span>
+    <span class="n">CALL</span> <span class="n">pr_od_AcademicInstitution_Load</span><span class="p">(</span><span class="mi">2018</span><span class="p">::</span><span class="n">FLOAT</span><span class="p">);</span>
+    <span class="n">CALL</span> <span class="n">pr_od_AcademicInstitution_Load</span><span class="p">(</span><span class="mi">2019</span><span class="p">::</span><span class="n">FLOAT</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>We can process a dimension by calling the stored procedure as below.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>
+    <span class="n">CALL</span> <span class="n">pr_AcademicInstitution_Load</span><span class="p">(</span><span class="mi">2017</span><span class="p">::</span><span class="n">FLOAT</span><span class="p">);</span>
+    <span class="n">CALL</span> <span class="n">pr_AcademicInstitution_Load</span><span class="p">(</span><span class="mi">2018</span><span class="p">::</span><span class="n">FLOAT</span><span class="p">);</span>
+    <span class="n">CALL</span> <span class="n">pr_AcademicInstitution_Load</span><span class="p">(</span><span class="mi">2019</span><span class="p">::</span><span class="n">FLOAT</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="merge-using-hash-key">
+<h2>MERGE using hash key<a class="headerlink" href="#merge-using-hash-key" title="Permalink to this headline">¶</a></h2>
+<p>In the hash key stored procedure, we join the source and target tables using the business key <strong>InstitutionIdentifier</strong>.
+When a matching record is found, we then compare individual
+columns between the source and target tables using hash keys to find any column values changed in the source.
+Hash keys are created using hash functions. In a hash function, a plain text of arbitrary size is
+mapped to fixed-size values called hash keys or bytes. Hash functions use various hashing algorithms such as
+MD5, SHA1, and SHA2 for generating hash keys.</p>
+<p>We created a custom function called <strong>Hash_Key</strong> which accepts an array of text values.
+These values are concatenated using another function <strong>Concat_Columns</strong>, shown below, and return a string value,
+which is then passed to the hash function SHA1 to generate a hash key.</p>
+<div class="toggle docutils container">
+<div class="header docutils container">
+<p>Show/Hide Create function to concat AcademicInstitution column</p>
+</div>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>CREATE OR REPLACE FUNCTION
+    ConcatColumns(COLUMNLIST array)
+    RETURNS varchar
+    LANGUAGE javascript
+  AS
+  $$
+    function return_column_string(ColumnArray) {
+      var ColumnString = &#39;&#39;;
+      var arrayLength = ColumnArray.length;
+      for (var i = 0; i &lt; arrayLength; i++) {
+        if (i&gt;0) ColumnString += &#39;;&#39;
+        ColumnString += typeof(ColumnArray[i])
+                        == &#39;undefined&#39; ? &#39;&#39; : ColumnArray[i] ;
+      }
+      return ColumnString.toUpperCase().trim();
+    }
+  return return_column_string(COLUMNLIST);
+  $$
+;
+</pre></div>
+</div>
+</div>
+<p>Here are the scripts for creating the function <strong>Hash_Key</strong>.</p>
+<div class="toggle docutils container">
+<div class="header docutils container">
+<p>Show/Hide Create function to Hash data</p>
+</div>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>CREATE OR REPLACE FUNCTION
+    Hash_Key(SCDKeys array)
+    RETURNS VARCHAR(50)
+  as
+  $$
+    UPPER(SHA1(ConcatColumns(SCDKeys)))
+  $$
+;
+</pre></div>
+</div>
+</div>
+<p>The modified stored procedure is given below.</p>
+<div class="toggle docutils container">
+<div class="header docutils container">
+<p>Show/Hide Create AcademicInstitutionMergeHashByte load procedure</p>
+</div>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>CREATE OR REPLACE PROCEDURE
+                pr_AcademicInstitutionMergeHashByte_Load(YEAR FLOAT)
+  RETURNS STRING
+  LANGUAGE javascript
+  EXECUTE AS OWNER
+  AS
+  $$
+  var sql_command = `
+        MERGE INTO AcademicInstitution T USING (
+        SELECT  *  FROM  Od_AcademicInstitution
+        WHERE   ACADEMICYEAR = ` + YEAR.toString() +`
+        ) S ON T.InstitutionIdentifier = S.InstitutionIdentifier
+        WHEN MATCHED
+                AND ( HashKey(ARRAY_CONSTRUCT(
+        T.InstitutionName,
+        T.InstitutionNameAlias,
+        T.StreetAddress,
+        T.City,
+        T.State,
+        T.ZipCode,
+        T.StateCode,
+        T.EconomicAnalysisRegions,
+        T.ChiefAdministrator,
+        T.ChiefAdministratorTitle,
+        T.TelephoneNumber,
+        T.EmployerIdentificationNumber,
+        T.DunBradstreetNumbers,
+        T.PostsecondaryEducationIDNumber,
+        T.TitleIVEligibilityIndicatorCode,
+        T.SectorOfInstitution,
+        T.LevelOfInstitution,
+        T.ControlOfInstitution,
+        T.HighestLevelOfOffering,
+        T.UndergraduateOffering,
+        T.GraduateOffering,
+        T.HighestDegreeOffered,
+        T.DegreeGrantingStatus,
+        T.HistoricallyBlackCollegeOrUniversity,
+        T.InstitutionHasHospital,
+        T.InstitutionGrantsMedicalDegree,
+        T.TribalCollege,
+        T.DegreeOfUrbanization,
+        T.InstitutionOpenToGeneralPublic,
+        T.StatusOfInstitution,
+        T.UnitidForMergedSchools,
+        T.YearInstitutionWasDeletedFromIPEDS,
+        T.DateInstitutionClosed,
+        T.InstitutionIsActive,
+        T.PrimarilyPostsecondaryIndicator,
+        T.PostsecondaryInstitutionIndicator,
+        T.PostsecondaryAndTitleIvInstitutionIndicator,
+        T.ReportingMethodForStudentCharges,
+        T.InstitutionalCategory,
+        T.LandGrantInstitution,
+        T.InstitutionSizeCategory,
+        T.MultiCampusOrganization,
+        T.NameOfMultiCampusOrganization,
+        T.IdentificationNumberOfMultiCampusOrganization,
+        T.CoreBasedStatisticalArea,
+        T.CBSATypeMetropolitanMicropolitan,
+        T.CombinedStatisticalArea,
+        T.NewEnglandCityAndTownArea,
+        T.FIPSCountyCode,
+        T.CountyName,
+        T.StateAnd114thCongressionalDistrictID,
+        T.LongitudeLocation,
+        T.LatitudeLocation,
+        T.NCESGroupCategory,
+        T.DataFeedbackReport,
+        T.CarnegieClassification,
+        T.WebAddress)) &lt;&gt; HashKey(ARRAY_CONSTRUCT(
+                S.InstitutionName,
+                S.InstitutionNameAlias,
+                S.StreetAddress,
+                S.City,
+                S.State,
+                S.ZipCode,
+                S.StateCode,
+                S.EconomicAnalysisRegions,
+                S.ChiefAdministrator,
+                S.ChiefAdministratorTitle,
+                S.TelephoneNumber,
+                S.EmployerIdentificationNumber,
+                S.DunBradstreetNumbers,
+                S.PostsecondaryEducationIDNumber,
+                S.TitleIVEligibilityIndicatorCode,
+                S.SectorOfInstitution,
+                S.LevelOfInstitution,
+                S.ControlOfInstitution,
+                S.HighestLevelOfOffering,
+                S.UndergraduateOffering,
+                S.GraduateOffering,
+                S.HighestDegreeOffered,
+                S.DegreeGrantingStatus,
+                S.HistoricallyBlackCollegeOrUniversity,
+                S.InstitutionHasHospital,
+                S.InstitutionGrantsMedicalDegree,
+                S.TribalCollege,
+                S.DegreeOfUrbanization,
+                S.InstitutionOpenToGeneralPublic,
+                S.StatusOfInstitution,
+                S.UnitidForMergedSchools,
+                S.YearInstitutionWasDeletedFromIPEDS,
+                S.DateInstitutionClosed,
+                S.InstitutionIsActive,
+                S.PrimarilyPostsecondaryIndicator,
+                S.PostsecondaryInstitutionIndicator,
+                S.PostsecondaryAndTitleIvInstitutionIndicator,
+                S.ReportingMethodForStudentCharges,
+                S.InstitutionalCategory,
+                S.LandGrantInstitution,
+                S.InstitutionSizeCategory,
+                S.MultiCampusOrganization,
+                S.NameOfMultiCampusOrganization,
+                S.IdentificationNumberOfMultiCampusOrganization,
+                S.CoreBasedStatisticalArea,
+                S.CBSATypeMetropolitanMicropolitan,
+                S.CombinedStatisticalArea,
+                S.NewEnglandCityAndTownArea,
+                S.FIPSCountyCode,
+                S.CountyName,
+                S.StateAnd114thCongressionalDistrictID,
+                S.LongitudeLocation,
+                S.LatitudeLocation,
+                S.NCESGroupCategory,
+                S.DataFeedbackReport,
+        OBJECT_CONSTRUCT (
+        &#39;AcademicInstitutionIdentifier&#39;,
+                S.InstitutionIdentifier,
+        &#39;CarnegieClassification2000&#39; ,
+                S.CarnegieClassification2000,
+        &#39;CarnegieClassification20052010Basic&#39; ,
+                S.CarnegieClassification20052010Basic,
+        &#39;CarnegieClassification2015Basic&#39; ,
+                S.CarnegieClassification2015Basic,
+        &#39;CarnegieClassification2015UndergraduateProgram&#39; ,
+                S.CarnegieClassification2015UndergraduateProgram,
+        &#39;CarnegieClassification2015GraduateProgram&#39; ,
+                S.CarnegieClassification2015GraduateProgram,
+        &#39;CarnegieClassification2015UndergraduateProfile&#39; ,
+                S.CarnegieClassification2015UndergraduateProfile,
+        &#39;CarnegieClassification2015EnrollmentProfile&#39; ,
+                S.CarnegieClassification2015EnrollmentProfile,
+        &#39;CarnegieClassification2015SizeSetting&#39; ,
+                S.CarnegieClassification2015SizeSetting ,
+        &#39;CarnegieClassification2018Basic&#39;,
+                S.CarnegieClassification2018Basic,
+        &#39;CarnegieClassification2018UndergraduateProgram&#39; ,
+                S.CarnegieClassification2018UndergraduateProgram,
+        &#39;CarnegieClassification2018GraduateProgram&#39;,
+                S.CarnegieClassification2018GraduateProgram,
+        &#39;CarnegieClassification2018UndergraduateProfile&#39; ,
+                S.CarnegieClassification2018UndergraduateProfile,
+        &#39;CarnegieClassification2018EnrollmentProfile&#39;,
+                S.CarnegieClassification2018EnrollmentProfile,
+        &#39;CarnegieClassification2018SizeSetting&#39; ,
+                S.CarnegieClassification2018SizeSetting
+                                ) ,
+        OBJECT_CONSTRUCT (
+
+        &#39;AcademicInstitutionIdentifier&#39;,
+                S.InstitutionIdentifier,
+        &#39;InstitutionsWebAddress&#39;,
+                S.InstitutionsWebAddress,
+        &#39;AdmissionsOfficeWebAddress&#39;,
+                S.AdmissionsOfficeWebAddress,
+        &#39;FinancialAidOfficeWebAddress&#39;,
+                S.FinancialAidOfficeWebAddress,
+        &#39;OnlineApplicationWebAddress&#39;,
+                S.OnlineApplicationWebAddress,
+        &#39;NetPriceCalculatorWebAddress&#39;,
+                S.NetPriceCalculatorWebAddress,
+        &#39;VeteransMilitaryServiceTuitionPoliciesWebAddress&#39;,
+                S.VeteransMilitaryServiceTuitionPoliciesWebAddress,
+        &#39;StudentRightAthleteGraduationRateWebAddress&#39;,
+                S.StudentRightAthleteGraduationRateWebAddress,
+        &#39;DisabilityServicesWebAddress&#39;,
+                S.DisabilityServicesWebAddress
+
+                                )
+        ))) THEN
+UPDATE
+SET
+  InstitutionIdentifier = S.InstitutionIdentifier,
+  InstitutionName = S.InstitutionName,
+  InstitutionNameAlias = S.InstitutionNameAlias,
+  StreetAddress = S.StreetAddress,
+  City = S.City,
+  State = S.State,
+  ZipCode = S.ZipCode,
+  StateCode = S.StateCode,
+  EconomicAnalysisRegions = S.EconomicAnalysisRegions,
+  ChiefAdministrator = S.ChiefAdministrator,
+  ChiefAdministratorTitle = S.ChiefAdministratorTitle,
+  TelephoneNumber = S.TelephoneNumber,
+  EmployerIdentificationNumber = S.EmployerIdentificationNumber,
+  DunBradstreetNumbers = S.DunBradstreetNumbers,
+  PostsecondaryEducationIDNumber = S.PostsecondaryEducationIDNumber,
+  TitleIVEligibilityIndicatorCode = S.TitleIVEligibilityIndicatorCode,
+  SectorOfInstitution = S.SectorOfInstitution,
+  LevelOfInstitution = S.LevelOfInstitution,
+  ControlOfInstitution = S.ControlOfInstitution,
+  HighestLevelOfOffering = S.HighestLevelOfOffering,
+  UndergraduateOffering = S.UndergraduateOffering,
+  GraduateOffering = S.GraduateOffering,
+  HighestDegreeOffered = S.HighestDegreeOffered,
+  DegreeGrantingStatus = S.DegreeGrantingStatus,
+  HistoricallyBlackCollegeOrUniversity
+        = S.HistoricallyBlackCollegeOrUniversity,
+  InstitutionHasHospital = S.InstitutionHasHospital,
+  InstitutionGrantsMedicalDegree = S.InstitutionGrantsMedicalDegree,
+  TribalCollege = S.TribalCollege,
+  DegreeOfUrbanization = S.DegreeOfUrbanization,
+  InstitutionOpenToGeneralPublic
+        = S.InstitutionOpenToGeneralPublic,
+  StatusOfInstitution = S.StatusOfInstitution,
+  UnitidForMergedSchools = S.UnitidForMergedSchools,
+  YearInstitutionWasDeletedFromIPEDS
+        = S.YearInstitutionWasDeletedFromIPEDS,
+  DateInstitutionClosed = S.DateInstitutionClosed,
+  InstitutionIsActive = S.InstitutionIsActive,
+  PrimarilyPostsecondaryIndicator = S.PrimarilyPostsecondaryIndicator,
+  PostsecondaryInstitutionIndicator = S.PostsecondaryInstitutionIndicator,
+  PostsecondaryAndTitleIvInstitutionIndicator
+        = S.PostsecondaryAndTitleIvInstitutionIndicator,
+  ReportingMethodForStudentCharges = S.ReportingMethodForStudentCharges,
+  InstitutionalCategory = S.InstitutionalCategory,
+  LandGrantInstitution = S.LandGrantInstitution,
+  InstitutionSizeCategory = S.InstitutionSizeCategory,
+  MultiCampusOrganization = S.MultiCampusOrganization,
+  NameOfMultiCampusOrganization = S.NameOfMultiCampusOrganization,
+  IdentificationNumberOfMultiCampusOrganization
+        = S.IdentificationNumberOfMultiCampusOrganization,
+  CoreBasedStatisticalArea = S.CoreBasedStatisticalArea,
+  CBSATypeMetropolitanMicropolitan
+        = S.CBSATypeMetropolitanMicropolitan,
+  CombinedStatisticalArea = S.CombinedStatisticalArea,
+  NewEnglandCityAndTownArea = S.NewEnglandCityAndTownArea,
+  FIPSCountyCode = S.FIPSCountyCode,
+  CountyName = S.CountyName,
+  StateAnd114thCongressionalDistrictID
+        = S.StateAnd114thCongressionalDistrictID,
+  LongitudeLocation = S.LongitudeLocation,
+  LatitudeLocation = S.LatitudeLocation,
+  NCESGroupCategory = S.NCESGroupCategory,
+  DataFeedbackReport = S.DataFeedbackReport,
+  AcademicYear=S.AcademicYear,
+  CarnegieClassification =OBJECT_CONSTRUCT (
+  &#39;AcademicInstitutionIdentifier&#39;,
+                S.InstitutionIdentifier,
+        &#39;CarnegieClassification2000&#39; ,
+                S.CarnegieClassification2000,
+        &#39;CarnegieClassification20052010Basic&#39; ,
+                S.CarnegieClassification20052010Basic,
+        &#39;CarnegieClassification2015Basic&#39; ,
+                S.CarnegieClassification2015Basic,
+        &#39;CarnegieClassification2015UndergraduateProgram&#39; ,
+                S.CarnegieClassification2015UndergraduateProgram,
+        &#39;CarnegieClassification2015GraduateProgram&#39; ,
+                S.CarnegieClassification2015GraduateProgram,
+        &#39;CarnegieClassification2015UndergraduateProfile&#39; ,
+                S.CarnegieClassification2015UndergraduateProfile,
+        &#39;CarnegieClassification2015EnrollmentProfile&#39; ,
+                S.CarnegieClassification2015EnrollmentProfile,
+        &#39;CarnegieClassification2015SizeSetting&#39; ,
+                S.CarnegieClassification2015SizeSetting ,
+        &#39;CarnegieClassification2018Basic&#39;,
+                S.CarnegieClassification2018Basic,
+        &#39;CarnegieClassification2018UndergraduateProgram&#39; ,
+                S.CarnegieClassification2018UndergraduateProgram,
+        &#39;CarnegieClassification2018GraduateProgram&#39;,
+                S.CarnegieClassification2018GraduateProgram,
+        &#39;CarnegieClassification2018UndergraduateProfile&#39; ,
+                S.CarnegieClassification2018UndergraduateProfile,
+        &#39;CarnegieClassification2018EnrollmentProfile&#39;,
+                S.CarnegieClassification2018EnrollmentProfile,
+        &#39;CarnegieClassification2018SizeSetting&#39; ,
+                S.CarnegieClassification2018SizeSetting
+
+   ),
+        WebAddress=OBJECT_CONSTRUCT (
+
+        &#39;AcademicInstitutionIdentifier&#39;,
+                S.InstitutionIdentifier,
+        &#39;InstitutionsWebAddress&#39;,
+                S.InstitutionsWebAddress,
+        &#39;AdmissionsOfficeWebAddress&#39;,
+                S.AdmissionsOfficeWebAddress,
+        &#39;FinancialAidOfficeWebAddress&#39;,
+                S.FinancialAidOfficeWebAddress,
+        &#39;OnlineApplicationWebAddress&#39;,
+                S.OnlineApplicationWebAddress,
+        &#39;NetPriceCalculatorWebAddress&#39;,
+                S.NetPriceCalculatorWebAddress,
+        &#39;VeteransMilitaryServiceTuitionPoliciesWebAddress&#39;,
+                S.VeteransMilitaryServiceTuitionPoliciesWebAddress,
+        &#39;StudentRightAthleteGraduationRateWebAddress&#39;,
+                S.StudentRightAthleteGraduationRateWebAddress,
+        &#39;DisabilityServicesWebAddress&#39;,
+                S.DisabilityServicesWebAddress
+
+   ),
+  RecordUpdateDateTime = CURRENT_TIMESTAMP
+WHEN NOT MATCHED THEN
+        INSERT   (
+        InstitutionIdentifier,
+        InstitutionName,
+        InstitutionNameAlias,
+        StreetAddress,
+        City,
+        State,
+        ZipCode,
+        StateCode,
+        EconomicAnalysisRegions,
+        ChiefAdministrator,
+        ChiefAdministratorTitle,
+        TelephoneNumber,
+        EmployerIdentificationNumber,
+        DunBradstreetNumbers,
+        PostsecondaryEducationIDNumber,
+        TitleIVEligibilityIndicatorCode,
+        SectorOfInstitution,
+        LevelOfInstitution,
+        ControlOfInstitution,
+        HighestLevelOfOffering,
+        UndergraduateOffering,
+        GraduateOffering,
+        HighestDegreeOffered,
+        DegreeGrantingStatus,
+        HistoricallyBlackCollegeOrUniversity,
+        InstitutionHasHospital,
+        InstitutionGrantsMedicalDegree,
+        TribalCollege,
+        DegreeOfUrbanization,
+        InstitutionOpenToGeneralPublic,
+        StatusOfInstitution,
+        UnitidForMergedSchools,
+        YearInstitutionWasDeletedFromIPEDS,
+        DateInstitutionClosed,
+        InstitutionIsActive,
+        PrimarilyPostsecondaryIndicator,
+        PostsecondaryInstitutionIndicator,
+        PostsecondaryAndTitleIvInstitutionIndicator,
+        ReportingMethodForStudentCharges,
+        InstitutionalCategory,
+        LandGrantInstitution,
+        InstitutionSizeCategory,
+        MultiCampusOrganization,
+        NameOfMultiCampusOrganization,
+        IdentificationNumberOfMultiCampusOrganization,
+        CoreBasedStatisticalArea,
+        CBSATypeMetropolitanMicropolitan,
+        CombinedStatisticalArea,
+        NewEnglandCityAndTownArea,
+        FIPSCountyCode,
+        CountyName,
+        StateAnd114thCongressionalDistrictID,
+        LongitudeLocation,
+        LatitudeLocation,
+        NCESGroupCategory,
+        DataFeedbackReport,
+        AcademicYear,
+        CarnegieClassification,
+        WebAddress,
+        RecordCreateDateTime)
+VALUES  (
+        S.InstitutionIdentifier,
+        S.InstitutionName,
+        S.InstitutionNameAlias,
+        S.StreetAddress,
+        S.City,
+        S.State,
+        S.ZipCode,
+        S.StateCode,
+        S.EconomicAnalysisRegions,
+        S.ChiefAdministrator,
+        S.ChiefAdministratorTitle,
+        S.TelephoneNumber,
+        S.EmployerIdentificationNumber,
+        S.DunBradstreetNumbers,
+        S.PostsecondaryEducationIDNumber,
+        S.TitleIVEligibilityIndicatorCode,
+        S.SectorOfInstitution,
+        S.LevelOfInstitution,
+        S.ControlOfInstitution,
+        S.HighestLevelOfOffering,
+        S.UndergraduateOffering,
+        S.GraduateOffering,
+        S.HighestDegreeOffered,
+        S.DegreeGrantingStatus,
+        S.HistoricallyBlackCollegeOrUniversity,
+        S.InstitutionHasHospital,
+        S.InstitutionGrantsMedicalDegree,
+        S.TribalCollege,
+        S.DegreeOfUrbanization,
+        S.InstitutionOpenToGeneralPublic,
+        S.StatusOfInstitution,
+        S.UnitidForMergedSchools,
+        S.YearInstitutionWasDeletedFromIPEDS,
+        S.DateInstitutionClosed,
+        S.InstitutionIsActive,
+        S.PrimarilyPostsecondaryIndicator,
+        S.PostsecondaryInstitutionIndicator,
+        S.PostsecondaryAndTitleIvInstitutionIndicator,
+        S.ReportingMethodForStudentCharges,
+        S.InstitutionalCategory,
+        S.LandGrantInstitution,
+        S.InstitutionSizeCategory,
+        S.MultiCampusOrganization,
+        S.NameOfMultiCampusOrganization,
+        S.IdentificationNumberOfMultiCampusOrganization,
+        S.CoreBasedStatisticalArea,
+        S.CBSATypeMetropolitanMicropolitan,
+        S.CombinedStatisticalArea,
+        S.NewEnglandCityAndTownArea,
+        S.FIPSCountyCode,
+        S.CountyName,
+        S.StateAnd114thCongressionalDistrictID,
+        S.LongitudeLocation,
+        S.LatitudeLocation,
+        S.NCESGroupCategory,
+        S.DataFeedbackReport,
+        S.AcademicYear,
+        OBJECT_CONSTRUCT (
+
+    &#39;AcademicInstitutionIdentifier&#39;,
+                S.InstitutionIdentifier,
+        &#39;CarnegieClassification2000&#39; ,
+                S.CarnegieClassification2000,
+        &#39;CarnegieClassification20052010Basic&#39; ,
+                S.CarnegieClassification20052010Basic,
+        &#39;CarnegieClassification2015Basic&#39; ,
+                S.CarnegieClassification2015Basic,
+        &#39;CarnegieClassification2015UndergraduateProgram&#39; ,
+                S.CarnegieClassification2015UndergraduateProgram,
+        &#39;CarnegieClassification2015GraduateProgram&#39; ,
+                S.CarnegieClassification2015GraduateProgram,
+        &#39;CarnegieClassification2015UndergraduateProfile&#39; ,
+                S.CarnegieClassification2015UndergraduateProfile,
+        &#39;CarnegieClassification2015EnrollmentProfile&#39; ,
+                S.CarnegieClassification2015EnrollmentProfile,
+        &#39;CarnegieClassification2015SizeSetting&#39; ,
+                S.CarnegieClassification2015SizeSetting ,
+        &#39;CarnegieClassification2018Basic&#39;,
+                S.CarnegieClassification2018Basic,
+        &#39;CarnegieClassification2018UndergraduateProgram&#39; ,
+                S.CarnegieClassification2018UndergraduateProgram,
+        &#39;CarnegieClassification2018GraduateProgram&#39;,
+                S.CarnegieClassification2018GraduateProgram,
+        &#39;CarnegieClassification2018UndergraduateProfile&#39; ,
+                S.CarnegieClassification2018UndergraduateProfile,
+        &#39;CarnegieClassification2018EnrollmentProfile&#39;,
+                S.CarnegieClassification2018EnrollmentProfile,
+        &#39;CarnegieClassification2018SizeSetting&#39; ,
+                S.CarnegieClassification2018SizeSetting
+          ) ,
+        OBJECT_CONSTRUCT (
+        &#39;AcademicInstitutionIdentifier&#39;,
+                S.InstitutionIdentifier,
+        &#39;InstitutionsWebAddress&#39;,
+                S.InstitutionsWebAddress,
+        &#39;AdmissionsOfficeWebAddress&#39;,
+                S.AdmissionsOfficeWebAddress,
+        &#39;FinancialAidOfficeWebAddress&#39;,
+                S.FinancialAidOfficeWebAddress,
+        &#39;OnlineApplicationWebAddress&#39;,
+                S.OnlineApplicationWebAddress,
+        &#39;NetPriceCalculatorWebAddress&#39;,
+                S.NetPriceCalculatorWebAddress,
+        &#39;VeteransMilitaryServiceTuitionPoliciesWebAddress&#39;,
+                S.VeteransMilitaryServiceTuitionPoliciesWebAddress,
+        &#39;StudentRightAthleteGraduationRateWebAddress&#39;,
+                S.StudentRightAthleteGraduationRateWebAddress,
+        &#39;DisabilityServicesWebAddress&#39;,
+                S.DisabilityServicesWebAddress
+           ),
+        CURRENT_TIMESTAMP
+                );
+`
+try {
+    snowflake.execute (
+      {sqlText: sql_command}
+      );
+    return &quot;Succeeded.&quot;;  // Return a success/error indicator.
+    }
+  catch (err) {
+    return &quot;Failed: &quot; + err;  // Return a success/error indicator.
+    }
+  $$
+  ;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<p>In this chapter we travelled through the process of loading and processing academic institution files
+for the years 2017, 2018, and 2019. We created a staged file and a corresponding operational data table to store
+institution details by year. We discussed in detail about the views and stored procedures used to populate
+the dimension table using the Snowflake MERGE command. We also demonstrated how to group various
+columns in the staged file using the JSON string and VARIANT data types. Furthermore, we learned
+transformation logic to handle the schema drifts in the incoming data files.
+Finally, we demonstrated yet another approach to MERGE dimension table using hash keys.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Code is available to download at:</strong>
+<a class="reference external" href="https://github.com/versatiledp/ExperimentsSnowflake/tree/main/source/code/SQL/AcademicInstitution">ExperimentsSnowflake/tree/main/source/code/SQL/AcademicInstitution</a></p>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference external" href="./index.html">Table of Contents</a></p></td>
+<td><p><a class="reference external" href="./IntroducingDataplatform.html">Previous Chapter</a></p></td>
+<td><p><a class="reference external" href="./JSON_Ingestion.html">Next Chapter</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Snowflake Enriched</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="IntroducingSnowflake.html">Introducing Snowflake</a></li>
+<li class="toctree-l1"><a class="reference internal" href="IntroducingDataplatform.html">Introducing data platform</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">CSV ingestion</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#academic-institution">Academic institution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#od-table-for-academic-institution">OD table for academic institution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#snowflake-view-and-stored-procedure">Snowflake view and stored procedure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#managing-metadata-of-staged-file">Managing metadata of staged file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#stored-procedure-for-od-table-load">Stored procedure for OD table load</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#academic-institution-data-processing">Academic institution data processing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#carnegie-classification-transformation">Carnegie classification transformation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#web-address-transformation">Web address transformation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#load-dimension-table">Load dimension table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#schema-drift">Schema drift</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#merge-using-hash-key">MERGE using hash key</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#summary">Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="JSONIngestion.html">JSON ingestion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ORCIngestion.html">ORC ingestion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ParquetIngestion.html">Parquet ingestion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SemiStructuredDataIngestion.html">Semi-structured data Load</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PipelineOrchestration.html">Pipeline orchestration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BusinessInsights.html">Business insights</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Abberivations.html">Abberivations</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="IntroducingDataplatform.html" title="previous chapter">Introducing data platform</a></li>
+      <li>Next: <a href="JSONIngestion.html" title="next chapter">JSON ingestion</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+  </body>
+</html>

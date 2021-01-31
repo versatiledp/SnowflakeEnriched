@@ -1,0 +1,586 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Introducing data platform &#8212; Snowflake Enriched 9/28/2020 documentation</title>
+    <link rel="stylesheet" href="static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="static/my.css" type="text/css" />
+    <link rel="stylesheet" href="static/copybutton.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="static/documentation_options.js"></script>
+    <script src="static/jquery.js"></script>
+    <script src="static/underscore.js"></script>
+    <script src="static/doctools.js"></script>
+    <script src="static/language_data.js"></script>
+    <script src="static/clipboard.min.js"></script>
+    <script src="static/copybutton.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="CSV ingestion" href="CSVIngestion.html" />
+    <link rel="prev" title="Introducing Snowflake" href="IntroducingSnowflake.html" />
+   
+  <link rel="stylesheet" href="static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="introducing-data-platform">
+<h1>Introducing data platform<a class="headerlink" href="#introducing-data-platform" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="data-platform-overview">
+<h2>Data platform overview<a class="headerlink" href="#data-platform-overview" title="Permalink to this headline">¶</a></h2>
+<p>Modern data architecture allows enterprises to ingest data coming from
+multiple systems, in a variety of data formats, at different speeds, and at unknown
+intervals. Layered data platform design makes it easy to process big
+data efficiently. It enables organizations to quickly deploy new analytical
+business-driven solutions to drive revenue and
+profitability.</p>
+<p>There are four main pillars of modern data platform:</p>
+<ul class="simple">
+<li><p>Data source layer</p></li>
+<li><p>Data processing and storage layer</p></li>
+<li><p>Analytics layer</p></li>
+<li><p>Consumption layer</p></li>
+</ul>
+<div class="section" id="data-source-layer">
+<h3>Data source layer<a class="headerlink" href="#data-source-layer" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Data sources can be inside or outside the enterprise.</p></li>
+<li><p>Data sources generate data in real-time and in batch mode.</p></li>
+<li><p>The <strong>variety</strong> of data formats can be structured, semi-structured, or unstructured.</p></li>
+<li><p>The <strong>velocity</strong> (speed of arrival) and <strong>volume</strong> (delivery amount) will differ by sources.</p></li>
+</ul>
+</div>
+<div class="section" id="data-processing-and-storage-layer">
+<h3>Data processing and storage layer<a class="headerlink" href="#data-processing-and-storage-layer" title="Permalink to this headline">¶</a></h3>
+<p>The data processing layer receives data from the data sources, converts the data into a format
+comprehensible for the data servicing and analytics tool, and stores the
+data. For example, large amounts of data are
+stored in the Hadoop distributed file system store (HDFS). Large data
+processing is performed through Hadoop/Spark system. Data may
+undergo format changes as it is processed through these systems. Cloud
+service providers like Amazon, Google, and Microsoft allow a user to build and
+operate data-centric applications with an infinite scale. Robust and
+inexpensive storage is fundamental to the operation and scalability of
+big data architecture.</p>
+<p>BigQuery, Azure Synapse, Amazon Redshift, and Snowflake
+are used as standalone solutions for big data processing, or in
+combination with the Hadoop/Spark ecosystems.</p>
+</div>
+<div class="section" id="analytics-layer">
+<h3>Analytics layer<a class="headerlink" href="#analytics-layer" title="Permalink to this headline">¶</a></h3>
+<p>The Analytics layer reads the data ingested and transformed by the data
+processing and storage layer of big data ecosystem. This layer consists of a
+varieties of data analytic tools for different user requirements, and
+provides data discovery mechanisms from large volumes of
+data. Apache Spark SQL, Hive, Apache Spark Streaming, Apache Spark GraphX, machine learning
+libraries, SQL libraries, and a number of other tool
+sets are utilized in this layer to understand the underlying data landscape.</p>
+</div>
+<div class="section" id="consumption-layer">
+<h3>Consumption layer<a class="headerlink" href="#consumption-layer" title="Permalink to this headline">¶</a></h3>
+<p>The consumption layer is also called the business intelligence layer. This layer
+receives results from the Analytical layer and presents the results
+using visualization tools and
+business processes.</p>
+<p>The following diagram summarize layers in data management solution.</p>
+<div class="figure align-center">
+<img alt="images/DataPlatform.jpg" src="images/DataPlatform.jpg" />
+</div>
+</div>
+</div>
+<div class="section" id="project-data-source">
+<h2>Project data source<a class="headerlink" href="#project-data-source" title="Permalink to this headline">¶</a></h2>
+<p>The Institute of Education Sciences (IES) - <a class="reference external" href="https://ies.ed.gov/">https://ies.ed.gov/</a> - is the statistics, research, and evaluation arm of the U.S. Department
+of Education. It is an independent and non-partisan organization.
+The IES mission is to provide scientific evidence on which to ground education, practice, and policy,
+and to share this evidence in formats useful and accessible to educators,
+parents, policymakers, researchers, and the public.</p>
+<p>This book is designed to use data from the IES and build analytics engines in a manner beneficial to corporations.</p>
+<p>The Integrated Postsecondary Education Data System (IPEDS) - <a class="reference external" href="https://nces.ed.gov/ipeds/">https://nces.ed.gov/ipeds/</a> -
+is the primary source provided by the IES containing information on U.S. colleges, universities, technical institutions, and vocational institutions.</p>
+<p>In this project, we seek to:</p>
+<ul class="simple">
+<li><p>Ingest variety of data formats.</p></li>
+<li><p>Tranform data for business users.</p></li>
+<li><p>Build a data pipeline to process data on perodic basis.</p></li>
+<li><p>Create descriptive analytics for use-cases laid out by businesses.</p></li>
+</ul>
+<p>All of the data used in this book is downloaded from: <a class="reference external" href="https://nces.ed.gov/ipeds/use-the-data">https://nces.ed.gov/ipeds/use-the-data</a>.</p>
+<div class="figure align-center">
+<img alt="images/IPEDSScreenShot.png" src="images/IPEDSScreenShot.png" />
+</div>
+<p>Data is downloaded for the three academic years (2017, 2018, and 2019).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Disclaimer – We have modified this data to explore Snowflake functionality. Therefore, analytics results from this book
+should not be used as a replacement for the original data and its results.
+Please refer to the IES website for actual statistics and research on Academic Institutions.</p>
+</div>
+<p>For the project in this book, we will be using these four layers of data transformation.</p>
+<div class="section" id="staged-file">
+<h3>Staged file<a class="headerlink" href="#staged-file" title="Permalink to this headline">¶</a></h3>
+<p>All the data from the source system will be brought into the internal Staged file location of Snowflake.
+This data is directly from transactional systems or existing big data platforms,
+with no transformations applied.</p>
+</div>
+<div class="section" id="operational-datastore-od">
+<h3>Operational datastore (OD)<a class="headerlink" href="#operational-datastore-od" title="Permalink to this headline">¶</a></h3>
+<p>This is the first level of the physical table created in Snowflake, and consists of data
+that has undergone little to no transformation.
+The OD table structure very closely resembles that of the staged file with proper data types and column names, alongside
+additional columns to help track on data lineage.</p>
+</div>
+<div class="section" id="servicing-layer-entities">
+<h3>Servicing layer entities<a class="headerlink" href="#servicing-layer-entities" title="Permalink to this headline">¶</a></h3>
+<p>This layer consists of the last transformations performed on data, after which it is
+ready for consumption by the business intelligence layer. OD tables are used as an input source to populate the
+servicing layer tables.</p>
+</div>
+<div class="section" id="dataflow-summary">
+<h3>Dataflow summary<a class="headerlink" href="#dataflow-summary" title="Permalink to this headline">¶</a></h3>
+<p>Not all data from OD tables may land up in the servicing layer. Normally, business users like to use tools such as PowerBI and Tableau to
+perform raw queries on the dataset. The best place for business users to perform these analytics is the service layer.</p>
+<p>In data science, data attributes from the staged layer may be needed to build predictive analytics.
+Thus, access can be granted to OD tables and
+service layer entities.</p>
+<p>Data engineering consists of creating transformations, performing metadata management, and
+keeping track of data pipelines. So, access should be
+granted to all layers of the data platform.</p>
+<p>The diagram below shows the process of data flow between files and the staging table, all conducted by stored procedures.</p>
+<div class="figure align-center">
+<img alt="images/ingestionlayout.png" src="images/ingestionlayout.png" />
+</div>
+</div>
+</div>
+<div class="section" id="data-files">
+<h2>Data files<a class="headerlink" href="#data-files" title="Permalink to this headline">¶</a></h2>
+<p>The files used in this book are:</p>
+<div class="section" id="institutional-characteristics-files-hdr">
+<h3>Institutional characteristics files [HDR]<a class="headerlink" href="#institutional-characteristics-files-hdr" title="Permalink to this headline">¶</a></h3>
+<p>These files contain directory information for every institution in the IPEDS universe.
+They includes the name, address, city, state, zip code and various URL links to the institution’s home page,
+admissions and financial aid offices, and net price calculator.</p>
+</div>
+<div class="section" id="month-enrollment-effy">
+<h3>12-Month enrollment [EFFY]<a class="headerlink" href="#month-enrollment-effy" title="Permalink to this headline">¶</a></h3>
+<p>These files contain the unduplicated headcount of students enrolled over a
+12-month period for both undergraduate and graduate levels. Each record is
+uniquely defined by the variables IPEDS, ID, and the level of enrollment.</p>
+</div>
+<div class="section" id="admissions-and-test-scores-adm">
+<h3>Admissions and test scores [ADM]<a class="headerlink" href="#admissions-and-test-scores-adm" title="Permalink to this headline">¶</a></h3>
+<p>These files contain information about the undergraduate selection process
+for first-time, degree/certificate-seeking prospective students.</p>
+</div>
+<div class="section" id="student-charges-for-academic-year-programs-ic-ay">
+<h3>Student charges for academic year programs [IC*AY]<a class="headerlink" href="#student-charges-for-academic-year-programs-ic-ay" title="Permalink to this headline">¶</a></h3>
+<p>These files contain data on student charges for a full academic year. The price of attendance includes the
+published tuition and required fees, books and supplies, room and board, and other expenses.</p>
+</div>
+<div class="section" id="code-mapping-data">
+<h3>Code mapping data<a class="headerlink" href="#code-mapping-data" title="Permalink to this headline">¶</a></h3>
+<p>This semi-structured dataset has a special character delimeter. One file holds data for multiple destination tables, which are
+identified by the value of the first column in the file.</p>
+</div>
+</div>
+<div class="section" id="data-collection-notes">
+<h2>Data collection notes<a class="headerlink" href="#data-collection-notes" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="academic-institution">
+<h3>Academic institution<a class="headerlink" href="#academic-institution" title="Permalink to this headline">¶</a></h3>
+<p>These are CSV files.
+The institutional characteristics header files are directly ingested into
+Snowflake staging from the source system.
+ELT layer defines the schema for the CSV file with data types.
+The following diagram displays data flow between the source system and the Snowflake destionation.
+The OD layer is used to process data for the destination layer with additional transformations.</p>
+<div class="figure align-center">
+<img alt="images/csvIngestion.jpg" src="images/csvIngestion.jpg" />
+</div>
+</div>
+<div class="section" id="enrollment">
+<h3>Enrollment<a class="headerlink" href="#enrollment" title="Permalink to this headline">¶</a></h3>
+<p>EFFY files are converted to JSON format. JSON is a common open standard file and data interchange format that uses human-readable text to store and transmit data objects consisting of attribute–value pairs and array data types. This data format is used in a diverse range of applications and serves as a replacement for XML in AJAX systems.</p>
+<p>In our use-case, we are assuming enrollment (EFFY) files are ingested in the JSON format directly to Snowflake.
+ELT layer defines the mapped attributes for JSON with data types.
+The following diagram displays the data ingestion architecture for JSON files.
+The stage layer is used to process data for the destination layer with additional transformation.</p>
+<div class="figure align-center">
+<img alt="images/jsonIngestion.jpg" src="images/jsonIngestion.jpg" />
+</div>
+</div>
+<div class="section" id="institutional-charges">
+<h3>Institutional charges<a class="headerlink" href="#institutional-charges" title="Permalink to this headline">¶</a></h3>
+<p>IC*AY files are converted to ORC format. The Optimized Row Columnar (ORC) file format provides a highly efficient way to store Hive data. ORC files improve performance when Hive is reading, writing, and processing data. The compact nature of this format is ideal, and enables skipping over irrelevant parts without needing large, complex, or manually maintained indices.</p>
+<p>In our use case, we are assuming that Institutional Charge text files are ingested (ICAY files) in HDFS and processed through Hive. The output of the big data processing (ORC files) is loaded in Snowflake.
+The ELT layer defines the schema for ORC file with data types.
+The following diagram displays the data ingestion architecture for ORC format files.
+The stage layer is used to process data for the destination layer with additional transformations and normalization.</p>
+<div class="figure align-center">
+<img alt="images/orcIngestion.jpg" src="images/orcIngestion.jpg" />
+</div>
+</div>
+<div class="section" id="admission-data">
+<h3>Admission data<a class="headerlink" href="#admission-data" title="Permalink to this headline">¶</a></h3>
+<p>IC*AY files are converted to ORC format. The Optimized Row Columnar (ORC) file format provides a highly efficient way to store Hive data. ORC files improve performance when Hive is reading, writing, and processing data. The compact nature of this format is ideal, and enables skipping over irrelevant parts without needing large, complex, or manually maintained indices.</p>
+<p>The following diagram lays out the architecture from data source to Parquet ingestion.
+In our use case, we are assuming that the IPEDs admission data text (ADM) files are ingested in HDFS and processed through Spark.
+We then use the output of the spark processing (Parquet files) to process in Snowflake.
+The ELT layer defines the schema for Parquet file with data types. The following diagram displays mapping between
+the Parquet attribute and the stage layer. The stage layer is used to process data for the final destination layer with additional transformations.</p>
+<div class="figure align-center">
+<img alt="images/parquetIngestion.jpg" src="images/parquetIngestion.jpg" />
+</div>
+</div>
+<div class="section" id="reference-lookup-data">
+<h3>Reference/Lookup data<a class="headerlink" href="#reference-lookup-data" title="Permalink to this headline">¶</a></h3>
+<p>The code value lookup files are available in CSV format. These files are directly ingested into Snowflake staging from the source system.
+The ELT layer defines the schema for the CSV file with data types.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Utilities used to convert the original CSV files into different data formats are available to download at: <a class="reference external" href="https://github.com/versatiledp/ExperimentsSnowflake/tree/main/utilities">https://github.com/versatiledp/ExperimentsSnowflake/tree/main/utilities</a></p>
+<p>All the datafiles used throughout this book are available to download at: <a class="reference external" href="https://github.com/versatiledp/ExperimentsSnowflake/tree/main/data/input">https://github.com/versatiledp/ExperimentsSnowflake/tree/main/data/input</a></p>
+</div>
+<p>After downloading the files, copy them to the folder C:\Snowflake\data\input\.
+The files in this book are loaded from the local folder (like C:\Snowflake\data\input\*.*) to the Snowflake stage area using SnowSQL CLI.</p>
+<p>Data files are received in various formats like CSV, ORC, Parquet, and JSON. These files are available in the folders by year. They are brought into Snowflake staged files using the PUT command.
+Each staged file contains the entire data for that specific year. From these staged files, OD tables are populated.
+Using these OD tables, servicing layer tables of the data-warehouse are then populated. Snowflake’s stored procedures, views, and functions are used for ETL/ELT processes.</p>
+</div>
+</div>
+<div class="section" id="ingesting-snowflake-stage">
+<h2>Ingesting Snowflake stage<a class="headerlink" href="#ingesting-snowflake-stage" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="internal-stage-area-for-ipeds">
+<h3>Internal stage area for IPEDS<a class="headerlink" href="#internal-stage-area-for-ipeds" title="Permalink to this headline">¶</a></h3>
+<p>Internal named stage needs to be created for each of the file formats before loading data.</p>
+</div>
+<div class="section" id="create-internal-stage-area-ipeds">
+<h3>Create internal stage area IPEDS<a class="headerlink" href="#create-internal-stage-area-ipeds" title="Permalink to this headline">¶</a></h3>
+<p>First, create the file formats and stage area for the following data formats:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>tab delimited</p></li>
+<li><p>comma separated with no header</p></li>
+<li><p>comma separated with header</p></li>
+</ul>
+</div></blockquote>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">--</span> <span class="n">Number</span> <span class="n">of</span> <span class="n">header</span> <span class="n">lines</span> <span class="n">at</span> <span class="n">the</span> <span class="n">start</span> <span class="n">of</span> <span class="n">the</span> <span class="n">file</span><span class="o">.</span>
+<span class="o">--</span> <span class="n">The</span> <span class="n">COPY</span> <span class="n">command</span> <span class="n">skips</span> <span class="n">header</span> <span class="n">lines</span> <span class="n">when</span> <span class="n">loading</span> <span class="n">data</span>
+<span class="o">--</span> <span class="n">All</span> <span class="n">these</span> <span class="n">file</span> <span class="n">formats</span> <span class="n">can</span> <span class="n">be</span> <span class="n">used</span> <span class="n">to</span> <span class="n">create</span> <span class="n">different</span> <span class="n">stage</span> <span class="n">areas</span>
+<span class="n">CREATE</span> <span class="n">OR</span> <span class="n">REPLACE</span>  <span class="n">FILE</span> <span class="n">FORMAT</span>
+                <span class="n">ff_IPEDS_CSVSkipHeaderTabDelimited</span>
+                        <span class="n">TYPE</span> <span class="o">=</span>   <span class="n">CSV</span>
+                        <span class="n">FIELD_DELIMITER</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span>  <span class="n">COMPRESSION</span> <span class="o">=</span> <span class="n">AUTO</span>
+                        <span class="n">SKIP_HEADER</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="n">CREATE</span> <span class="n">OR</span> <span class="n">REPLACE</span>  <span class="n">FILE</span> <span class="n">FORMAT</span>
+                <span class="n">ff_IPEDS_CSVSkipHeaderCommaDelimited</span>
+                        <span class="n">TYPE</span> <span class="o">=</span>   <span class="n">CSV</span>
+                        <span class="n">FIELD_DELIMITER</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span>  <span class="n">COMPRESSION</span> <span class="o">=</span> <span class="n">AUTO</span>
+                        <span class="n">SKIP_HEADER</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="o">--</span> <span class="n">The</span> <span class="n">COPY</span> <span class="n">command</span> <span class="n">does</span> <span class="ow">not</span> <span class="n">skip</span> <span class="nb">any</span> <span class="n">lines</span><span class="o">.</span>
+<span class="n">CREATE</span> <span class="n">OR</span> <span class="n">REPLACE</span>  <span class="n">FILE</span> <span class="n">FORMAT</span>
+                <span class="n">ff_IPEDS_CSVHeaderTabDelimited</span>
+                        <span class="n">TYPE</span> <span class="o">=</span>   <span class="n">CSV</span>
+                        <span class="n">FIELD_DELIMITER</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span>  <span class="n">COMPRESSION</span> <span class="o">=</span> <span class="n">AUTO</span>
+                        <span class="n">SKIP_HEADER</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span>
+<span class="n">CREATE</span> <span class="n">OR</span> <span class="n">REPLACE</span>  <span class="n">FILE</span> <span class="n">FORMAT</span>
+                <span class="n">ff_IPEDS_CSVHeaderCommaDelimited</span>
+                        <span class="n">TYPE</span> <span class="o">=</span>   <span class="n">CSV</span>
+                        <span class="n">FIELD_DELIMITER</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span>  <span class="n">COMPRESSION</span> <span class="o">=</span> <span class="n">AUTO</span>
+                        <span class="n">SKIP_HEADER</span> <span class="o">=</span> <span class="mi">0</span> <span class="n">encoding</span> <span class="o">=</span> <span class="s1">&#39;iso-8859-1&#39;</span>
+                        <span class="n">FIELD_OPTIONALLY_ENCLOSED_BY</span><span class="o">=</span><span class="s1">&#39;&quot;&#39;</span><span class="p">;</span>
+<span class="o">--</span> <span class="n">create</span> <span class="n">satge</span> <span class="n">area</span> <span class="n">to</span> <span class="n">load</span> <span class="n">csv</span> <span class="n">files</span> <span class="k">for</span> <span class="n">the</span> <span class="n">project</span>
+<span class="n">CREATE</span> <span class="n">OR</span> <span class="n">REPLACE</span> <span class="n">STAGE</span> <span class="n">IPEDS_HD</span> <span class="n">FILE_FORMAT</span>
+                        <span class="o">=</span> <span class="n">ff_IPEDS_CSVHeaderCommaDelimited</span><span class="p">;</span>
+<span class="n">CREATE</span> <span class="n">OR</span> <span class="n">REPLACE</span> <span class="n">STAGE</span> <span class="n">IPEDS_CM</span> <span class="n">FILE_FORMAT</span>
+                        <span class="o">=</span> <span class="n">ff_IPEDS_CSVSkipHeaderTabDelimited</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>— Next, create the JSON file format and stage area.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">--</span> <span class="n">Create</span> <span class="n">file</span> <span class="nb">format</span> <span class="n">to</span> <span class="n">load</span> <span class="n">JSON</span> <span class="n">file</span>
+<span class="n">CREATE</span> <span class="n">OR</span> <span class="n">REPLACE</span> <span class="n">FILE</span> <span class="n">FORMAT</span> <span class="n">ff_IPEDS_Json</span>
+                <span class="n">TYPE</span> <span class="o">=</span><span class="n">JSON</span> <span class="n">TRIM_SPACE</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">;</span>
+<span class="o">--</span> <span class="n">Create</span> <span class="n">stage</span> <span class="n">area</span> <span class="n">to</span> <span class="n">load</span> <span class="n">JSON</span> <span class="n">file</span>
+<span class="n">CREATE</span> <span class="n">OR</span> <span class="n">REPLACE</span> <span class="n">stage</span> <span class="n">IPEDS_EFFY</span> <span class="n">FILE_FORMAT</span> <span class="o">=</span> <span class="n">ff_IPEDS_Json</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>— Then, create the ORC file format and stage area.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">--</span> <span class="n">Create</span> <span class="n">file</span> <span class="nb">format</span> <span class="n">to</span> <span class="n">load</span> <span class="n">ORC</span> <span class="n">file</span>
+<span class="n">CREATE</span> <span class="n">OR</span> <span class="n">REPLACE</span> <span class="n">FILE</span> <span class="n">FORMAT</span> <span class="n">ff_IPEDS_ORC</span>
+                        <span class="n">TYPE</span> <span class="o">=</span><span class="n">ORC</span> <span class="n">TRIM_SPACE</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">;</span>
+<span class="o">--</span> <span class="n">Create</span> <span class="n">stage</span> <span class="n">area</span> <span class="n">to</span> <span class="n">load</span> <span class="n">ORC</span> <span class="n">file</span>
+<span class="n">CREATE</span> <span class="n">OR</span> <span class="n">REPLACE</span> <span class="n">stage</span> <span class="n">IPEDS_IC</span> <span class="n">FILE_FORMAT</span> <span class="o">=</span> <span class="n">ff_IPEDS_ORC</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>— Finally, create the Parquet file format and stage area.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">--</span> <span class="n">Create</span> <span class="n">Parquet</span> <span class="n">file</span> <span class="nb">format</span>
+<span class="n">CREATE</span> <span class="n">OR</span> <span class="n">REPLACE</span>  <span class="n">FILE</span> <span class="n">FORMAT</span> <span class="n">ff_IPEDS_Parquet</span>
+                        <span class="n">TYPE</span> <span class="o">=</span><span class="n">PARQUET</span> <span class="n">TRIM_SPACE</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">;</span>
+<span class="o">--</span> <span class="n">Create</span> <span class="n">stage</span> <span class="n">area</span> <span class="n">to</span> <span class="n">load</span> <span class="n">Parquet</span> <span class="n">file</span>
+<span class="n">CREATE</span> <span class="n">OR</span> <span class="n">REPLACE</span> <span class="n">stage</span> <span class="n">IPEDS_ADM</span> <span class="n">FILE_FORMAT</span> <span class="o">=</span> <span class="n">ff_IPEDS_Parquet</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Once these formats and stage areas are created,
+we can validate their availability.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SHOW</span> <span class="n">STAGES</span> <span class="p">;</span>
+<span class="n">SHOW</span> <span class="n">STAGES</span> <span class="n">LIKE</span> <span class="s1">&#39;%IPED%&#39;</span><span class="p">;</span>
+</pre></div>
+</div>
+<div class="figure align-center">
+<img alt="images/stagefilelist.JPG" src="images/stagefilelist.JPG" />
+</div>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SHOW</span> <span class="n">FILE</span> <span class="n">FORMATS</span><span class="p">;</span>
+<span class="n">SHOW</span> <span class="n">FILE</span> <span class="n">FORMATS</span> <span class="n">LIKE</span> <span class="s1">&#39;%IPED%&#39;</span><span class="p">;</span>
+</pre></div>
+</div>
+<div class="figure align-center">
+<img alt="images/formats.JPG" src="images/formats.JPG" />
+</div>
+<p>At this point, we have created an internal named stage in the Snowflake to ingest CSV, Parquet, ORC, and JSON files.</p>
+<p>We will use the following stage area to load the raw files.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>IPEDS_ADM</p></li>
+<li><p>IPEDS_EFFY</p></li>
+<li><p>IPEDS_CM</p></li>
+<li><p>IPEDS_HD</p></li>
+<li><p>IPEDS_IC</p></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="load-the-files-to-internal-stage-for-ipeds">
+<h3>Load the files to internal stage for IPEDS<a class="headerlink" href="#load-the-files-to-internal-stage-for-ipeds" title="Permalink to this headline">¶</a></h3>
+<p>Connect to the Snowflake database using SnowSQL CLI and load the following files to the staging area.</p>
+<p>Load the CSV academic institution (HDR) files.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">put</span> <span class="n">file</span><span class="p">:</span><span class="o">//</span><span class="n">C</span><span class="p">:</span>\<span class="n">snowflake</span>\<span class="n">data</span>\<span class="nb">input</span>\<span class="n">HD2017</span><span class="o">.</span><span class="n">csv</span> <span class="nd">@IPEDS_HD</span><span class="p">;</span>
+<span class="n">put</span> <span class="n">file</span><span class="p">:</span><span class="o">//</span><span class="n">C</span><span class="p">:</span>\<span class="n">snowflake</span>\<span class="n">data</span>\<span class="nb">input</span>\<span class="n">HD2018</span><span class="o">.</span><span class="n">csv</span> <span class="nd">@IPEDS_HD</span><span class="p">;</span>
+<span class="n">put</span> <span class="n">file</span><span class="p">:</span><span class="o">//</span><span class="n">C</span><span class="p">:</span>\<span class="n">snowflake</span>\<span class="n">data</span>\<span class="nb">input</span>\<span class="n">HD2019</span><span class="o">.</span><span class="n">csv</span> <span class="nd">@IPEDS_HD</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Load the JSON enrollment (EFFY) files.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">put</span> <span class="n">file</span><span class="p">:</span><span class="o">//</span><span class="n">C</span><span class="p">:</span>\<span class="n">snowflake</span>\<span class="n">data</span>\<span class="nb">input</span>\<span class="n">effy2017_rv</span><span class="o">.</span><span class="n">json</span> <span class="nd">@IPEDS_EFFY</span><span class="p">;</span>
+<span class="n">put</span> <span class="n">file</span><span class="p">:</span><span class="o">//</span><span class="n">C</span><span class="p">:</span>\<span class="n">snowflake</span>\<span class="n">data</span>\<span class="nb">input</span>\<span class="n">effy2018_rv</span><span class="o">.</span><span class="n">json</span> <span class="nd">@IPEDS_EFFY</span><span class="p">;</span>
+<span class="n">put</span> <span class="n">file</span><span class="p">:</span><span class="o">//</span><span class="n">C</span><span class="p">:</span>\<span class="n">snowflake</span>\<span class="n">data</span>\<span class="nb">input</span>\<span class="n">effy2019_rv</span><span class="o">.</span><span class="n">json</span> <span class="nd">@IPEDS_EFFY</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Load the ORC institutional (IC) charges files.
+All the ORC partitions are loaded into a specific folder of ORC staging area.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">put</span> <span class="n">file</span><span class="p">:</span><span class="o">//</span><span class="n">C</span><span class="p">:</span>\<span class="n">snowflake</span>\<span class="n">data</span>\<span class="nb">input</span>\<span class="n">ic2017_ay_orc</span>\<span class="o">*.*</span> <span class="nd">@IPEDS_IC</span><span class="o">/</span><span class="mi">2017</span><span class="o">/</span><span class="p">;</span>
+<span class="n">put</span> <span class="n">file</span><span class="p">:</span><span class="o">//</span><span class="n">C</span><span class="p">:</span>\<span class="n">snowflake</span>\<span class="n">data</span>\<span class="nb">input</span>\<span class="n">ic2018_ay_orc</span>\<span class="o">*.*</span> <span class="nd">@IPEDS_IC</span><span class="o">/</span><span class="mi">2018</span><span class="o">/</span><span class="p">;</span>
+<span class="n">put</span> <span class="n">file</span><span class="p">:</span><span class="o">//</span><span class="n">C</span><span class="p">:</span>\<span class="n">snowflake</span>\<span class="n">data</span>\<span class="nb">input</span>\<span class="n">ic2019_ay_orc</span>\<span class="o">*.*</span> <span class="nd">@IPEDS_IC</span><span class="o">/</span><span class="mi">2019</span><span class="o">/</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Load the Parquet admission files.
+All the Parquet partitions are loaded into specific folder of Parquet staging area.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">put</span> <span class="n">file</span><span class="p">:</span><span class="o">//</span><span class="n">C</span><span class="p">:</span>\<span class="n">snowflake</span>\<span class="n">data</span>\<span class="nb">input</span>\<span class="n">adm2017</span><span class="o">.</span><span class="n">parquet</span>\<span class="o">*.*</span> <span class="nd">@IPEDS_ADM</span><span class="o">/</span><span class="mi">2017</span><span class="o">/</span><span class="p">;</span>
+<span class="n">put</span> <span class="n">file</span><span class="p">:</span><span class="o">//</span><span class="n">C</span><span class="p">:</span>\<span class="n">snowflake</span>\<span class="n">data</span>\<span class="nb">input</span>\<span class="n">adm2018</span><span class="o">.</span><span class="n">parquet</span>\<span class="o">*.*</span> <span class="nd">@IPEDS_ADM</span><span class="o">/</span><span class="mi">2018</span><span class="o">/</span><span class="p">;</span>
+<span class="n">put</span> <span class="n">file</span><span class="p">:</span><span class="o">//</span><span class="n">C</span><span class="p">:</span>\<span class="n">snowflake</span>\<span class="n">data</span>\<span class="nb">input</span>\<span class="n">adm2019</span><span class="o">.</span><span class="n">parquet</span>\<span class="o">*.*</span> <span class="nd">@IPEDS_ADM</span><span class="o">/</span><span class="mi">2019</span><span class="o">/</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Load the CSV code mapping files.</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">put</span> <span class="n">file</span><span class="p">:</span><span class="o">//</span><span class="n">C</span><span class="p">:</span>\<span class="n">snowflake</span>\<span class="n">data</span>\<span class="nb">input</span>\<span class="n">CodeMappingData</span><span class="o">.</span><span class="n">txt</span> <span class="nd">@IPEDS_CM</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Once these files are loaded to the stage area, we can check their availability in the internal stage area as follows:</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">list</span> <span class="nd">@IPEDS_HD</span><span class="p">;</span>
+</pre></div>
+</div>
+<div class="figure align-center">
+<img alt="images/csvlist.JPG" src="images/csvlist.JPG" />
+</div>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">list</span> <span class="nd">@IPEDS_EFFY</span><span class="p">;</span>
+</pre></div>
+</div>
+<div class="figure align-center">
+<img alt="images/jsonlist.JPG" src="images/jsonlist.JPG" />
+</div>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">list</span> <span class="nd">@IPEDS_IC</span><span class="p">;</span>
+</pre></div>
+</div>
+<div class="figure align-center">
+<img alt="images/stagedORC.JPG" src="images/stagedORC.JPG" />
+</div>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">list</span> <span class="nd">@IPEDS_ADM</span><span class="p">;</span>
+</pre></div>
+</div>
+<div class="figure align-center">
+<img alt="images/Parquetlist.JPG" src="images/Parquetlist.JPG" />
+</div>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">list</span> <span class="nd">@IPEDS_CM</span><span class="p">;</span>
+</pre></div>
+</div>
+<div class="figure align-center">
+<img alt="images/csvOther.JPG" src="images/csvOther.JPG" />
+</div>
+<p>All the files from the source system are ingested into the Snowflake staged area.
+If there are any issues in stage area, drop them using <strong>remove &#64;IPEDS_ADM</strong>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Code is available to download at:
+<a class="reference external" href="https://github.com/versatiledp/ExperimentsSnowflake/tree/main/source/code/SQL/StagedFile">ExperimentsSnowflake/tree/main/source/code/SQL/StagedFile</a></p>
+</div>
+</div>
+</div>
+<div class="section" id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<p>The data from the transactional source systems go through multiple data processing layers.
+This results in a variety of data formats being created.
+We then map these data files into the analytical metadata layer. This chapter
+summarized all the data formats we will be dealing with in the processing layer of the analytical data platform.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Mapping between the source system and Snowflake metadata is at:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference external" href="https://versatiledp.github.io/ExperimentsSnowflake/Mapping/AcademicInstitute.htm">ExperimentsSnowflake/Mapping/AcademicInstitute</a></p></li>
+<li><p><a class="reference external" href="https://versatiledp.github.io/ExperimentsSnowflake/Mapping/Enrollment.htm">ExperimentsSnowflake/Mapping/Enrollment</a></p></li>
+<li><p><a class="reference external" href="https://versatiledp.github.io/ExperimentsSnowflake/Mapping/InstitutionCharges.htm">ExperimentsSnowflake/Mapping/InstitutionCharges</a></p></li>
+<li><p><a class="reference external" href="https://versatiledp.github.io/ExperimentsSnowflake/Mapping/AdmissionStat.htm">ExperimentsSnowflake/Mapping/AdmissionStat</a></p></li>
+<li><p><a class="reference external" href="https://versatiledp.github.io/ExperimentsSnowflake/Mapping/CodeValue.htm">ExperimentsSnowflake/Mapping/CodeValue</a></p></li>
+</ul>
+</div></blockquote>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference external" href="./index.html">Table of Contents</a></p></td>
+<td><p><a class="reference external" href="./IntroducingSnowflake.html">Previous Chapter</a></p></td>
+<td><p><a class="reference external" href="./CSV_Ingestion.html">Next Chapter</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Snowflake Enriched</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="IntroducingSnowflake.html">Introducing Snowflake</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Introducing data platform</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#data-platform-overview">Data platform overview</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#data-source-layer">Data source layer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#data-processing-and-storage-layer">Data processing and storage layer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#analytics-layer">Analytics layer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#consumption-layer">Consumption layer</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#project-data-source">Project data source</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#staged-file">Staged file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#operational-datastore-od">Operational datastore (OD)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#servicing-layer-entities">Servicing layer entities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dataflow-summary">Dataflow summary</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#data-files">Data files</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#institutional-characteristics-files-hdr">Institutional characteristics files [HDR]</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#month-enrollment-effy">12-Month enrollment [EFFY]</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#admissions-and-test-scores-adm">Admissions and test scores [ADM]</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#student-charges-for-academic-year-programs-ic-ay">Student charges for academic year programs [IC*AY]</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#code-mapping-data">Code mapping data</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#data-collection-notes">Data collection notes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#academic-institution">Academic institution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#enrollment">Enrollment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#institutional-charges">Institutional charges</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#admission-data">Admission data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reference-lookup-data">Reference/Lookup data</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ingesting-snowflake-stage">Ingesting Snowflake stage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#internal-stage-area-for-ipeds">Internal stage area for IPEDS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create-internal-stage-area-ipeds">Create internal stage area IPEDS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#load-the-files-to-internal-stage-for-ipeds">Load the files to internal stage for IPEDS</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#summary">Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="CSVIngestion.html">CSV ingestion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="JSONIngestion.html">JSON ingestion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ORCIngestion.html">ORC ingestion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ParquetIngestion.html">Parquet ingestion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SemiStructuredDataIngestion.html">Semi-structured data Load</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PipelineOrchestration.html">Pipeline orchestration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BusinessInsights.html">Business insights</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Abberivations.html">Abberivations</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="IntroducingSnowflake.html" title="previous chapter">Introducing Snowflake</a></li>
+      <li>Next: <a href="CSVIngestion.html" title="next chapter">CSV ingestion</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+  </body>
+</html>

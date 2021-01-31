@@ -1,0 +1,264 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Enrollment segment by state &#8212; Snowflake Enriched 9/28/2020 documentation</title>
+    <link rel="stylesheet" href="static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="static/my.css" type="text/css" />
+    <link rel="stylesheet" href="static/copybutton.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="static/documentation_options.js"></script>
+    <script src="static/jquery.js"></script>
+    <script src="static/underscore.js"></script>
+    <script src="static/doctools.js"></script>
+    <script src="static/language_data.js"></script>
+    <script src="static/clipboard.min.js"></script>
+    <script src="static/copybutton.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="enrollment-segment-by-state">
+<h1>Enrollment segment by state<a class="headerlink" href="#enrollment-segment-by-state" title="Permalink to this headline">¶</a></h1>
+<p>In this visual, we are presenting state wise enrollments details for the segments as listed below:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Total men</p></li>
+<li><p>Total women</p></li>
+<li><p>White men</p></li>
+<li><p>White women</p></li>
+<li><p>Black/African american men</p></li>
+<li><p>Black/African american women</p></li>
+<li><p>Hispanic/Latino men</p></li>
+<li><p>Hispanic/Latino women</p></li>
+<li><p>Non resident alien men</p></li>
+<li><p>Non resident alien women</p></li>
+<li><p>Asian men</p></li>
+<li><p>Asian women</p></li>
+<li><p>American Indian &amp; Alaska native men</p></li>
+<li><p>American Indian &amp; Alaska native women</p></li>
+<li><p>Native Hawaiian men</p></li>
+<li><p>Native Hawaiian women</p></li>
+</ul>
+</div></blockquote>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">snowflake</span><span class="o">-</span><span class="n">connector</span><span class="o">-</span><span class="n">python</span><span class="o">==</span><span class="mf">2.3</span><span class="o">.</span><span class="mi">6</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get Snowflake credentials</span>
+<span class="kn">from</span> <span class="nn">getpass</span> <span class="kn">import</span> <span class="n">getpass</span>
+<span class="n">accountName</span> <span class="o">=</span> <span class="n">getpass</span><span class="p">(</span><span class="s1">&#39;Enter Snowflake account name&#39;</span><span class="p">)</span>
+<span class="n">userName</span> <span class="o">=</span> <span class="n">getpass</span><span class="p">(</span><span class="s1">&#39;Enter Snowflake user name:&#39;</span><span class="p">)</span>
+<span class="n">password</span> <span class="o">=</span> <span class="n">getpass</span><span class="p">(</span><span class="s1">&#39;Enter Snowflake password&#39;</span><span class="p">)</span>
+<span class="n">databaseName</span> <span class="o">=</span> <span class="s1">&#39;ipeds&#39;</span> <span class="c1">#@param {type:&quot;string&quot;}</span>
+<span class="n">sourceSchema</span> <span class="o">=</span> <span class="s2">&quot;Public&quot;</span> <span class="c1">#@param {type:&quot;string&quot;}</span>
+<span class="n">warehouseName</span> <span class="o">=</span> <span class="s2">&quot;COMPUTE_WH&quot;</span> <span class="c1">#@param {type:&quot;string&quot;}</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Enter Snowflake account name··········
+Enter Snowflake user name:··········
+Enter Snowflake password··········
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Connect to snowflake and execute the query</span>
+<span class="c1"># Create dataframe from dataset</span>
+<span class="c1"># Close all the open connection</span>
+
+<span class="kn">import</span> <span class="nn">snowflake.connector</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">ipywidgets</span> <span class="kn">import</span> <span class="n">interactive</span>
+
+<span class="kn">import</span> <span class="nn">ipywidgets</span> <span class="k">as</span> <span class="nn">widgets</span>
+
+<span class="c1">#get Snowflake version</span>
+<span class="n">ctx</span> <span class="o">=</span> <span class="n">snowflake</span><span class="o">.</span><span class="n">connector</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+    <span class="n">user</span><span class="o">=</span><span class="n">userName</span><span class="p">,</span>
+    <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">,</span>
+    <span class="n">account</span><span class="o">=</span><span class="n">accountName</span><span class="p">,</span>
+    <span class="n">database</span><span class="o">=</span><span class="n">databaseName</span><span class="p">,</span>
+    <span class="n">warehouse</span><span class="o">=</span><span class="n">warehouseName</span>
+<span class="p">)</span>
+<span class="n">cs</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+<span class="k">try</span><span class="p">:</span>
+  <span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">  SELECT</span>
+<span class="s2">    EN.AcademicYear</span>
+<span class="s2">    ,Inst.State</span>
+<span class="s2">    ,SUM(TOTALMEN) AS &quot;Total Men&quot;</span>
+<span class="s2">    ,SUM(TOTALWOMEN) AS &quot;Total Women&quot;</span>
+<span class="s2">    ,SUM(EN.WhiteMen) AS &quot;White Men&quot;</span>
+<span class="s2">    ,SUM(EN.WhiteWomen) AS &quot;White Women&quot;</span>
+<span class="s2">    ,SUM(EN.NonresidentAlienMen) AS &quot;Non resident alien Men&quot;</span>
+<span class="s2">    ,SUM(EN.NonresidentAlienWomen) AS &quot;Non resident alien Women&quot;</span>
+<span class="s2">    ,SUM(EN.AFRICANAMERICANMEN) AS &quot;Black/AfricanAmerican Men&quot;</span>
+<span class="s2">    ,SUM(EN.AFRICANAMERICANWOMEN) AS &quot;Black/AfricanAmerican Women&quot;</span>
+<span class="s2">    ,SUM(EN.HispanicOrLatinoMen) AS &quot;Hispanic Men&quot;</span>
+<span class="s2">    ,SUM(EN.HispanicOrLatinoWomen) AS &quot;Hispanic Women&quot;</span>
+<span class="s2">    ,SUM(EN.AsianMen) AS &quot;Asian Men&quot;</span>
+<span class="s2">    ,SUM(EN.AsianWomen) AS &quot;Asian Women&quot;</span>
+<span class="s2">    ,SUM(EN.AmericanIndianOrAlaskaNativeMen) AS &quot;American </span><span class="se">\</span>
+<span class="s2">          Indian /Alaska Native Men&quot;</span>
+<span class="s2">    ,SUM(EN.AmericanIndianOrAlaskaNativeWomen) AS &quot;American </span><span class="se">\</span>
+<span class="s2">          Indian /Alaska Native Women&quot;</span>
+<span class="s2">    ,SUM(EN.HAWAIIANPACIFICISLANDERMEN) AS &quot;Native Hawaiian Men&quot;</span>
+<span class="s2">    ,SUM(EN.HAWAIIANPACIFICISLANDERWOMEN)</span>
+<span class="s2">        AS &quot;Native Hawaiian Women&quot;</span>
+<span class="s2">  FROM ENROLLMENT EN</span>
+<span class="s2">  INNER JOIN ACADEMICINSTITUTION Inst</span>
+<span class="s2">    ON EN.INSTITUTIONIDENTIFIER = Inst.INSTITUTIONIDENTIFIER</span>
+<span class="s2">  WHERE Inst.DEGREEGRANTINGSTATUS = 1</span>
+<span class="s2">  AND Inst.State IN (&#39;TX&#39;,&#39;FL&#39;,&#39;CA&#39;,&#39;NY&#39;,&#39;PA&#39;,&#39;IL&#39;,&#39;OH&#39;,&#39;GA&#39;,&#39;NC&#39;</span><span class="se">\</span>
+<span class="s2">      ,&#39;MI&#39;,&#39;NJ&#39;,&#39;VA&#39;,&#39;WA&#39;,&#39;AZ&#39;,&#39;MA&#39;,&#39;TN&#39;,&#39;IN&#39;,&#39;MO&#39;,&#39;WI&#39;,&#39;MD&#39;)</span>
+<span class="s2">  GROUP BY EN.AcademicYear,Inst.State ;</span>
+<span class="s2"> &quot;&quot;&quot;</span>
+  <span class="n">cs</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+  <span class="n">records</span> <span class="o">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+  <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">cs</span><span class="o">.</span><span class="n">description</span><span class="p">]</span>
+  <span class="n">df1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">records</span><span class="p">,</span><span class="n">columns</span><span class="o">=</span><span class="n">names</span><span class="p">)</span>
+<span class="k">finally</span><span class="p">:</span>
+    <span class="n">cs</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">ctx</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Convert all the integer columns to float.</span>
+<span class="c1"># Float allows to use the formatting while printing dataframe</span>
+<span class="k">for</span> <span class="p">(</span><span class="n">columnName</span><span class="p">,</span> <span class="n">columnData</span><span class="p">)</span> <span class="ow">in</span> <span class="n">df1</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+   <span class="c1">#print(&#39;Colunm Name : &#39;, columnName)</span>
+   <span class="k">if</span> <span class="p">(</span><span class="n">columnName</span> <span class="o">!=</span> <span class="s1">&#39;ACADEMICYEAR&#39;</span> <span class="ow">and</span> <span class="n">columnName</span> <span class="o">!=</span> <span class="s1">&#39;STATE&#39;</span><span class="p">)</span> <span class="p">:</span>
+     <span class="n">df1</span><span class="p">[</span><span class="n">columnName</span><span class="p">]</span> <span class="o">=</span> <span class="n">df1</span><span class="p">[</span><span class="n">columnName</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Select the year for report</span>
+<span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">Year</span><span class="p">):</span>
+  <span class="k">return</span> <span class="n">Year</span>
+
+<span class="n">w</span> <span class="o">=</span> <span class="n">interactive</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">Year</span> <span class="o">=</span> <span class="n">df1</span><span class="o">.</span><span class="n">ACADEMICYEAR</span> <span class="o">.</span><span class="n">unique</span><span class="p">());</span>
+<span class="n">display</span><span class="p">(</span><span class="n">w</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Filter data for the year selected by user &amp; drop</span>
+<span class="c1"># the data column not used in reporting layer</span>
+<span class="n">dfFilter</span> <span class="o">=</span> <span class="n">df1</span><span class="p">[</span><span class="n">df1</span><span class="o">.</span><span class="n">ACADEMICYEAR</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">result</span><span class="p">)]</span>
+<span class="n">dfFilter</span><span class="o">=</span><span class="n">dfFilter</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;ACADEMICYEAR&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Transpose data from rows to column</span>
+<span class="c1"># The first row has column name , use the column names from first row</span>
+<span class="c1"># Create data frame, rename the first column</span>
+<span class="c1"># Sort the column 1 to n so state codes comes in desired order and print</span>
+
+<span class="n">dft</span><span class="o">=</span><span class="n">dfFilter</span><span class="o">.</span><span class="n">T</span>
+<span class="n">dft</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="n">dft</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="c1">#dft.reindex(columns=sorted(dft.iloc[1:]))</span>
+<span class="n">new_df</span>  <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">dft</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">columns</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+
+<span class="n">new_df</span> <span class="o">=</span> <span class="n">new_df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;STATE&quot;</span><span class="p">:</span><span class="s2">&quot;Segment&quot;</span><span class="p">})</span>
+
+<span class="n">new_columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">new_df</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+<span class="n">new_columns</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">new_df</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span>
+<span class="n">new_df</span> <span class="o">=</span> <span class="n">new_df</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">new_columns</span><span class="p">)</span>
+
+<span class="n">pd</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">float_format</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{:,.0f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">HTML</span>
+<span class="n">HTML</span><span class="p">(</span><span class="n">new_df</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Output:</p>
+<div class="figure align-center">
+<img alt="images/BusinessInsights01.JPG" src="images/BusinessInsights01.JPG" />
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Snowflake Enriched</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Table of Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="IntroducingSnowflake.html">Introducing Snowflake</a></li>
+<li class="toctree-l1"><a class="reference internal" href="IntroducingDataplatform.html">Introducing data platform</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CSVIngestion.html">CSV ingestion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="JSONIngestion.html">JSON ingestion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ORCIngestion.html">ORC ingestion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ParquetIngestion.html">Parquet ingestion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SemiStructuredDataIngestion.html">Semi-structured data Load</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PipelineOrchestration.html">Pipeline orchestration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BusinessInsights.html">Business insights</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Abberivations.html">Abberivations</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+  </body>
+</html>
