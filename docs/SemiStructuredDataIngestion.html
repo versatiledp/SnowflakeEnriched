@@ -41,8 +41,8 @@
 <h1>Semi-structured data Load<a class="headerlink" href="#semi-structured-data-load" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="lookup-entities">
 <h2>Lookup entities<a class="headerlink" href="#lookup-entities" title="Permalink to this headline">¶</a></h2>
-<p>Files generated at the source system contains code value pair records for multiple lookup tables.
-Sample data from the source system is shown in the  below table.</p>
+<p>Files generated at the source system contain code value pair records for multiple lookup tables.
+Sample data from the source system is shown in the table below.</p>
 <table class="colwidths-given docutils align-default" id="id1">
 <caption><span class="caption-text">Source system data layout</span><a class="headerlink" href="#id1" title="Permalink to this table">¶</a></caption>
 <colgroup>
@@ -76,21 +76,21 @@ Sample data from the source system is shown in the  below table.</p>
 </tbody>
 </table>
 <p>The first column helps to identify the target entity
-and the second column is actual data row for the target tables. Data for multiple columns is
+and the second column is the actual data row for target tables. Data for multiple columns is
 separated by an <strong>‘=’</strong> sign.</p>
 <p>In the above example, we are creating 2 lookup tables, one for StateAbbrevation and another for AccountStatus.
-The StateAbbrevation table should be loaded with two attributes.
+The StateAbbrevation table should be loaded with two attributes: code and description.
 The attribute values for the first row are <strong>‘AL’</strong> and
 <strong>‘Alabama’</strong>.
-Similarly AccountStatus should be loaded with the the values <strong>‘A’</strong> and <strong>‘Active - institution active’</strong></p>
+Similarly, AccountStatus should be loaded with the the values <strong>‘A’</strong> and <strong>‘Active - institution active’</strong>.</p>
 <p>Data is available for processing in the staged file <strong>&#64;IPEDS_CM</strong>.</p>
-<p>The following query are used to get rows from staged file.</p>
+<p>The following query is used to get rows from the staged file.</p>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>SELECT  t.$1 AS CodeName,
         t.$2  TableData
 FROM   @IPEDS_CM t
 </pre></div>
 </div>
-<p>We have added a mapping table <strong>CodeDestinationTable</strong> that provides destination table name for the code.</p>
+<p>We have added a mapping table <strong>CodeDestinationTable</strong> that provides the destination table name for the code.</p>
 <p>The following script will create and load the table called <strong>CodeDestinationTable</strong>.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
@@ -150,17 +150,17 @@ FROM   @IPEDS_CM t
 </pre></div>
 </div>
 </div>
-<p>The <strong>CodeDestination</strong> table is used to create the corresponding OD table, and
+<p>The <strong>CodeDestination</strong> table is used to create the corresponding OD table and
 service layer table. Furthermore, it is used for populating data dynamically from the staged file to the OD tables.</p>
-<p>We concatenated ‘<strong>od_</strong>’ to the table name column from the CodeDestination entity.
+<p>We concatenate ‘<strong>od_</strong>’ to the table name column from the CodeDestination entity.
 In the <strong>pr_od_CodeMapping_Load</strong> stored procedure,
 we check if the corresponding table exist in the Snowflake.
 If the table is there, it is truncated and the staged file data for
-that code is loaded into the specific OD table. If the table is missing, then a new table is added. The newly added table is used
+that code is loaded into the specific OD table. If the table is missing, then a new table is added and used
 to load data.</p>
-<p>The combination of <strong>CodeDestinationTable</strong> table and <strong>&#64;IPEDS_CM</strong> staged file is used to populate mulitple operational data stores.
-For example, when the code column content has value <strong>stabbr</strong> then destination table will be <strong>od_StateAbbreviation</strong>. The
-content of TableData column from <strong>&#64;IPEDS_CM</strong> where <strong>$1 = ‘StateAbbreviation’</strong>
+<p>The combination of the <strong>CodeDestinationTable</strong> table and <strong>&#64;IPEDS_CM</strong> staged file is used to populate multiple operational data stores.
+For example, when the code column content has value <strong>stabbr</strong>, then the destination table will be <strong>od_StateAbbreviation</strong>. The
+content of the TableData column from <strong>&#64;IPEDS_CM</strong>, where <strong>$1 = ‘StateAbbreviation’</strong>,
 will be used to populate <strong>od_StateAbbreviation</strong>.</p>
 <p>The following script outlines this process.</p>
 <div class="toggle docutils container">
@@ -235,7 +235,7 @@ $$;
 </pre></div>
 </div>
 </div>
-<p>On executing the above stored procedure, following tables are added and loaded with data from single staged file.</p>
+<p>On executing the above stored procedure, following tables are added and loaded with data from the single staged file.</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>od_InstitutionStatus</p></li>
@@ -260,7 +260,7 @@ $$;
 <div class="section" id="merge-data">
 <h2>Merge data<a class="headerlink" href="#merge-data" title="Permalink to this headline">¶</a></h2>
 <p>Once data is loaded into the operational data zone, we use a similar approach to merge data to the final servicing layer entities.
-We check existance of these entities dynamically, and missing entities are added. Data is merged from the OD to these entities using
+We check the existance of these entities dynamically, and missing entities are added. Data is merged from the OD to these entities using
 <strong>pr_CodeMapping_Load</strong>.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
@@ -320,9 +320,9 @@ $$;
 </div>
 <div class="section" id="summary">
 <h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
-<p>There is lot of flexibility built in Snowflake to manage variety of data needs. We learned, how to load data from the
-single file into the multiple entities with different set of attributes.
-With JavaScript based stored procedures, we can consume variety of data layout programmatically.</p>
+<p>There is significant flexibility built in Snowflake to manage a variety of data needs. We learned how to load data from a
+single file into multiple entities.
+With JavaScript based stored procedures, we can consume a variety of data record layouts programmatically.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Code available is to download at:

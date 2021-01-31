@@ -41,16 +41,15 @@
 <h1>Parquet ingestion<a class="headerlink" href="#parquet-ingestion" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="admission-statistics">
 <h2>Admission statistics<a class="headerlink" href="#admission-statistics" title="Permalink to this headline">¶</a></h2>
-<p>The admission statistics contain information about the number of applicants by various categories,
+<p>The admission statistics contain information about the number of applicants by various categories:
 admission test scores, SAT/ACT percentile scores and so on.
-These statistics are stored by institution and year.
-Admission statistics files are received in the Parquet format.</p>
+These statistics are stored in Parquet format.</p>
 <p>We will learn how to:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>Use ingested Parquet files from the staged Snowflake region.</p></li>
+<li><p>Ingest Parquet files from the staged Snowflake region.</p></li>
 <li><p>Transform data using the Snowflake JavaScript stored procedures.</p></li>
-<li><p>Call the stored procedures.</p></li>
+<li><p>Execute the stored procedures.</p></li>
 </ul>
 </div></blockquote>
 <p>The staged file for keeping track of institution admission statistics is <strong>&#64;IPEDS_ADM</strong>.
@@ -157,11 +156,11 @@ WHERE CAST(LEFT(METADATA$FileName,4) AS
 <div class="section" id="od-table-for-admission-statistics">
 <h2>OD table for admission statistics<a class="headerlink" href="#od-table-for-admission-statistics" title="Permalink to this headline">¶</a></h2>
 <p>To keep track of admission statistics by year,
-we have created an operational data table called <strong>od_AdmissionStat</strong>.
-We have added 3 additional columns AcademicYear, IngestedFileName, and RowNumber for this OD table as well.
+we create an operational data table called <strong>od_AdmissionStat</strong>.
+We add 3 additional columns- AcademicYear, IngestedFileName, and RowNumber.
 When processing the Parquet data, all the partitions from the staged location are used. The staged location metadata also contains
-part of the partition key. In our case the first 4 characters contains year in a YYYY format.</p>
-<p>Snowflake SQL script for creating this table is given below.</p>
+part of the partition key. In our case, the first 4 characters contain the year in a YYYY format.</p>
+<p>The Snowflake SQL script for creating this table is given below.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide Create OD AdmissionStat entity</p>
@@ -224,7 +223,7 @@ part of the partition key. In our case the first 4 characters contains year in a
 with admission statistics data for each year from the staged file.
 For that purpose, we’ve created a stored procedure called <strong>pr_od_AdmissionStat_Load</strong>.
 This stored procedure takes the YEAR parameter and retrieves the records from the staged file for that year.
-The parameter YEAR is compared against the first 4 characters of <strong>METADATA$FileName</strong> of the staging file
+The parameter YEAR is compared against the first 4 characters of <strong>METADATA$FileName</strong> in the staging file
 and retrieves records for that year.</p>
 <p>Here is the script for creating the stored procedure.</p>
 <div class="toggle docutils container">
@@ -357,15 +356,12 @@ $$
 <span class="n">CALL</span> <span class="n">pr_od_AdmissionStat_Load</span><span class="p">(</span><span class="mi">2019</span><span class="p">::</span><span class="n">FLOAT</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>In a production environment, we would process one file at a time all the way through the servicing layer.</p>
 </div>
 <div class="section" id="admission-statistics-servicing-layer">
 <h2>Admission statistics servicing layer<a class="headerlink" href="#admission-statistics-servicing-layer" title="Permalink to this headline">¶</a></h2>
-<p>Servicing layer tables or fact tables are mostly final layer tables
-in a data warehouse environment. These tables are directly consumed
-by the end users or visualization team. We have created a fact table for
-admission statistics called <strong>AdmissionStat</strong>. This table has links to the
-dimension table <strong>AcademicInstitution</strong> using a star schema in
+<p>We create a fact table for
+admission statistics called <strong>AdmissionStat</strong>, which has links to the
+dimension table <strong>AcademicInstitution</strong>. The relationship represents the star schema of
 dimensional modelling architecture. This is made possible by
 adding the surrogate key column (<strong>AcademicInstitutionUniqueDWSID</strong>)
 of the dimension table AcademicInstitution to the fact table AdmissionStat.</p>
@@ -432,16 +428,15 @@ of the dimension table AcademicInstitution to the fact table AdmissionStat.</p>
 <h2>Admission statistics load data<a class="headerlink" href="#admission-statistics-load-data" title="Permalink to this headline">¶</a></h2>
 <p>The service layer/fact table <strong>AdmissionStat</strong> is loaded from the OD table <strong>od_AdmissionStat</strong> by year.
 Every time this fact table is updated, it’s loaded with the latest data for that year.
-We need to take enough precautions to ensure the quality of data being loaded in the ETL process.
-Therefore, we have to delete old data loaded for that year and new data is loaded from the OD table.
-We’ve created a stored procedure <strong>pr_AdmissionStat_Load</strong> using the Snowflake. Inside the JavaScript,
-we have used 2 variables, <strong>sql_DelCommand</strong> and <strong>sql_Command</strong>.
+Therefore, old data loaded for that year is deleted and new data is loaded from the OD table.
+We create a Javascript stored procedure <strong>pr_AdmissionStat_Load</strong>, in which
+we use 2 variables, <strong>sql_DelCommand</strong> and <strong>sql_Command</strong>.
 The variable sql_DelCommand contains the SQL commands to delete the records from the fact table for the year passed to the stored procedure.
 The other variable sql_Command contains the main logic for updating the fact table for that year.</p>
-<p>We’ve used a <strong>LEFT OUTER JOIN</strong> with AcademicInstitution on InstitutionIdentifier to get the matching
+<p>We’ve used a <strong>LEFT OUTER JOIN</strong> with <strong>AcademicInstitution</strong> on <strong>InstitutionIdentifier</strong> to get the matching
 surrogate key from the dimension table AcademicInstitution.
-In any case, if we couldn’t find the matching record, we are updating the AcademicInstitutionUniqueDWSID in the fact table with -1.
-To achieve this, we have used Snowflake <strong>IFNULL</strong> command as <strong>IFNULL(D.AcademicInstitutionUniqueDWSID, - 1)</strong></p>
+If we don’t find the matching record, we assign -1 to the corresponding entry of <strong>AcademicInstitutionUniqueDWSID</strong> in the fact table.
+To achieve this, we use the <strong>IFNULL</strong> command as <strong>IFNULL(D.AcademicInstitutionUniqueDWSID, - 1)</strong></p>
 <p>Here is the Snowflake stored procedure for processing the AdmissionStat table.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
@@ -573,7 +568,7 @@ $$;
 </pre></div>
 </div>
 </div>
-<p>Here is code to load historical data for Admission stat table.</p>
+<p>This code snippet loads historical data for the admission stat table.</p>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CALL</span> <span class="n">pr_AdmissionStat_Load</span><span class="p">(</span><span class="mi">2017</span><span class="p">::</span><span class="n">FLOAT</span><span class="p">);</span>
 <span class="n">CALL</span> <span class="n">pr_AdmissionStat_Load</span><span class="p">(</span><span class="mi">2018</span><span class="p">::</span><span class="n">FLOAT</span><span class="p">);</span>
 <span class="n">CALL</span> <span class="n">pr_AdmissionStat_Load</span><span class="p">(</span><span class="mi">2019</span><span class="p">::</span><span class="n">FLOAT</span><span class="p">);</span>
@@ -582,12 +577,10 @@ $$;
 </div>
 <div class="section" id="summary">
 <h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
-<p>In this chapter, we have gone through the data load process for the Parquet files in Snowflake.
-Data processing architecture for the Parquet file format, reamins very similar to CSV and
-Snowflake makes it easy to consume this data.  The admission
-statistics table is used by various institutions.
-We loaded 3 years of admission statistics in the stage file. From the
-staged file, we created and loaded the OD table and later the fact table for the servicing layer.</p>
+<p>In this chapter, we went through the data loading process for Parquet files in Snowflake.
+This data processing architecture is similar to that of CSV files, and is made easily consumable
+by Snowflake. We loaded 3 years of admission statistics in the stage file, from which
+we created and loaded the OD table, and later the fact table, for the servicing layer.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Code is available to download at:
