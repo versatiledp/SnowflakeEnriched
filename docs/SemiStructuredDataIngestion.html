@@ -94,7 +94,7 @@ FROM   @IPEDS_CM t
 <p>The following script will create and load the table called <strong>CodeDestinationTable</strong>.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
-<p>Show/Hide Create CodeDestination entity and load data</p>
+<p>Show/Hide script for: Create CodeDestination entity and load data</p>
 </div>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CREATE</span> <span class="n">TABLE</span> <span class="n">CodeDestinationTable</span>
 <span class="p">(</span>
@@ -165,7 +165,7 @@ will be used to populate <strong>od_StateAbbreviation</strong>.</p>
 <p>The following script outlines this process.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
-<p>Show/Hide Create OD CodeDestination load stored procedure</p>
+<p>Show/Hide script for: Create OD CodeDestination load stored procedure</p>
 </div>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>CREATE OR REPLACE PROCEDURE pr_od_CodeMapping_Load()
 RETURNS STRING
@@ -264,7 +264,7 @@ We check the existance of these entities dynamically, and missing entities are a
 <strong>pr_CodeMapping_Load</strong>.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
-<p>Show/Hide Create CodeDestination load stored procedure</p>
+<p>Show/Hide script for: Create CodeMapping load stored procedure</p>
 </div>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>DROP PROCEDURE IF EXISTS pr_CodeMapping_Load();
 
@@ -320,9 +320,11 @@ $$;
 </div>
 <div class="section" id="summary">
 <h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
-<p>There is significant flexibility built in Snowflake to manage a variety of data needs. We learned how to load data from a
+<p>There is significant flexibility built in Snowflake to manage a variety of data needs.
+We learned how to load data from a
 single file into multiple entities.
-With JavaScript based stored procedures, we can consume a variety of data record layouts programmatically.</p>
+With JavaScript based stored procedures, we can consume a variety of data record layouts programmatically.
+We have demonstrated how various lookup tables can be created dynamically using a mapping table.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Code available is to download at:
@@ -361,7 +363,7 @@ With JavaScript based stored procedures, we can consume a variety of data record
 
 
 
-<p class="caption"><span class="caption-text">Table of Contents</span></p>
+<p class="caption"></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="Introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="IntroducingSnowflake.html">Introducing Snowflake</a></li>
@@ -379,7 +381,7 @@ With JavaScript based stored procedures, we can consume a variety of data record
 <li class="toctree-l1"><a class="reference internal" href="PipelineOrchestration.html">Pipeline orchestration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="BusinessInsights.html">Business insights</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Abberivations.html">Abberivations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Abbreviations.html">Abberivations</a></li>
 </ul>
 
 <div class="relations">

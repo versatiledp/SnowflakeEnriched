@@ -58,7 +58,7 @@ This is because data files used here are in the Parquet format.
 We can retrieve the details of a particular year as below.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
-<p>Show/Hide Select staged Parquet dataset</p>
+<p>Show/Hide script for: Select staged Parquet dataset</p>
 </div>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>SELECT
 $1:UNITID::INTEGER AS
@@ -157,13 +157,13 @@ WHERE CAST(LEFT(METADATA$FileName,4) AS
 <h2>OD table for admission statistics<a class="headerlink" href="#od-table-for-admission-statistics" title="Permalink to this headline">¶</a></h2>
 <p>To keep track of admission statistics by year,
 we create an operational data table called <strong>od_AdmissionStat</strong>.
-We add 3 additional columns- AcademicYear, IngestedFileName, and RowNumber.
+We add 3 additional columns named AcademicYear, IngestedFileName, and RowNumber.
 When processing the Parquet data, all the partitions from the staged location are used. The staged location metadata also contains
 part of the partition key. In our case, the first 4 characters contain the year in a YYYY format.</p>
 <p>The Snowflake SQL script for creating this table is given below.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
-<p>Show/Hide Create OD AdmissionStat entity</p>
+<p>Show/Hide script for: Create OD AdmissionStat entity</p>
 </div>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CREATE</span> <span class="n">OR</span> <span class="n">REPLACE</span> <span class="n">TABLE</span> <span class="n">od_AdmissionStat</span> <span class="p">(</span>
 <span class="n">InstitutionIdentifier</span> <span class="n">STRING</span><span class="p">,</span>
@@ -228,7 +228,7 @@ and retrieves records for that year.</p>
 <p>Here is the script for creating the stored procedure.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
-<p>Show/Hide Create OD AdmissionStat load stored procedure</p>
+<p>Show/Hide script for: Create OD AdmissionStat load stored procedure</p>
 </div>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>CREATE OR REPLACE PROCEDURE pr_od_AdmissionStat_Load(YEAR FLOAT)
 RETURNS STRING
@@ -368,7 +368,7 @@ of the dimension table AcademicInstitution to the fact table AdmissionStat.</p>
 <p>Here is the script for creating the table AdmissionStat in Snowflake.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
-<p>Show/Hide Create AdmissionStat entity</p>
+<p>Show/Hide script for: Create AdmissionStat entity</p>
 </div>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">DROP</span> <span class="n">TABLE</span> <span class="n">IF</span> <span class="n">EXISTS</span> <span class="n">AdmissionStat</span><span class="p">;</span>
 
@@ -429,7 +429,7 @@ of the dimension table AcademicInstitution to the fact table AdmissionStat.</p>
 <p>The service layer/fact table <strong>AdmissionStat</strong> is loaded from the OD table <strong>od_AdmissionStat</strong> by year.
 Every time this fact table is updated, it’s loaded with the latest data for that year.
 Therefore, old data loaded for that year is deleted and new data is loaded from the OD table.
-We create a Javascript stored procedure <strong>pr_AdmissionStat_Load</strong>, in which
+We create a Javascript based stored procedure <strong>pr_AdmissionStat_Load</strong>, in which
 we use 2 variables, <strong>sql_DelCommand</strong> and <strong>sql_Command</strong>.
 The variable sql_DelCommand contains the SQL commands to delete the records from the fact table for the year passed to the stored procedure.
 The other variable sql_Command contains the main logic for updating the fact table for that year.</p>
@@ -440,7 +440,7 @@ To achieve this, we use the <strong>IFNULL</strong> command as <strong>IFNULL(D.
 <p>Here is the Snowflake stored procedure for processing the AdmissionStat table.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
-<p>Show/Hide Create AdmissionStat entity</p>
+<p>Show/Hide script for: Create AdmissionStat entity</p>
 </div>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>CREATE OR REPLACE PROCEDURE
         pr_AdmissionStat_Load (YEAR FLOAT)
@@ -619,7 +619,7 @@ we created and loaded the OD table, and later the fact table, for the servicing 
 
 
 
-<p class="caption"><span class="caption-text">Table of Contents</span></p>
+<p class="caption"></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="Introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="IntroducingSnowflake.html">Introducing Snowflake</a></li>
@@ -640,7 +640,7 @@ we created and loaded the OD table, and later the fact table, for the servicing 
 <li class="toctree-l1"><a class="reference internal" href="PipelineOrchestration.html">Pipeline orchestration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="BusinessInsights.html">Business insights</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Abberivations.html">Abberivations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Abbreviations.html">Abberivations</a></li>
 </ul>
 
 <div class="relations">

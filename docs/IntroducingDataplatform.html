@@ -118,14 +118,14 @@ is the primary source provided by the IES containing information on U.S. college
 <li><p>Build a data pipeline to process data on perodic basis.</p></li>
 <li><p>Create descriptive analytics for use-cases laid out by businesses.</p></li>
 </ul>
-<p>All of the data used in this book is downloaded from: <a class="reference external" href="https://nces.ed.gov/ipeds/use-the-data">https://nces.ed.gov/ipeds/use-the-data</a>.</p>
+<p>All of the data used in this book is downloaded from: <a class="reference external" href="https://nces.ed.gov/ipeds/use-the-data"   target="_blank">https://nces.ed.gov/ipeds/use-the-data</a>.</p>
 <div class="figure align-center">
 <img alt="images/IPEDSScreenShot.png" src="images/IPEDSScreenShot.png" />
 </div>
 <p>Data is downloaded for the three academic years (2017, 2018, and 2019).</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Disclaimer – We have modified this data to explore Snowflake functionality. Therefore, analytics results from this book
+<p>Disclaimer: We have modified this data to explore Snowflake functionality. Therefore, analytics results from this book
 should not be used as a replacement for the original data and its results.
 Please refer to the IES website for actual statistics and research on Academic Institutions.</p>
 </div>
@@ -212,7 +212,7 @@ The OD layer is used to process data for the destination layer with additional t
 </div>
 <div class="section" id="enrollment">
 <h3>Enrollment<a class="headerlink" href="#enrollment" title="Permalink to this headline">¶</a></h3>
-<p>EFFY files are converted to JSON format. JSON is a common open standard file and data interchange format that uses human-readable text to store and transmit data objects consisting of attribute–value pairs and array data types. This data format is used in a diverse range of applications and serves as a replacement for XML in AJAX systems.</p>
+<p>EFFY files are converted to JSON format. JSON is a common open standard file and data interchange format that uses human-readable text to store and transmit data objects consisting of attribute value pairs and array data types. This data format is used in a diverse range of applications and serves as a replacement for XML in AJAX systems.</p>
 <p>In our use-case, we are assuming enrollment (EFFY) files are ingested in the JSON format directly to Snowflake.
 ELT layer defines the mapped attributes for JSON with data types.
 The following diagram displays the data ingestion architecture for JSON files.
@@ -224,7 +224,7 @@ The stage layer is used to process data for the destination layer with additiona
 <div class="section" id="institutional-charges">
 <h3>Institutional charges<a class="headerlink" href="#institutional-charges" title="Permalink to this headline">¶</a></h3>
 <p>IC*AY files are converted to ORC format. The Optimized Row Columnar (ORC) file format provides a highly efficient way to store Hive data. ORC files improve performance when Hive is reading, writing, and processing data. The compact nature of this format is ideal, and enables skipping over irrelevant parts without needing large, complex, or manually maintained indices.</p>
-<p>In our use case, we are assuming that Institutional Charge text files are ingested (ICAY files) in HDFS and processed through Hive. The output of the big data processing (ORC files) is loaded in Snowflake.
+<p>In our use case, we are assuming that institutional charge text files are ingested (ICAY files) in HDFS and processed through Hive. The output of the big data processing (ORC files) is loaded in Snowflake.
 The ELT layer defines the schema for ORC file with data types.
 The following diagram displays the data ingestion architecture for ORC format files.
 The stage layer is used to process data for the destination layer with additional transformations and normalization.</p>
@@ -234,7 +234,11 @@ The stage layer is used to process data for the destination layer with additiona
 </div>
 <div class="section" id="admission-data">
 <h3>Admission data<a class="headerlink" href="#admission-data" title="Permalink to this headline">¶</a></h3>
-<p>IC*AY files are converted to ORC format. The Optimized Row Columnar (ORC) file format provides a highly efficient way to store Hive data. ORC files improve performance when Hive is reading, writing, and processing data. The compact nature of this format is ideal, and enables skipping over irrelevant parts without needing large, complex, or manually maintained indices.</p>
+<p>Admission data [ADM] files are available in the Parquet data format.
+Parquet, an open-source file format for Hadoop stores nested data structures in a flat columnar format.
+Compared to a traditional approach where data is stored in a row-oriented approach, Parquet is more efficient
+in terms of storage and performance. It is especially useful for queries that read specific columns
+from a wide table. Parquet provides optimizations to speed up queries.</p>
 <p>The following diagram lays out the architecture from data source to Parquet ingestion.
 In our use case, we are assuming that the IPEDs admission data text (ADM) files are ingested in HDFS and processed through Spark.
 We then use the output of the spark processing (Parquet files) to process in Snowflake.
@@ -250,8 +254,10 @@ the Parquet attribute and the stage layer. The stage layer is used to process da
 The ELT layer defines the schema for the CSV file with data types.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Utilities used to convert the original CSV files into different data formats are available to download at: <a class="reference external" href="https://github.com/versatiledp/SnowflakeEnriched/tree/master/utilities">https://github.com/versatiledp/SnowflakeEnriched/tree/master/utilities</a></p>
-<p>All the datafiles used throughout this book are available to download at: <a class="reference external" href="https://github.com/versatiledp/SnowflakeEnriched/tree/master/data/input">https://github.com/versatiledp/SnowflakeEnriched/tree/master/data/input</a></p>
+<p>Utilities used to convert the original CSV files into different data formats are available at:
+<a class="reference external" href="https://github.com/versatiledp/SnowflakeEnriched/tree/master/utilities"   target="_blank">https://github.com/versatiledp/SnowflakeEnriched/tree/master/utilities</a></p>
+<p>All the datafiles used throughout this book are available to download at:
+<a class="reference external" href="https://github.com/versatiledp/SnowflakeEnriched/tree/master/data/input">https://github.com/versatiledp/SnowflakeEnriched/tree/master/data/input</a></p>
 </div>
 <p>After downloading the files, copy them to the folder C:\Snowflake\data\input\.
 The files in this book are loaded from the local folder (like C:\Snowflake\data\input\*.*) to the Snowflake stage area using SnowSQL CLI.</p>
@@ -435,7 +441,10 @@ If there are any issues in stage area, drop them using <strong>remove &#64;IPEDS
 </div>
 <div class="section" id="summary">
 <h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
-<p>The data from the transactional source systems go through multiple data processing layers.
+<p>This chapter summarize, data files, file formats, and process used to simplify
+and streamline bulk loading data into various
+internal staging areas.
+The data from the transactional source systems go through multiple data processing layers.
 This results in a variety of data formats being created.
 We then map these data files into the analytical metadata layer. This chapter
 summarized all the data formats we will be dealing with in the processing layer of the analytical data platform.</p>
@@ -485,7 +494,7 @@ summarized all the data formats we will be dealing with in the processing layer 
 
 
 
-<p class="caption"><span class="caption-text">Table of Contents</span></p>
+<p class="caption"></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="Introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="IntroducingSnowflake.html">Introducing Snowflake</a></li>
@@ -537,7 +546,7 @@ summarized all the data formats we will be dealing with in the processing layer 
 <li class="toctree-l1"><a class="reference internal" href="PipelineOrchestration.html">Pipeline orchestration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="BusinessInsights.html">Business insights</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Abberivations.html">Abberivations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Abbreviations.html">Abberivations</a></li>
 </ul>
 
 <div class="relations">

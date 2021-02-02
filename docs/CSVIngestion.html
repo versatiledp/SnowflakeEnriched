@@ -90,7 +90,9 @@ FROM @IPEDS_HD WHERE metadata$file_row_number &gt; 1;
 </div>
 <p>The attributes from the the staged file do not hold column names and types. We need to create a schema on the read
 for each of the $1, $2,,, $n columns in the staged file &#64;IPEDS_HD. This is accomplished by using mapping documents
-between the staged layer and column names in OD tables.</p>
+between the staged layer and column names in OD tables (
+<a class="reference external" href="https://versatiledp.github.io/SnowflakeEnriched/Mapping/AcademicInstitute.htm">SnowflakeEnriched/Mapping/AcademicInstitute</a>
+)</p>
 </div>
 <div class="section" id="od-table-for-academic-institution">
 <h2>OD table for academic institution<a class="headerlink" href="#od-table-for-academic-institution" title="Permalink to this headline">¶</a></h2>
@@ -106,7 +108,7 @@ out of this staged file <strong>&#64;IPEDS_HD</strong>.</p>
 <p>Here is the SQL command to create an OD table <strong>od_AcademicInstitution</strong>.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
-<p>Show/Hide Create OD AcademicInstitution Entity</p>
+<p>Show/Hide script for: Create OD AcademicInstitution Entity</p>
 </div>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">DROP</span> <span class="n">TABLE</span> <span class="n">IF</span> <span class="n">EXISTS</span> <span class="n">od_AcademicInstitution</span><span class="p">;</span>
 
@@ -225,7 +227,7 @@ are also defined in the view.</p>
 <p>Here is the Snowflake command to create the view.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
-<p>Show/Hide Create OD AcademicInstitution View</p>
+<p>Show/Hide script for: Create OD AcademicInstitution View</p>
 </div>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>DROP VIEW IF EXISTS v_od_AcademicInstitution;
 
@@ -332,7 +334,7 @@ They are simply a group of SQL statements that accept some input, perform some t
 In Snowflake, stored procedures are similar to functions, and can be executed multiple times.</p>
 <p>Stored procedures allow us to extend Snowflake SQL by combining it with JavaScript.
 It is created with a CREATE PROCEDURE command and is executed with a CALL command.</p>
-<p>We’ve created a process to load the OD table od_AcademicInstitution data from the view,
+<p>We have created a process to load the OD table od_AcademicInstitution data from the view,
 one year’s data at a time. For this purpose, we have created a stored procedure
 <strong>pr_od_AcademicInstitution_Load</strong>. This stored procedure takes a parameter
 YEAR and retrieves the data from the view <strong>v_od_AcademicInstitution</strong>  for that year.
@@ -340,7 +342,7 @@ The retrieved records are then inserted into the OD table.</p>
 <p>Here is the script for creating the Snowflake stored procedure pr_od_AcademicInstitution_Load.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
-<p>Show/Hide Create OD AcademicInstitution load stored procedure</p>
+<p>Show/Hide script for: Create OD AcademicInstitution load stored procedure</p>
 </div>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>CREATE OR REPLACE PROCEDURE
         pr_od_AcademicInstitution_Load (YEAR FLOAT)
@@ -554,7 +556,7 @@ The automatic sequencing is achieved in Snowflake by defining <strong>SEQUENCE</
 <p>The following Snowflake SQL script is used for creating the AcademicInstitution dimension.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
-<p>Show/Hide Create AcademicInstitution entity</p>
+<p>Show/Hide script for: Create AcademicInstitution entity</p>
 </div>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">DROP</span> <span class="n">TABLE</span> <span class="n">IF</span> <span class="n">EXISTS</span> <span class="n">AcademicInstitution</span><span class="p">;</span>
 
@@ -630,7 +632,7 @@ The automatic sequencing is achieved in Snowflake by defining <strong>SEQUENCE</
 <p class="admonition-title">Note</p>
 <p>The VARIANT columns (CarnegieClassification, WebAddress) are added to the dimension table.
 These columns are used to store JSON data in the table.
-The DATETIME columns RecordCreateDateTime and RecordUpdateDateTime are added for auditing data Upserts.</p>
+The DATETIME columns RecordCreateDateTime and RecordUpdateDateTime are added for auditing data upserts.</p>
 </div>
 <div class="section" id="carnegie-classification-transformation">
 <h3>Carnegie classification transformation<a class="headerlink" href="#carnegie-classification-transformation" title="Permalink to this headline">¶</a></h3>
@@ -690,7 +692,7 @@ table <strong>od_AcademicInstitution</strong> to the dimension table <strong>Aca
 The script to create the stored procedure is given below.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
-<p>Show/Hide Create AcademicInstitution load stored procedure</p>
+<p>Show/Hide script for: Create AcademicInstitution load stored procedure</p>
 </div>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>CREATE OR REPLACE PROCEDURE
         pr_AcademicInstitution_Load(YEAR FLOAT)
@@ -1212,7 +1214,7 @@ change along with table change in the tables <strong>od_AcademicInstitution</str
 <p><strong>Modify the view from the staged file</strong></p>
 <div class="toggle docutils container">
 <div class="header docutils container">
-<p>Show/Hide Alter OD AcademicInstitution view</p>
+<p>Show/Hide script for: Alter OD AcademicInstitution view</p>
 </div>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>DROP VIEW IF EXISTS v_od_AcademicInstitution;
 
@@ -1400,7 +1402,7 @@ WHERE
 for structural changes in the files 2018 and onwards.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
-<p>Show/Hide Alter OD AcademicInstitution load stored procedure</p>
+<p>Show/Hide script for: Alter OD AcademicInstitution load stored procedure</p>
 </div>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>CREATE OR REPLACE PROCEDURE pr_od_AcademicInstitution_Load(YEAR FLOAT)
 RETURNS STRING
@@ -1611,7 +1613,7 @@ it will result into bad attribute value mapping.</em></p>
 <p>The stored procedure pr_AcademicInstitution_Load is modified to accommodate for the new columns added.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
-<p>Show/Hide Alter AcademicInstitution load stored procedure</p>
+<p>Show/Hide script for: Alter AcademicInstitution load stored procedure</p>
 </div>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>CREATE OR REPLACE PROCEDURE
                 pr_AcademicInstitution_Load(YEAR FLOAT)
@@ -2122,7 +2124,7 @@ try {
 <div class="section" id="merge-using-hash-key">
 <h2>MERGE using hash key<a class="headerlink" href="#merge-using-hash-key" title="Permalink to this headline">¶</a></h2>
 <p>In the hash key stored procedure, we join the source and target tables using the business key <strong>InstitutionIdentifier</strong>.
-When a matching record is found, we then compare individual
+When a matching record is found, we compare individual
 columns between the source and target tables using hash keys to find any column values changed in the source.
 Hash keys are created using hash functions. In a hash function, a plain text of arbitrary size is
 mapped to fixed-size values called hash keys or bytes. Hash functions use various hashing algorithms such as
@@ -2132,7 +2134,7 @@ These values are concatenated using another function <strong>Concat_Columns</str
 which is then passed to the hash function SHA1 to generate a hash key.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
-<p>Show/Hide Create function to concat AcademicInstitution column</p>
+<p>Show/Hide script for: Create function to concat AcademicInstitution column</p>
 </div>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>CREATE OR REPLACE FUNCTION
     ConcatColumns(COLUMNLIST array)
@@ -2159,7 +2161,7 @@ which is then passed to the hash function SHA1 to generate a hash key.</p>
 <p>Here are the scripts for creating the function <strong>Hash_Key</strong>.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
-<p>Show/Hide Create function to Hash data</p>
+<p>Show/Hide script for: Create function to Hash data</p>
 </div>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>CREATE OR REPLACE FUNCTION
     Hash_Key(SCDKeys array)
@@ -2175,7 +2177,7 @@ which is then passed to the hash function SHA1 to generate a hash key.</p>
 <p>The modified stored procedure is given below.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
-<p>Show/Hide Create AcademicInstitutionMergeHashByte load procedure</p>
+<p>Show/Hide script for: Create AcademicInstitutionMergeHashByte load procedure</p>
 </div>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>CREATE OR REPLACE PROCEDURE
                 pr_AcademicInstitutionMergeHashByte_Load(YEAR FLOAT)
@@ -2676,14 +2678,17 @@ try {
 <p>In this chapter we travelled through the process of loading and processing academic institution files
 for the years 2017, 2018, and 2019. We created a staged file and a corresponding operational data table to store
 institution details by year. We discussed in detail about the views and stored procedures used to populate
-the dimension table using the Snowflake MERGE command. We also demonstrated how to group various
-columns in the staged file using the JSON string and VARIANT data types. Furthermore, we learned
+the dimension table using the Snowflake MERGE command.
+We reviewed sequence objects in Snowflake for creating a primary key in the dimension table,
+<strong>AcademicInstitution</strong>. We also demonstrated how to group various
+columns in the staged file using the JSON string and VARIANT data types.
+Furthermore, we learned
 transformation logic to handle the schema drifts in the incoming data files.
 Finally, we demonstrated yet another approach to MERGE dimension table using hash keys.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><strong>Code is available to download at:</strong>
-<a class="reference external" href="https://github.com/versatiledp/SnowflakeEnriched/tree/master/source/code/SQL/AcademicInstitution" target="_blank">SnowflakeEnriched/tree/master/source/code/SQL/AcademicInstitution</a></p>
+<p>Code is available to download at:</p>
+<p><a class="reference external" href="https://github.com/versatiledp/SnowflakeEnriched/tree/master/source/code/SQL/AcademicInstitution" target="_blank">SnowflakeEnriched/tree/master/source/code/SQL/AcademicInstitution</a></p>
 </div>
 <table class="docutils align-default">
 <colgroup>
@@ -2718,7 +2723,7 @@ Finally, we demonstrated yet another approach to MERGE dimension table using has
 
 
 
-<p class="caption"><span class="caption-text">Table of Contents</span></p>
+<p class="caption"></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="Introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="IntroducingSnowflake.html">Introducing Snowflake</a></li>
@@ -2747,7 +2752,7 @@ Finally, we demonstrated yet another approach to MERGE dimension table using has
 <li class="toctree-l1"><a class="reference internal" href="PipelineOrchestration.html">Pipeline orchestration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="BusinessInsights.html">Business insights</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Abberivations.html">Abberivations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Abbreviations.html">Abberivations</a></li>
 </ul>
 
 <div class="relations">

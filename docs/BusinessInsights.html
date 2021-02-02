@@ -39,16 +39,17 @@
             
   <div class="section" id="business-insights">
 <h1>Business insights<a class="headerlink" href="#business-insights" title="Permalink to this headline">¶</a></h1>
-<p>We have been asked to create the following dashboards using all the data accumulated in the Snowflake servicing layer.</p>
+<p>Dashboards can be created using all the data accumulated in the Snowflake servicing layer.</p>
 <ul class="simple">
-<li><p>Total number of Institutiuons by category like Public/Private, economic region, and educational offerings.</p></li>
+<li><p>Total number of Institutiuons by category like public/private, economic region, and educational offerings.</p></li>
 <li><p>On the USA map, display enrollment numbers and percentages by state.</p></li>
 <li><p>Data table with the state codes and enrollment segments.</p></li>
 <li><p>Tution cost details by various public colleges.</p></li>
 </ul>
 <p>All the business insights are generated using Google colab, which provides Jupyter notebook environment.
 For running these insights from
-colab, we need to install the pre-requisites <strong>Snowflake connector drivers to python</strong>.</p>
+colab, we need to install the pre-requisites <strong>Snowflake connector drivers to python</strong> from
+<a class="reference external" href="https://docs.snowflake.com/en/user-guide/python-connector.html">https://docs.snowflake.com/en/user-guide/python-connector.html</a></p>
 <p>From colab, connect to Snowflake database using Snowflake account, username, password, warehouse, database and schema.</p>
 <p>Snowflake SQL execution steps:</p>
 <ul class="simple">
@@ -70,7 +71,7 @@ colab, we need to install the pre-requisites <strong>Snowflake connector drivers
                 )
 </pre></div>
 </div>
-<p>Widgets are python objects that have a representation in the browser, often as a control like a slider, textbox, etc. We are using ipywidgets
+<p>Widgets are python objects that have a representation in the browser, often as a control like a slider, textbox, etc. We are using <strong>ipywidgets</strong>
 to control parameters for dashboards. We are also using these widgets to build interactive GUIs for our notebooks.</p>
 <p>Data from Snowflake cursor is copied to pandas dataframe. All data manipulation is done using pandas dataframe in the notebook
 before presenting data.
@@ -678,6 +679,17 @@ Enter Snowflake password:··········
 <p>Code is available to download at:
 <a class="reference external" href="https://github.com/versatiledp/SnowflakeEnriched/tree/master/source/code/IPYNB" target="_blank">SnowflakeEnriched/tree/master/source/code/IPYNB</a></p>
 </div>
+</div>
+<div class="section" id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<p>Data accumulated in the servicing layer has become an important resource for
+businesses to build a data-driven culture to improve margins and customer experiences.
+Google Colab and Jupyter notebook created a programming environment for building a
+number of reporting and analytics experiences. In this chapter, we explained how
+to build various business insights and data analytics using the data in the servicing
+layer tables. By creating nice looking and relatively simple business charts,
+we have explained various use-cases
+that would be the best options for tackling business reporting on daily basis.</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 33%" />
@@ -711,7 +723,7 @@ Enter Snowflake password:··········
 
 
 
-<p class="caption"><span class="caption-text">Table of Contents</span></p>
+<p class="caption"></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="Introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="IntroducingSnowflake.html">Introducing Snowflake</a></li>
@@ -727,10 +739,11 @@ Enter Snowflake password:··········
 <li class="toctree-l2"><a class="reference internal" href="#enrollment-segment-by-state">Enrollment segment by state</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#enrollment-by-geo-location">Enrollment by Geo location</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#public-college-tuition-cost">Public college tuition cost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#summary">Summary</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Abberivations.html">Abberivations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Abbreviations.html">Abberivations</a></li>
 </ul>
 
 <div class="relations">

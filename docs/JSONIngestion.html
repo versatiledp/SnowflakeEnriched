@@ -54,7 +54,7 @@ The data files for enrollments are in JSON format and the staged file is invoked
 </div></blockquote>
 <div class="toggle docutils container">
 <div class="header docutils container">
-<p>Show/Hide Select from Staged file JSON data script</p>
+<p>Show/Hide script for: Select from Staged file JSON data script</p>
 </div>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>SELECT
  S.$1:EFFYLEV::INTEGER  AS LevelOfStudent
@@ -132,7 +132,7 @@ WHERE RIGHT(REPLACE(S.metadata$filename,&#39;_rv.json.gz&#39;,&#39;&#39;),4) = 2
 Here is the CREATE command for the OD table.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
-<p>Show/Hide Create OD Enrollment entity</p>
+<p>Show/Hide script for: Create OD Enrollment entity</p>
 </div>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">DROP</span> <span class="n">TABLE</span> <span class="n">IF</span> <span class="n">EXISTS</span> <span class="n">od_Enrollment</span><span class="p">;</span>
 
@@ -214,7 +214,7 @@ The stored procedure <strong>pr_od_Enrollment_Load</strong> has input parameter 
 Here is the Snowflake script for creating the stored procedure <strong>pr_od_Enrollment_Load</strong>.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
-<p>Show/Hide Create OD Enrollment entity load stored procedure</p>
+<p>Show/Hide script for: Create OD Enrollment entity load stored procedure</p>
 </div>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>CREATE OR REPLACE PROCEDURE
 pr_od_Enrollment_Load(YEAR FLOAT)
@@ -402,7 +402,7 @@ $$;
 Here is the script for creating the table Enrollment.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
-<p>Show/Hide Create Enrollment entity</p>
+<p>Show/Hide script for: Create Enrollment entity</p>
 </div>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CREATE</span> <span class="n">OR</span> <span class="n">REPLACE</span> <span class="n">TABLE</span> <span class="n">Enrollment</span> <span class="p">(</span>
   <span class="n">AcademicInstitutionUniqueDWSID</span> <span class="n">INTEGER</span><span class="p">,</span>
@@ -471,7 +471,7 @@ Then, we calculate their percentages and store them in <strong>ImputationVarPerc
 The data transformation needed to get <strong>ImputationVarPercent</strong> and <strong>ReportedVarPercent</strong> is performed in the same stored procedure.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
-<p>Show/Hide Create Enrollment entity load stored procedure</p>
+<p>Show/Hide script for: Create Enrollment entity load stored procedure</p>
 </div>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>CREATE
         OR REPLACE PROCEDURE pr_Enrollment_Load (YEAR FLOAT)
@@ -776,7 +776,7 @@ RETURN &quot;success&quot; $$;
 </pre></div>
 </div>
 </div>
-<p>We then execute this procedure to load data for 2017, 2018, and 2019.</p>
+<p>Then we execute this procedure to load data for 2017, 2018, and 2019.</p>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">TRUNCATE</span> <span class="n">TABLE</span> <span class="n">Enrollment</span><span class="p">;</span>
 <span class="n">CALL</span> <span class="n">pr_Enrollment_Load</span><span class="p">(</span><span class="mi">2017</span><span class="p">::</span><span class="n">FLOAT</span><span class="p">);</span>
 <span class="n">CALL</span> <span class="n">pr_Enrollment_Load</span><span class="p">(</span><span class="mi">2018</span><span class="p">::</span><span class="n">FLOAT</span><span class="p">);</span>
@@ -787,7 +787,9 @@ RETURN &quot;success&quot; $$;
 <div class="section" id="summary">
 <h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
 <p>In this chapter, we analyzed the annual enrollment data of various institutions.
-We discussed creating and populating the OD table, in the process learning about JSON-formatted data ingestion.
+We discussed JSON-formatted data ingestion process. JSON data can be loaded directly into table
+columns of type VARIANT. These VARIANT columns
+are queried using SQL SELECT statements that reference JSON document elements by the hierarchical paths.
 We also explored building transformation logic in stored procedures to map additional attributes.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -827,7 +829,7 @@ We also explored building transformation logic in stored procedures to map addit
 
 
 
-<p class="caption"><span class="caption-text">Table of Contents</span></p>
+<p class="caption"></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="Introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="IntroducingSnowflake.html">Introducing Snowflake</a></li>
@@ -846,7 +848,7 @@ We also explored building transformation logic in stored procedures to map addit
 <li class="toctree-l1"><a class="reference internal" href="PipelineOrchestration.html">Pipeline orchestration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="BusinessInsights.html">Business insights</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Abberivations.html">Abberivations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Abbreviations.html">Abberivations</a></li>
 </ul>
 
 <div class="relations">
