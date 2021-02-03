@@ -90,7 +90,7 @@ FROM @IPEDS_HD WHERE metadata$file_row_number &gt; 1;
 </div>
 <p>The attributes from the the staged file do not hold column names and types. We need to create a schema on the read
 for each of the $1, $2,,, $n columns in the staged file &#64;IPEDS_HD. This is accomplished by using mapping documents
-between the staged layer and column names in OD tables (
+between staged layer and column names in OD tables(
 <a class="reference external" href="https://versatiledp.github.io/SnowflakeEnriched/Mapping/AcademicInstitute.htm">SnowflakeEnriched/Mapping/AcademicInstitute</a>
 )</p>
 </div>
