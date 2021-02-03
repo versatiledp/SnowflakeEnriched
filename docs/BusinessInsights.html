@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Business insights &#8212; Snowflake Enriched 9/28/2020 documentation</title>
+    <title>Business insights &#8212; TOC 9/28/2020 documentation</title>
     <link rel="stylesheet" href="static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="static/my.css" type="text/css" />
@@ -39,18 +39,24 @@
             
   <div class="section" id="business-insights">
 <h1>Business insights<a class="headerlink" href="#business-insights" title="Permalink to this headline">¶</a></h1>
-<p>Dashboards can be created using all the data accumulated in the Snowflake servicing layer.</p>
+<p>Dashboards can be created using all the data accumulated in the Snowflake servicing layer.
+The following diagram shows the relationship between different entities we have created in the servicing layer.</p>
+<div class="figure align-center">
+<img alt="images/IPEDSERD.png" src="images/IPEDSERD.png" />
+</div>
+<p>Using these entities, we build the following business insights:</p>
 <ul class="simple">
-<li><p>Total number of Institutiuons by category like public/private, economic region, and educational offerings.</p></li>
-<li><p>On the USA map, display enrollment numbers and percentages by state.</p></li>
+<li><p>Total number of institutions by category like public/private, economic region, and educational offerings.</p></li>
+<li><p>Enrollment numbers and percentages by state on the USA map.</p></li>
 <li><p>Data table with the state codes and enrollment segments.</p></li>
 <li><p>Tution cost details by various public colleges.</p></li>
 </ul>
-<p>All the business insights are generated using Google colab, which provides Jupyter notebook environment.
+<p>All the business insights are generated using Google Colab, which provides a Jupyter notebook environment.
 For running these insights from
-colab, we need to install the pre-requisites <strong>Snowflake connector drivers to python</strong> from
+colab, we first need to install the pre-requisites <strong>Snowflake connector drivers to python</strong> from
 <a class="reference external" href="https://docs.snowflake.com/en/user-guide/python-connector.html">https://docs.snowflake.com/en/user-guide/python-connector.html</a></p>
-<p>From colab, connect to Snowflake database using Snowflake account, username, password, warehouse, database and schema.</p>
+<p>Then from Colab, connect to the Snowflake database using Snowflake account, username, password, warehouse, database and schema.
+These credentials can be stored in a key vault and retrieved at runtime.</p>
 <p>Snowflake SQL execution steps:</p>
 <ul class="simple">
 <li><p>Connect to snowflake with required credentials</p></li>
@@ -60,7 +66,7 @@ colab, we need to install the pre-requisites <strong>Snowflake connector drivers
 <li><p>Close cursor</p></li>
 <li><p>Close connection</p></li>
 </ul>
-<p>Following example provides how to create connection object using login parameters.</p>
+<p>The following example dictates how to create a connection object using login parameters.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>conn = snowflake.connector.connect(
                 user=&#39;USER&#39;,
                 password=&#39;PASSWORD&#39;,
@@ -73,10 +79,10 @@ colab, we need to install the pre-requisites <strong>Snowflake connector drivers
 </div>
 <p>Widgets are python objects that have a representation in the browser, often as a control like a slider, textbox, etc. We are using <strong>ipywidgets</strong>
 to control parameters for dashboards. We are also using these widgets to build interactive GUIs for our notebooks.</p>
-<p>Data from Snowflake cursor is copied to pandas dataframe. All data manipulation is done using pandas dataframe in the notebook
-before presenting data.
-We have used <strong>matplotlib</strong> and <strong>plotly</strong> to create data visualization. These two libraries
-provides a powerful tool to explore, understand, and communicate the valuable insights.</p>
+<p>Data from the Snowflake cursor is copied to Pandas dataframes. All manipulation before the presentation of data
+is done using these dataframes in Colab notebooks
+We have used <strong>matplotlib</strong> and <strong>plotly</strong> to create data visualizations. These two libraries
+provide powerful tools to explore, understand, and communicate valuable insights.</p>
 <div class="section" id="institution-reporting">
 <h2>Institution reporting<a class="headerlink" href="#institution-reporting" title="Permalink to this headline">¶</a></h2>
 <p>This visual is targeted to present academic institution information based
@@ -682,14 +688,12 @@ Enter Snowflake password:··········
 </div>
 <div class="section" id="summary">
 <h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
-<p>Data accumulated in the servicing layer has become an important resource for
-businesses to build a data-driven culture to improve margins and customer experiences.
-Google Colab and Jupyter notebook created a programming environment for building a
-number of reporting and analytics experiences. In this chapter, we explained how
-to build various business insights and data analytics using the data in the servicing
-layer tables. By creating nice looking and relatively simple business charts,
-we have explained various use-cases
-that would be the best options for tackling business reporting on daily basis.</p>
+<p>Google Colab and Jupyter notebook create a rich programming environment that provides an analytical experience.
+In this chapter, we explained how
+to build various business insights using the data in the servicing
+layer tables. By creating simple and elegant business charts,
+we explained various use-cases
+that would be optimal for tackling business reporting.</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 33%" />
@@ -713,7 +717,7 @@ that would be the best options for tackling business reporting on daily basis.</
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="index.html">Snowflake Enriched</a></h1>
+<h1 class="logo"><a href="index.html">TOC</a></h1>
 
 
 
