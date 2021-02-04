@@ -49,7 +49,7 @@ The following diagram shows the relationship between different entities we have 
 <li><p>Total number of institutions by category like public/private, economic region, and educational offerings.</p></li>
 <li><p>Enrollment numbers and percentages by state on the USA map.</p></li>
 <li><p>Data table with the state codes and enrollment segments.</p></li>
-<li><p>Tution cost details by various public colleges.</p></li>
+<li><p>Tuition cost details by various public colleges.</p></li>
 </ul>
 <p>All the business insights are generated using Google Colab, which provides a Jupyter notebook environment.
 For running these insights from
@@ -287,12 +287,12 @@ Enter Snowflake password:··········
 <li><p>Total women</p></li>
 <li><p>White men</p></li>
 <li><p>White women</p></li>
-<li><p>Black/African american men</p></li>
-<li><p>Black/African american women</p></li>
+<li><p>Black/African American men</p></li>
+<li><p>Black/African American women</p></li>
 <li><p>Hispanic/Latino men</p></li>
 <li><p>Hispanic/Latino women</p></li>
-<li><p>Non resident alien men</p></li>
-<li><p>Non resident alien women</p></li>
+<li><p>Nonresident alien men</p></li>
+<li><p>Nonresident alien women</p></li>
 <li><p>Asian men</p></li>
 <li><p>Asian women</p></li>
 <li><p>American Indian &amp; Alaska native men</p></li>
@@ -553,7 +553,7 @@ Enter Snowflake password:··········
 </div>
 <div class="section" id="public-college-tuition-cost">
 <h2>Public college tuition cost<a class="headerlink" href="#public-college-tuition-cost" title="Permalink to this headline">¶</a></h2>
-<p>This visual generate the list of the public institutions having highest in-state tution for the selected year.
+<p>This visual generate the list of the public institutions having highest in-state Tuition for the selected year.
 Result is displayed in HTML table format.</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">snowflake</span><span class="o">-</span><span class="n">connector</span><span class="o">-</span><span class="n">python</span><span class="o">==</span><span class="mf">2.3</span><span class="o">.</span><span class="mi">6</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span>
 </pre></div>
@@ -620,8 +620,8 @@ Enter Snowflake password:··········
 <span class="s2">        ID AS &quot;Institution ID&quot;,</span>
 <span class="s2">        NAME &quot;Instituon Name&quot;,</span>
 <span class="s2">        STATE &quot;State Code&quot;,</span>
-<span class="s2">        InStateTution AS &quot;In State Tution($)&quot;,</span>
-<span class="s2">        OutOfStateTution &quot;Out Of State Tution($)&quot; ,</span>
+<span class="s2">        InStateTution AS &quot;In State Tuition($)&quot;,</span>
+<span class="s2">        OutOfStateTution &quot;Out Of State Tuition($)&quot; ,</span>
 <span class="s2">        MaxFeeCounter &quot;in-state-tution_index&quot;</span>
 <span class="s2">FROM CTE_Tution ;</span>
 <span class="s2">&quot;&quot;&quot;</span>
@@ -659,16 +659,16 @@ Enter Snowflake password:··········
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
 <span class="n">dfFilter</span> <span class="o">=</span> <span class="n">df1</span><span class="p">[</span><span class="n">df1</span><span class="o">.</span><span class="n">ACADEMICYEAR</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">result</span><span class="p">)]</span>
 <span class="n">pd</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">float_format</span> <span class="o">=</span> <span class="s1">&#39;$</span><span class="si">{:,.2f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span>
-<span class="n">dfFilter</span><span class="p">[</span><span class="s1">&#39;In State Tution($)&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dfFilter</span><span class="p">[</span><span class="s1">&#39;In State </span><span class="se">\</span>
-<span class="s1">Tution($)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
-<span class="n">dfFilter</span><span class="p">[</span><span class="s1">&#39;Out Of State Tution($)&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dfFilter</span><span class="p">[</span><span class="s1">&#39;Out Of </span><span class="se">\</span>
-<span class="s1">State Tution($)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+<span class="n">dfFilter</span><span class="p">[</span><span class="s1">&#39;In State Tuition($)&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dfFilter</span><span class="p">[</span><span class="s1">&#39;In State </span><span class="se">\</span>
+<span class="s1">Tuition($)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+<span class="n">dfFilter</span><span class="p">[</span><span class="s1">&#39;Out Of State Tuition($)&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dfFilter</span><span class="p">[</span><span class="s1">&#39;Out Of </span><span class="se">\</span>
+<span class="s1">State Tuition($)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
 <span class="c1">#print(dfFilter)</span>
 </pre></div>
 </div>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Apply fiter and display the results</span>
 <span class="n">topn</span><span class="o">=</span><span class="n">slider</span><span class="o">.</span><span class="n">value</span>
-<span class="n">dfFilter</span><span class="o">=</span><span class="n">dfFilter</span><span class="o">.</span><span class="n">nlargest</span><span class="p">(</span><span class="n">topn</span><span class="p">,</span><span class="s1">&#39;In State Tution($)&#39;</span><span class="p">)</span>
+<span class="n">dfFilter</span><span class="o">=</span><span class="n">dfFilter</span><span class="o">.</span><span class="n">nlargest</span><span class="p">(</span><span class="n">topn</span><span class="p">,</span><span class="s1">&#39;In State Tuition($)&#39;</span><span class="p">)</span>
 <span class="n">dfFilter</span><span class="o">=</span><span class="n">dfFilter</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;in-state-tution_index&#39;</span><span class="p">])</span>
 <span class="n">dfFilter</span> <span class="o">=</span> <span class="n">dfFilter</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span> <span class="o">=</span> \
                 <span class="p">{</span><span class="s2">&quot;ACADEMICYEAR&quot;</span><span class="p">:</span><span class="s2">&quot;Academic Year&quot;</span><span class="p">})</span>
@@ -680,11 +680,6 @@ Enter Snowflake password:··········
 <div class="figure align-center">
 <img alt="images/BusinessInsights03.JPG" src="images/BusinessInsights03.JPG" />
 </div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Code is available to download at:
-<a class="reference external" href="https://github.com/versatiledp/SnowflakeEnriched/tree/master/source/code/IPYNB" target="_blank">SnowflakeEnriched/tree/master/source/code/IPYNB</a></p>
-</div>
 </div>
 <div class="section" id="summary">
 <h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
@@ -694,6 +689,11 @@ to build various business insights using the data in the servicing
 layer tables. By creating simple and elegant business charts,
 we explained various use-cases
 that would be optimal for tackling business reporting.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Code is available to download at:
+<a class="reference external" href="https://github.com/versatiledp/SnowflakeEnriched/tree/master/source/code/IPYNB" target="_blank">SnowflakeEnriched/tree/master/source/code/IPYNB</a></p>
+</div>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 33%" />
@@ -747,7 +747,7 @@ that would be optimal for tackling business reporting.</p>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Abbreviations.html">Abberivations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Abbreviations.html">Abbreviations</a></li>
 </ul>
 
 <div class="relations">

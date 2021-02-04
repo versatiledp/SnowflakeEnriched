@@ -159,7 +159,7 @@ WHERE CAST(LEFT(METADATA$FileName,4) AS
 we create an operational data table called <strong>od_AdmissionStat</strong>.
 We add 3 additional columns named AcademicYear, IngestedFileName, and RowNumber.
 When processing the Parquet data, all the partitions from the staged location are used. The staged location metadata also contains
-part of the partition key. In our case, the first 4 characters contain the year in a YYYY format.</p>
+part of the partition key. In our case, the first 4 characters contain the year in YYYY format.</p>
 <p>The Snowflake SQL script for creating this table is given below.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
@@ -221,7 +221,7 @@ part of the partition key. In our case, the first 4 characters contain the year 
 <h2>Stored procedure for staging table<a class="headerlink" href="#stored-procedure-for-staging-table" title="Permalink to this headline">¶</a></h2>
 <p>Once the staging table is created, we need to populate the table
 with admission statistics data for each year from the staged file.
-For that purpose, we’ve created a stored procedure called <strong>pr_od_AdmissionStat_Load</strong>.
+For that purpose, we have created a stored procedure called <strong>pr_od_AdmissionStat_Load</strong>.
 This stored procedure takes the YEAR parameter and retrieves the records from the staged file for that year.
 The parameter YEAR is compared against the first 4 characters of <strong>METADATA$FileName</strong> in the staging file
 and retrieves records for that year.</p>
@@ -427,15 +427,15 @@ of the dimension table AcademicInstitution to the fact table AdmissionStat.</p>
 <div class="section" id="admission-statistics-load-data">
 <h2>Admission statistics load data<a class="headerlink" href="#admission-statistics-load-data" title="Permalink to this headline">¶</a></h2>
 <p>The service layer/fact table <strong>AdmissionStat</strong> is loaded from the OD table <strong>od_AdmissionStat</strong> by year.
-Every time this fact table is updated, it’s loaded with the latest data for that year.
+Every time this fact table is updated, it is loaded with the latest data for that year.
 Therefore, old data loaded for that year is deleted and new data is loaded from the OD table.
 We create a Javascript based stored procedure <strong>pr_AdmissionStat_Load</strong>, in which
 we use 2 variables, <strong>sql_DelCommand</strong> and <strong>sql_Command</strong>.
 The variable sql_DelCommand contains the SQL commands to delete the records from the fact table for the year passed to the stored procedure.
 The other variable sql_Command contains the main logic for updating the fact table for that year.</p>
-<p>We’ve used a <strong>LEFT OUTER JOIN</strong> with <strong>AcademicInstitution</strong> on <strong>InstitutionIdentifier</strong> to get the matching
+<p>We have used a <strong>LEFT OUTER JOIN</strong> with <strong>AcademicInstitution</strong> on <strong>InstitutionIdentifier</strong> to get the matching
 surrogate key from the dimension table AcademicInstitution.
-If we don’t find the matching record, we assign -1 to the corresponding entry of <strong>AcademicInstitutionUniqueDWSID</strong> in the fact table.
+If we do not find the matching record, we assign -1 to the corresponding entry of <strong>AcademicInstitutionUniqueDWSID</strong> in the fact table.
 To achieve this, we use the <strong>IFNULL</strong> command as <strong>IFNULL(D.AcademicInstitutionUniqueDWSID, - 1)</strong></p>
 <p>Here is the Snowflake stored procedure for processing the AdmissionStat table.</p>
 <div class="toggle docutils container">
@@ -640,7 +640,7 @@ we created and loaded the OD table, and later the fact table, for the servicing 
 <li class="toctree-l1"><a class="reference internal" href="PipelineOrchestration.html">Pipeline orchestration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="BusinessInsights.html">Business insights</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Abbreviations.html">Abberivations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Abbreviations.html">Abbreviations</a></li>
 </ul>
 
 <div class="relations">

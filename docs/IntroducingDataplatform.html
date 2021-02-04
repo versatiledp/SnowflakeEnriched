@@ -83,7 +83,7 @@ combination with the Hadoop/Spark ecosystems.</p>
 <h3>Analytics layer<a class="headerlink" href="#analytics-layer" title="Permalink to this headline">¶</a></h3>
 <p>The Analytics layer reads the data ingested and transformed by the data
 processing and storage layer of big data ecosystem. This layer consists of a
-varieties of data analytic tools for different user requirements, and
+varities of data analytic tools for different user requirements and
 provides data discovery mechanisms from large volumes of
 data. Apache Spark SQL, Hive, Apache Spark Streaming, Apache Spark GraphX, machine learning
 libraries, SQL libraries, and a number of other tool
@@ -95,7 +95,7 @@ sets are utilized in this layer to understand the underlying data landscape.</p>
 receives results from the Analytical layer and presents the results
 using visualization tools and
 business processes.</p>
-<p>The following diagram summarize layers in data management solution.</p>
+<p>The following diagram summarizes layers in data management solution.</p>
 <div class="figure align-center">
 <img alt="images/DataPlatform.jpg" src="images/DataPlatform.jpg" />
 </div>
@@ -114,8 +114,8 @@ is the primary source provided by the IES containing information on U.S. college
 <p>In this project, we seek to:</p>
 <ul class="simple">
 <li><p>Ingest variety of data formats.</p></li>
-<li><p>Tranform data for business users.</p></li>
-<li><p>Build a data pipeline to process data on perodic basis.</p></li>
+<li><p>Transform data for business users.</p></li>
+<li><p>Build a data pipeline to process data on periodic basis.</p></li>
 <li><p>Create descriptive analytics for use-cases laid out by businesses.</p></li>
 </ul>
 <p>All of the data used in this book is downloaded from: <a class="reference external" href="https://nces.ed.gov/ipeds/use-the-data"   target="_blank">https://nces.ed.gov/ipeds/use-the-data</a>.</p>
@@ -171,7 +171,7 @@ granted to all layers of the data platform.</p>
 <div class="section" id="institutional-characteristics-files-hdr">
 <h3>Institutional characteristics files [HDR]<a class="headerlink" href="#institutional-characteristics-files-hdr" title="Permalink to this headline">¶</a></h3>
 <p>These files contain directory information for every institution in the IPEDS universe.
-They includes the name, address, city, state, zip code and various URL links to the institution’s home page,
+The files include the name, address, city, state, zip code and various URL links to the institution’s home page,
 admissions and financial aid offices, and net price calculator.</p>
 </div>
 <div class="section" id="month-enrollment-effy">
@@ -183,7 +183,7 @@ uniquely defined by the variables IPEDS, ID, and the level of enrollment.</p>
 <div class="section" id="admissions-and-test-scores-adm">
 <h3>Admissions and test scores [ADM]<a class="headerlink" href="#admissions-and-test-scores-adm" title="Permalink to this headline">¶</a></h3>
 <p>These files contain information about the undergraduate selection process
-for first-time, degree/certificate-seeking prospective students.</p>
+for first-time, degree/certificate seeking prospective students.</p>
 </div>
 <div class="section" id="student-charges-for-academic-year-programs-ic-ay">
 <h3>Student charges for academic year programs [IC*AY]<a class="headerlink" href="#student-charges-for-academic-year-programs-ic-ay" title="Permalink to this headline">¶</a></h3>
@@ -192,7 +192,7 @@ published tuition and required fees, books and supplies, room and board, and oth
 </div>
 <div class="section" id="code-mapping-data">
 <h3>Code mapping data<a class="headerlink" href="#code-mapping-data" title="Permalink to this headline">¶</a></h3>
-<p>This semi-structured dataset has a special character delimeter. One file holds data for multiple destination tables, which are
+<p>This semi-structured dataset has a special character delimiter. One file holds data for multiple destination tables, which are
 identified by the value of the first column in the file.</p>
 </div>
 </div>
@@ -204,7 +204,7 @@ identified by the value of the first column in the file.</p>
 The institutional characteristics header files are directly ingested into
 Snowflake staging from the source system.
 ELT layer defines the schema for the CSV file with data types.
-The following diagram displays data flow between the source system and the Snowflake destionation.
+The following diagram displays data flow between the source system and the Snowflake destination.
 The OD layer is used to process data for the destination layer with additional transformations.</p>
 <div class="figure align-center">
 <img alt="images/csvIngestion.jpg" src="images/csvIngestion.jpg" />
@@ -243,7 +243,7 @@ from a wide table. Parquet provides optimizations to speed up queries.</p>
 In our use case, we are assuming that the IPEDs admission data text (ADM) files are ingested in HDFS and processed through Spark.
 We then use the output of the spark processing (Parquet files) to process in Snowflake.
 The ELT layer defines the schema for Parquet file with data types. The following diagram displays mapping between
-the Parquet attribute and the stage layer. The stage layer is used to process data for the final destination layer with additional transformations.</p>
+the Parquet attribute and the stage layer. The stage layer is used to process data for the next destination with additional transformations.</p>
 <div class="figure align-center">
 <img alt="images/parquetIngestion.jpg" src="images/parquetIngestion.jpg" />
 </div>
@@ -254,10 +254,10 @@ the Parquet attribute and the stage layer. The stage layer is used to process da
 The ELT layer defines the schema for the CSV file with data types.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Utilities used to convert the original CSV files into different data formats are available at:
-<a class="reference external" href="https://github.com/versatiledp/SnowflakeEnriched/tree/master/utilities"   target="_blank">https://github.com/versatiledp/SnowflakeEnriched/tree/master/utilities</a></p>
-<p>All the datafiles used throughout this book are available to download at:
-<a class="reference external" href="https://github.com/versatiledp/SnowflakeEnriched/tree/master/data/input"  target="_blank">https://github.com/versatiledp/SnowflakeEnriched/tree/master/data/input</a></p>
+<p>Utilities used to convert the CSV files into different data formats are available at:</p>
+<p><a class="reference external" href="https://github.com/versatiledp/SnowflakeEnriched/tree/master/utilities"   target="_blank">https://github.com/versatiledp/SnowflakeEnriched/tree/master/utilities</a></p>
+<p>All the data files used throughout this book are available to download at:</p>
+<p><a class="reference external" href="https://github.com/versatiledp/SnowflakeEnriched/tree/master/data/input"  target="_blank">https://github.com/versatiledp/SnowflakeEnriched/tree/master/data/input</a></p>
 </div>
 <p>After downloading the files, copy them to the folder C:\Snowflake\data\input\.
 The files in this book are loaded from the local folder (like C:\Snowflake\data\input\*.*) to the Snowflake stage area using SnowSQL CLI.</p>
@@ -277,9 +277,9 @@ Using these OD tables, servicing layer tables of the data-warehouse are then pop
 <p>First, create the file formats and stage area for the following data formats:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>tab delimited</p></li>
-<li><p>comma separated with no header</p></li>
-<li><p>comma separated with header</p></li>
+<li><p>Tab delimited</p></li>
+<li><p>Comma separated with no header</p></li>
+<li><p>Comma separated with header</p></li>
 </ul>
 </div></blockquote>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">--</span> <span class="n">Number</span> <span class="n">of</span> <span class="n">header</span> <span class="n">lines</span> <span class="n">at</span> <span class="n">the</span> <span class="n">start</span> <span class="n">of</span> <span class="n">the</span> <span class="n">file</span><span class="o">.</span>
@@ -432,11 +432,6 @@ All the Parquet partitions are loaded into specific folder of Parquet staging ar
 </div>
 <p>All the files from the source system are ingested into the Snowflake staged area.
 If there are any issues in stage area, drop them using <strong>remove &#64;IPEDS_ADM</strong>.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Code is available to download at:
-<a class="reference external" href="https://github.com/versatiledp/SnowflakeEnriched/tree/master/source/code/SQL/StagedFile" target="_blank">SnowflakeEnriched/tree/master/source/code/SQL/StagedFile</a></p>
-</div>
 </div>
 </div>
 <div class="section" id="summary">
@@ -448,6 +443,11 @@ The data from the transactional source systems go through multiple data processi
 This results in a variety of data formats being created.
 We then map these data files into the analytical metadata layer. This chapter
 summarized all the data formats we will be dealing with in the processing layer of the analytical data platform.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Code is available to download at:
+<a class="reference external" href="https://github.com/versatiledp/SnowflakeEnriched/tree/master/source/code/SQL/StagedFile" target="_blank">SnowflakeEnriched/tree/master/source/code/SQL/StagedFile</a></p>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Mapping between the source system and Snowflake metadata is at:</p>
@@ -546,7 +546,7 @@ summarized all the data formats we will be dealing with in the processing layer 
 <li class="toctree-l1"><a class="reference internal" href="PipelineOrchestration.html">Pipeline orchestration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="BusinessInsights.html">Business insights</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Abbreviations.html">Abberivations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Abbreviations.html">Abbreviations</a></li>
 </ul>
 
 <div class="relations">

@@ -82,7 +82,7 @@ separated by an <strong>‘=’</strong> sign.</p>
 The StateAbbrevation table should be loaded with two attributes: code and description.
 The attribute values for the first row are <strong>‘AL’</strong> and
 <strong>‘Alabama’</strong>.
-Similarly, AccountStatus should be loaded with the the values <strong>‘A’</strong> and <strong>‘Active - institution active’</strong>.</p>
+Similarly, AccountStatus should be loaded with the values <strong>‘A’</strong> and <strong>‘Active - institution active’</strong>.</p>
 <p>Data is available for processing in the staged file <strong>&#64;IPEDS_CM</strong>.</p>
 <p>The following query is used to get rows from the staged file.</p>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>SELECT  t.$1 AS CodeName,
@@ -260,7 +260,7 @@ $$;
 <div class="section" id="merge-data">
 <h2>Merge data<a class="headerlink" href="#merge-data" title="Permalink to this headline">¶</a></h2>
 <p>Once data is loaded into the operational data zone, we use a similar approach to merge data to the final servicing layer entities.
-We check the existance of these entities dynamically, and missing entities are added. Data is merged from the OD to these entities using
+We check the existence of these entities dynamically, and missing entities are added. Data is merged from the OD to these entities using
 <strong>pr_CodeMapping_Load</strong>.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
@@ -381,7 +381,7 @@ We have demonstrated how various lookup tables can be created dynamically using 
 <li class="toctree-l1"><a class="reference internal" href="PipelineOrchestration.html">Pipeline orchestration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="BusinessInsights.html">Business insights</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Abbreviations.html">Abberivations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Abbreviations.html">Abbreviations</a></li>
 </ul>
 
 <div class="relations">

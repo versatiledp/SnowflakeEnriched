@@ -37,7 +37,7 @@
             
   <div class="section" id="public-college-tuition-cost">
 <h1>Public college tuition cost<a class="headerlink" href="#public-college-tuition-cost" title="Permalink to this headline">¶</a></h1>
-<p>This visual generate the list of the public institutions having highest in-state tution for the selected year.
+<p>This visual generate the list of the public institutions having highest in-state Tuition for the selected year.
 Result is displayed in HTML table format.</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">snowflake</span><span class="o">-</span><span class="n">connector</span><span class="o">-</span><span class="n">python</span><span class="o">==</span><span class="mf">2.3</span><span class="o">.</span><span class="mi">6</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span>
 </pre></div>
@@ -104,8 +104,8 @@ Enter Snowflake password:··········
 <span class="s2">        ID AS &quot;Institution ID&quot;,</span>
 <span class="s2">        NAME &quot;Instituon Name&quot;,</span>
 <span class="s2">        STATE &quot;State Code&quot;,</span>
-<span class="s2">        InStateTution AS &quot;In State Tution($)&quot;,</span>
-<span class="s2">        OutOfStateTution &quot;Out Of State Tution($)&quot; ,</span>
+<span class="s2">        InStateTution AS &quot;In State Tuition($)&quot;,</span>
+<span class="s2">        OutOfStateTution &quot;Out Of State Tuition($)&quot; ,</span>
 <span class="s2">        MaxFeeCounter &quot;in-state-tution_index&quot;</span>
 <span class="s2">FROM CTE_Tution ;</span>
 <span class="s2">&quot;&quot;&quot;</span>
@@ -143,16 +143,16 @@ Enter Snowflake password:··········
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
 <span class="n">dfFilter</span> <span class="o">=</span> <span class="n">df1</span><span class="p">[</span><span class="n">df1</span><span class="o">.</span><span class="n">ACADEMICYEAR</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">result</span><span class="p">)]</span>
 <span class="n">pd</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">float_format</span> <span class="o">=</span> <span class="s1">&#39;$</span><span class="si">{:,.2f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span>
-<span class="n">dfFilter</span><span class="p">[</span><span class="s1">&#39;In State Tution($)&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dfFilter</span><span class="p">[</span><span class="s1">&#39;In State </span><span class="se">\</span>
-<span class="s1">Tution($)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
-<span class="n">dfFilter</span><span class="p">[</span><span class="s1">&#39;Out Of State Tution($)&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dfFilter</span><span class="p">[</span><span class="s1">&#39;Out Of </span><span class="se">\</span>
-<span class="s1">State Tution($)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+<span class="n">dfFilter</span><span class="p">[</span><span class="s1">&#39;In State Tuition($)&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dfFilter</span><span class="p">[</span><span class="s1">&#39;In State </span><span class="se">\</span>
+<span class="s1">Tuition($)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+<span class="n">dfFilter</span><span class="p">[</span><span class="s1">&#39;Out Of State Tuition($)&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dfFilter</span><span class="p">[</span><span class="s1">&#39;Out Of </span><span class="se">\</span>
+<span class="s1">State Tuition($)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
 <span class="c1">#print(dfFilter)</span>
 </pre></div>
 </div>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Apply fiter and display the results</span>
 <span class="n">topn</span><span class="o">=</span><span class="n">slider</span><span class="o">.</span><span class="n">value</span>
-<span class="n">dfFilter</span><span class="o">=</span><span class="n">dfFilter</span><span class="o">.</span><span class="n">nlargest</span><span class="p">(</span><span class="n">topn</span><span class="p">,</span><span class="s1">&#39;In State Tution($)&#39;</span><span class="p">)</span>
+<span class="n">dfFilter</span><span class="o">=</span><span class="n">dfFilter</span><span class="o">.</span><span class="n">nlargest</span><span class="p">(</span><span class="n">topn</span><span class="p">,</span><span class="s1">&#39;In State Tuition($)&#39;</span><span class="p">)</span>
 <span class="n">dfFilter</span><span class="o">=</span><span class="n">dfFilter</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;in-state-tution_index&#39;</span><span class="p">])</span>
 <span class="n">dfFilter</span> <span class="o">=</span> <span class="n">dfFilter</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span> <span class="o">=</span> \
                 <span class="p">{</span><span class="s2">&quot;ACADEMICYEAR&quot;</span><span class="p">:</span><span class="s2">&quot;Academic Year&quot;</span><span class="p">})</span>
@@ -196,7 +196,7 @@ Enter Snowflake password:··········
 <li class="toctree-l1"><a class="reference internal" href="PipelineOrchestration.html">Pipeline orchestration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="BusinessInsights.html">Business insights</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Abbreviations.html">Abberivations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Abbreviations.html">Abbreviations</a></li>
 </ul>
 
 <div class="relations">

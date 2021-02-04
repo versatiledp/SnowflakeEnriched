@@ -47,7 +47,7 @@ The data files received for institutional charges are in ORC format.
 The dataset also categorizes fees for graduate programs
 like Medicine, Dentistry, Pharmacy, Law, etc., as a different set of attributes within academic institutions’ charge records.</p>
 <p>Fees are also categorized for In-State and Out-of-State students.
-Expenses such as books/supplies, boarding, and resources, are also available in these datafiles.</p>
+Expenses such as books/supplies, boarding, and resources, are also available in these data files.</p>
 <p>The information in this large file is broadly categorized into 4 groups described below.</p>
 <div class="section" id="institutional-charge-general">
 <h3>Institutional charge (General)<a class="headerlink" href="#institutional-charge-general" title="Permalink to this headline">¶</a></h3>
@@ -240,7 +240,7 @@ WHERE LEFT(MetaData$FileName,4) = 2017;
 <div class="section" id="operational-data-od-table-for-institutional-charge">
 <h2>Operational data (OD) table for institutional charge<a class="headerlink" href="#operational-data-od-table-for-institutional-charge" title="Permalink to this headline">¶</a></h2>
 <p>The OD table <strong>od_InstitutionalCharge</strong> is added to load institutional charge data from the staged file.
-It contains all the columns from the staged file &#64;IPEDS_IC.
+It contains all the columns from the staged file <strong>&#64;IPEDS_IC</strong>.
 The Snowflake script for creating this table is shown below.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
@@ -890,9 +890,10 @@ $$
 </div>
 <div class="section" id="servicing-layer-data-structure">
 <h2>Servicing layer data structure<a class="headerlink" href="#servicing-layer-data-structure" title="Permalink to this headline">¶</a></h2>
-<p>While processing the InstitutionalCharge dataset, datatables are normalized from the OD layer and mapped to the servicing layer.</p>
+<p>While processing the InstitutionalCharge dataset, tables
+are normalized from the OD layer and mapped to the servicing layer.</p>
 <p>The following scripts are used to create these tables.</p>
-<p>InstitutionalCharge Entity:</p>
+<p><strong>InstitutionalCharge</strong> Entity:</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Create InstitutionalCharge entity</p>
@@ -927,7 +928,7 @@ $$
 </pre></div>
 </div>
 </div>
-<p>InstitutionalChargeByAcademicBranch Entity:</p>
+<p><strong>InstitutionalChargeByAcademicBranch</strong> Entity:</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Create InstitutionalChargeByAcademicBranch entity</p>
@@ -942,7 +943,7 @@ $$
 </pre></div>
 </div>
 </div>
-<p>InstitutionalChargeByResidencyType Entity:</p>
+<p><strong>InstitutionalChargeByResidencyType</strong> Entity:</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Create InstitutionalChargeByResidencyType entity</p>
@@ -957,7 +958,7 @@ $$
 </pre></div>
 </div>
 </div>
-<p>InstitutionalChargeByCategory Entity:</p>
+<p><strong>InstitutionalChargeByCategory</strong> Entity:</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Create InstitutionalChargeByCategory entity</p>
@@ -1326,11 +1327,11 @@ These attributes from source are further categorized into tuition and fees.</p>
 </div>
 <div class="section" id="id3">
 <h3>Institutional charge by residency type<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
-<p><strong>v_od_InstitutionalChargeByResidencyType</strong> is similar to the <strong>v_od_InstitutionalChargeByAcademicBranch</strong>. It also converts columns to rows
-for the data processing layer.
-This view outputs one record per in-district, in-state, or out-of-state residency type.
-The view provides tution information for complete course work like
-year-0-tuition, year-1-tuition, etc.</p>
+<p>The view <strong>v_od_InstitutionalChargeByResidencyType</strong> is built to convert
+columns to rows for the data processing. This view is similar to
+<strong>v_od_InstitutionalChargeByAcademicBranch</strong>. This view outputs one record per
+in-district, in-state, or out-of-state residency type. The view provides tuition
+information for complete course work like year-0-tuition, year-1-tuition, etc.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Create OD InstitutionalChargeByResidencyType view</p>
@@ -1668,10 +1669,8 @@ year-0-tuition, year-1-tuition, etc.</p>
 </div>
 <div class="section" id="id4">
 <h3>Institutional charge by category<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
-<p><strong>v_od_InstitutionalChargeByCategory</strong> is built with the same concepts as
-<strong>v_od_InstitutionalChargeByResidencyType</strong> and <strong>v_od_InstitutionalChargeByAcademicBranch</strong>.
-This view provides granular details about expenses
-on books, supplies, rent, food, and other expenditures during college education.</p>
+<p>The view <strong>v_od_InstitutionalChargeByCategory</strong> provides granular details about expenses on books, supplies, rent, food, and other expenditures during college education. The logic to build it is very similar
+to <strong>v_od_InstitutionalChargeByResidencyType</strong> and <strong>v_od_InstitutionalChargeByAcademicBranch</strong>.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Create OD InstitutionalChargeByCategory view</p>
@@ -2250,9 +2249,14 @@ $$
 </div>
 <div class="section" id="views-for-servicing-layer">
 <h3>Views for servicing layer<a class="headerlink" href="#views-for-servicing-layer" title="Permalink to this headline">¶</a></h3>
-<p>The JSON VARIANT data type is used to re-create three views:
-<strong>v_od_InstitutionalChargeByAcademicBranch</strong>, <strong>v_od_InstitutionalChargeByCategory</strong>, and
-<strong>v_od_InstitutionalChargeByResidencyType</strong>.</p>
+<p>The JSON VARIANT data type is used to re-create three views:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>v_od_InstitutionalChargeByAcademicBranch</strong></p></li>
+<li><p><strong>v_od_InstitutionalChargeByCategory</strong></p></li>
+<li><p><strong>v_od_InstitutionalChargeByResidencyType</strong></p></li>
+</ul>
+</div></blockquote>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Create OD InstitutionalChargeByAcademicBranch view for alternative approach</p>
@@ -2614,7 +2618,7 @@ $$;
 </div>
 </div>
 <p>Data associated with institutional charge entities
-are loaded by calling these stored procedures as below:</p>
+are loaded by calling these stored procedures:</p>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CALL</span> <span class="n">pr_InstitutionalCharge_Load</span><span class="p">(</span><span class="mi">2017</span><span class="p">::</span><span class="n">FLOAT</span><span class="p">);</span>
 <span class="n">CALL</span> <span class="n">pr_InstitutionalCharge_Load</span><span class="p">(</span><span class="mi">2018</span><span class="p">::</span><span class="n">FLOAT</span><span class="p">);</span>
 <span class="n">CALL</span> <span class="n">pr_InstitutionalCharge_Load</span><span class="p">(</span><span class="mi">2019</span><span class="p">::</span><span class="n">FLOAT</span><span class="p">);</span>
@@ -2727,7 +2731,7 @@ Finally, we detailed an alternative approach using the JSON VARIANT data type to
 <li class="toctree-l1"><a class="reference internal" href="PipelineOrchestration.html">Pipeline orchestration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="BusinessInsights.html">Business insights</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Abbreviations.html">Abberivations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Abbreviations.html">Abbreviations</a></li>
 </ul>
 
 <div class="relations">

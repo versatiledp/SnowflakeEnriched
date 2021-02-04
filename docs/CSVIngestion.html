@@ -50,7 +50,7 @@ for the years 2017, 2018 and 2019, respectively.</p>
 <li><p>HD2019.csv</p></li>
 </ul>
 </div></blockquote>
-<p>We will learn how to:</p>
+<p>This section explains how to:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>Use ingested CSV files from the staged Snowflake region.</p></li>
@@ -88,7 +88,7 @@ FROM @IPEDS_HD WHERE metadata$file_row_number &gt; 1;
 <div class="figure align-center">
 <img alt="images/IPEDTableData_AA.jpg" src="images/IPEDTableData_AA.jpg" />
 </div>
-<p>The attributes from the the staged file do not hold column names and types. We need to create a schema on the read
+<p>The attributes from the staged file do not hold column names and types. We need to create a schema on the read
 for each of the $1, $2,,, $n columns in the staged file &#64;IPEDS_HD. This is accomplished by using mapping documents
 between staged layer and column names in OD tables (
 <a class="reference external" href="https://versatiledp.github.io/SnowflakeEnriched/Mapping/AcademicInstitute.htm">SnowflakeEnriched/Mapping/AcademicInstitute</a>
@@ -203,9 +203,9 @@ FROM @IPEDS_HD;
 </pre></div>
 </div>
 <p>Here is the mapping for additional columns in the case of academic institution staged files.</p>
-<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>AcademicYear ⇒ SUBSTRING(METADATA$FILENAME,3,4)
-IngestedFileName ⇒ METADATA$FILENAME
-RowNumber  ⇒ METADATA$FILE_ROW_NUMBER
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>AcademicYear = SUBSTRING(METADATA$FILENAME,3,4)
+IngestedFileName = METADATA$FILENAME
+RowNumber  = METADATA$FILE_ROW_NUMBER
 </pre></div>
 </div>
 </div>
@@ -316,16 +316,16 @@ WHERE
 </pre></div>
 </div>
 </div>
-<p>** If the internal staged area has multiple files, the view created on staged will have access to all underlying files ingested.**</p>
+<p>If the internal staged area has multiple files, the view created on staged will have access to all underlying files ingested.</p>
 <p>In Snowflake, views behave just like tables and we can retrieve the records for a
-given academic year using the view v_od_AcademicInstitution, as below. As we ingest three files from the source system,
-&#64;IPEDS_HD will have data from all academic years.</p>
+given academic year using the view <strong>v_od_AcademicInstitution</strong>, as below. As we ingest three files from the source system,
+<strong>&#64;IPEDS_HD</strong> will have data from all academic years.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT TOP 100 * FROM v_od_AcademicInstitution
 WHERE AcademicYear = 2017;
 </pre></div>
 </div>
 <p>The ETL process can ingest data for one year at a time and process it. It can drop
-the ingested file from the staged area and process the next year’s data.</p>
+the ingested file from the staged area and process the next year data.</p>
 </div>
 <div class="section" id="stored-procedure-for-od-table-load">
 <h2>Stored procedure for OD table load<a class="headerlink" href="#stored-procedure-for-od-table-load" title="Permalink to this headline">¶</a></h2>
@@ -334,12 +334,12 @@ They are simply a group of SQL statements that accept some input, perform some t
 In Snowflake, stored procedures are similar to functions, and can be executed multiple times.</p>
 <p>Stored procedures allow us to extend Snowflake SQL by combining it with JavaScript.
 It is created with a CREATE PROCEDURE command and is executed with a CALL command.</p>
-<p>We have created a process to load the OD table od_AcademicInstitution data from the view,
-one year’s data at a time. For this purpose, we have created a stored procedure
+<p>We have created a process to load the OD table <strong>od_AcademicInstitution</strong> data from the view,
+one year of data at a time. For this purpose, we have created a stored procedure
 <strong>pr_od_AcademicInstitution_Load</strong>. This stored procedure takes a parameter
 YEAR and retrieves the data from the view <strong>v_od_AcademicInstitution</strong>  for that year.
 The retrieved records are then inserted into the OD table.</p>
-<p>Here is the script for creating the Snowflake stored procedure pr_od_AcademicInstitution_Load.</p>
+<p>Here is the script for creating the Snowflake stored procedure <strong>pr_od_AcademicInstitution_Load</strong>.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Create OD AcademicInstitution load stored procedure</p>
@@ -542,9 +542,9 @@ CALL pr_od_AcademicInstitution_Load(2017::FLOAT);
 <p>Using the academic institution files, we have built a dimension table called <strong>AcademicInstitution</strong>.
 This dimension table will be used by fact tables at the servicing layer in forthcoming chapters.</p>
 <p>In general, a dimension table contains keys, columns, and other attributes which are associated with the business key.
-A system-generated key (primary key) is used to uniquely identify a row in the dimension, and is known as a surrogate key. In a dimensional data warehouse architecture,
+A system-generated key (primary key) is used to uniquely identify a row in the dimension and is known as a surrogate key. In a dimensional data warehouse architecture,
 the surrogate key is placed in the fact table and a foreign key is defined to establish the relationship between the two tables.</p>
-<p>In the case of the dimension table AcademicInstitution, we have defined the
+<p>In the case of the dimension table <strong>AcademicInstitution</strong>, we have defined the
 column <strong>AcademicInstitutionUniqueDWSID</strong> as the primary key.
 This primary key gets a unique sequence value for every record inserted.
 The automatic sequencing is achieved in Snowflake by defining <strong>SEQUENCE</strong> and <strong>NEXTVAL</strong>.</p>
@@ -553,7 +553,7 @@ The automatic sequencing is achieved in Snowflake by defining <strong>SEQUENCE</
         <span class="n">SEQ_IPEDS_HD</span> <span class="n">START</span> <span class="o">=</span> <span class="mi">1</span> <span class="n">INCREMENT</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
 </pre></div>
 </div>
-<p>The following Snowflake SQL script is used for creating the AcademicInstitution dimension.</p>
+<p>The following Snowflake SQL script is used for creating the <strong>AcademicInstitution</strong> dimension.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Create AcademicInstitution entity</p>
@@ -655,7 +655,7 @@ Hence, the column CarnegieClassification is created with the VARIANT data type.<
 <div class="section" id="web-address-transformation">
 <h3>Web address transformation<a class="headerlink" href="#web-address-transformation" title="Permalink to this headline">¶</a></h3>
 <p>Similarly, we have grouped together the below columns holding various web addresses
-under the name WebAddress and stored in a JSON format. Thus another VARIANT data type column WebAddress is also created.</p>
+under the name WebAddress and stored in a JSON format. Thus, another VARIANT data type column WebAddress is also created.</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>InstitutionsWebAddress</p></li>
@@ -1147,20 +1147,20 @@ try {
 </pre></div>
 </div>
 </div>
-<p>And the stored procedure is called to load the AcademicInstitution table from OD.</p>
+<p>And the stored procedure is called to load the <strong>AcademicInstitution</strong> table from OD.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>CALL pr_AcademicInstitution_Load(2017::FLOAT) ;
 -- Check data on underlying table
 SELECT * FROM AcademicInstitution
 </pre></div>
 </div>
-<p>The following diagram shows the AcademicInstitution table updated with new data.</p>
+<p>The following diagram shows the <strong>AcademicInstitution</strong> table updated with new data.</p>
 <div class="figure align-center">
 <img alt="images/IPEDTableData_BB.JPG" src="images/IPEDTableData_BB.JPG" />
 </div>
 </div>
 <div class="section" id="schema-drift">
 <h2>Schema drift<a class="headerlink" href="#schema-drift" title="Permalink to this headline">¶</a></h2>
-<p>Structural changes in the incoming data files are very common in a data warehouse environment.
+<p>Structural changes in the incoming data files are quite common in a data warehouse environment.
 In our case, from 2018 we have noticed the following structural
 changes in the input files generated from source system.</p>
 <p>The following new columns are added to files from 2018 onwards.</p>
@@ -1206,12 +1206,12 @@ Newly added columns are mapped with NULL for the year 2017.</p>
 change along with table change in the tables <strong>od_AcademicInstitution</strong> and <strong>AcademicInstitution</strong> .</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>View : v_od_AcademicInstitution</p></li>
-<li><p>Stored procedure for loading staging table : pr_od_AcademicInstitution_Load</p></li>
-<li><p>Stored procedure for processing dimension table : pr_AcademicInstitution_Load</p></li>
+<li><p>View <strong>v_od_AcademicInstitution</strong> reads the data from stage table</p></li>
+<li><p>Stored procedure <strong>pr_od_AcademicInstitution_Load</strong> loads data to staging table</p></li>
+<li><p>Stored procedure <strong>pr_AcademicInstitution_Load</strong> processing dimension table</p></li>
 </ul>
 </div></blockquote>
-<p><strong>Modify the view from the staged file</strong></p>
+<p>View code to accommodate staged file layout changes:</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Alter OD AcademicInstitution view</p>
@@ -1397,9 +1397,8 @@ WHERE
 </pre></div>
 </div>
 </div>
-<p><strong>Modify stored procedure for the OD table load</strong></p>
-<p>The code below the modification of pr_od_AcademicInstitution_Load to accommodate
-for structural changes in the files 2018 and onwards.</p>
+<p>Stored procedure <strong>pr_od_AcademicInstitution_Load</strong> is updated to accommodate
+structural changes in source files from 2018 onwards.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Alter OD AcademicInstitution load stored procedure</p>
@@ -1602,7 +1601,7 @@ CALL pr_od_AcademicInstitution_Load(2019::FLOAT);
 </pre></div>
 </div>
 <p>We can also load multiple files into the same OD table.
-In this book, we don’t truncate the OD table from one academic year to the next, but
+In this book, we do not truncate the OD table from one academic year to the next, but
 in practice we would process only one year of data at a time.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -1610,7 +1609,7 @@ in practice we would process only one year of data at a time.</p>
 as changes in ELT and the transformation layer. If data is processed without the change in code,
 it will result into bad attribute value mapping.</em></p>
 </div>
-<p>The stored procedure pr_AcademicInstitution_Load is modified to accommodate for the new columns added.</p>
+<p>The stored procedure <strong>pr_AcademicInstitution_Load</strong> is modified to accommodate for the new columns added.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Alter AcademicInstitution load stored procedure</p>
@@ -2752,7 +2751,7 @@ Finally, we demonstrated yet another approach to MERGE dimension table using has
 <li class="toctree-l1"><a class="reference internal" href="PipelineOrchestration.html">Pipeline orchestration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="BusinessInsights.html">Business insights</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Abbreviations.html">Abberivations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Abbreviations.html">Abbreviations</a></li>
 </ul>
 
 <div class="relations">
