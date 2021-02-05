@@ -424,8 +424,8 @@ of the dimension table AcademicInstitution to the fact table AdmissionStat.</p>
 </div>
 </div>
 </div>
-<div class="section" id="admission-statistics-load-data">
-<h2>Admission statistics load data<a class="headerlink" href="#admission-statistics-load-data" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="admission-statistics-data-load">
+<h2>Admission statistics data load<a class="headerlink" href="#admission-statistics-data-load" title="Permalink to this headline">¶</a></h2>
 <p>The service layer/fact table <strong>AdmissionStat</strong> is loaded from the OD table <strong>od_AdmissionStat</strong> by year.
 Every time this fact table is updated, it is loaded with the latest data for that year.
 Therefore, old data loaded for that year is deleted and new data is loaded from the OD table.
@@ -440,7 +440,7 @@ To achieve this, we use the <strong>IFNULL</strong> command as <strong>IFNULL(D.
 <p>Here is the Snowflake stored procedure for processing the AdmissionStat table.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
-<p>Show/Hide script for: Create AdmissionStat entity</p>
+<p>Show/Hide script for: Create AdmissionStat load stored procedure</p>
 </div>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>CREATE OR REPLACE PROCEDURE
         pr_AdmissionStat_Load (YEAR FLOAT)
@@ -632,7 +632,7 @@ we created and loaded the OD table, and later the fact table, for the servicing 
 <li class="toctree-l2"><a class="reference internal" href="#od-table-for-admission-statistics">OD table for admission statistics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#stored-procedure-for-staging-table">Stored procedure for staging table</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#admission-statistics-servicing-layer">Admission statistics servicing layer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#admission-statistics-load-data">Admission statistics load data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#admission-statistics-data-load">Admission statistics data load</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#summary">Summary</a></li>
 </ul>
 </li>

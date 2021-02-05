@@ -45,7 +45,7 @@
 various courses and branches during the 2017, 2018 and 2019 academic years.
 The data files received for institutional charges are in ORC format.
 The dataset also categorizes fees for graduate programs
-like Medicine, Dentistry, Pharmacy, Law, etc., as a different set of attributes within academic institutions’ charge records.</p>
+like Medicine, Dentistry, Pharmacy, Law, etc., as a different set of attributes within academic institutions charge records.</p>
 <p>Fees are also categorized for In-State and Out-of-State students.
 Expenses such as books/supplies, boarding, and resources, are also available in these data files.</p>
 <p>The information in this large file is broadly categorized into 4 groups described below.</p>
@@ -2250,13 +2250,9 @@ $$
 <div class="section" id="views-for-servicing-layer">
 <h3>Views for servicing layer<a class="headerlink" href="#views-for-servicing-layer" title="Permalink to this headline">¶</a></h3>
 <p>The JSON VARIANT data type is used to re-create three views:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p><strong>v_od_InstitutionalChargeByAcademicBranch</strong></p></li>
-<li><p><strong>v_od_InstitutionalChargeByCategory</strong></p></li>
-<li><p><strong>v_od_InstitutionalChargeByResidencyType</strong></p></li>
-</ul>
-</div></blockquote>
+<p><strong>v_od_InstitutionalChargeByAcademicBranch</strong></p>
+<p><strong>v_od_InstitutionalChargeByCategory</strong></p>
+<p><strong>v_od_InstitutionalChargeByResidencyType</strong></p>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Create OD InstitutionalChargeByAcademicBranch view for alternative approach</p>
@@ -2326,7 +2322,7 @@ $$
 <p>We will be using the OD table <strong>od_InstitutionalCharge</strong> and the above three views to finally land data to its destination.
 There are four stored procedures that use these data sources and process them into the respective servicing layer tables,
 taking academic year as their input parameter.
-For the given year, these procedures will delete existing data from the destination tables and transform data from the OD layer.</p>
+For the given year, these procedures will delete existing data from the destination tables and transform and load data from the OD layer.</p>
 <p>The following code is used to create these objects.</p>
 <div class="section" id="institutional-charge-general-load">
 <h3>Institutional charge (General) load<a class="headerlink" href="#institutional-charge-general-load" title="Permalink to this headline">¶</a></h3>

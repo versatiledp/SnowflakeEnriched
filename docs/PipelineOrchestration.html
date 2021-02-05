@@ -52,16 +52,16 @@ without using any third party tools.</p>
 </ul>
 </dd>
 </dl>
-<p><strong>Workflow configuration/definition</strong>
+<p><strong>Workflow configuration/definition:</strong>
 Workflow configuration is done by listing the Snowflake procedures to
 execute in a pre-defined sequential order. The source and destination tables used in the transformation are
 listed in the configuration table along
 with the stored procedure.</p>
-<p><strong>Workflow administration</strong>
+<p><strong>Workflow administration:</strong>
 Workflow administration executes the list of stored procedures in the order defined by the
 IPEDS_Workflow table. For each procedure execution, it checks the row counts from the source and destination tables.
 At the end, it logs the details in the IPEDS_Audit table for further analysis.</p>
-<p><strong>Workflow audit</strong>
+<p><strong>Workflow audit:</strong>
 Workflow audit provides the details of the executions as well as row counts before and after.
 This audit table can be used to identify the number of records processed in each execution.</p>
 <p>The steps laid out here are easy to navigate and provide full control over sequencing. These steps can be easily extended to accommodate
@@ -72,7 +72,7 @@ other needs as per different requirements.</p>
 <li><p>StageName - Description of the pipeline</p></li>
 <li><p>ProcedureName - Name of stored procedure to be called</p></li>
 <li><p>SourceTableName - Input table used in Snowflake data transformation</p></li>
-<li><p>TargetTableName - Destination table for data used in the above procedure</p></li>
+<li><p>TargetTableName - Destination table for data used in the procedure</p></li>
 <li><p>ExecutionOrder - What is sequence for this step to be executed</p></li>
 </ul>
 </div></blockquote>
@@ -487,7 +487,7 @@ We can easily enhance the process to accommodate for other needs in tracking dat
 </li>
 <li class="toctree-l1"><a class="reference internal" href="BusinessInsights.html">Business insights</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Abbreviations.html">Abberivations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Abbreviations.html">Abbreviations</a></li>
 </ul>
 
 <div class="relations">

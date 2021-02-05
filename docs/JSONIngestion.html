@@ -461,7 +461,7 @@ Here is the script for creating the table Enrollment.</p>
 <p>Transformation is performed while loading <strong>Enrollment</strong>.</p>
 <p>The stored procedure <strong>pr_Enrollment_Load</strong> is used for loading
 the servicing layer table. The stored procedure loads data for specific years based on the parameter passed to it.
-Each time this stored procedure is called, it deletes records from <strong>Enrollment</strong>
+Each time when this stored procedure is called, it deletes records from <strong>Enrollment</strong>
 for that year and then re-inserts them to <strong>Enrollment</strong> from that year’s <strong>od_Enrollment</strong>.</p>
 <p>We are interested in determining the distribution of data that has been imputed vs reported.
 To do so, we read the imputation column to obtain the total number of imputed and reported variable counts,
@@ -848,7 +848,7 @@ We also explored building transformation logic in stored procedures to map addit
 <li class="toctree-l1"><a class="reference internal" href="PipelineOrchestration.html">Pipeline orchestration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="BusinessInsights.html">Business insights</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Abbreviations.html">Abberivations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Abbreviations.html">Abbreviations</a></li>
 </ul>
 
 <div class="relations">

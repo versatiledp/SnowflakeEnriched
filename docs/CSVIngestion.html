@@ -41,7 +41,7 @@
 <h1>CSV ingestion<a class="headerlink" href="#csv-ingestion" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="academic-institution">
 <h2>Academic institution<a class="headerlink" href="#academic-institution" title="Permalink to this headline">¶</a></h2>
-<p>The academic institution files contain high level information about institutions in the US
+<p>The academic institution files contain high-level information about institutions in US
 for the years 2017, 2018 and 2019, respectively.</p>
 <blockquote>
 <div><ul class="simple">
@@ -101,7 +101,7 @@ The ELT process will copy the data from staged files to OD tables.
 OD tables are defined by column types and descriptive column names.
 We can add more columns to
 the OD table if necessary. We have added 3 additional columns, namely AcademicYear,
-IngestedFileName, and RowNumber, to the OD table, for use in the ETL/ELT process and audit purpose.</p>
+IngestedFileName, and RowNumber, to the OD table, to use them in the ETL/ELT process and audit purpose.</p>
 <p>Once the column mapping is clearly defined, we have to populate our
 operational data table for academic institutions called <strong>od_AcademicInstitution</strong>
 out of this staged file <strong>&#64;IPEDS_HD</strong>.</p>
@@ -214,7 +214,7 @@ RowNumber  = METADATA$FILE_ROW_NUMBER
 <p>We have introduced a Snowflake view and a stored procedure in between
 the staged files and operational data (OD) table to manage data processing using extract load and transfer (ELT).
 The view is built on top of the staged file to do necessary mapping and create
-appropriate column names for the result set. Then, the stored procedure consumes this
+appropriate column names for the result set. The stored procedure consumes this
 view and loads the OD table for a specific year.</p>
 </div>
 <div class="section" id="managing-metadata-of-staged-file">
@@ -316,7 +316,7 @@ WHERE
 </pre></div>
 </div>
 </div>
-<p>If the internal staged area has multiple files, the view created on staged will have access to all underlying files ingested.</p>
+<p>If the internal staged area has multiple files, the view created on staged files will have access to all underlying files ingested.</p>
 <p>In Snowflake, views behave just like tables and we can retrieve the records for a
 given academic year using the view <strong>v_od_AcademicInstitution</strong>, as below. As we ingest three files from the source system,
 <strong>&#64;IPEDS_HD</strong> will have data from all academic years.</p>
@@ -333,7 +333,7 @@ the ingested file from the staged area and process the next year data.</p>
 They are simply a group of SQL statements that accept some input, perform some task, and may or may not return a value.
 In Snowflake, stored procedures are similar to functions, and can be executed multiple times.</p>
 <p>Stored procedures allow us to extend Snowflake SQL by combining it with JavaScript.
-It is created with a CREATE PROCEDURE command and is executed with a CALL command.</p>
+It is created with a CREATE PROCEDURE command and executed with a CALL command.</p>
 <p>We have created a process to load the OD table <strong>od_AcademicInstitution</strong> data from the view,
 one year of data at a time. For this purpose, we have created a stored procedure
 <strong>pr_od_AcademicInstitution_Load</strong>. This stored procedure takes a parameter
@@ -542,7 +542,7 @@ CALL pr_od_AcademicInstitution_Load(2017::FLOAT);
 <p>Using the academic institution files, we have built a dimension table called <strong>AcademicInstitution</strong>.
 This dimension table will be used by fact tables at the servicing layer in forthcoming chapters.</p>
 <p>In general, a dimension table contains keys, columns, and other attributes which are associated with the business key.
-A system-generated key (primary key) is used to uniquely identify a row in the dimension and is known as a surrogate key. In a dimensional data warehouse architecture,
+A system-generated key (primary key) is used to uniquely identify a row in the dimension and it is also known as a surrogate key. In a dimensional data warehouse architecture,
 the surrogate key is placed in the fact table and a foreign key is defined to establish the relationship between the two tables.</p>
 <p>In the case of the dimension table <strong>AcademicInstitution</strong>, we have defined the
 column <strong>AcademicInstitutionUniqueDWSID</strong> as the primary key.
@@ -630,9 +630,9 @@ The automatic sequencing is achieved in Snowflake by defining <strong>SEQUENCE</
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The VARIANT columns (CarnegieClassification, WebAddress) are added to the dimension table.
+<p><em>The VARIANT columns (CarnegieClassification, WebAddress) are added to the dimension table.
 These columns are used to store JSON data in the table.
-The DATETIME columns RecordCreateDateTime and RecordUpdateDateTime are added for auditing data upserts.</p>
+The DATETIME columns RecordCreateDateTime and RecordUpdateDateTime are added for auditing data upserts.</em></p>
 </div>
 <div class="section" id="carnegie-classification-transformation">
 <h3>Carnegie classification transformation<a class="headerlink" href="#carnegie-classification-transformation" title="Permalink to this headline">¶</a></h3>
@@ -1208,7 +1208,7 @@ change along with table change in the tables <strong>od_AcademicInstitution</str
 <div><ul class="simple">
 <li><p>View <strong>v_od_AcademicInstitution</strong> reads the data from stage table</p></li>
 <li><p>Stored procedure <strong>pr_od_AcademicInstitution_Load</strong> loads data to staging table</p></li>
-<li><p>Stored procedure <strong>pr_AcademicInstitution_Load</strong> processing dimension table</p></li>
+<li><p>Stored procedure <strong>pr_AcademicInstitution_Load</strong> processes dimension table</p></li>
 </ul>
 </div></blockquote>
 <p>View code to accommodate staged file layout changes:</p>

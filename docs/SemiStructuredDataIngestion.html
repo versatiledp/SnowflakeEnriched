@@ -160,12 +160,12 @@ that code is loaded into the specific OD table. If the table is missing, then a 
 to load data.</p>
 <p>The combination of the <strong>CodeDestinationTable</strong> table and <strong>&#64;IPEDS_CM</strong> staged file is used to populate multiple operational data stores.
 For example, when the code column content has value <strong>stabbr</strong>, then the destination table will be <strong>od_StateAbbreviation</strong>. The
-content of the TableData column from <strong>&#64;IPEDS_CM</strong>, where <strong>$1 = ‘StateAbbreviation’</strong>,
+content of the TableData column from <strong>&#64;IPEDS_CM</strong>, with <strong>$1 = ‘StateAbbreviation’</strong>,
 will be used to populate <strong>od_StateAbbreviation</strong>.</p>
 <p>The following script outlines this process.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
-<p>Show/Hide script for: Create OD CodeDestination load stored procedure</p>
+<p>Show/Hide script for: Create OD CodeMapping load stored procedure</p>
 </div>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>CREATE OR REPLACE PROCEDURE pr_od_CodeMapping_Load()
 RETURNS STRING

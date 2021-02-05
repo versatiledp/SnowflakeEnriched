@@ -127,12 +127,12 @@ is the primary source provided by the IES containing information on U.S. college
 <p class="admonition-title">Note</p>
 <p>Disclaimer: We have modified this data to explore Snowflake functionality. Therefore, analytics results from this book
 should not be used as a replacement for the original data and its results.
-Please refer to the IES website for actual statistics and research on Academic Institutions.</p>
+Please refer to the IES website for actual statistics and research on academic institutions.</p>
 </div>
 <p>For the project in this book, we will be using these four layers of data transformation.</p>
 <div class="section" id="staged-file">
 <h3>Staged file<a class="headerlink" href="#staged-file" title="Permalink to this headline">¶</a></h3>
-<p>All the data from the source system will be brought into the internal Staged file location of Snowflake.
+<p>All the data from the source system will be brought into the internal staged file location of Snowflake.
 This data is directly from transactional systems or existing big data platforms,
 with no transformations applied.</p>
 </div>
@@ -159,7 +159,8 @@ service layer entities.</p>
 <p>Data engineering consists of creating transformations, performing metadata management, and
 keeping track of data pipelines. So, access should be
 granted to all layers of the data platform.</p>
-<p>The diagram below shows the process of data flow between files and the staging table, all conducted by stored procedures.</p>
+<p>The diagram below shows data flow process between files and the final destination in Snowflake.
+After staging load, all data processing and transformation is performed using stored procedures.</p>
 <div class="figure align-center">
 <img alt="images/ingestionlayout.jpg" src="images/ingestionlayout.jpg" />
 </div>
@@ -224,7 +225,7 @@ The stage layer is used to process data for the destination layer with additiona
 <div class="section" id="institutional-charges">
 <h3>Institutional charges<a class="headerlink" href="#institutional-charges" title="Permalink to this headline">¶</a></h3>
 <p>IC*AY files are converted to ORC format. The Optimized Row Columnar (ORC) file format provides a highly efficient way to store Hive data. ORC files improve performance when Hive is reading, writing, and processing data. The compact nature of this format is ideal, and enables skipping over irrelevant parts without needing large, complex, or manually maintained indices.</p>
-<p>In our use case, we are assuming that institutional charge text files are ingested (ICAY files) in HDFS and processed through Hive. The output of the big data processing (ORC files) is loaded in Snowflake.
+<p>In our use case, we are assuming that institutional charge  (ICAY) text files are ingested in HDFS and processed through Hive. The output of the big data processing (ORC files) is loaded in Snowflake.
 The ELT layer defines the schema for ORC file with data types.
 The following diagram displays the data ingestion architecture for ORC format files.
 The stage layer is used to process data for the destination layer with additional transformations and normalization.</p>
@@ -234,14 +235,14 @@ The stage layer is used to process data for the destination layer with additiona
 </div>
 <div class="section" id="admission-data">
 <h3>Admission data<a class="headerlink" href="#admission-data" title="Permalink to this headline">¶</a></h3>
-<p>Admission data [ADM] files are available in the Parquet data format.
+<p>Admission data (ADM) files are available in the Parquet data format.
 Parquet, an open-source file format for Hadoop stores nested data structures in a flat columnar format.
 Compared to a traditional approach where data is stored in a row-oriented approach, Parquet is more efficient
 in terms of storage and performance. It is especially useful for queries that read specific columns
 from a wide table. Parquet provides optimizations to speed up queries.</p>
 <p>The following diagram lays out the architecture from data source to Parquet ingestion.
 In our use case, we are assuming that the IPEDs admission data text (ADM) files are ingested in HDFS and processed through Spark.
-We then use the output of the spark processing (Parquet files) to process in Snowflake.
+We use the output of the spark processing (Parquet files) to process in Snowflake.
 The ELT layer defines the schema for Parquet file with data types. The following diagram displays mapping between
 the Parquet attribute and the stage layer. The stage layer is used to process data for the next destination with additional transformations.</p>
 <div class="figure align-center">
@@ -254,7 +255,7 @@ the Parquet attribute and the stage layer. The stage layer is used to process da
 The ELT layer defines the schema for the CSV file with data types.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Utilities used to convert the CSV files into different data formats are available at:</p>
+<p>Utilities to convert the CSV files into different data formats are available at:</p>
 <p><a class="reference external" href="https://github.com/versatiledp/SnowflakeEnriched/tree/master/utilities"   target="_blank">https://github.com/versatiledp/SnowflakeEnriched/tree/master/utilities</a></p>
 <p>All the data files used throughout this book are available to download at:</p>
 <p><a class="reference external" href="https://github.com/versatiledp/SnowflakeEnriched/tree/master/data/input"  target="_blank">https://github.com/versatiledp/SnowflakeEnriched/tree/master/data/input</a></p>
@@ -263,7 +264,7 @@ The ELT layer defines the schema for the CSV file with data types.</p>
 The files in this book are loaded from the local folder (like C:\Snowflake\data\input\*.*) to the Snowflake stage area using SnowSQL CLI.</p>
 <p>Data files are received in various formats like CSV, ORC, Parquet, and JSON. These files are available in the folders by year. They are brought into Snowflake staged files using the PUT command.
 Each staged file contains the entire data for that specific year. From these staged files, OD tables are populated.
-Using these OD tables, servicing layer tables of the data-warehouse are then populated. Snowflake’s stored procedures, views, and functions are used for ETL/ELT processes.</p>
+Using these OD tables, servicing layer tables of the data-warehouse are populated. Snowflake’s stored procedures, views, and functions are used for ETL/ELT processes.</p>
 </div>
 </div>
 <div class="section" id="ingesting-snowflake-stage">
@@ -278,8 +279,8 @@ Using these OD tables, servicing layer tables of the data-warehouse are then pop
 <blockquote>
 <div><ul class="simple">
 <li><p>Tab delimited</p></li>
-<li><p>Comma separated with no header</p></li>
 <li><p>Comma separated with header</p></li>
+<li><p>Comma separated with no header</p></li>
 </ul>
 </div></blockquote>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">--</span> <span class="n">Number</span> <span class="n">of</span> <span class="n">header</span> <span class="n">lines</span> <span class="n">at</span> <span class="n">the</span> <span class="n">start</span> <span class="n">of</span> <span class="n">the</span> <span class="n">file</span><span class="o">.</span>
@@ -441,7 +442,7 @@ and streamline bulk loading data into various
 internal staging areas.
 The data from the transactional source systems go through multiple data processing layers.
 This results in a variety of data formats being created.
-We then map these data files into the analytical metadata layer. This chapter
+We map these data files into the analytical metadata layer. This chapter
 summarized all the data formats we will be dealing with in the processing layer of the analytical data platform.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>

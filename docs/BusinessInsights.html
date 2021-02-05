@@ -53,7 +53,7 @@ The following diagram shows the relationship between different entities we have 
 </ul>
 <p>All the business insights are generated using Google Colab, which provides a Jupyter notebook environment.
 For running these insights from
-colab, we first need to install the pre-requisites <strong>Snowflake connector drivers to python</strong> from
+Colab, we first need to install the pre-requisites <strong>Snowflake connector drivers to python</strong> from
 <a class="reference external" href="https://docs.snowflake.com/en/user-guide/python-connector.html"  target="_blank">https://docs.snowflake.com/en/user-guide/python-connector.html</a></p>
 <p>Then from Colab, connect to the Snowflake database using Snowflake account, username, password, warehouse, database and schema.
 These credentials can be stored in a key vault and retrieved at runtime.</p>
@@ -80,7 +80,7 @@ These credentials can be stored in a key vault and retrieved at runtime.</p>
 <p>Widgets are python objects that have a representation in the browser, often as a control like a slider, textbox, etc. We are using <strong>ipywidgets</strong>
 to control parameters for dashboards. We are also using these widgets to build interactive GUIs for our notebooks.</p>
 <p>Data from the Snowflake cursor is copied to Pandas dataframes. All manipulation before the presentation of data
-is done using these dataframes in Colab notebooks
+is done using these dataframes in Colab notebooks.
 We have used <strong>matplotlib</strong> and <strong>plotly</strong> to create data visualizations. These two libraries
 provide powerful tools to explore, understand, and communicate valuable insights.</p>
 <div class="section" id="institution-reporting">
@@ -553,7 +553,7 @@ Enter Snowflake password:··········
 </div>
 <div class="section" id="public-college-tuition-cost">
 <h2>Public college tuition cost<a class="headerlink" href="#public-college-tuition-cost" title="Permalink to this headline">¶</a></h2>
-<p>This visual generate the list of the public institutions having highest in-state Tuition for the selected year.
+<p>This visual generate the list of the public institutions having highest in-state tuition for the selected year.
 Result is displayed in HTML table format.</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">snowflake</span><span class="o">-</span><span class="n">connector</span><span class="o">-</span><span class="n">python</span><span class="o">==</span><span class="mf">2.3</span><span class="o">.</span><span class="mi">6</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span>
 </pre></div>
