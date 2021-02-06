@@ -39,6 +39,23 @@
             
   <div class="section" id="parquet-ingestion">
 <h1>Parquet ingestion<a class="headerlink" href="#parquet-ingestion" title="Permalink to this headline">¶</a></h1>
+<p>Snowflake manages Parquet files similar to semi-structured JSON data from VARIANT type.
+We can convert VARIANT column Parquet data to a multi-column table with
+specifying column names and data type.</p>
+<p>Parquet data loaded into staged file is retrieved using following code.</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT P.$1 Parquetdata FROM  @IPEDS_ADM P;
+</pre></div>
+</div>
+<p>The picture below shows Parquetdata data in the internal staged file.</p>
+<div class="figure align-center">
+<img alt="images/ParquetInternalStagedDataSelect.JPG" src="images/ParquetInternalStagedDataSelect.JPG" />
+</div>
+<p>Parquet data is also stored as JSON document.
+JSON docuemnt processing can be used to transform Parquet data.</p>
+<p>Each row holds one JSON document, as shwon below.</p>
+<div class="figure align-center">
+<img alt="images/ParquetInternalStagedDataSelectSingleDocument.JPG" src="images/ParquetInternalStagedDataSelectSingleDocument.JPG" />
+</div>
 <div class="section" id="admission-statistics">
 <h2>Admission statistics<a class="headerlink" href="#admission-statistics" title="Permalink to this headline">¶</a></h2>
 <p>The admission statistics contain information about the number of applicants by various categories:
@@ -364,7 +381,7 @@ admission statistics called <strong>AdmissionStat</strong>, which has links to t
 dimension table <strong>AcademicInstitution</strong>. The relationship represents the star schema of
 dimensional modelling architecture. This is made possible by
 adding the surrogate key column (<strong>AcademicInstitutionUniqueDWSID</strong>)
-of the dimension table AcademicInstitution to the fact table AdmissionStat.</p>
+of the dimension table <strong>AcademicInstitution</strong> to the fact table <strong>AdmissionStat</strong>.</p>
 <p>Here is the script for creating the table AdmissionStat in Snowflake.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">

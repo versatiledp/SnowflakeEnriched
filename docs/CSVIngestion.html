@@ -102,6 +102,9 @@ OD tables are defined by column types and descriptive column names.
 We can add more columns to
 the OD table if necessary. We have added 3 additional columns, namely AcademicYear,
 IngestedFileName, and RowNumber, to the OD table, to use them in the ETL/ELT process and audit purpose.</p>
+<p><strong>METADATA$FILENAME</strong> is a pseudocolumn that identifies the name of each staged data file
+,including its path in the stage.</p>
+<p><strong>METADATA$FILE_ROW_NUMBER</strong> is a pseudocolumn that identifies rowNumber of staged data file.</p>
 <p>Once the column mapping is clearly defined, we have to populate our
 operational data table for academic institutions called <strong>od_AcademicInstitution</strong>
 out of this staged file <strong>&#64;IPEDS_HD</strong>.</p>
@@ -553,6 +556,11 @@ The automatic sequencing is achieved in Snowflake by defining <strong>SEQUENCE</
         <span class="n">SEQ_IPEDS_HD</span> <span class="n">START</span> <span class="o">=</span> <span class="mi">1</span> <span class="n">INCREMENT</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
 </pre></div>
 </div>
+<p>Snowflake handles JSON data by using a data type they call a VARIANT.
+VARIANT allows semi-structured data to be loaded. Snowflake automatically discovers the attributes,
+keys, and the structure that exists in the JSON document from VARIANT datatype. We can also add statistics that enables optimization.
+Snowflake enables to reverse-engineer a JSON document from relational data.
+OBJECT_CONSTRUCT returns a VARIANT object, a JSON document, as an output.</p>
 <p>The following Snowflake SQL script is used for creating the <strong>AcademicInstitution</strong> dimension.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">

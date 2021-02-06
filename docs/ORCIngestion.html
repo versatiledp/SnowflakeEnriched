@@ -39,12 +39,28 @@
             
   <div class="section" id="orc-ingestion">
 <h1>ORC ingestion<a class="headerlink" href="#orc-ingestion" title="Permalink to this headline">¶</a></h1>
+<p>Snowflake manages AVRO, ORC files similar to semi-structured JSON data from VARIANT type.
+We can convert VARIANT column ORC data to a multi-column table with
+specifying column names and data type.</p>
+<p>ORC data loaded into staged file is retrieved using following code.</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT O.$1 JASONdata FROM  @IPEDS_IC O;
+</pre></div>
+</div>
+<p>The picture below shows ORC data in the internal staged file.</p>
+<div class="figure align-center">
+<img alt="images/ORCInternalStagedDataSelect.JPG" src="images/ORCInternalStagedDataSelect.JPG" />
+</div>
+<p>ORC data is stored as JSON document. JSON docuemnt processing can be used to transform ORC data.</p>
+<p>Each row holds one JSON document, as shwon below.</p>
+<div class="figure align-center">
+<img alt="images/ORCInternalStagedDataSelectSingleDocument.JPG" src="images/ORCInternalStagedDataSelectSingleDocument.JPG" />
+</div>
 <div class="section" id="institutional-charges">
 <h2>Institutional charges<a class="headerlink" href="#institutional-charges" title="Permalink to this headline">¶</a></h2>
 <p>This section covers data ingestion concerning tuition fees charged by institutions for
 various courses and branches during the 2017, 2018 and 2019 academic years.
-The data files received for institutional charges are in ORC format.
-The dataset also categorizes fees for graduate programs
+The data files received for institutional charges are in ORC format.</p>
+<p>The dataset also categorizes fees for graduate programs
 like Medicine, Dentistry, Pharmacy, Law, etc., as a different set of attributes within academic institutions charge records.</p>
 <p>Fees are also categorized for In-State and Out-of-State students.
 Expenses such as books/supplies, boarding, and resources, are also available in these data files.</p>
@@ -890,6 +906,21 @@ $$
 </div>
 <div class="section" id="servicing-layer-data-structure">
 <h2>Servicing layer data structure<a class="headerlink" href="#servicing-layer-data-structure" title="Permalink to this headline">¶</a></h2>
+<p>We create a fact tables for
+institutional charge data called</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>InstitutionalCharge</strong></p></li>
+<li><p><strong>InstitutionalChargeByAcademicBranch</strong></p></li>
+<li><p><strong>InstitutionalChargeByResidencyType</strong></p></li>
+<li><p><strong>InstitutionalChargeByCategory</strong></p></li>
+</ul>
+</div></blockquote>
+<p>All these fact tables have links to the
+dimension table <strong>AcademicInstitution</strong>. The relationship represents the star schema of
+dimensional modelling architecture. This is made possible by
+adding the surrogate key column (<strong>AcademicInstitutionUniqueDWSID</strong>)
+of the dimension table <strong>AcademicInstitution</strong> to the these fact tables.</p>
 <p>While processing the InstitutionalCharge dataset, tables
 are normalized from the OD layer and mapped to the servicing layer.</p>
 <p>The following scripts are used to create these tables.</p>
@@ -2636,7 +2667,7 @@ are loaded by calling these stored procedures:</p>
 </div>
 <div class="section" id="summary">
 <h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
-<p>Ingesting ORC files in Snowflake is as easy as ingesting CSV files. We learned about a variety of transformations moving data from
+<p>Ingesting ORC files in Snowflake is as easy as ingesting JSON data. We learned about a variety of transformations moving data from
 the landing layer to the servicing layer. We also covered how to unpivot data stored in the OD layer
 into servicing layer.
 Finally, we detailed an alternative approach using the JSON VARIANT data type to perform transformations.</p>

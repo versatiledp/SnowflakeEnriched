@@ -52,6 +52,52 @@ The data files for enrollments are in JSON format and the staged file is invoked
 <li><p>Executing stored procedures.</p></li>
 </ul>
 </div></blockquote>
+<p>Snowflake allows to load JSON data directly into relational tables. We can then query this
+data with SQL and join it to other data without having to do any transformations.
+At load time, Snowflake parses the JSON based on the key-value pairs.
+Structural information is derived based on the schema definition embedded in
+JSON string at read time (Schema-on-Read).</p>
+<p>JSON data loaded into staged file is retrieved using following code.</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT N.$1 JASONdata FROM  @IPEDS_IC N;
+</pre></div>
+</div>
+<p>Each row holds one JSON document, ingested from the source into staged file.</p>
+<div class="figure align-center">
+<img alt="images/jsonInternalStagedDataSelect.JPG" src="images/jsonInternalStagedDataSelect.JPG" />
+</div>
+<div class="figure align-center">
+<img alt="images/jsonInternalStagedDataSelectSingleDocument.JPG" src="images/jsonInternalStagedDataSelectSingleDocument.JPG" />
+</div>
+<p>Let us reterivew column InstitutionIdentifier from JSON object in staged file.</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>select S.$1:UNITID AS InstitutionIdentifier
+    FROM @IPEDS_EFFY S;
+
+$1 = positional attribute in staged file
+An alias InstitutionIdentifier to the column
+           name just like in regular SQL.
+</pre></div>
+</div>
+<p>If this JSON object is stored in physical table called IPED Column jdata,
+we could read InstitutionIdentifier  as below</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>select jdata:UNITID AS InstitutionIdentifier
+   FROM IPED;
+
+jdata = the column name in the IPED table
+        type VARIANT holding JSON object
+UNITID = attribute in the JSON schema
+</pre></div>
+</div>
+<p>The column that was returned in the previous step comes back with double quotes around it.
+Now we are going to cast that data into an actual data type.</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>select S.$1:UNITID::INTEGER
+     AS InstitutionIdentifier FROM @IPEDS_EFFY S;
+
+We used :: to cast to a INTEGER data type.
+</pre></div>
+</div>
+<p>We have ingested JSON formatted enrollment data into staged file &#64;IPEDS_EFFY.
+The following SQL shows content of JSON VARIANT converted to subcolumns with proper data type casting.
+These subcolumns data set will be used to populate operational data store.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Select from Staged file JSON data script</p>
@@ -400,6 +446,11 @@ $$;
 <h2>Enrollment load<a class="headerlink" href="#enrollment-load" title="Permalink to this headline">¶</a></h2>
 <p>We have created a table <strong>Enrollment</strong> in the servicing layer.
 Here is the script for creating the table Enrollment.</p>
+<p><strong>Enrollment</strong> table has links to the
+dimension table <strong>AcademicInstitution</strong>. The relationship represents the star schema of
+dimensional modelling architecture. This is made possible by
+adding the surrogate key column (<strong>AcademicInstitutionUniqueDWSID</strong>)
+of the dimension table <strong>AcademicInstitution</strong> to the fact table <strong>Enrollment</strong>.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Create Enrollment entity</p>
