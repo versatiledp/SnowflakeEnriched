@@ -59,8 +59,8 @@ listed in the configuration table along
 with the stored procedure.</p>
 <p><strong>Workflow administration:</strong>
 Workflow administration executes the list of stored procedures in the order defined by the
-IPEDS_Workflow table. For each procedure execution, it checks the row counts from the source and destination tables.
-At the end, it logs the details in the IPEDS_Audit table for further analysis.</p>
+<strong>IPEDS_Workflow</strong> table. For each procedure execution, it checks the row counts from the source and destination tables.
+At the end, it logs the details in the <strong>IPEDS_Audit</strong> table for further analysis.</p>
 <p><strong>Workflow audit:</strong>
 Workflow audit provides the details of the executions as well as row counts before and after.
 This audit table can be used to identify the number of records processed in each execution.</p>
@@ -76,7 +76,7 @@ other needs as per different requirements.</p>
 <li><p>ExecutionOrder - What is sequence for this step to be executed</p></li>
 </ul>
 </div></blockquote>
-<p>The following script is used to create the <strong>IPEDS_Workflow</strong> table.</p>
+<p>The following script is used to create the IPEDS_Workflow table.</p>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CREATE</span> <span class="n">OR</span> <span class="n">REPLACE</span> <span class="n">TABLE</span> <span class="n">IPEDS_Workflow</span>
 <span class="p">(</span> <span class="n">StageName</span> <span class="n">STRING</span><span class="p">,</span>
   <span class="n">ProcedureName</span> <span class="n">STRING</span><span class="p">,</span>
@@ -88,16 +88,17 @@ other needs as per different requirements.</p>
 </div>
 <p>We can easily enhance this framework with additional functionality, like actions on success/failure
 and parallel processing.
-The results of workflow steps are then stored in the <strong>IPEDS_Audit</strong> table.
+The results of workflow steps are then stored in the IPEDS_Audit table.
 The IPEDS_Audit table holds information about the steps executed, including:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>row count from the source table</p></li>
-<li><p>row count before the process in the destination table</p></li>
-<li><p>row count after the step execution in the destination table</p></li>
-<li><p>date and time when the step finishes execution</p></li>
+<li><p>Row count from the source table.</p></li>
+<li><p>Row count before the process in the destination table.</p></li>
+<li><p>Row count after the step execution in the destination table.</p></li>
+<li><p>Date and time when the step finishes execution.</p></li>
 </ul>
 </div></blockquote>
+<p>The following script is used to create the TABLE IPEDS_Audit table.</p>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CREATE</span> <span class="n">OR</span> <span class="n">REPLACE</span> <span class="n">TABLE</span> <span class="n">IPEDS_Audit</span>
 <span class="p">(</span> <span class="n">StageName</span> <span class="n">STRING</span><span class="p">,</span>
   <span class="n">ProcedureName</span> <span class="n">STRING</span><span class="p">,</span>
@@ -246,8 +247,8 @@ the output table name, and sequence number to execute this SP.</p>
 </div>
 <p>The stored procedure <strong>pr_IPEDS_Process</strong> is used as a master controller.
 When we call this controller, the following steps are executed.</p>
-<p>All data from the <strong>IPEDS_Workflow</strong> table is read in order of ExecutionOrder.
-For each of the rows,</p>
+<p>All data from the IPEDS_Workflow table is read in order of ExecutionOrder.
+For each of the rows:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>It will record the row count from the source and destination table.</p></li>
@@ -379,9 +380,9 @@ $$;
 </pre></div>
 </div>
 </div>
-<p>These row counts with additional information are written to the <strong>IPEDS_Audit</strong> table.</p>
+<p>These row counts with additional information are written to the IPEDS_Audit table.</p>
 <p>The stored procedure <strong>pr_od_Truncate</strong> is written to truncate all the OD tables before we load data.
-Code for the stored procedure <strong>pr_od_Truncate</strong> is given below.</p>
+Code for the stored procedure pr_od_Truncate is given below.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Truncate OD workflow tables stored procedure</p>

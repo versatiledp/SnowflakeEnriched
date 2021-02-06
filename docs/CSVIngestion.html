@@ -70,8 +70,8 @@ Academic institution data files are received in CSV format.</p>
 <p>In this case, <strong>&#64;IPEDS_HD</strong>  is the staged file containing information about the academic institutions.
 From the staged files created using CSV format, data is retrieved using the SQL command <strong>SELECT $&lt;column_number&gt;</strong>.
 The <strong>&lt;column_number&gt;</strong> represents the order in which the columns are available in the text file starting with the number 1.
-In other words, $1 refers to first column values, $2 refers to second column values, and $n refers to nth column values from the staged file.
-For example: SELECT $1, $2 FROM &#64;IPEDS_HD;</p>
+In other words, $1 refers to first column values, $2 refers to second column values, and $n refers to nth column values from the staged file.</p>
+<p>For example: SELECT $1, $2 FROM &#64;IPEDS_HD;</p>
 <p>The above command returns the first and second column values of the institution file.</p>
 <p>Here is the output from &#64;IPEDS_HD using the SQL command. The header record from the input file is presented as a data record:</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT $1,$2,$3,$4,$5,$6,$7,<span class="ge">***</span>*,$71,$72 FROM @IPEDS_HD;
@@ -102,9 +102,8 @@ OD tables are defined by column types and descriptive column names.
 We can add more columns to
 the OD table if necessary. We have added 3 additional columns, namely AcademicYear,
 IngestedFileName, and RowNumber, to the OD table, to use them in the ETL/ELT process and audit purpose.</p>
-<p><strong>METADATA$FILENAME</strong> is a pseudocolumn that identifies the name of each staged data file
-,including its path in the stage.</p>
-<p><strong>METADATA$FILE_ROW_NUMBER</strong> is a pseudocolumn that identifies rowNumber of staged data file.</p>
+<p><strong>METADATA$FILENAME</strong> is a pseudocolumn that identifies the name of each staged data file, including its path in the stage.</p>
+<p><strong>METADATA$FILE_ROW_NUMBER</strong> is a pseudocolumn that identifies row number of staged data file.</p>
 <p>Once the column mapping is clearly defined, we have to populate our
 operational data table for academic institutions called <strong>od_AcademicInstitution</strong>
 out of this staged file <strong>&#64;IPEDS_HD</strong>.</p>
@@ -197,7 +196,7 @@ out of this staged file <strong>&#64;IPEDS_HD</strong>.</p>
 </div>
 <p>The additional columns like AcademicYear, IngestedFileName, and RowNumber
 are derived from the metadata of the staged file.</p>
-<p>We used the metadata columns <strong>METADATA$FILENAME</strong>, and <strong>METADATA$FILE_ROW_NUMBER</strong> for populating the new columns.</p>
+<p>We used the metadata columns <strong>METADATA$FILENAME</strong>, and <strong>METADATA$FILE_ROW_NUMBER</strong> for populating these new columns.</p>
 <p>Please note that, for the files having header rows, column names will be on the first row,
 and the data will start from the second row.</p>
 <p>The following Snowflake SQL will get us the filename and row number from the staged file.</p>
@@ -215,7 +214,7 @@ RowNumber  = METADATA$FILE_ROW_NUMBER
 <div class="section" id="snowflake-view-and-stored-procedure">
 <h2>Snowflake view and stored procedure<a class="headerlink" href="#snowflake-view-and-stored-procedure" title="Permalink to this headline">¶</a></h2>
 <p>We have introduced a Snowflake view and a stored procedure in between
-the staged files and operational data (OD) table to manage data processing using extract load and transfer (ELT).
+the staged files and operational data (OD) table to manage data processing using extract load and transform (ELT).
 The view is built on top of the staged file to do necessary mapping and create
 appropriate column names for the result set. The stored procedure consumes this
 view and loads the OD table for a specific year.</p>
@@ -335,8 +334,18 @@ the ingested file from the staged area and process the next year data.</p>
 <p>Stored procedures are created to perform one or more DML operations.
 They are simply a group of SQL statements that accept some input, perform some task, and may or may not return a value.
 In Snowflake, stored procedures are similar to functions, and can be executed multiple times.</p>
-<p>Stored procedures allow us to extend Snowflake SQL by combining it with JavaScript.
-It is created with a CREATE PROCEDURE command and executed with a CALL command.</p>
+<p>Stored procedures allow us to extend Snowflake SQL by combining it with JavaScript.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>The procedure is defined with argument.</p></li>
+<li><p>Runtime language is defined as javascript.</p></li>
+<li><p>Procedure returns a string.</p></li>
+<li><p>JavaScript variable is assigned SQL text.</p></li>
+<li><p>Call <strong>snowflake.execute</strong> and pass the javascript variable with SQL text.</p></li>
+<li><p>Check the results of <strong>snowflake.execute</strong> call.</p></li>
+</ul>
+</div></blockquote>
+<p>Stored procedure is created with a CREATE PROCEDURE command and executed with a CALL command.</p>
 <p>We have created a process to load the OD table <strong>od_AcademicInstitution</strong> data from the view,
 one year of data at a time. For this purpose, we have created a stored procedure
 <strong>pr_od_AcademicInstitution_Load</strong>. This stored procedure takes a parameter
@@ -550,13 +559,13 @@ the surrogate key is placed in the fact table and a foreign key is defined to es
 <p>In the case of the dimension table <strong>AcademicInstitution</strong>, we have defined the
 column <strong>AcademicInstitutionUniqueDWSID</strong> as the primary key.
 This primary key gets a unique sequence value for every record inserted.
-The automatic sequencing is achieved in Snowflake by defining <strong>SEQUENCE</strong> and <strong>NEXTVAL</strong>.</p>
+The automatic sequencing is achieved in Snowflake by defining <strong>SEQUENCE</strong> and using with <strong>NEXTVAL</strong>.</p>
 <p>Here is the script for creating the sequence SEQ_IPEDS.</p>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CREATE</span> <span class="n">OR</span> <span class="n">REPLACE</span> <span class="n">SEQUENCE</span>
         <span class="n">SEQ_IPEDS_HD</span> <span class="n">START</span> <span class="o">=</span> <span class="mi">1</span> <span class="n">INCREMENT</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
 </pre></div>
 </div>
-<p>Snowflake handles JSON data by using a data type they call a VARIANT.
+<p>Snowflake handles JSON data by using a data type called a VARIANT.
 VARIANT allows semi-structured data to be loaded. Snowflake automatically discovers the attributes,
 keys, and the structure that exists in the JSON document from VARIANT datatype. We can also add statistics that enables optimization.
 Snowflake enables to reverse-engineer a JSON document from relational data.
@@ -1214,9 +1223,9 @@ Newly added columns are mapped with NULL for the year 2017.</p>
 change along with table change in the tables <strong>od_AcademicInstitution</strong> and <strong>AcademicInstitution</strong> .</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>View <strong>v_od_AcademicInstitution</strong> reads the data from stage table</p></li>
-<li><p>Stored procedure <strong>pr_od_AcademicInstitution_Load</strong> loads data to staging table</p></li>
-<li><p>Stored procedure <strong>pr_AcademicInstitution_Load</strong> processes dimension table</p></li>
+<li><p>View <strong>v_od_AcademicInstitution</strong> reads the data from stage table.</p></li>
+<li><p>Stored procedure <strong>pr_od_AcademicInstitution_Load</strong> loads data to staging table.</p></li>
+<li><p>Stored procedure <strong>pr_AcademicInstitution_Load</strong> processes dimension table.</p></li>
 </ul>
 </div></blockquote>
 <p>View code to accommodate staged file layout changes:</p>
@@ -1405,6 +1414,11 @@ WHERE
 </pre></div>
 </div>
 </div>
+<p>Data attributes associated with Carnegie classification are grouped
+into JSON object and stored in the servicing layer.
+Servicing layer entity has column with data type VARIANT to store this JSON object. When additional attributes
+are added/dropped in the input file, we only need to change JSON OBJECT_CONSTRUCT function to pass in additional
+attributes. There is no schema change needed in the servicing layer.</p>
 <p>Stored procedure <strong>pr_od_AcademicInstitution_Load</strong> is updated to accommodate
 structural changes in source files from 2018 onwards.</p>
 <div class="toggle docutils container">
@@ -1617,7 +1631,7 @@ in practice we would process only one year of data at a time.</p>
 as changes in ELT and the transformation layer. If data is processed without the change in code,
 it will result into bad attribute value mapping.</em></p>
 </div>
-<p>The stored procedure <strong>pr_AcademicInstitution_Load</strong> is modified to accommodate for the new columns added.</p>
+<p>The stored procedure <strong>pr_AcademicInstitution_Load</strong> is modified to accommodate the new columns added.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Alter AcademicInstitution load stored procedure</p>

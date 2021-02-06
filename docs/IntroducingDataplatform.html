@@ -92,7 +92,7 @@ sets are utilized in this layer to understand the underlying data landscape.</p>
 <div class="section" id="consumption-layer">
 <h3>Consumption layer<a class="headerlink" href="#consumption-layer" title="Permalink to this headline">¶</a></h3>
 <p>The consumption layer is also called the business intelligence layer. This layer
-receives results from the Analytical layer and presents the results
+receives results from the analytical layer and presents the results
 using visualization tools and
 business processes.</p>
 <p>The following diagram summarizes layers in data management solution.</p>
@@ -370,7 +370,7 @@ we can validate their availability.</p>
 <div class="section" id="load-the-files-to-internal-stage-for-ipeds">
 <h3>Load the files to internal stage for IPEDS<a class="headerlink" href="#load-the-files-to-internal-stage-for-ipeds" title="Permalink to this headline">¶</a></h3>
 <p>Connect to the Snowflake database using SnowSQL CLI and load the following files to the staging area.</p>
-<p>Load the CSV academic institution (HDR) files.</p>
+<p>Load the CSV academic institution (HD) files.</p>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">put</span> <span class="n">file</span><span class="p">:</span><span class="o">//</span><span class="n">C</span><span class="p">:</span>\<span class="n">snowflake</span>\<span class="n">data</span>\<span class="nb">input</span>\<span class="n">HD2017</span><span class="o">.</span><span class="n">csv</span> <span class="nd">@IPEDS_HD</span><span class="p">;</span>
 <span class="n">put</span> <span class="n">file</span><span class="p">:</span><span class="o">//</span><span class="n">C</span><span class="p">:</span>\<span class="n">snowflake</span>\<span class="n">data</span>\<span class="nb">input</span>\<span class="n">HD2018</span><span class="o">.</span><span class="n">csv</span> <span class="nd">@IPEDS_HD</span><span class="p">;</span>
 <span class="n">put</span> <span class="n">file</span><span class="p">:</span><span class="o">//</span><span class="n">C</span><span class="p">:</span>\<span class="n">snowflake</span>\<span class="n">data</span>\<span class="nb">input</span>\<span class="n">HD2019</span><span class="o">.</span><span class="n">csv</span> <span class="nd">@IPEDS_HD</span><span class="p">;</span>
@@ -382,21 +382,21 @@ we can validate their availability.</p>
 <span class="n">put</span> <span class="n">file</span><span class="p">:</span><span class="o">//</span><span class="n">C</span><span class="p">:</span>\<span class="n">snowflake</span>\<span class="n">data</span>\<span class="nb">input</span>\<span class="n">effy2019_rv</span><span class="o">.</span><span class="n">json</span> <span class="nd">@IPEDS_EFFY</span><span class="p">;</span>
 </pre></div>
 </div>
-<p>Load the ORC institutional (IC) charges files.
+<p>Load the ORC institutional charges (IC)  files.
 All the ORC partitions are loaded into a specific folder of ORC staging area.</p>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">put</span> <span class="n">file</span><span class="p">:</span><span class="o">//</span><span class="n">C</span><span class="p">:</span>\<span class="n">snowflake</span>\<span class="n">data</span>\<span class="nb">input</span>\<span class="n">ic2017_ay_orc</span>\<span class="o">*.*</span> <span class="nd">@IPEDS_IC</span><span class="o">/</span><span class="mi">2017</span><span class="o">/</span><span class="p">;</span>
 <span class="n">put</span> <span class="n">file</span><span class="p">:</span><span class="o">//</span><span class="n">C</span><span class="p">:</span>\<span class="n">snowflake</span>\<span class="n">data</span>\<span class="nb">input</span>\<span class="n">ic2018_ay_orc</span>\<span class="o">*.*</span> <span class="nd">@IPEDS_IC</span><span class="o">/</span><span class="mi">2018</span><span class="o">/</span><span class="p">;</span>
 <span class="n">put</span> <span class="n">file</span><span class="p">:</span><span class="o">//</span><span class="n">C</span><span class="p">:</span>\<span class="n">snowflake</span>\<span class="n">data</span>\<span class="nb">input</span>\<span class="n">ic2019_ay_orc</span>\<span class="o">*.*</span> <span class="nd">@IPEDS_IC</span><span class="o">/</span><span class="mi">2019</span><span class="o">/</span><span class="p">;</span>
 </pre></div>
 </div>
-<p>Load the Parquet admission files.
+<p>Load the Parquet admission (ADM) files.
 All the Parquet partitions are loaded into specific folder of Parquet staging area.</p>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">put</span> <span class="n">file</span><span class="p">:</span><span class="o">//</span><span class="n">C</span><span class="p">:</span>\<span class="n">snowflake</span>\<span class="n">data</span>\<span class="nb">input</span>\<span class="n">adm2017</span><span class="o">.</span><span class="n">parquet</span>\<span class="o">*.*</span> <span class="nd">@IPEDS_ADM</span><span class="o">/</span><span class="mi">2017</span><span class="o">/</span><span class="p">;</span>
 <span class="n">put</span> <span class="n">file</span><span class="p">:</span><span class="o">//</span><span class="n">C</span><span class="p">:</span>\<span class="n">snowflake</span>\<span class="n">data</span>\<span class="nb">input</span>\<span class="n">adm2018</span><span class="o">.</span><span class="n">parquet</span>\<span class="o">*.*</span> <span class="nd">@IPEDS_ADM</span><span class="o">/</span><span class="mi">2018</span><span class="o">/</span><span class="p">;</span>
 <span class="n">put</span> <span class="n">file</span><span class="p">:</span><span class="o">//</span><span class="n">C</span><span class="p">:</span>\<span class="n">snowflake</span>\<span class="n">data</span>\<span class="nb">input</span>\<span class="n">adm2019</span><span class="o">.</span><span class="n">parquet</span>\<span class="o">*.*</span> <span class="nd">@IPEDS_ADM</span><span class="o">/</span><span class="mi">2019</span><span class="o">/</span><span class="p">;</span>
 </pre></div>
 </div>
-<p>Load the CSV code mapping files.</p>
+<p>Load the CSV code mapping (CM) files.</p>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">put</span> <span class="n">file</span><span class="p">:</span><span class="o">//</span><span class="n">C</span><span class="p">:</span>\<span class="n">snowflake</span>\<span class="n">data</span>\<span class="nb">input</span>\<span class="n">CodeMappingData</span><span class="o">.</span><span class="n">txt</span> <span class="nd">@IPEDS_CM</span><span class="p">;</span>
 </pre></div>
 </div>

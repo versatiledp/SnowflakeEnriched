@@ -41,18 +41,18 @@
 <h1>Parquet ingestion<a class="headerlink" href="#parquet-ingestion" title="Permalink to this headline">¶</a></h1>
 <p>Snowflake manages Parquet files similar to semi-structured JSON data from VARIANT type.
 We can convert VARIANT column Parquet data to a multi-column table with
-specifying column names and data type.</p>
+specifying column names and data types.</p>
 <p>Parquet data loaded into staged file is retrieved using following code.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT P.$1 Parquetdata FROM  @IPEDS_ADM P;
 </pre></div>
 </div>
-<p>The picture below shows Parquetdata data in the internal staged file.</p>
+<p>The picture below shows Parquet data in the internal staged file.</p>
 <div class="figure align-center">
 <img alt="images/ParquetInternalStagedDataSelect.JPG" src="images/ParquetInternalStagedDataSelect.JPG" />
 </div>
 <p>Parquet data is also stored as JSON document.
 JSON docuemnt processing can be used to transform Parquet data.</p>
-<p>Each row holds one JSON document, as shwon below.</p>
+<p>Each row holds one JSON document, as shown below.</p>
 <div class="figure align-center">
 <img alt="images/ParquetInternalStagedDataSelectSingleDocument.JPG" src="images/ParquetInternalStagedDataSelectSingleDocument.JPG" />
 </div>
@@ -453,7 +453,7 @@ The other variable sql_Command contains the main logic for updating the fact tab
 <p>We have used a <strong>LEFT OUTER JOIN</strong> with <strong>AcademicInstitution</strong> on <strong>InstitutionIdentifier</strong> to get the matching
 surrogate key from the dimension table AcademicInstitution.
 If we do not find the matching record, we assign -1 to the corresponding entry of <strong>AcademicInstitutionUniqueDWSID</strong> in the fact table.
-To achieve this, we use the <strong>IFNULL</strong> command as <strong>IFNULL(D.AcademicInstitutionUniqueDWSID, - 1)</strong></p>
+To achieve this, we use the <strong>IFNULL</strong> command as <strong>IFNULL(D.AcademicInstitutionUniqueDWSID, - 1)</strong>.</p>
 <p>Here is the Snowflake stored procedure for processing the AdmissionStat table.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">

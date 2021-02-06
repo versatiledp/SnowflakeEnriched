@@ -73,22 +73,20 @@ JSON string at read time (Schema-on-Read).</p>
     FROM @IPEDS_EFFY S;
 
 $1 = positional attribute in staged file
-An alias InstitutionIdentifier to the column
-           name just like in regular SQL.
+An alias InstitutionIdentifier to the column name just like in regular SQL.
 </pre></div>
 </div>
 <p>If this JSON object is stored in physical table called IPED Column jdata,
-we could read InstitutionIdentifier  as below</p>
+we could read InstitutionIdentifier  as below.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>select jdata:UNITID AS InstitutionIdentifier
    FROM IPED;
 
-jdata = the column name in the IPED table
-        type VARIANT holding JSON object
+jdata = the column name in the IPED table type VARIANT holding JSON object
 UNITID = attribute in the JSON schema
 </pre></div>
 </div>
 <p>The column that was returned in the previous step comes back with double quotes around it.
-Now we are going to cast that data into an actual data type.</p>
+Now we are going to cast that data into an actual data type as shown below.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>select S.$1:UNITID::INTEGER
      AS InstitutionIdentifier FROM @IPEDS_EFFY S;
 
@@ -97,7 +95,7 @@ We used :: to cast to a INTEGER data type.
 </div>
 <p>We have ingested JSON formatted enrollment data into staged file &#64;IPEDS_EFFY.
 The following SQL shows content of JSON VARIANT converted to subcolumns with proper data type casting.
-These subcolumns data set will be used to populate operational data store.</p>
+These subcolumns dataset will be used to populate operational data store.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Select from Staged file JSON data script</p>
@@ -445,10 +443,10 @@ $$;
 <div class="section" id="enrollment-load">
 <h2>Enrollment load<a class="headerlink" href="#enrollment-load" title="Permalink to this headline">¶</a></h2>
 <p>We have created a table <strong>Enrollment</strong> in the servicing layer.
-Here is the script for creating the table Enrollment.</p>
-<p><strong>Enrollment</strong> table has links to the
+Here is the script for creating the table Enrollment.
+<strong>Enrollment</strong> table has links to the
 dimension table <strong>AcademicInstitution</strong>. The relationship represents the star schema of
-dimensional modelling architecture. This is made possible by
+dimensional modeling architecture. This is made possible by
 adding the surrogate key column (<strong>AcademicInstitutionUniqueDWSID</strong>)
 of the dimension table <strong>AcademicInstitution</strong> to the fact table <strong>Enrollment</strong>.</p>
 <div class="toggle docutils container">
@@ -518,6 +516,18 @@ for that year and then re-inserts them to <strong>Enrollment</strong> from that 
 To do so, we read the imputation column to obtain the total number of imputed and reported variable counts,
 which we store in <strong>VariablesReportedCount</strong> and  <strong>VariablesImputedCount</strong>.
 Then, we calculate their percentages and store them in <strong>ImputationVarPercent</strong> and <strong>ReportedVarPercent</strong>, respectively.</p>
+<p>Stored procedures <strong>pr_Enrollment_Load</strong> executes multiple SQL statments.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>The procedure is defined with argument.</p></li>
+<li><p>Runtime language is defined as javascript.</p></li>
+<li><p>Procedure returns a string.</p></li>
+<li><p>Multiple JavaScript variables are used to assign different SQL text.</p></li>
+<li><p>These variables are combined into string array.</p></li>
+<li><p>For loop is used to execute all SQL commands by calling <strong>snowflake.execute</strong> and passing the javascript variable with SQL text.</p></li>
+<li><p>Check the results on each call of <strong>snowflake.execute</strong>.</p></li>
+</ul>
+</div></blockquote>
 <p><strong>pr_Enrollment_Load</strong> has the script for the stored procedure, as follows.
 The data transformation needed to get <strong>ImputationVarPercent</strong> and <strong>ReportedVarPercent</strong> is performed in the same stored procedure.</p>
 <div class="toggle docutils container">

@@ -41,7 +41,7 @@
 <h1>ORC ingestion<a class="headerlink" href="#orc-ingestion" title="Permalink to this headline">¶</a></h1>
 <p>Snowflake manages AVRO, ORC files similar to semi-structured JSON data from VARIANT type.
 We can convert VARIANT column ORC data to a multi-column table with
-specifying column names and data type.</p>
+specifying column names and data types.</p>
 <p>ORC data loaded into staged file is retrieved using following code.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT O.$1 JASONdata FROM  @IPEDS_IC O;
 </pre></div>
@@ -50,7 +50,7 @@ specifying column names and data type.</p>
 <div class="figure align-center">
 <img alt="images/ORCInternalStagedDataSelect.JPG" src="images/ORCInternalStagedDataSelect.JPG" />
 </div>
-<p>ORC data is stored as JSON document. JSON docuemnt processing can be used to transform ORC data.</p>
+<p>ORC data is stored as JSON document. JSON document processing can be used to transform ORC data.</p>
 <p>Each row holds one JSON document, as shwon below.</p>
 <div class="figure align-center">
 <img alt="images/ORCInternalStagedDataSelectSingleDocument.JPG" src="images/ORCInternalStagedDataSelectSingleDocument.JPG" />
@@ -907,7 +907,7 @@ $$
 <div class="section" id="servicing-layer-data-structure">
 <h2>Servicing layer data structure<a class="headerlink" href="#servicing-layer-data-structure" title="Permalink to this headline">¶</a></h2>
 <p>We create a fact tables for
-institutional charge data called</p>
+institutional charge data called:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p><strong>InstitutionalCharge</strong></p></li>
@@ -1938,8 +1938,8 @@ to <strong>v_od_InstitutionalChargeByResidencyType</strong> and <strong>v_od_Ins
 <p>We store JSON objects in the OD layer to simplify the load.
 As new attributes are added, it is easy to manage data ingestion.
 JSON data structure is easy to consume in the application layer, as we will further detail in the next section.</p>
-<div class="section" id="change-institutional-charge-operational-datastore">
-<h3>Change institutional charge operational datastore<a class="headerlink" href="#change-institutional-charge-operational-datastore" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="change-in-institutional-charge-operational-datastore">
+<h3>Change in institutional charge operational datastore<a class="headerlink" href="#change-in-institutional-charge-operational-datastore" title="Permalink to this headline">¶</a></h3>
 <p>The staged file data is grouped into three JSON objects:</p>
 <ul class="simple">
 <li><p>Charges by academic branch</p></li>
@@ -2281,9 +2281,13 @@ $$
 <div class="section" id="views-for-servicing-layer">
 <h3>Views for servicing layer<a class="headerlink" href="#views-for-servicing-layer" title="Permalink to this headline">¶</a></h3>
 <p>The JSON VARIANT data type is used to re-create three views:</p>
-<p><strong>v_od_InstitutionalChargeByAcademicBranch</strong></p>
-<p><strong>v_od_InstitutionalChargeByCategory</strong></p>
-<p><strong>v_od_InstitutionalChargeByResidencyType</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>v_od_InstitutionalChargeByAcademicBranch</p></li>
+<li><p>v_od_InstitutionalChargeByCategory</p></li>
+<li><p>v_od_InstitutionalChargeByResidencyType</p></li>
+</ul>
+</div></blockquote>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Create OD InstitutionalChargeByAcademicBranch view for alternative approach</p>
@@ -2738,7 +2742,7 @@ Finally, we detailed an alternative approach using the JSON VARIANT data type to
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#alternative-approach">Alternative approach</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#change-institutional-charge-operational-datastore">Change institutional charge operational datastore</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#change-in-institutional-charge-operational-datastore">Change in institutional charge operational datastore</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#stored-procedure-to-load-od-table">Stored procedure to load OD table</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#views-for-servicing-layer">Views for servicing layer</a></li>
 </ul>
