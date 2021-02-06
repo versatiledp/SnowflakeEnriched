@@ -522,9 +522,10 @@ Then, we calculate their percentages and store them in <strong>ImputationVarPerc
 <li><p>The procedure is defined with argument.</p></li>
 <li><p>Runtime language is defined as javascript.</p></li>
 <li><p>Procedure returns a string.</p></li>
-<li><p>Multiple JavaScript variables are used to assign different SQL text.</p></li>
+<li><p>Multiple JavaScript variables are used.</p></li>
+<li><p>Single sql command/text is assigned to one JavaScript variable.</p></li>
 <li><p>These variables are combined into string array.</p></li>
-<li><p>For loop is used to execute all SQL commands by calling <strong>snowflake.execute</strong> and passing the javascript variable with SQL text.</p></li>
+<li><p>For loop is used to execute all SQL commands by calling <strong>snowflake.execute</strong> and passing the javascript variable.</p></li>
 <li><p>Check the results on each call of <strong>snowflake.execute</strong>.</p></li>
 </ul>
 </div></blockquote>
