@@ -68,7 +68,7 @@ JSON string at read time (Schema-on-Read).</p>
 <div class="figure align-center">
 <img alt="images/jsonInternalStagedDataSelectSingleDocument.JPG" src="images/jsonInternalStagedDataSelectSingleDocument.JPG" />
 </div>
-<p>Let us reterivew column InstitutionIdentifier from JSON object in staged file.</p>
+<p>Let us retrieve column InstitutionIdentifier from JSON object in staged file.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>select S.$1:UNITID AS InstitutionIdentifier
     FROM @IPEDS_EFFY S;
 
@@ -77,7 +77,7 @@ An alias InstitutionIdentifier to the column name just like in regular SQL.
 </pre></div>
 </div>
 <p>If this JSON object is stored in physical table called IPED Column jdata,
-we could read InstitutionIdentifier  as below.</p>
+we could read InstitutionIdentifier as below.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>select jdata:UNITID AS InstitutionIdentifier
    FROM IPED;
 
@@ -443,12 +443,12 @@ $$;
 <div class="section" id="enrollment-load">
 <h2>Enrollment load<a class="headerlink" href="#enrollment-load" title="Permalink to this headline">¶</a></h2>
 <p>We have created a table <strong>Enrollment</strong> in the servicing layer.
-Here is the script for creating the table Enrollment.
 <strong>Enrollment</strong> table has links to the
 dimension table <strong>AcademicInstitution</strong>. The relationship represents the star schema of
 dimensional modeling architecture. This is made possible by
 adding the surrogate key column (<strong>AcademicInstitutionUniqueDWSID</strong>)
-of the dimension table <strong>AcademicInstitution</strong> to the fact table <strong>Enrollment</strong>.</p>
+of the dimension table <strong>AcademicInstitution</strong> to the fact table <strong>Enrollment</strong>.
+Here is the script for creating the table Enrollment.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Create Enrollment entity</p>

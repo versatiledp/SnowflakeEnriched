@@ -565,7 +565,7 @@ The automatic sequencing is achieved in Snowflake by defining <strong>SEQUENCE</
         <span class="n">SEQ_IPEDS_HD</span> <span class="n">START</span> <span class="o">=</span> <span class="mi">1</span> <span class="n">INCREMENT</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
 </pre></div>
 </div>
-<p>Snowflake handles JSON data by using a data type called a VARIANT.
+<p>Snowflake stores JSON objects as VARIANT data type.
 VARIANT allows semi-structured data to be loaded. Snowflake automatically discovers the attributes,
 keys, and the structure that exists in the JSON document from VARIANT datatype. We can also add statistics that enables optimization.
 Snowflake enables to reverse-engineer a JSON document from relational data.
@@ -1220,7 +1220,7 @@ This has made it possible to ingest files with different structures for 2017 and
 <p>The deleted columns are populated with NULL values for the year greater than 2017.
 Newly added columns are mapped with NULL for the year 2017.</p>
 <p>We have to modify the following Snowflake data objects (views/stored procedures) to incorporate the above structural
-change along with table change in the tables <strong>od_AcademicInstitution</strong> and <strong>AcademicInstitution</strong> .</p>
+change along with table change in the tables <strong>od_AcademicInstitution</strong> and <strong>AcademicInstitution</strong>.</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>View <strong>v_od_AcademicInstitution</strong> reads the data from stage table.</p></li>
