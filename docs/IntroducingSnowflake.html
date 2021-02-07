@@ -59,7 +59,7 @@ solution that makes it possible for organizations to:</p>
 <li><p>Solves concurrency issues with its multi-cluster warehouse architecture.</p></li>
 <li><p>Loads and processes the data quickly.</p></li>
 <li><p>Supports auto-scaling, big data workload, and data sharing.</p></li>
-<li><p>Allows a user to scale up the virtual warehouse and provides elasticity as per needs.</p></li>
+<li><p>Easily scale up the virtual warehouse and provides elasticity as per needs.</p></li>
 <li><p>Intuitive and simple interface.</p></li>
 <li><p>Fully automated platform.</p></li>
 </ul>
@@ -82,8 +82,8 @@ including sessions, authentication, SQL compilation, encryption, etc.</p>
 </div>
 <p>Source: <a class="reference external" href="https://www.snowflake.com/blog/5-reasons-to-love-snowflakes-architecture-for-your-data-warehouse/" target="_blank">https://www.snowflake.com/blog/5-reasons-to-love-snowflakes-architecture-for-your-data-warehouse/</a></p>
 </div>
-<div class="section" id="connecting-to-snowflake">
-<h3>Connecting to Snowflake<a class="headerlink" href="#connecting-to-snowflake" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="snowflake-connectivity">
+<h3>Snowflake connectivity<a class="headerlink" href="#snowflake-connectivity" title="Permalink to this headline">¶</a></h3>
 <p>Snowflake provides a few different methods to create database connectivity:</p>
 <ul class="simple">
 <li><p>ODBC and JDBC drivers can directly access a Snowflake instance.</p></li>
@@ -106,8 +106,8 @@ It supports JSON to a great extent, and furthermore:</p>
 AWS, and GCP. In other words, the Snowflake data warehouse can be built on top of Amazon web services, Microsoft Azure
 cloud infrastructure, or Google cloud.</p>
 </div>
-<div class="section" id="setting-virtual-warehouse">
-<h3>Setting virtual warehouse<a class="headerlink" href="#setting-virtual-warehouse" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="setting-up-virtual-warehouse">
+<h3>Setting up virtual warehouse<a class="headerlink" href="#setting-up-virtual-warehouse" title="Permalink to this headline">¶</a></h3>
 <p>Snowflake defines a virtual warehouse as a cluster of compute resources.
 The warehouse provides all the resources like CPU, memory, and temporary storage
 required to start using Snowflake.</p>
@@ -243,9 +243,8 @@ multiple tables. It is accessible by multiple users. File formats can be specifi
 <div class="section" id="summary">
 <h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
 <p>This chapter has covered Snowflake architectural components, data features, and the various tools used in data loading.
-Introducing multiple ways of connecting to Snowflake services alongside learning about the supported data formats
-provides a better understanding of the data platform
-project outlined in this book. The chapter also summarized various methods for loading files into
+Multiple ways of connecting to Snowflake services alongside learning about the supported data formats
+are outlined in this chapter. It also summarized various methods for loading files into
 Snowflake using the user stage, table stage, and internal named stage database objects.</p>
 <table class="docutils align-default">
 <colgroup>
@@ -287,9 +286,9 @@ Snowflake using the user stage, table stage, and internal named stage database o
 <li class="toctree-l2"><a class="reference internal" href="#snowflake">Snowflake</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#snowflake-advantages">Snowflake advantages</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#snowflake-architecture">Snowflake architecture</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#connecting-to-snowflake">Connecting to Snowflake</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#snowflake-connectivity">Snowflake connectivity</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#snowflake-data-features">Snowflake data features</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#setting-virtual-warehouse">Setting virtual warehouse</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setting-up-virtual-warehouse">Setting up virtual warehouse</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#snowflake-data-load">Snowflake data load</a><ul>

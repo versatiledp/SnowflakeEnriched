@@ -65,13 +65,13 @@ profitability.</p>
 </div>
 <div class="section" id="data-processing-and-storage-layer">
 <h3>Data processing and storage layer<a class="headerlink" href="#data-processing-and-storage-layer" title="Permalink to this headline">¶</a></h3>
-<p>The data processing layer receives data from the data sources, converts the data into a format
-comprehensible for the data servicing and analytics tool, and stores the
+<p>The data processing layer receives data from the data sources, converts the data into a comprehensible
+format for the data servicing and analytics tool, and stores the
 data. For example, large amounts of data are
 stored in the Hadoop distributed file system store (HDFS). Large data
 processing is performed through Hadoop/Spark system. Data may
 undergo format changes as it is processed through these systems. Cloud
-service providers like Amazon, Google, and Microsoft allow a user to build and
+service providers like Amazon, Google, and Microsoft allows to build and
 operate data-centric applications with an infinite scale. Robust and
 inexpensive storage is fundamental to the operation and scalability of
 big data architecture.</p>
@@ -79,9 +79,9 @@ big data architecture.</p>
 are used as standalone solutions for big data processing, or in
 combination with the Hadoop/Spark ecosystems.</p>
 </div>
-<div class="section" id="analytics-layer">
-<h3>Analytics layer<a class="headerlink" href="#analytics-layer" title="Permalink to this headline">¶</a></h3>
-<p>The Analytics layer reads the data ingested and transformed by the data
+<div class="section" id="analytical-layer">
+<h3>Analytical layer<a class="headerlink" href="#analytical-layer" title="Permalink to this headline">¶</a></h3>
+<p>The Analytical layer reads the data ingested and transformed by the data
 processing and storage layer of big data ecosystem. This layer consists of a
 varities of data analytic tools for different user requirements and
 provides data discovery mechanisms from large volumes of
@@ -138,16 +138,20 @@ with no transformations applied.</p>
 </div>
 <div class="section" id="operational-datastore-od">
 <h3>Operational datastore (OD)<a class="headerlink" href="#operational-datastore-od" title="Permalink to this headline">¶</a></h3>
-<p>This is the first level of the physical table created in Snowflake, and consists of data
+<p>An operational datastore (OD) is a central store that provides a snapshot of
+the latest data from multiple transactional systems.
+It enables organizations to combine data in its original format
+from various sources into a single destination to make it available for further processing.
+These are initial physical tables created in Snowflake, and consists of data
 that has undergone little to no transformation.
 The OD table structure very closely resembles that of the staged file with proper data types and column names, alongside
 additional columns to help track on data lineage.</p>
 </div>
-<div class="section" id="servicing-layer-entities">
-<h3>Servicing layer entities<a class="headerlink" href="#servicing-layer-entities" title="Permalink to this headline">¶</a></h3>
-<p>This layer consists of the last transformations performed on data, after which it is
-ready for consumption by the business intelligence layer. OD tables are used as an input source to populate the
-servicing layer tables.</p>
+<div class="section" id="servicing-layer">
+<h3>Servicing layer<a class="headerlink" href="#servicing-layer" title="Permalink to this headline">¶</a></h3>
+<p>This layer consists of the data that has undergone all the transformations and it is
+ready for consumption to the business intelligence layer.
+OD tables serves as input to transformation process to populate servicing layer tables.</p>
 </div>
 <div class="section" id="dataflow-summary">
 <h3>Dataflow summary<a class="headerlink" href="#dataflow-summary" title="Permalink to this headline">¶</a></h3>
@@ -166,11 +170,11 @@ After staging load, all data processing and transformation is performed using st
 </div>
 </div>
 </div>
-<div class="section" id="data-files">
-<h2>Data files<a class="headerlink" href="#data-files" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="source-data-files">
+<h2>Source data files<a class="headerlink" href="#source-data-files" title="Permalink to this headline">¶</a></h2>
 <p>The files used in this book are:</p>
-<div class="section" id="institutional-characteristics-files-hdr">
-<h3>Institutional characteristics files [HDR]<a class="headerlink" href="#institutional-characteristics-files-hdr" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="institutional-characteristics-hdr">
+<h3>Institutional characteristics [HDR]<a class="headerlink" href="#institutional-characteristics-hdr" title="Permalink to this headline">¶</a></h3>
 <p>These files contain directory information for every institution in the IPEDS universe.
 The files include the name, address, city, state, zip code and various URL links to the institution’s home page,
 admissions and financial aid offices, and net price calculator.</p>
@@ -199,8 +203,8 @@ identified by the value of the first column in the file.</p>
 </div>
 <div class="section" id="data-collection-notes">
 <h2>Data collection notes<a class="headerlink" href="#data-collection-notes" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="academic-institution">
-<h3>Academic institution<a class="headerlink" href="#academic-institution" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="academic-institution-hdr">
+<h3>Academic institution [HDR]<a class="headerlink" href="#academic-institution-hdr" title="Permalink to this headline">¶</a></h3>
 <p>These are CSV files.
 The institutional characteristics header files are directly ingested into
 Snowflake staging from the source system.
@@ -211,8 +215,8 @@ The OD layer is used to process data for the destination layer with additional t
 <img alt="images/csvIngestion.jpg" src="images/csvIngestion.jpg" />
 </div>
 </div>
-<div class="section" id="enrollment">
-<h3>Enrollment<a class="headerlink" href="#enrollment" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="enrollment-effy">
+<h3>Enrollment [EFFY]<a class="headerlink" href="#enrollment-effy" title="Permalink to this headline">¶</a></h3>
 <p>EFFY files are converted to JSON format. JSON is a common open standard file and data interchange format that uses human-readable text to store and transmit data objects consisting of attribute value pairs and array data types. This data format is used in a diverse range of applications and serves as a replacement for XML in AJAX systems.</p>
 <p>In our use-case, we are assuming enrollment (EFFY) files are ingested in the JSON format directly to Snowflake.
 ELT layer defines the mapped attributes for JSON with data types.
@@ -222,8 +226,8 @@ The stage layer is used to process data for the destination layer with additiona
 <img alt="images/jsonIngestion.jpg" src="images/jsonIngestion.jpg" />
 </div>
 </div>
-<div class="section" id="institutional-charges">
-<h3>Institutional charges<a class="headerlink" href="#institutional-charges" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="institutional-charges-ic">
+<h3>Institutional charges [IC]<a class="headerlink" href="#institutional-charges-ic" title="Permalink to this headline">¶</a></h3>
 <p>IC*AY files are converted to ORC format. The Optimized Row Columnar (ORC) file format provides a highly efficient way to store Hive data. ORC files improve performance when Hive is reading, writing, and processing data. The compact nature of this format is ideal, and enables skipping over irrelevant parts without needing large, complex, or manually maintained indices.</p>
 <p>In our use case, we are assuming that institutional charge  (ICAY) text files are ingested in HDFS and processed through Hive. The output of the big data processing (ORC files) is loaded in Snowflake.
 The ELT layer defines the schema for ORC file with data types.
@@ -233,8 +237,8 @@ The stage layer is used to process data for the destination layer with additiona
 <img alt="images/orcIngestion.jpg" src="images/orcIngestion.jpg" />
 </div>
 </div>
-<div class="section" id="admission-data">
-<h3>Admission data<a class="headerlink" href="#admission-data" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="admission-data-adm">
+<h3>Admission data [ADM]<a class="headerlink" href="#admission-data-adm" title="Permalink to this headline">¶</a></h3>
 <p>Admission data (ADM) files are available in the Parquet data format.
 Parquet, an open-source file format for Hadoop stores nested data structures in a flat columnar format.
 Compared to a traditional approach where data is stored in a row-oriented approach, Parquet is more efficient
@@ -269,10 +273,7 @@ Using these OD tables, servicing layer tables of the data-warehouse are populate
 </div>
 <div class="section" id="ingesting-snowflake-stage">
 <h2>Ingesting Snowflake stage<a class="headerlink" href="#ingesting-snowflake-stage" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="internal-stage-area-for-ipeds">
-<h3>Internal stage area for IPEDS<a class="headerlink" href="#internal-stage-area-for-ipeds" title="Permalink to this headline">¶</a></h3>
 <p>Internal named stage needs to be created for each of the file formats before loading data.</p>
-</div>
 <div class="section" id="create-internal-stage-area-ipeds">
 <h3>Create internal stage area IPEDS<a class="headerlink" href="#create-internal-stage-area-ipeds" title="Permalink to this headline">¶</a></h3>
 <p>First, create the file formats and stage area for the following data formats:</p>
@@ -503,19 +504,19 @@ summarized all the data formats we will be dealing with in the processing layer 
 <li class="toctree-l2"><a class="reference internal" href="#data-platform-overview">Data platform overview</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#data-source-layer">Data source layer</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#data-processing-and-storage-layer">Data processing and storage layer</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#analytics-layer">Analytics layer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#analytical-layer">Analytical layer</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#consumption-layer">Consumption layer</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#project-data-source">Project data source</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#staged-file">Staged file</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#operational-datastore-od">Operational datastore (OD)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#servicing-layer-entities">Servicing layer entities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#servicing-layer">Servicing layer</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#dataflow-summary">Dataflow summary</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#data-files">Data files</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#institutional-characteristics-files-hdr">Institutional characteristics files [HDR]</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#source-data-files">Source data files</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#institutional-characteristics-hdr">Institutional characteristics [HDR]</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#month-enrollment-effy">12-Month enrollment [EFFY]</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#admissions-and-test-scores-adm">Admissions and test scores [ADM]</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#student-charges-for-academic-year-programs-ic-ay">Student charges for academic year programs [IC*AY]</a></li>
@@ -523,15 +524,14 @@ summarized all the data formats we will be dealing with in the processing layer 
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#data-collection-notes">Data collection notes</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#academic-institution">Academic institution</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#enrollment">Enrollment</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#institutional-charges">Institutional charges</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#admission-data">Admission data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#academic-institution-hdr">Academic institution [HDR]</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#enrollment-effy">Enrollment [EFFY]</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#institutional-charges-ic">Institutional charges [IC]</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#admission-data-adm">Admission data [ADM]</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#reference-lookup-data">Reference/Lookup data</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#ingesting-snowflake-stage">Ingesting Snowflake stage</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#internal-stage-area-for-ipeds">Internal stage area for IPEDS</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#create-internal-stage-area-ipeds">Create internal stage area IPEDS</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#load-the-files-to-internal-stage-for-ipeds">Load the files to internal stage for IPEDS</a></li>
 </ul>
