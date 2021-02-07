@@ -65,9 +65,6 @@ JSON string at read time (Schema-on-Read).</p>
 <div class="figure align-center">
 <img alt="images/jsonInternalStagedDataSelect.JPG" src="images/jsonInternalStagedDataSelect.JPG" />
 </div>
-<div class="figure align-center">
-<img alt="images/jsonInternalStagedDataSelectSingleDocument.JPG" src="images/jsonInternalStagedDataSelectSingleDocument.JPG" />
-</div>
 <p>Let us retrieve column InstitutionIdentifier from JSON object in staged file.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>select S.$1:UNITID AS InstitutionIdentifier
     FROM @IPEDS_EFFY S;
