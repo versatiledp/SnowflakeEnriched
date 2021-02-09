@@ -57,7 +57,7 @@ data with SQL and join it to other data without having to do any transformations
 At load time, Snowflake parses the JSON based on the key-value pairs.
 Structural information is derived based on the schema definition embedded in
 JSON string at read time (Schema-on-Read).</p>
-<p>JSON data loaded into staged file is retrieved using following code.</p>
+<p>JSON data from the staged file is retrieved using the following code.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT N.$1 JASONdata FROM  @IPEDS_IC N;
 </pre></div>
 </div>
@@ -251,7 +251,7 @@ Here is the CREATE command for the OD table.</p>
 <p>Once the operational data table is created,
 we will be populating the OD table with JSON-formatted data from the source system.
 We employ an extract-and-load approach using stored procedures to load OD tables.
-The stored procedure <strong>pr_od_Enrollment_Load</strong> has input parameter called YEAR.
+The stored procedure <strong>pr_od_Enrollment_Load</strong> has an input parameter called YEAR.
 Here is the Snowflake script for creating the stored procedure <strong>pr_od_Enrollment_Load</strong>.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
@@ -513,7 +513,7 @@ for that year and then re-inserts them to <strong>Enrollment</strong> from that 
 To do so, we read the imputation column to obtain the total number of imputed and reported variable counts,
 which we store in <strong>VariablesReportedCount</strong> and  <strong>VariablesImputedCount</strong>.
 Then, we calculate their percentages and store them in <strong>ImputationVarPercent</strong> and <strong>ReportedVarPercent</strong>, respectively.</p>
-<p>Stored procedures <strong>pr_Enrollment_Load</strong> executes multiple SQL statments.</p>
+<p>Stored procedure <strong>pr_Enrollment_Load</strong> executes multiple SQL statments.</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>The procedure is defined with argument.</p></li>

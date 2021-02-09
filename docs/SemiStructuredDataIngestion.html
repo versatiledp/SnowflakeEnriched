@@ -39,6 +39,23 @@
             
   <div class="section" id="semi-structured-data-load">
 <h1>Semi-structured data Load<a class="headerlink" href="#semi-structured-data-load" title="Permalink to this headline">¶</a></h1>
+<p>By definition, semi-structured data is information that does not
+reside in a relational database. It has properties that make
+it easier to analyze. With some process, we can store them in the
+relation database. In our case,a single lookup file generated from the
+source system contains data for multiple entities. Based on the
+first attribute in the file, we can derive the name of an underlying entity.</p>
+<p>Data for multiple entities listed below is available in the single file.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Institution status</p></li>
+<li><p>Carnegie classification</p></li>
+<li><p>Economic bureau region</p></li>
+<li><p>TitleIV eligibility code</p></li>
+<li><p>Institution type</p></li>
+<li><p>** … **</p></li>
+</ul>
+</div></blockquote>
 <div class="section" id="lookup-entities">
 <h2>Lookup entities<a class="headerlink" href="#lookup-entities" title="Permalink to this headline">¶</a></h2>
 <p>Files generated at the source system contain code value pair records for multiple lookup tables.

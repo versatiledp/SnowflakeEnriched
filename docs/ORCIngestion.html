@@ -39,10 +39,15 @@
             
   <div class="section" id="orc-ingestion">
 <h1>ORC ingestion<a class="headerlink" href="#orc-ingestion" title="Permalink to this headline">¶</a></h1>
+<p>Optimized Row Columnar(ORC) is a self-describing type-aware columnar
+file format designed for Hadoop workloads. It is optimized for large streaming reads,
+but with integrated support for finding required rows quickly. Storing data in a columnar
+format lets the reader read, decompress, and process only the values that are
+required for the current process.</p>
 <p>Snowflake manages AVRO, ORC files similar to semi-structured JSON data from VARIANT type.
-We can convert VARIANT column ORC data to a multi-column table with
+We can convert VARIANT  ORC data column to a multi-column table with
 specifying column names and data types.</p>
-<p>ORC data loaded into staged file is retrieved using following code.</p>
+<p>ORC data loaded into staged file is retrieved using the following code.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT O.$1 JASONdata FROM  @IPEDS_IC O;
 </pre></div>
 </div>
@@ -51,10 +56,284 @@ specifying column names and data types.</p>
 <img alt="images/ORCInternalStagedDataSelect.JPG" src="images/ORCInternalStagedDataSelect.JPG" />
 </div>
 <p>ORC data is stored as JSON document. JSON document processing can be used to transform ORC data.</p>
+<p>We are using few Snowflake native functions to work with semi-structured JSON data.</p>
+<div class="section" id="functions-to-manage-semi-structured-data">
+<h2>Functions to manage semi-structured data<a class="headerlink" href="#functions-to-manage-semi-structured-data" title="Permalink to this headline">¶</a></h2>
+<p>JSON data sets are a simple concatenation of multiple key-value pairs.
+In this section, we are going to cover few new Snowflake functions FLATTEN(),
+ARRAY_SIZE(), LATERAL FLATTEN(), and PARSE_JSON().</p>
+<p>These functions are used to query the semi-structured data and convert
+semi-structured data to a relational format.</p>
+<p>FLATTEN() is a table function that extract the objects and keys into a separate table.
+It takes a VARIANT, OBJECT, or ARRAY column and produces a lateral view.</p>
+<p>PARSE_JSON() function takes a string as input and returns a JSON-compatible variant.</p>
+<p>ARRAY_SIZE() function returns size of array in the VARIANT value.</p>
+<p>LATERAL FLATTEN() is used to extract array from JSON data.</p>
+<p>Use the LATERAL FLATTEN function to flatten the data.</p>
+<div class="toggle docutils container">
+<div class="header docutils container">
+<p>Show/Hide JSON for: JSON used in these functions</p>
+</div>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>
+<span class="p">{</span><span class="s2">&quot;Name&quot;</span><span class="p">:</span><span class="s2">&quot;Rolando Aarons&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;Club&quot;</span><span class="p">:</span> <span class="s2">&quot;Newcastle United&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;Position&quot;</span><span class="p">:</span> <span class="s2">&quot;Midfielder&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;Appearances&quot;</span><span class="p">:</span> <span class="s2">&quot;14&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;Goals&quot;</span><span class="p">:</span> <span class="s2">&quot;4&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;Wins&quot;</span><span class="p">:</span> <span class="s2">&quot;3&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;Losses&quot;</span><span class="p">:</span> <span class="s2">&quot;9&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;Yellow Cards&quot;</span><span class="p">:</span> <span class="s2">&quot;2&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;Red Cards&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;Fouls&quot;</span><span class="p">:</span> <span class="s2">&quot;10&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;GoalsStatistics&quot;</span><span class="p">:</span> <span class="p">[</span>
+                        <span class="p">{</span><span class="s2">&quot;Season&quot;</span><span class="p">:</span> <span class="s2">&quot;2014-15&quot;</span><span class="p">,</span> <span class="s2">&quot;Goals&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span>
+                        <span class="p">{</span><span class="s2">&quot;Season&quot;</span><span class="p">:</span> <span class="s2">&quot;2015-16&quot;</span><span class="p">,</span> <span class="s2">&quot;Goals&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
+                        <span class="p">{</span><span class="s2">&quot;Season&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-17&quot;</span><span class="p">,</span> <span class="s2">&quot;Goals&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span>
+                        <span class="p">{</span><span class="s2">&quot;Season&quot;</span><span class="p">:</span> <span class="s2">&quot;2017-18&quot;</span><span class="p">,</span> <span class="s2">&quot;Goals&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
+                        <span class="p">{</span><span class="s2">&quot;Season&quot;</span><span class="p">:</span> <span class="s2">&quot;2018-19&quot;</span><span class="p">,</span> <span class="s2">&quot;Goals&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span>
+                        <span class="p">{</span><span class="s2">&quot;Season&quot;</span><span class="p">:</span> <span class="s2">&quot;2019-20&quot;</span><span class="p">,</span> <span class="s2">&quot;Goals&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+                <span class="p">],</span>
+ <span class="s2">&quot;Division&quot;</span><span class="p">:[</span>
+                        <span class="p">{</span><span class="s2">&quot;Name&quot;</span><span class="p">:</span><span class="s2">&quot;Premier League&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;Season&quot;</span><span class="p">:[</span><span class="s2">&quot;2014-15&quot;</span><span class="p">,</span><span class="s2">&quot;2015-16&quot;</span><span class="p">,</span>
+                                <span class="s2">&quot;2017-18&quot;</span><span class="p">,</span><span class="s2">&quot;2018-19&quot;</span><span class="p">,</span><span class="s2">&quot;2019-20&quot;</span><span class="p">]},</span>
+                        <span class="p">{</span><span class="s2">&quot;Name&quot;</span><span class="p">:</span><span class="s2">&quot;Championship&quot;</span><span class="p">,</span>
+                                <span class="s2">&quot;Season&quot;</span><span class="p">:[</span><span class="s2">&quot;2016-17&quot;</span><span class="p">]}</span>
+                <span class="p">],</span>
+ <span class="s2">&quot;Value&quot;</span><span class="p">:</span><span class="s2">&quot;7500000&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;Wage&quot;</span><span class="p">:</span> <span class="s2">&quot;830000&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;ExtractDate&quot;</span><span class="p">:</span><span class="s2">&quot;2020-10-06&quot;</span>
+ <span class="p">},</span>
+<span class="p">{</span><span class="s2">&quot;Name&quot;</span><span class="p">:</span><span class="s2">&quot;Tammy Abraham&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;Club&quot;</span><span class="p">:</span> <span class="s2">&quot;Swansea City&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;Position&quot;</span><span class="p">:</span> <span class="s2">&quot;Forward&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;Appearances&quot;</span><span class="p">:</span> <span class="s2">&quot;33&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;Goals&quot;</span><span class="p">:</span> <span class="s2">&quot;69&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;Wins&quot;</span><span class="p">:</span> <span class="s2">&quot;6&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;Losses&quot;</span><span class="p">:</span> <span class="s2">&quot;18&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;Yellow cards&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;Red cards&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;Fouls&quot;</span><span class="p">:</span> <span class="s2">&quot;17&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;GoalsStatistics&quot;</span><span class="p">:</span> <span class="p">[</span>
+                        <span class="p">{</span><span class="s2">&quot;Season&quot;</span><span class="p">:</span> <span class="s2">&quot;2015-16&quot;</span><span class="p">,</span> <span class="s2">&quot;Goals&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span>
+                        <span class="p">{</span><span class="s2">&quot;Season&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-17&quot;</span><span class="p">,</span> <span class="s2">&quot;Goals&quot;</span><span class="p">:</span> <span class="mi">23</span><span class="p">},</span>
+                        <span class="p">{</span><span class="s2">&quot;Season&quot;</span><span class="p">:</span> <span class="s2">&quot;2017-18&quot;</span><span class="p">,</span> <span class="s2">&quot;Goals&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">},</span>
+                        <span class="p">{</span><span class="s2">&quot;Season&quot;</span><span class="p">:</span> <span class="s2">&quot;2018-19&quot;</span><span class="p">,</span> <span class="s2">&quot;Goals&quot;</span><span class="p">:</span> <span class="mi">25</span><span class="p">},</span>
+                        <span class="p">{</span><span class="s2">&quot;Season&quot;</span><span class="p">:</span> <span class="s2">&quot;2019-20&quot;</span><span class="p">,</span> <span class="s2">&quot;Goals&quot;</span><span class="p">:</span> <span class="mi">15</span><span class="p">},</span>
+                        <span class="p">{</span><span class="s2">&quot;Season&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-21&quot;</span><span class="p">,</span> <span class="s2">&quot;Goals&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+                <span class="p">],</span>
+ <span class="s2">&quot;Division&quot;</span><span class="p">:[</span>
+                        <span class="p">{</span><span class="s2">&quot;Name&quot;</span><span class="p">:</span><span class="s2">&quot;Premier League&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;Season&quot;</span><span class="p">:[</span><span class="s2">&quot;2015-16&quot;</span><span class="p">,</span><span class="s2">&quot;2017-18&quot;</span><span class="p">,</span><span class="s2">&quot;2018-19&quot;</span><span class="p">,</span>
+                                <span class="s2">&quot;2019-20&quot;</span><span class="p">,</span><span class="s2">&quot;2020-21&quot;</span><span class="p">]},</span>
+                        <span class="p">{</span><span class="s2">&quot;Name&quot;</span><span class="p">:</span><span class="s2">&quot;Championship&quot;</span><span class="p">,</span>
+                                <span class="s2">&quot;Season&quot;</span><span class="p">:[</span><span class="s2">&quot;2016-17&quot;</span><span class="p">,</span><span class="s2">&quot;2018-19&quot;</span><span class="p">]}</span>
+                        <span class="p">],</span>
+ <span class="s2">&quot;Value&quot;</span><span class="p">:</span><span class="s2">&quot;43300000&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;Wage&quot;</span><span class="p">:</span> <span class="s2">&quot;3000000&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;ExtractDate&quot;</span><span class="p">:</span><span class="s2">&quot;2020-10-06&quot;</span>
+ <span class="p">},</span>
+  <span class="p">{</span><span class="s2">&quot;Name&quot;</span><span class="p">:</span><span class="s2">&quot;Adrien Silva&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;Club&quot;</span><span class="p">:</span> <span class="s2">&quot;Leicester City&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;Position&quot;</span><span class="p">:</span> <span class="s2">&quot;Box-to-Box Midfielder&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;Appearances&quot;</span><span class="p">:</span> <span class="s2">&quot;13&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;Goals&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;Wins&quot;</span><span class="p">:</span> <span class="s2">&quot;3&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;Losses&quot;</span><span class="p">:</span> <span class="s2">&quot;7&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;Yellow cards&quot;</span><span class="p">:</span> <span class="s2">&quot;3&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;Red cards&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;Fouls&quot;</span><span class="p">:</span> <span class="s2">&quot;9&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;GoalsStatistics&quot;</span><span class="p">:</span> <span class="p">[</span>
+                        <span class="p">{</span><span class="s2">&quot;Season&quot;</span><span class="p">:</span> <span class="s2">&quot;2017-18&quot;</span><span class="p">,</span> <span class="s2">&quot;Goals&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span>
+                        <span class="p">{</span><span class="s2">&quot;Season&quot;</span><span class="p">:</span> <span class="s2">&quot;2018-19&quot;</span><span class="p">,</span> <span class="s2">&quot;Goals&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span>
+                        <span class="p">{</span><span class="s2">&quot;Season&quot;</span><span class="p">:</span> <span class="s2">&quot;2019-20&quot;</span><span class="p">,</span> <span class="s2">&quot;Goals&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span>
+                        <span class="p">{</span><span class="s2">&quot;Season&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-21&quot;</span><span class="p">,</span> <span class="s2">&quot;Goals&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+                        <span class="p">],</span>
+ <span class="s2">&quot;Division&quot;</span><span class="p">:[</span>
+                        <span class="p">{</span><span class="s2">&quot;Name&quot;</span><span class="p">:</span><span class="s2">&quot;Premier League&quot;</span><span class="p">,</span>
+                                <span class="s2">&quot;Season&quot;</span><span class="p">:[</span><span class="s2">&quot;2017-18&quot;</span><span class="p">,</span><span class="s2">&quot;2018-19&quot;</span><span class="p">]},</span>
+                        <span class="p">{</span><span class="s2">&quot;Name&quot;</span><span class="p">:</span><span class="s2">&quot;Ligue 1&quot;</span><span class="p">,</span>
+                                <span class="s2">&quot;Season&quot;</span><span class="p">:[</span><span class="s2">&quot;2018-19&quot;</span><span class="p">,</span><span class="s2">&quot;2019-20&quot;</span><span class="p">]},</span>
+                        <span class="p">{</span><span class="s2">&quot;Name&quot;</span><span class="p">:</span><span class="s2">&quot;Serie A&quot;</span><span class="p">,</span> <span class="s2">&quot;Season&quot;</span><span class="p">:[</span><span class="s2">&quot;2020-21&quot;</span><span class="p">]}</span>
+                        <span class="p">],</span>
+ <span class="s2">&quot;Value&quot;</span><span class="p">:</span><span class="s2">&quot;20000000&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;Wage&quot;</span><span class="p">:</span> <span class="s2">&quot;5200000&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;ExtractDate&quot;</span><span class="p">:</span><span class="s2">&quot;2020-10-06&quot;</span>
+  <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p>We are using a sample JSON file which contains the information about 3
+soccer players of English championships.
+This file is built as a hierarchical JSON format which contains a
+simple key-value pairs as well as array of nested objects.</p>
+<p>In this case columns like Name, Club, Goals, Wins, etc. simple key-value pairs,
+while GoalsStatistics and Division are array of nested objects which are grouped together.</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>{
+&quot;Name&quot;:&quot;Rolando Aarons&quot;,
+&quot;Club&quot;: &quot;Newcastle United&quot;,
+&quot;Position&quot;: &quot;Midfielder&quot;,
+&quot;Appearances&quot;: &quot;14&quot;,
+&quot;Goals&quot;: &quot;4&quot;,
+<span class="gh">&quot;Wins&quot;: &quot;3&quot;,</span>
+<span class="gh">.........</span>
+<span class="cp">.........</span>
+
+&quot;Value&quot;:&quot;20000000&quot;,
+&quot;Wage&quot;: &quot;5200000&quot;,
+&quot;ExtractDate&quot;:&quot;2020-10-06&quot;
+}
+</pre></div>
+</div>
+<p>GoalsStatistics is an array which contains <strong>Season</strong> and <strong>Goals</strong> made by the
+player in that season. So GoalsStatistics can contain one or records for a particular palyer.</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>&quot;GoalsStatistics&quot;: [
+            {&quot;Season&quot;: &quot;2014-15&quot;, &quot;Goals&quot;: 2},
+            {&quot;Season&quot;: &quot;2015-16&quot;, &quot;Goals&quot;: 1},
+            {&quot;Season&quot;: &quot;2016-17&quot;, &quot;Goals&quot;: 0},
+            {&quot;Season&quot;: &quot;2017-18&quot;, &quot;Goals&quot;: 1},
+            {&quot;Season&quot;: &quot;2018-19&quot;, &quot;Goals&quot;: 0},
+            {&quot;Season&quot;: &quot;2019-20&quot;, &quot;Goals&quot;: 0}
+        ]
+</pre></div>
+</div>
+<p>Similarly Division is array object which contain another array
+of objects inside each array. So division name and array of seasons
+the player playerd for that division. For example, the player has
+played for 2 divisions <strong>Premier League</strong> and <strong>Championship</strong>.
+For <strong>Premier League</strong> he has played for seasons 2014-15, 2015-16, 2017-18,
+2018-19 and 2019-20. And for ‘Championship’ he has played in 2016-17.</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>&quot;Division&quot;:[
+        {&quot;Name&quot;:&quot;Premier League&quot;,
+        &quot;Season&quot;:[
+            &quot;2014-15&quot;,
+            &quot;2015-16&quot;,
+            &quot;2017-18&quot;,
+            &quot;2018-19&quot;,
+            &quot;2019-20&quot;
+                        ]
+                },
+        {&quot;Name&quot;:&quot;Championship&quot;,
+                &quot;Season&quot;:[
+            &quot;2016-17&quot;
+                        ]
+                }
+    ]
+</pre></div>
+</div>
+<p>Create the stage file &#64;FooballStg using the script shown below.</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>DROP STAGE IF EXISTS FooballStg;
+CREATE OR REPLACE stage FooballStg file_format = JSONFORMAT;
+</pre></div>
+</div>
+<p>Load the staged file &#64;FooballStg using the following PUT command from Windows command prompt.</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>put file://c:\test\data\fpl-book.json @FooballStg auto_compress=true;
+</pre></div>
+</div>
+<p>List out the player name and their club</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT S.$1:Name, S.$1:Club
+FROM @FooballStg as S;
+</pre></div>
+</div>
+<p>The following query displays data from staged file after casting the columns based on the data types.</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT parse_json($1):Name::STRING AS &quot;Player Name&quot;
+,parse_json($1):Club::STRING as &quot;Club&quot;
+,parse_json($1):Position::STRING as &quot;Position&quot;
+,parse_json($1):Wins::NUMBER as &quot;Wins&quot;
+,parse_json($1):Losses::NUMBER as &quot;Losses&quot;
+FROM @FooballStg;
+</pre></div>
+</div>
+<div class="figure align-center">
+<img alt="images/latteralflatten0.jpg" src="images/latteralflatten0.jpg" />
+</div>
+<dl class="simple">
+<dt>Following scripts used to create table S_PLAYERS with a column of</dt><dd><p>VARIANT data type and it is used to store semi-structured data.</p>
+</dd>
+</dl>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>DROP TABLE IF EXISTS S_PLAYERS;
+CREATE TABLE IF NOT EXISTS S_PLAYERS
+(PLAYER_DATA VARIANT
+);
+</pre></div>
+</div>
+<p>Copy palyers data from staged file to physical table as below.</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>COPY INTO S_PLAYERS FROM @FooballStg FILE_FORMAT
+    = (FORMAT_NAME = &#39;JSONFORMAT&#39;) ON_ERROR = CONTINUE;
+</pre></div>
+</div>
+<p>The function ARRAY_SIZE() returns size of array in the VARIANT value.
+In this case, it contains 2 arrays : GoalsStatistics and Division.</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT
+PLAYER_DATA:Name::STRING &quot;Player Name&quot;,
+ARRAY_SIZE(PLAYER_DATA:GoalsStatistics)
+        as Number_Of_GoalsStatistics,
+ARRAY_SIZE(PLAYER_DATA:Division)
+        as Number_Of_Division
+FROM S_PLAYERS;
+</pre></div>
+</div>
+<div class="figure align-center">
+<img alt="images/latteralflatten1.jpg" src="images/latteralflatten1.jpg" />
+</div>
+<p>LATERAL FLATTEN() is used to extract array from JSON data.
+The query below uses LATERAL FLATTEN() to take the items in the list from
+PLAYER_DATA:GoalsStatistics and make them their own dataset.
+INPUT, VALUE, INDEX are reserved keywords.
+It is important to give alias <strong>GoalsStat</strong> to flatten results.</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT
+PLAYER_DATA:Name::STRING &quot;Player Name&quot;,
+GoalsStat.VALUE AS Goals,
+GoalsStat.INDEX
+FROM S_PLAYERS,
+    LATERAL FLATTEN(INPUT =&gt;
+        PLAYER_DATA:GoalsStatistics) GoalsStat;
+</pre></div>
+</div>
+<div class="figure align-center">
+<img alt="images/latteralflatten2.jpg" src="images/latteralflatten2.jpg" />
+</div>
+<p>We can have multiple FLATTEN functions within the same query as shown below.
+Here the query returns list of arrays from GoalsStatistics and Division data objects.</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT
+PLAYER_DATA:Name::STRING &quot;Player Name&quot;,
+GoalsStat.VALUE AS Goals,
+Division.VALUE AS Divisions
+FROM S_PLAYERS,
+    LATERAL FLATTEN(INPUT =&gt;
+        PLAYER_DATA:GoalsStatistics) GoalsStat,
+    LATERAL FLATTEN(INPUT =&gt;
+        PLAYER_DATA:Division) Division;
+</pre></div>
+</div>
+<div class="figure align-center">
+<img alt="images/latteralflatten3.jpg" src="images/latteralflatten3.jpg" />
+</div>
+<p>We are joining Division with Season using LATERAL FLATTEN and a left OUTER join.
+The second FLATTEN clause is used to flatten the Season array within the flattened
+Division array and retrieve the “Season” played for each division.
+PARSE_JSON is used to create a JSON variant out of the Division and Season
+arrays joined using a LEFT OUTER join.</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT
+    d.PLAYER_DATA:Name::STRING &quot;Player Name&quot;,
+    c.value:Name::STRING &quot;Division Name&quot;,
+    s.value::STRING Season
+FROM
+    S_PLAYERS d,
+    LATERAL FLATTEN(INPUT =&gt;
+     PARSE_JSON(d.PLAYER_DATA:Division),OUTER =&gt; true) c,
+    LATERAL FLATTEN(INPUT =&gt;
+     PARSE_JSON(c.value:Season),OUTER =&gt; true) s
+</pre></div>
+</div>
+<div class="figure align-center">
+<img alt="images/latteralflatten4.jpg" src="images/latteralflatten4.jpg" />
+</div>
+</div>
 <div class="section" id="institutional-charges">
 <h2>Institutional charges<a class="headerlink" href="#institutional-charges" title="Permalink to this headline">¶</a></h2>
 <p>This section covers data ingestion concerning tuition fees charged by institutions for
-various courses and branches during the 2017, 2018 and 2019 academic years.
+various courses and branches during the 2017, 2018, and 2019 academic years.
 The data files received for institutional charges are in ORC format.</p>
 <p>The dataset also categorizes fees for graduate programs
 like Medicine, Dentistry, Pharmacy, Law, etc., as a different set of attributes within academic institutions charge records.</p>
@@ -916,7 +1195,7 @@ institutional charge data called:</p>
 dimension table <strong>AcademicInstitution</strong>. The relationship represents the star schema of
 dimensional modelling architecture. This is made possible by
 adding the surrogate key column (<strong>AcademicInstitutionUniqueDWSID</strong>)
-of the dimension table <strong>AcademicInstitution</strong> to the these fact tables.</p>
+of the dimension table <strong>AcademicInstitution</strong> to these fact tables.</p>
 <p>While processing the InstitutionalCharge dataset, tables
 are normalized from the OD layer and mapped to the servicing layer.</p>
 <p>The following scripts are used to create these tables.</p>
@@ -1011,7 +1290,7 @@ the servicing layer.</p>
 <h3>Institutional charge by academic branch<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
 <p><strong>v_od_InstitutionalChargeByAcademicBranch</strong> is created to convert columns from the underlying OD dataset to rows for data processing layer.
 The view generates output, one record per academic branch like chiropractic, medicine, osteopathic medicine, etc.
-These attributes from source are further categorized into tuition and fees.</p>
+These attributes from the source are further categorized into tuition and fees.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Create OD InstitutionalChargeByAcademicBranch view</p>
@@ -1355,7 +1634,7 @@ These attributes from source are further categorized into tuition and fees.</p>
 <div class="section" id="id3">
 <h3>Institutional charge by residency type<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
 <p>The view <strong>v_od_InstitutionalChargeByResidencyType</strong> is built to convert
-columns to rows for the data processing. This view is similar to
+columns to rows for data processing. This view is similar to
 <strong>v_od_InstitutionalChargeByAcademicBranch</strong>. This view outputs one record per
 in-district, in-state, or out-of-state residency type. The view provides tuition
 information for complete course work like year-0-tuition, year-1-tuition, etc.</p>
@@ -1938,7 +2217,7 @@ JSON data structure is easy to consume in the application layer, as we will furt
 <h3>Change in institutional charge operational datastore<a class="headerlink" href="#change-in-institutional-charge-operational-datastore" title="Permalink to this headline">¶</a></h3>
 <p>The staged file data is grouped into three JSON objects:</p>
 <ul class="simple">
-<li><p>Charges by academic branch</p></li>
+<li><p>Charges by the academic branch</p></li>
 <li><p>Charges by residency type</p></li>
 <li><p>Charges by category</p></li>
 </ul>
@@ -1946,7 +2225,7 @@ JSON data structure is easy to consume in the application layer, as we will furt
 <p>The following script will create the table for our alternative approach.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
-<p>Show/Hide script for: Create OD InstitutionalCharge entity for alternative approach</p>
+<p>Show/Hide script for: Create OD InstitutionalCharge entity for an alternative approach</p>
 </div>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CREATE</span> <span class="n">OR</span> <span class="n">REPLACE</span> <span class="n">TABLE</span> <span class="n">od_InstitutionalCharge</span> <span class="p">(</span>
         <span class="n">InstitutionIdentifier</span> <span class="n">INTEGER</span><span class="p">,</span>
@@ -1985,7 +2264,7 @@ JSON data structure is easy to consume in the application layer, as we will furt
 copy data from the staged file to the OD table.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
-<p>Show/Hide script for: Create OD InstitutionalCharge entity load stored procedure for alternative approach</p>
+<p>Show/Hide script for: Create OD InstitutionalCharge entity load stored procedure for an alternative approach</p>
 </div>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>CREATE OR REPLACE PROCEDURE
         pr_od_InstitutionalCharge_Load(YEAR FLOAT)
@@ -2286,7 +2565,7 @@ $$
 </div></blockquote>
 <div class="toggle docutils container">
 <div class="header docutils container">
-<p>Show/Hide script for: Create OD InstitutionalChargeByAcademicBranch view for alternative approach</p>
+<p>Show/Hide script for: Create OD InstitutionalChargeByAcademicBranch view for an alternative approach</p>
 </div>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">DROP</span> <span class="n">VIEW</span> <span class="n">IF</span> <span class="n">EXISTS</span> <span class="n">v_od_InstitutionalChargeByAcademicBranch</span><span class="p">;</span>
 <span class="n">CREATE</span> <span class="n">OR</span> <span class="n">REPLACE</span> <span class="n">VIEW</span>
@@ -2308,7 +2587,7 @@ $$
 </div>
 <div class="toggle docutils container">
 <div class="header docutils container">
-<p>Show/Hide script for: Create OD InstitutionalChargeByResidencyType view for alternative approach</p>
+<p>Show/Hide script for: Create OD InstitutionalChargeByResidencyType view for an alternative approach</p>
 </div>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">DROP</span> <span class="n">VIEW</span> <span class="n">IF</span> <span class="n">EXISTS</span> <span class="n">v_od_InstitutionalChargeByResidencyType</span><span class="p">;</span>
 
@@ -2329,7 +2608,7 @@ $$
 </div>
 <div class="toggle docutils container">
 <div class="header docutils container">
-<p>Show/Hide script for: Create OD InstitutionalChargeByCategory view for alternative approach</p>
+<p>Show/Hide script for: Create OD InstitutionalChargeByCategory view for an alternative approach</p>
 </div>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">DROP</span> <span class="n">VIEW</span> <span class="n">IF</span> <span class="n">EXISTS</span> <span class="n">v_od_InstitutionalChargeByCategory</span><span class="p">;</span>
 
@@ -2352,7 +2631,7 @@ $$
 <h2>Data load into the servicing layer<a class="headerlink" href="#data-load-into-the-servicing-layer" title="Permalink to this headline">¶</a></h2>
 <p>We will be using the OD table <strong>od_InstitutionalCharge</strong> and the above three views to finally land data to its destination.
 There are four stored procedures that use these data sources and process them into the respective servicing layer tables,
-taking academic year as their input parameter.
+taking the academic year as their input parameter.
 For the given year, these procedures will delete existing data from the destination tables and transform and load data from the OD layer.</p>
 <p>The following code is used to create these objects.</p>
 <div class="section" id="institutional-charge-general-load">
@@ -2717,6 +2996,7 @@ Finally, we detailed an alternative approach using the JSON VARIANT data type to
 <li class="toctree-l1"><a class="reference internal" href="CSVIngestion.html">CSV ingestion</a></li>
 <li class="toctree-l1"><a class="reference internal" href="JSONIngestion.html">JSON ingestion</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">ORC ingestion</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#functions-to-manage-semi-structured-data">Functions to manage semi-structured data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#institutional-charges">Institutional charges</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#institutional-charge-general">Institutional charge (General)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#institutional-charge-by-academic-branch">Institutional charge by academic branch</a></li>

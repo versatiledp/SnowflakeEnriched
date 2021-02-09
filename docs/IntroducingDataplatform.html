@@ -82,12 +82,12 @@ combination with the Hadoop/Spark ecosystems.</p>
 <div class="section" id="analytical-layer">
 <h3>Analytical layer<a class="headerlink" href="#analytical-layer" title="Permalink to this headline">¶</a></h3>
 <p>The Analytical layer reads the data ingested and transformed by the data
-processing and storage layer of big data ecosystem. This layer consists of a
-varities of data analytic tools for different user requirements and
+processing and storage layer of big data ecosystem. This layer consists of a variety of data
+for different user requirements and
 provides data discovery mechanisms from large volumes of
 data. Apache Spark SQL, Hive, Apache Spark Streaming, Apache Spark GraphX, machine learning
-libraries, SQL libraries, and a number of other tool
-sets are utilized in this layer to understand the underlying data landscape.</p>
+libraries, SQL libraries, and a number of other toolsets
+are utilized in this layer to understand the underlying data landscape.</p>
 </div>
 <div class="section" id="consumption-layer">
 <h3>Consumption layer<a class="headerlink" href="#consumption-layer" title="Permalink to this headline">¶</a></h3>
@@ -95,7 +95,7 @@ sets are utilized in this layer to understand the underlying data landscape.</p>
 receives results from the analytical layer and presents the results
 using visualization tools and
 business processes.</p>
-<p>The following diagram summarizes layers in data management solution.</p>
+<p>The following diagram summarizes layers in the data management solution.</p>
 <div class="figure align-center">
 <img alt="images/DataPlatform.jpg" src="images/DataPlatform.jpg" />
 </div>
@@ -108,9 +108,9 @@ of Education. It is an independent and non-partisan organization.
 The IES mission is to provide scientific evidence on which to ground education, practice, and policy,
 and to share this evidence in formats useful and accessible to educators,
 parents, policymakers, researchers, and the public.</p>
-<p>This book is designed to use data from the IES and build analytics engines in a manner beneficial to corporations.</p>
 <p>The Integrated Postsecondary Education Data System (IPEDS) <a class="reference external" href="https://nces.ed.gov/ipeds"  target="_blank">https://nces.ed.gov/ipeds</a>
 is the primary source provided by the IES containing information on U.S. colleges, universities, technical institutions, and vocational institutions.</p>
+<p>This book is designed to use data from the IES and build analytics engines in a manner beneficial to corporations.</p>
 <p>In this project, we seek to:</p>
 <ul class="simple">
 <li><p>Ingest variety of data formats.</p></li>
@@ -142,7 +142,7 @@ with no transformations applied.</p>
 the latest data from multiple transactional systems.
 It enables organizations to combine data in its original format
 from various sources into a single destination to make it available for further processing.
-These are initial physical tables created in Snowflake, and consists of data
+These are initial physical tables created in Snowflake and consists of data
 that has undergone little to no transformation.
 The OD table structure very closely resembles that of the staged file with proper data types and column names, alongside
 additional columns to help track on data lineage.</p>
@@ -151,7 +151,7 @@ additional columns to help track on data lineage.</p>
 <h3>Servicing layer<a class="headerlink" href="#servicing-layer" title="Permalink to this headline">¶</a></h3>
 <p>This layer consists of the data that has undergone all the transformations and it is
 ready for consumption to the business intelligence layer.
-OD tables serves as input to transformation process to populate servicing layer tables.</p>
+OD tables serve as input to the transformation process to populate servicing layer tables.</p>
 </div>
 <div class="section" id="dataflow-summary">
 <h3>Dataflow summary<a class="headerlink" href="#dataflow-summary" title="Permalink to this headline">¶</a></h3>
@@ -163,7 +163,7 @@ service layer entities.</p>
 <p>Data engineering consists of creating transformations, performing metadata management, and
 keeping track of data pipelines. So, access should be
 granted to all layers of the data platform.</p>
-<p>The diagram below shows data flow process between files and the final destination in Snowflake.
+<p>The diagram below shows the data flow process between files and the final destination in Snowflake.
 After staging load, all data processing and transformation is performed using stored procedures.</p>
 <div class="figure align-center">
 <img alt="images/ingestionlayout.jpg" src="images/ingestionlayout.jpg" />
@@ -176,8 +176,8 @@ After staging load, all data processing and transformation is performed using st
 <div class="section" id="institutional-characteristics-hdr">
 <h3>Institutional characteristics [HDR]<a class="headerlink" href="#institutional-characteristics-hdr" title="Permalink to this headline">¶</a></h3>
 <p>These files contain directory information for every institution in the IPEDS universe.
-The files include the name, address, city, state, zip code and various URL links to the institution’s home page,
-admissions and financial aid offices, and net price calculator.</p>
+The files include the name, address, city, state, zip code, and various URL links to the institution’s home page,
+admissions, and financial aid offices, and net price calculator.</p>
 </div>
 <div class="section" id="month-enrollment-effy">
 <h3>12-Month enrollment [EFFY]<a class="headerlink" href="#month-enrollment-effy" title="Permalink to this headline">¶</a></h3>
@@ -433,12 +433,12 @@ All the Parquet partitions are loaded into specific folder of Parquet staging ar
 <img alt="images/csvOther.JPG" src="images/csvOther.JPG" />
 </div>
 <p>All the files from the source system are ingested into the Snowflake staged area.
-If there are any issues in stage area, drop them using <strong>remove &#64;IPEDS_ADM</strong>.</p>
+If there are any issues in the stage area, drop them using <strong>remove &#64;IPEDS_ADM</strong>.</p>
 </div>
 </div>
 <div class="section" id="summary">
 <h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
-<p>This chapter summarize, data files, file formats, and process used to simplify
+<p>This chapter summarizes, data files, file formats, and process used to simplify
 and streamline bulk loading data into various
 internal staging areas.
 The data from the transactional source systems go through multiple data processing layers.
@@ -452,7 +452,7 @@ summarized all the data formats we will be dealing with in the processing layer 
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><em>Mapping between the source system and Snowflake metadata is at:</em></p>
+<p><em>The Mapping between the source system and Snowflake metadata is at:</em></p>
 <blockquote>
 <div><ul class="simple">
 <li><p><a class="reference external" href="https://versatiledp.github.io/SnowflakeEnriched/Mapping/AcademicInstitute.htm" target="_blank">SnowflakeEnriched/Mapping/AcademicInstitute</a></p></li>

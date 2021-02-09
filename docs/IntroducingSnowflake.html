@@ -44,8 +44,8 @@
 <p>Snowflake is a cloud-based SaaS (Software-as-a-Service) data management
 solution that makes it possible for organizations to:</p>
 <ul class="simple">
-<li><p>Bring all of their business data together in one place for analysis.</p></li>
-<li><p>Allow all analysts, applications or even customers to have shared access to the data.</p></li>
+<li><p>Bring all their business data together in one place for analysis.</p></li>
+<li><p>Allow all analysts, applications, or even customers to have shared access to the data.</p></li>
 <li><p>Focus on analyzing data without worrying about hardware, software, or database tuning.</p></li>
 <li><p>Utilize the SQL skills data, the community already has built.</p></li>
 <li><p>Leverage the existing ecosystem of tools to manage extract transform load (ETL) or extract load transform (ELT) process.</p></li>
@@ -67,7 +67,7 @@ solution that makes it possible for organizations to:</p>
 <div class="section" id="snowflake-architecture">
 <h3>Snowflake architecture<a class="headerlink" href="#snowflake-architecture" title="Permalink to this headline">¶</a></h3>
 <p>The Snowflake architecture consists of three layers:</p>
-<p><strong>Database Storage:</strong>  The actual underlying file system is backed by Snowflake account, in which
+<p><strong>Database Storage:</strong>  The actual underlying file system is backed by the Snowflake account, in which
 all data is encrypted, compressed, and distributed to optimize performance.
 Snowflake also provides excellent data durability and availability.</p>
 <p><strong>Query Processing:</strong> Snowflake provides the ability to create virtual warehouses,
@@ -106,8 +106,8 @@ It supports JSON to a great extent, and furthermore:</p>
 AWS, and GCP. In other words, the Snowflake data warehouse can be built on top of Amazon web services, Microsoft Azure
 cloud infrastructure, or Google cloud.</p>
 </div>
-<div class="section" id="setting-up-virtual-warehouse">
-<h3>Setting up virtual warehouse<a class="headerlink" href="#setting-up-virtual-warehouse" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="setting-up-a-virtual-warehouse">
+<h3>Setting up a virtual warehouse<a class="headerlink" href="#setting-up-a-virtual-warehouse" title="Permalink to this headline">¶</a></h3>
 <p>Snowflake defines a virtual warehouse as a cluster of compute resources.
 The warehouse provides all the resources like CPU, memory, and temporary storage
 required to start using Snowflake.</p>
@@ -133,9 +133,8 @@ from various sources and presenting insights regarding the utilization of Snowfl
 <p>Snowflake supports a wide range of third-party tools like Informatica, Talend, and Azure Data Factory.</p>
 <div class="section" id="snowsql-ui">
 <h3>SnowSQL UI<a class="headerlink" href="#snowsql-ui" title="Permalink to this headline">¶</a></h3>
-<p>The Snowflake web interface provides a convenient wizard which
-allows to select specific tables.
-Using the LOAD button we can easily ingest a limited amount of data.
+<p>The Snowflake web interface provides a convenient wizard that allows a selection of specific tables.
+Using the LOAD button, we can easily ingest a limited amount of data.
 The wizard simplifies the load by combining the staging and data loading phases into a single
 operation. Also, it automatically deletes the staged file after loading.</p>
 </div>
@@ -191,7 +190,7 @@ and does not use virtual warehouse resources. It has its own resources that are 
 <p>Snowflake allows several types of staged file areas. A stage is a temporary storage area in the Snowflake warehouse.</p>
 <p>Snowflake supports external and internal staged files.</p>
 <p>External stages are storage locations outside the Snowflake environment in another cloud storage location.
-It could be Amazon S3 storage, Microsoft Azure storage, or Google Cloud Storage buckets. This provides greater
+It could be Amazon S3 storage, Microsoft Azure Storage, or Google Cloud Storage buckets. This provides greater
 flexibility for accessing the data in Snowflake.</p>
 <div class="line-block">
 <div class="line">The internal stage stores data files within Snowflake. Internal stages can be either permanent or temporary.</div>
@@ -201,7 +200,7 @@ flexibility for accessing the data in Snowflake.</p>
 </div>
 <div class="section" id="user-stage">
 <h3>User stage<a class="headerlink" href="#user-stage" title="Permalink to this headline">¶</a></h3>
-<p>Each Snowflake user is attached to the default stage to store the file. User stage is only accessible by the specific user.</p>
+<p>Each Snowflake user is attached to the default stage to store the file. The user stage is only accessible by the specific user.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>put file://D:\Snowflake\sample_file.csv @~/staged;
 </pre></div>
 </div>
@@ -288,7 +287,7 @@ Snowflake using the user stage, table stage, and internal named stage database o
 <li class="toctree-l3"><a class="reference internal" href="#snowflake-architecture">Snowflake architecture</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#snowflake-connectivity">Snowflake connectivity</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#snowflake-data-features">Snowflake data features</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#setting-up-virtual-warehouse">Setting up virtual warehouse</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setting-up-a-virtual-warehouse">Setting up a virtual warehouse</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#snowflake-data-load">Snowflake data load</a><ul>
