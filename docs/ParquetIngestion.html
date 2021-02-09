@@ -19,7 +19,7 @@
     <script src="static/copybutton.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Semi-structured data Load" href="SemiStructuredDataIngestion.html" />
+    <link rel="next" title="Multiple record formats ingestion" href="SemiStructuredDataIngestion.html" />
     <link rel="prev" title="ORC ingestion" href="ORCIngestion.html" />
    
   <link rel="stylesheet" href="static/custom.css" type="text/css" />
@@ -41,16 +41,16 @@
 <h1>Parquet ingestion<a class="headerlink" href="#parquet-ingestion" title="Permalink to this headline">¶</a></h1>
 <p>Apache Parquet is a column-oriented binary file format that provides optimizations
 to speed up the process and is a far more efficient file format than CSV or JSON.
-It is known for its both performant data compression and its ability to handle a
+It is known for its both performance, data compression and its ability to handle a
 wide variety of encoding types. Parquet files
-enables to fetch only the required columns and values,
+enable to fetch only the required columns and values,
 load those in memory and answer the query.
 If a row-based file format like CSV was used, the entire table would have to have been
 loaded in memory, resulting in increased I/O and worse performance.</p>
 <p>Snowflake manages Parquet files similar to semi-structured JSON data from VARIANT type.
 We can convert VARIANT column Parquet data to a multi-column table with
 specifying column names and data types.</p>
-<p>Parquet data loaded into staged file is retrieved using following code.</p>
+<p>Parquet data loaded into the staged file is retrieved using the following code.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT P.$1 Parquetdata FROM  @IPEDS_ADM P;
 </pre></div>
 </div>
@@ -58,12 +58,12 @@ specifying column names and data types.</p>
 <div class="figure align-center">
 <img alt="images/ParquetInternalStagedDataSelect.JPG" src="images/ParquetInternalStagedDataSelect.JPG" />
 </div>
-<p>Parquet data is also stored as JSON document.
-JSON docuemnt processing can be used to transform Parquet data.</p>
+<p>Parquet data is also stored as JSON documents.
+JSON document processing can be used to transform Parquet data.</p>
 <div class="section" id="admission-statistics">
 <h2>Admission statistics<a class="headerlink" href="#admission-statistics" title="Permalink to this headline">¶</a></h2>
 <p>The admission statistics contain information about the number of applicants by various categories:
-admission test scores, SAT/ACT percentile scores and so on.
+admission test scores, SAT/ACT percentile scores, and so on.
 These statistics are stored in Parquet format.</p>
 <p>We will learn how to:</p>
 <blockquote>
@@ -75,7 +75,7 @@ These statistics are stored in Parquet format.</p>
 </div></blockquote>
 <p>The staged file for keeping track of institution admission statistics is <strong>&#64;IPEDS_ADM</strong>.
 Please note that the columns are selected using <strong>$1 :&lt;column_name&gt;</strong>.
-This is because data files used here are in the Parquet format.
+This is because the data files used here are in the Parquet format.
 We can retrieve the details of a particular year as below.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
@@ -238,8 +238,8 @@ part of the partition key. In our case, the first 4 characters contain the year 
 </div>
 </div>
 </div>
-<div class="section" id="stored-procedure-for-staging-table">
-<h2>Stored procedure for staging table<a class="headerlink" href="#stored-procedure-for-staging-table" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="stored-procedure-for-the-staging-table">
+<h2>Stored procedure for the staging table<a class="headerlink" href="#stored-procedure-for-the-staging-table" title="Permalink to this headline">¶</a></h2>
 <p>Once the staging table is created, we need to populate the table
 with admission statistics data for each year from the staged file.
 For that purpose, we have created a stored procedure called <strong>pr_od_AdmissionStat_Load</strong>.
@@ -383,7 +383,7 @@ $$
 <p>We create a fact table for
 admission statistics called <strong>AdmissionStat</strong>, which has links to the
 dimension table <strong>AcademicInstitution</strong>. The relationship represents the star schema of
-dimensional modelling architecture. This is made possible by
+dimensional modeling architecture. This is made possible by
 adding the surrogate key column (<strong>AcademicInstitutionUniqueDWSID</strong>)
 of the dimension table <strong>AcademicInstitution</strong> to the fact table <strong>AdmissionStat</strong>.</p>
 <p>Here is the script for creating the table AdmissionStat in Snowflake.</p>
@@ -598,10 +598,15 @@ $$;
 </div>
 <div class="section" id="summary">
 <h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
-<p>In this chapter, we went through the data loading process for Parquet files in Snowflake.
-This data processing architecture is similar to that of CSV files, and is made easily consumable
+<p>In this chapter, we went through the data loading process Parquet files in Snowflake.
+This data processing architecture is similar to that of CSV files and is made easily consumable
 by Snowflake. We loaded 3 years of admission statistics in the stage file, from which
 we created and loaded the OD table, and later the fact table, for the servicing layer.</p>
+<p>Data engineers have to deal with multiple file layout situations along with CSV, JSON, ORC, and Parquet.
+Few of the examples, variable file formats,a single file containing data from multiple source systems,
+and holding information on the different subject areas.
+Next chapter, we will cover one of these situations in our
+journey, where a file has records for multiple destination entities.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p><em>Code is available to download at:</em>
@@ -651,13 +656,13 @@ we created and loaded the OD table, and later the fact table, for the servicing 
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Parquet ingestion</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#admission-statistics">Admission statistics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#od-table-for-admission-statistics">OD table for admission statistics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#stored-procedure-for-staging-table">Stored procedure for staging table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#stored-procedure-for-the-staging-table">Stored procedure for the staging table</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#admission-statistics-servicing-layer">Admission statistics servicing layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#admission-statistics-data-load">Admission statistics data load</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#summary">Summary</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="SemiStructuredDataIngestion.html">Semi-structured data Load</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SemiStructuredDataIngestion.html">Multiple record formats ingestion</a></li>
 <li class="toctree-l1"><a class="reference internal" href="PipelineOrchestration.html">Pipeline orchestration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="BusinessInsights.html">Business insights</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
@@ -669,7 +674,7 @@ we created and loaded the OD table, and later the fact table, for the servicing 
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
       <li>Previous: <a href="ORCIngestion.html" title="previous chapter">ORC ingestion</a></li>
-      <li>Next: <a href="SemiStructuredDataIngestion.html" title="next chapter">Semi-structured data Load</a></li>
+      <li>Next: <a href="SemiStructuredDataIngestion.html" title="next chapter">Multiple record formats ingestion</a></li>
   </ul></li>
 </ul>
 </div>

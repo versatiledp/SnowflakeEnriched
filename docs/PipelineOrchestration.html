@@ -20,7 +20,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Business insights" href="BusinessInsights.html" />
-    <link rel="prev" title="Semi-structured data Load" href="SemiStructuredDataIngestion.html" />
+    <link rel="prev" title="Multiple record formats ingestion" href="SemiStructuredDataIngestion.html" />
    
   <link rel="stylesheet" href="static/custom.css" type="text/css" />
   
@@ -43,7 +43,7 @@
 <h2>Workflow<a class="headerlink" href="#workflow" title="Permalink to this headline">¶</a></h2>
 <p>This chapter explains how to administer the Snowflake transformations
 through a single point of entry
-without using any thirdparty tools.</p>
+without using any third-party tools.</p>
 <dl class="simple">
 <dt>Workflow is divided into three stages:</dt><dd><ul class="simple">
 <li><p>Workflow configuration/definition</p></li>
@@ -70,10 +70,10 @@ other needs as per different requirements.</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>StageName - Description of the pipeline</p></li>
-<li><p>ProcedureName - Name of stored procedure to be called</p></li>
+<li><p>ProcedureName - Name of the stored procedure to be called</p></li>
 <li><p>SourceTableName - Input table used in Snowflake data transformation</p></li>
 <li><p>TargetTableName - Destination table for data used in the procedure</p></li>
-<li><p>ExecutionOrder - What is sequence for this step to be executed</p></li>
+<li><p>ExecutionOrder - What is the sequence for this step to be executed</p></li>
 </ul>
 </div></blockquote>
 <p>The following script is used to create the IPEDS_Workflow table.</p>
@@ -86,7 +86,7 @@ other needs as per different requirements.</p>
 <span class="p">);</span>
 </pre></div>
 </div>
-<p>We can easily enhance this framework with additional functionality, like actions on success/failure
+<p>We can easily enhance this framework with additional functionality, like actions for success/failure
 and parallel processing.
 The results of workflow steps are then stored in the IPEDS_Audit table.
 The IPEDS_Audit table holds information about the steps executed, including:</p>
@@ -114,7 +114,7 @@ The IPEDS_Audit table holds information about the steps executed, including:</p>
 <p>The following script is used to populate  <strong>IPEDS_Workflow</strong>.
 The script populates the workflow control table, which contains information about
 the stored procedure to be called, the input table name,
-the output table name, and sequence number to execute this SP.</p>
+the output table name, and the sequence number to execute this SP.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Load Workflow data</p>
@@ -382,7 +382,7 @@ $$;
 </div>
 <p>These row counts with additional information are written to the IPEDS_Audit table.</p>
 <p>The stored procedure <strong>pr_od_Truncate</strong> is written to truncate all the OD tables before we load data.
-Code for the stored procedure pr_od_Truncate is given below.</p>
+The code for the stored procedure pr_od_Truncate is given below.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Truncate OD workflow tables stored procedure</p>
@@ -421,7 +421,7 @@ $$;
 </div>
 </div>
 <p>Truncating the OD table and loading data from the IPEDS dataset into the staging files is performed
-with the following code.</p>
+by the following code.</p>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CALL</span> <span class="n">pr_od_Truncate</span><span class="p">();</span>
 <span class="n">CALL</span> <span class="n">pr_IPEDS_Process</span><span class="p">(</span><span class="mi">2017</span><span class="p">::</span><span class="n">FLOAT</span><span class="p">);</span>
 </pre></div>
@@ -433,6 +433,8 @@ with the following code.</p>
 This process helps in navigating data lineage across staged files, operational data tables, and servicing layer entities.
 It works for cases where we have a one-to-one mapping between source and destination tables.
 We can easily enhance the process to accommodate for other needs in tracking data transformation.</p>
+<p>All data is available in the Snowflake servicing layer. We also automated data ingestion steps. In
+the next chapter, we will learn how to create gleaming analytics insights using this data.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p><em>Code is available to download at:</em>
@@ -480,7 +482,7 @@ We can easily enhance the process to accommodate for other needs in tracking dat
 <li class="toctree-l1"><a class="reference internal" href="JSONIngestion.html">JSON ingestion</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ORCIngestion.html">ORC ingestion</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ParquetIngestion.html">Parquet ingestion</a></li>
-<li class="toctree-l1"><a class="reference internal" href="SemiStructuredDataIngestion.html">Semi-structured data Load</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SemiStructuredDataIngestion.html">Multiple record formats ingestion</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Pipeline orchestration</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#workflow">Workflow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#summary">Summary</a></li>
@@ -495,7 +497,7 @@ We can easily enhance the process to accommodate for other needs in tracking dat
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="SemiStructuredDataIngestion.html" title="previous chapter">Semi-structured data Load</a></li>
+      <li>Previous: <a href="SemiStructuredDataIngestion.html" title="previous chapter">Multiple record formats ingestion</a></li>
       <li>Next: <a href="BusinessInsights.html" title="next chapter">Business insights</a></li>
   </ul></li>
 </ul>

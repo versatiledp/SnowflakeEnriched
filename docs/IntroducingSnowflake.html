@@ -48,7 +48,7 @@ solution that makes it possible for organizations to:</p>
 <li><p>Allow all analysts, applications, or even customers to have shared access to the data.</p></li>
 <li><p>Focus on analyzing data without worrying about hardware, software, or database tuning.</p></li>
 <li><p>Utilize the SQL skills data, the community already has built.</p></li>
-<li><p>Leverage the existing ecosystem of tools to manage extract transform load (ETL) or extract load transform (ELT) process.</p></li>
+<li><p>Leverage the existing ecosystem of tools to manage, extract transform load (ETL) or extract load transform (ELT) process.</p></li>
 <li><p>Integrate the current business intelligence stack like Tableau, PowerBI, and other open-source tools like D3.js, Plotly seamlessly.</p></li>
 </ul>
 <div class="section" id="snowflake-advantages">
@@ -69,7 +69,7 @@ solution that makes it possible for organizations to:</p>
 <p>The Snowflake architecture consists of three layers:</p>
 <p><strong>Database Storage:</strong>  The actual underlying file system is backed by the Snowflake account, in which
 all data is encrypted, compressed, and distributed to optimize performance.
-Snowflake also provides excellent data durability and availability.</p>
+Snowflake also provides excellent data durability, and availability.</p>
 <p><strong>Query Processing:</strong> Snowflake provides the ability to create virtual warehouses,
 which are basically compute clusters provisioned behind the scenes.
 These virtual warehouses are used to load data, run queries, or do both concurrently.</p>
@@ -87,7 +87,7 @@ including sessions, authentication, SQL compilation, encryption, etc.</p>
 <p>Snowflake provides a few different methods to create database connectivity:</p>
 <ul class="simple">
 <li><p>ODBC and JDBC drivers can directly access a Snowflake instance.</p></li>
-<li><p>Web based worksheets can be leveraged within the Snowflake account.</p></li>
+<li><p>Web-based worksheets can be leveraged within the Snowflake account.</p></li>
 <li><p>SnowSQL CLI is also used to establish connectivity to Snowflake.</p></li>
 </ul>
 </div>
@@ -102,7 +102,7 @@ It supports JSON to a great extent, and furthermore:</p>
 <li><p>Permits replication and syncing databases across multiple accounts in different regions.</p></li>
 <li><p>Enables time travel functions to query the history of data changes over a period of time.</p></li>
 </ul>
-<p>Snowflake is a cloud-agnostic platform providing unified data management across multiple cloud service providers like Azure,
+<p>Snowflake is a cloud-agnostic platform providing, unified data management across multiple cloud service providers like Azure,
 AWS, and GCP. In other words, the Snowflake data warehouse can be built on top of Amazon web services, Microsoft Azure
 cloud infrastructure, or Google cloud.</p>
 </div>
@@ -115,8 +115,8 @@ required to start using Snowflake.</p>
 of the warehouse for our subscription. This warehouse defaults to auto-suspend mode if there are no activities.</p>
 <p>All data in Snowflake is maintained in databases. Each database consists of one or more schemas.
 Schemas are logical groupings of database objects like tables, views, and functions.</p>
-<p>Snowflake enables data lakes, data sharing, data visualizations, data science, and data engineering for organizations.
-We will be working with real world business use-cases, starting with data collection
+<p>Snowflake enables datalake, data sharing, data visualizations, data science, and data engineering.
+We will be working with real-world business use-cases, starting with data collection
 from various sources and presenting insights regarding the utilization of Snowflake.</p>
 </div>
 </div>
@@ -125,8 +125,8 @@ from various sources and presenting insights regarding the utilization of Snowfl
 <p>Snowflake data load can be achieved using:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>Web interface to load small amount of data.</p></li>
-<li><p>SnowSQL CLI for bulk load.</p></li>
+<li><p>Web interface to load a small amount of data.</p></li>
+<li><p>SnowSQL CLI for the bulk load.</p></li>
 <li><p>Snowpipe to automate the load of large data set across multiple platforms.</p></li>
 </ul>
 </div></blockquote>
@@ -140,7 +140,7 @@ operation. Also, it automatically deletes the staged file after loading.</p>
 </div>
 <div class="section" id="snowsql-cli">
 <h3>SnowSQL CLI<a class="headerlink" href="#snowsql-cli" title="Permalink to this headline">¶</a></h3>
-<p>SnowSQL CLI is the command line client interface for Snowflake. It executes SQL queries
+<p>SnowSQL CLI is the command-line client interface for Snowflake. It executes SQL queries
 and performs all DDL and DML operations. It is an easy way to access Snowflake from the command line and has
 the same capabilities as the Snowflake UI.</p>
 </div>
@@ -162,7 +162,7 @@ the same capabilities as the Snowflake UI.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>snowsql -a accountName -u userName -d databaseName -s schemaName
 </pre></div>
 </div>
-<p>Alternatively, use the following command to connect Snowflake from Windows command line.</p>
+<p>Alternatively, use the following command to connect Snowflake from the Windows command line.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>snowsql -a xxxxxx.us-east-1 -u xxxxxx -d demo_db -s public
 Password:<span class="gs">*****</span>*
 </pre></div>
@@ -245,6 +245,7 @@ multiple tables. It is accessible by multiple users. File formats can be specifi
 Multiple ways of connecting to Snowflake services alongside learning about the supported data formats
 are outlined in this chapter. It also summarized various methods for loading files into
 Snowflake using the user stage, table stage, and internal named stage database objects.</p>
+<p>In the next chapter, we will cover modern-day data platforms, data formats, and input datasets used throughout this book.</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 33%" />

@@ -60,7 +60,7 @@ for the years 2017, 2018 and 2019, respectively.</p>
 <li><p>Manage schema drifts from one file to another file.</p></li>
 <li><p>Build processes so that the schema drift does not interfere with the processing of historical data.</p></li>
 <li><p>Combine column attributes to form JSON objects as part of the transformation.</p></li>
-<li><p>Perform SQL MERGE using hash key.</p></li>
+<li><p>Perform SQL MERGE using the hash key.</p></li>
 </ul>
 </div></blockquote>
 <p>In staged files, data can be located in an internal stage (in a Snowflake database)
@@ -94,16 +94,16 @@ between staged layer and column names in OD tables (
 <a class="reference external" href="https://versatiledp.github.io/SnowflakeEnriched/Mapping/AcademicInstitute.htm"   target="_blank">SnowflakeEnriched/Mapping/AcademicInstitute</a>
 ).</p>
 </div>
-<div class="section" id="od-table-for-academic-institution">
-<h2>OD table for academic institution<a class="headerlink" href="#od-table-for-academic-institution" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="od-table-for-an-academic-institution">
+<h2>OD table for an academic institution<a class="headerlink" href="#od-table-for-an-academic-institution" title="Permalink to this headline">¶</a></h2>
 <p>Operational data (OD) tables are physical tables populated from the corresponding staged files.
 The ELT process will copy the data from staged files to OD tables.
 OD tables are defined by column types and descriptive column names.
 We can add more columns to
 the OD table if necessary. We have added 3 additional columns, namely AcademicYear,
 IngestedFileName, and RowNumber, to the OD table, to use them in the ETL/ELT process and audit purpose.</p>
-<p><strong>METADATA$FILENAME</strong> is a pseudocolumn that identifies the name of each staged data file, including its path in the stage.</p>
-<p><strong>METADATA$FILE_ROW_NUMBER</strong> is a pseudocolumn that identifies row number of staged data file.</p>
+<p><strong>METADATA$FILENAME</strong> is a pseudo column that identifies the name of each staged data file, including its path in the stage.</p>
+<p><strong>METADATA$FILE_ROW_NUMBER</strong> is a pseudo column that identifies the row number of staged data file.</p>
 <p>Once the column mapping is clearly defined, we have to populate our
 operational data table for academic institutions called <strong>od_AcademicInstitution</strong>
 out of this staged file <strong>&#64;IPEDS_HD</strong>.</p>
@@ -215,12 +215,12 @@ RowNumber  = METADATA$FILE_ROW_NUMBER
 <h2>Snowflake view and stored procedure<a class="headerlink" href="#snowflake-view-and-stored-procedure" title="Permalink to this headline">¶</a></h2>
 <p>We have introduced a Snowflake view and a stored procedure in between
 the staged files and operational data (OD) table to manage data processing using extract load and transform (ELT).
-The view is built on top of the staged file to do necessary mapping and create
+The view is built on top of the staged file to do the necessary mapping and create
 appropriate column names for the result set. The stored procedure consumes this
 view and loads the OD table for a specific year.</p>
 </div>
-<div class="section" id="managing-metadata-of-staged-file">
-<h2>Managing metadata of staged file<a class="headerlink" href="#managing-metadata-of-staged-file" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="managing-metadata-of-the-staged-file">
+<h2>Managing metadata of the staged file<a class="headerlink" href="#managing-metadata-of-the-staged-file" title="Permalink to this headline">¶</a></h2>
 <p>The academic institution information for the years 2017, 2018, and 2019 is now available in the staged file.
 The view <strong>v_od_AcademicInstitution</strong> is added using the mapping table defined earlier for the staged file &#64;IPEDS_HD.
 Later, this view will be used for populating the staging table.</p>
@@ -339,13 +339,13 @@ In Snowflake, stored procedures are similar to functions, and can be executed mu
 <div><ul class="simple">
 <li><p>The procedure is defined with argument.</p></li>
 <li><p>Runtime language is defined as javascript.</p></li>
-<li><p>Procedure returns a string.</p></li>
+<li><p>The Procedure returns a string.</p></li>
 <li><p>SQL code (text) is stored in JavaScript variable.</p></li>
 <li><p>Call <strong>snowflake.execute</strong> and pass the javascript variable that contains SQL script.</p></li>
 <li><p>Check the results of <strong>snowflake.execute</strong> call.</p></li>
 </ul>
 </div></blockquote>
-<p>Stored procedure is created with a CREATE PROCEDURE command and executed with a CALL command.</p>
+<p>A storedprocedure is created with a CREATE PROCEDURE command and executed with a CALL command.</p>
 <p>We have created a process to load the OD table <strong>od_AcademicInstitution</strong> data from the view,
 one year of data at a time. For this purpose, we have created a stored procedure
 <strong>pr_od_AcademicInstitution_Load</strong>. This stored procedure takes a parameter
@@ -553,7 +553,7 @@ CALL pr_od_AcademicInstitution_Load(2017::FLOAT);
 <h2>Academic institution data processing<a class="headerlink" href="#academic-institution-data-processing" title="Permalink to this headline">¶</a></h2>
 <p>Using the academic institution files, we have built a dimension table called <strong>AcademicInstitution</strong>.
 This dimension table will be used by fact tables at the servicing layer in forthcoming chapters.</p>
-<p>In general, a dimension table contains keys, columns, and other attributes which are associated with the business key.
+<p>In general, a dimension table contains keys, columns, and other attributes that are associated with the business key.
 A system-generated key (primary key) is used to uniquely identify a row in the dimension and it is also known as a surrogate key. In a dimensional data warehouse architecture,
 the surrogate key is placed in the fact table and a foreign key is defined to establish the relationship between the two tables.</p>
 <p>In the case of the dimension table <strong>AcademicInstitution</strong>, we have defined the
@@ -567,7 +567,7 @@ The automatic sequencing is achieved in Snowflake by defining <strong>SEQUENCE</
 </div>
 <p>Snowflake stores JSON objects as VARIANT data type.
 VARIANT allows semi-structured data to be loaded. Snowflake automatically discovers the attributes,
-keys, and the structure that exists in the JSON document from VARIANT datatype. We can also add statistics that enables optimization.
+keys, and the structure that exists in the JSON document from VARIANT datatype. We can also add statistics that enable optimization.
 Snowflake enables to reverse-engineer a JSON document from relational data.
 OBJECT_CONSTRUCT returns a VARIANT object, a JSON document, as an output.</p>
 <p>The following Snowflake SQL script is used for creating the <strong>AcademicInstitution</strong> dimension.</p>
@@ -671,7 +671,7 @@ Hence, the column CarnegieClassification is created with the VARIANT data type.<
 </div>
 <div class="section" id="web-address-transformation">
 <h3>Web address transformation<a class="headerlink" href="#web-address-transformation" title="Permalink to this headline">¶</a></h3>
-<p>Similarly, we have grouped together the below columns holding various web addresses
+<p>Similarly, we have grouped together  with the below columns holding various web addresses
 under the name WebAddress and stored in a JSON format. Thus, another VARIANT data type column WebAddress is also created.</p>
 <blockquote>
 <div><ul class="simple">
@@ -1179,7 +1179,7 @@ SELECT * FROM AcademicInstitution
 <h2>Schema drift<a class="headerlink" href="#schema-drift" title="Permalink to this headline">¶</a></h2>
 <p>Structural changes in the incoming data files are quite common in a data warehouse environment.
 In our case, from 2018 we have noticed the following structural
-changes in the input files generated from source system.</p>
+changes in the input files generated from the source system.</p>
 <p>The following new columns are added to files from 2018 onwards.</p>
 <blockquote>
 <div><ul class="simple">
@@ -1223,8 +1223,8 @@ Newly added columns are mapped with NULL for the year 2017.</p>
 change along with table change in the tables <strong>od_AcademicInstitution</strong> and <strong>AcademicInstitution</strong>.</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>View <strong>v_od_AcademicInstitution</strong> reads the data from stage table.</p></li>
-<li><p>Stored procedure <strong>pr_od_AcademicInstitution_Load</strong> loads data to staging table.</p></li>
+<li><p>View <strong>v_od_AcademicInstitution</strong> reads the data from the stage table.</p></li>
+<li><p>Stored procedure <strong>pr_od_AcademicInstitution_Load</strong> loads data to the staging table.</p></li>
 <li><p>Stored procedure <strong>pr_AcademicInstitution_Load</strong> processes dimension table.</p></li>
 </ul>
 </div></blockquote>
@@ -1416,7 +1416,7 @@ WHERE
 </div>
 <p>Data attributes associated with Carnegie classification are grouped
 into JSON object and stored in the servicing layer.
-Servicing layer entity has column with data type VARIANT to store this JSON object. When additional attributes
+Servicing layer entity has a column with data type VARIANT to store this JSON object. When additional attributes
 are added/dropped in the input file, we only need to change JSON OBJECT_CONSTRUCT function to pass in additional
 attributes. There is no schema change needed in the servicing layer.</p>
 <p>Stored procedure <strong>pr_od_AcademicInstitution_Load</strong> is updated to accommodate
@@ -2142,8 +2142,8 @@ try {
 </pre></div>
 </div>
 </div>
-<div class="section" id="merge-using-hash-key">
-<h2>MERGE using hash key<a class="headerlink" href="#merge-using-hash-key" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="merge-using-the-hash-key">
+<h2>MERGE using the hash key<a class="headerlink" href="#merge-using-the-hash-key" title="Permalink to this headline">¶</a></h2>
 <p>In the hash key stored procedure, we join the source and target tables using the business key <strong>InstitutionIdentifier</strong>.
 When a matching record is found, we compare individual
 columns between the source and target tables using hash keys to find any column values changed in the source.
@@ -2155,7 +2155,7 @@ These values are concatenated using another function <strong>Concat_Columns</str
 which is then passed to the hash function SHA1 to generate a hash key.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
-<p>Show/Hide script for: Create function to concat AcademicInstitution column</p>
+<p>Show/Hide script for: Create a function to concat AcademicInstitution column</p>
 </div>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>CREATE OR REPLACE FUNCTION
     ConcatColumns(COLUMNLIST array)
@@ -2696,16 +2696,19 @@ try {
 </div>
 <div class="section" id="summary">
 <h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
-<p>In this chapter we travelled through the process of loading and processing academic institution files
+<p>In this chapter, we traveled through the process of loading and processing academic institution files
 for the years 2017, 2018, and 2019. We created a staged file and a corresponding operational data table to store
-institution details by year. We discussed in detail about the views and stored procedures used to populate
+institution details by year. We discussed in detail the views and stored procedures used to populate
 the dimension table using the Snowflake MERGE command.
 We reviewed sequence objects in Snowflake for creating a primary key in the dimension table,
 <strong>AcademicInstitution</strong>. We also demonstrated how to group various
 columns in the staged file using the JSON string and VARIANT data types.
 Furthermore, we learned
 transformation logic to handle the schema drifts in the incoming data files.
-Finally, we demonstrated yet another approach to MERGE dimension table using hash keys.</p>
+Finally, we demonstrated yet another approach to MERGE the dimension table using hash keys.</p>
+<p>Transactional systems are using JSON (format specified in RFC 4627 by Douglas Crockford)
+as the preferred format because it is much more lightweight,
+we will learn JSON ingestion in the next chapter.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p><em>Code is available to download at:</em>
@@ -2751,9 +2754,9 @@ Finally, we demonstrated yet another approach to MERGE dimension table using has
 <li class="toctree-l1"><a class="reference internal" href="IntroducingDataplatform.html">Introducing data platform</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">CSV ingestion</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#academic-institution">Academic institution</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#od-table-for-academic-institution">OD table for academic institution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#od-table-for-an-academic-institution">OD table for an academic institution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#snowflake-view-and-stored-procedure">Snowflake view and stored procedure</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#managing-metadata-of-staged-file">Managing metadata of staged file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#managing-metadata-of-the-staged-file">Managing metadata of the staged file</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#stored-procedure-for-od-table-load">Stored procedure for OD table load</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#academic-institution-data-processing">Academic institution data processing</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#carnegie-classification-transformation">Carnegie classification transformation</a></li>
@@ -2762,14 +2765,14 @@ Finally, we demonstrated yet another approach to MERGE dimension table using has
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#load-dimension-table">Load dimension table</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#schema-drift">Schema drift</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#merge-using-hash-key">MERGE using hash key</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#merge-using-the-hash-key">MERGE using the hash key</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#summary">Summary</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="JSONIngestion.html">JSON ingestion</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ORCIngestion.html">ORC ingestion</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ParquetIngestion.html">Parquet ingestion</a></li>
-<li class="toctree-l1"><a class="reference internal" href="SemiStructuredDataIngestion.html">Semi-structured data Load</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SemiStructuredDataIngestion.html">Multiple record formats ingestion</a></li>
 <li class="toctree-l1"><a class="reference internal" href="PipelineOrchestration.html">Pipeline orchestration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="BusinessInsights.html">Business insights</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>

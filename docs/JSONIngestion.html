@@ -48,24 +48,24 @@ The data files for enrollments are in JSON format and the staged file is invoked
 <blockquote>
 <div><ul class="simple">
 <li><p>Ingesting JSON files.</p></li>
-<li><p>Transforming data using JavaScripts stored procedures.</p></li>
+<li><p>Transforming data using JavaScript stored procedures.</p></li>
 <li><p>Executing stored procedures.</p></li>
 </ul>
 </div></blockquote>
-<p>Snowflake allows to load JSON data directly into relational tables. We can then query this
+<p>Snowflake allows loading JSON data directly into relational tables. We can then query this
 data with SQL and join it to other data without having to do any transformations.
 At load time, Snowflake parses the JSON based on the key-value pairs.
 Structural information is derived based on the schema definition embedded in
-JSON string at read time (Schema-on-Read).</p>
+JSON string at reading time (Schema-on-Read).</p>
 <p>JSON data from the staged file is retrieved using the following code.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT N.$1 JASONdata FROM  @IPEDS_IC N;
 </pre></div>
 </div>
-<p>Each row holds one JSON document, ingested from the source into staged file.</p>
+<p>Each row holds one JSON document, ingested from the source into a staged file.</p>
 <div class="figure align-center">
 <img alt="images/jsonInternalStagedDataSelect.JPG" src="images/jsonInternalStagedDataSelect.JPG" />
 </div>
-<p>Let us retrieve column InstitutionIdentifier from JSON object in staged file.</p>
+<p>Let us retrieve column InstitutionIdentifier from JSON object in the staged file.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>select S.$1:UNITID AS InstitutionIdentifier
     FROM @IPEDS_EFFY S;
 
@@ -73,7 +73,7 @@ $1 = positional attribute in staged file
 An alias InstitutionIdentifier to the column name just like in regular SQL.
 </pre></div>
 </div>
-<p>If this JSON object is stored in physical table called IPED Column jdata,
+<p>If this JSON object is stored in a physical table called IPED Column jdata,
 we could read InstitutionIdentifier as below.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>select jdata:UNITID AS InstitutionIdentifier
    FROM IPED;
@@ -91,8 +91,8 @@ We used :: to cast to a INTEGER data type.
 </pre></div>
 </div>
 <p>We have ingested JSON formatted enrollment data into staged file &#64;IPEDS_EFFY.
-The following SQL shows content of JSON VARIANT converted to subcolumns with proper data type casting.
-These subcolumns dataset will be used to populate operational data store.</p>
+The following SQL shows the content of JSON VARIANT converted to subcolumns with proper data type casting.
+These subcolumns dataset will be used to populate the operational data store.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Select from Staged file JSON data script</p>
@@ -439,7 +439,7 @@ $$;
 </div>
 <div class="section" id="enrollment-load">
 <h2>Enrollment load<a class="headerlink" href="#enrollment-load" title="Permalink to this headline">¶</a></h2>
-<p>We have created a table <strong>Enrollment</strong> in the servicing layer.
+<p>We have created a table for <strong>Enrollment</strong> in the servicing layer. The
 <strong>Enrollment</strong> table has links to the
 dimension table <strong>AcademicInstitution</strong>. The relationship represents the star schema of
 dimensional modeling architecture. This is made possible by
@@ -513,15 +513,15 @@ for that year and then re-inserts them to <strong>Enrollment</strong> from that 
 To do so, we read the imputation column to obtain the total number of imputed and reported variable counts,
 which we store in <strong>VariablesReportedCount</strong> and  <strong>VariablesImputedCount</strong>.
 Then, we calculate their percentages and store them in <strong>ImputationVarPercent</strong> and <strong>ReportedVarPercent</strong>, respectively.</p>
-<p>Stored procedure <strong>pr_Enrollment_Load</strong> executes multiple SQL statments.</p>
+<p>Stored procedure <strong>pr_Enrollment_Load</strong> executes multiple SQL statements.</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>The procedure is defined with argument.</p></li>
 <li><p>Runtime language is defined as javascript.</p></li>
-<li><p>Procedure returns a string.</p></li>
+<li><p>The Procedure returns a string.</p></li>
 <li><p>Multiple JavaScript variables are used.</p></li>
 <li><p>Single sql command/text is assigned to one JavaScript variable.</p></li>
-<li><p>These variables are combined into string array.</p></li>
+<li><p>These variables are combined into a string array.</p></li>
 <li><p>For loop is used to execute all SQL commands by calling <strong>snowflake.execute</strong> and passing the javascript variable.</p></li>
 <li><p>Check the results on each call of <strong>snowflake.execute</strong>.</p></li>
 </ul>
@@ -846,10 +846,13 @@ RETURN &quot;success&quot; $$;
 <div class="section" id="summary">
 <h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
 <p>In this chapter, we analyzed the annual enrollment data of various institutions.
-We discussed JSON-formatted data ingestion process. JSON data can be loaded directly into table
+We discussed the JSON-formatted data ingestion process. JSON data can be loaded directly into table
 columns of type VARIANT. These VARIANT columns
 are queried using SQL SELECT statements that reference JSON document elements by the hierarchical paths.
 We also explored building transformation logic in stored procedures to map additional attributes.</p>
+<p>High volume data are ingested in the Hadoop Distributed File System (HDFS).
+The Consumption layer needs data analyzed in HDFS. In the next chapter, we will cover how to ingest ORC
+files coming from the HDFS system.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p><em>Code is available to download at:</em>
@@ -903,7 +906,7 @@ We also explored building transformation logic in stored procedures to map addit
 </li>
 <li class="toctree-l1"><a class="reference internal" href="ORCIngestion.html">ORC ingestion</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ParquetIngestion.html">Parquet ingestion</a></li>
-<li class="toctree-l1"><a class="reference internal" href="SemiStructuredDataIngestion.html">Semi-structured data Load</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SemiStructuredDataIngestion.html">Multiple record formats ingestion</a></li>
 <li class="toctree-l1"><a class="reference internal" href="PipelineOrchestration.html">Pipeline orchestration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="BusinessInsights.html">Business insights</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>

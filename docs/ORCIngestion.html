@@ -47,7 +47,7 @@ required for the current process.</p>
 <p>Snowflake manages AVRO, ORC files similar to semi-structured JSON data from VARIANT type.
 We can convert VARIANT  ORC data column to a multi-column table with
 specifying column names and data types.</p>
-<p>ORC data loaded into staged file is retrieved using the following code.</p>
+<p>ORC data loaded into the staged file is retrieved using the following code.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT O.$1 JASONdata FROM  @IPEDS_IC O;
 </pre></div>
 </div>
@@ -55,7 +55,7 @@ specifying column names and data types.</p>
 <div class="figure align-center">
 <img alt="images/ORCInternalStagedDataSelect.JPG" src="images/ORCInternalStagedDataSelect.JPG" />
 </div>
-<p>ORC data is stored as JSON document. JSON document processing can be used to transform ORC data.</p>
+<p>ORC data is stored as a JSON document. JSON document processing can be used to transform ORC data.</p>
 <p>We are using few Snowflake native functions to work with semi-structured JSON data.</p>
 <div class="section" id="functions-to-manage-semi-structured-data">
 <h2>Functions to manage semi-structured data<a class="headerlink" href="#functions-to-manage-semi-structured-data" title="Permalink to this headline">¶</a></h2>
@@ -64,11 +64,11 @@ In this section, we are going to cover few new Snowflake functions FLATTEN(),
 ARRAY_SIZE(), LATERAL FLATTEN(), and PARSE_JSON().</p>
 <p>These functions are used to query the semi-structured data and convert
 semi-structured data to a relational format.</p>
-<p>FLATTEN() is a table function that extract the objects and keys into a separate table.
+<p>FLATTEN() is a table function that extracts the objects and keys into a separate table.
 It takes a VARIANT, OBJECT, or ARRAY column and produces a lateral view.</p>
 <p>PARSE_JSON() function takes a string as input and returns a JSON-compatible variant.</p>
-<p>ARRAY_SIZE() function returns size of array in the VARIANT value.</p>
-<p>LATERAL FLATTEN() is used to extract array from JSON data.</p>
+<p>ARRAY_SIZE() function returns size of the array in the VARIANT value.</p>
+<p>LATERAL FLATTEN() is used to extract the array from JSON data.</p>
 <p>Use the LATERAL FLATTEN function to flatten the data.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
@@ -163,12 +163,12 @@ It takes a VARIANT, OBJECT, or ARRAY column and produces a lateral view.</p>
 </pre></div>
 </div>
 </div>
-<p>We are using a sample JSON file which contains the information about 3
+<p>We are using a sample JSON file that contains the information about 3
 soccer players of English championships.
-This file is built as a hierarchical JSON format which contains a
-simple key-value pairs as well as array of nested objects.</p>
-<p>In this case columns like Name, Club, Goals, Wins, etc. simple key-value pairs,
-while GoalsStatistics and Division are array of nested objects which are grouped together.</p>
+This file is built as a hierarchical JSON format that contains
+simple key-value pairs as well as an array of nested objects.</p>
+<p>In this case columns like Name, Club, Goals, Wins, etc. are simple key-value pairs.
+GoalsStatistics and Division are an array of nested objects which are grouped together.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>{
 &quot;Name&quot;:&quot;Rolando Aarons&quot;,
 &quot;Club&quot;: &quot;Newcastle United&quot;,
@@ -185,8 +185,8 @@ while GoalsStatistics and Division are array of nested objects which are grouped
 }
 </pre></div>
 </div>
-<p>GoalsStatistics is an array which contains <strong>Season</strong> and <strong>Goals</strong> made by the
-player in that season. So GoalsStatistics can contain one or records for a particular palyer.</p>
+<p>GoalsStatistics is an array that contains <strong>Season</strong> and <strong>Goals</strong> made by the
+player in that season. So GoalsStatistics can contain one or records for a particular player.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>&quot;GoalsStatistics&quot;: [
             {&quot;Season&quot;: &quot;2014-15&quot;, &quot;Goals&quot;: 2},
             {&quot;Season&quot;: &quot;2015-16&quot;, &quot;Goals&quot;: 1},
@@ -197,12 +197,12 @@ player in that season. So GoalsStatistics can contain one or records for a parti
         ]
 </pre></div>
 </div>
-<p>Similarly Division is array object which contain another array
-of objects inside each array. So division name and array of seasons
-the player playerd for that division. For example, the player has
+<p>Similarly, Division is an array object that contains another array
+of objects inside each array. So division name and an array of seasons
+the player played for that division. For example, the player has
 played for 2 divisions <strong>Premier League</strong> and <strong>Championship</strong>.
-For <strong>Premier League</strong> he has played for seasons 2014-15, 2015-16, 2017-18,
-2018-19 and 2019-20. And for ‘Championship’ he has played in 2016-17.</p>
+For <strong>Premier League</strong> he has played four seasons 2014-15, 2015-16, 2017-18,
+2018-19, and 2019-20. And for ‘Championship’ he has played in 2016-17.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>&quot;Division&quot;:[
         {&quot;Name&quot;:&quot;Premier League&quot;,
         &quot;Season&quot;:[
@@ -226,7 +226,7 @@ For <strong>Premier League</strong> he has played for seasons 2014-15, 2015-16, 
 CREATE OR REPLACE stage FooballStg file_format = JSONFORMAT;
 </pre></div>
 </div>
-<p>Load the staged file &#64;FooballStg using the following PUT command from Windows command prompt.</p>
+<p>Load the staged file &#64;FooballStg using the following PUT command from the Windows command prompt.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>put file://c:\test\data\fpl-book.json @FooballStg auto_compress=true;
 </pre></div>
 </div>
@@ -235,7 +235,7 @@ CREATE OR REPLACE stage FooballStg file_format = JSONFORMAT;
 FROM @FooballStg as S;
 </pre></div>
 </div>
-<p>The following query displays data from staged file after casting the columns based on the data types.</p>
+<p>The following query displays data from the staged file after casting the columns based on the data types.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT parse_json($1):Name::STRING AS &quot;Player Name&quot;
 ,parse_json($1):Club::STRING as &quot;Club&quot;
 ,parse_json($1):Position::STRING as &quot;Position&quot;
@@ -257,13 +257,13 @@ CREATE TABLE IF NOT EXISTS S_PLAYERS
 );
 </pre></div>
 </div>
-<p>Copy palyers data from staged file to physical table as below.</p>
+<p>Copy players data from staged file to the physical table as below.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>COPY INTO S_PLAYERS FROM @FooballStg FILE_FORMAT
     = (FORMAT_NAME = &#39;JSONFORMAT&#39;) ON_ERROR = CONTINUE;
 </pre></div>
 </div>
-<p>The function ARRAY_SIZE() returns size of array in the VARIANT value.
-In this case, it contains 2 arrays : GoalsStatistics and Division.</p>
+<p>The function ARRAY_SIZE() returns the size of an array in the VARIANT value.
+In this case, it contains 2 arrays: GoalsStatistics and Division.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT
 PLAYER_DATA:Name::STRING &quot;Player Name&quot;,
 ARRAY_SIZE(PLAYER_DATA:GoalsStatistics)
@@ -276,9 +276,9 @@ FROM S_PLAYERS;
 <div class="figure align-center">
 <img alt="images/latteralflatten1.jpg" src="images/latteralflatten1.jpg" />
 </div>
-<p>LATERAL FLATTEN() is used to extract array from JSON data.
+<p>LATERAL FLATTEN() is used to extract an array from JSON data.
 The query below uses LATERAL FLATTEN() to take the items in the list from
-PLAYER_DATA:GoalsStatistics and make them their own dataset.
+PLAYER_DATA: GoalsStatistics and make them their own dataset.
 INPUT, VALUE, INDEX are reserved keywords.
 It is important to give alias <strong>GoalsStat</strong> to flatten results.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT
@@ -294,7 +294,7 @@ FROM S_PLAYERS,
 <img alt="images/latteralflatten2.jpg" src="images/latteralflatten2.jpg" />
 </div>
 <p>We can have multiple FLATTEN functions within the same query as shown below.
-Here the query returns list of arrays from GoalsStatistics and Division data objects.</p>
+Here the query returns a list of arrays from GoalsStatistics and Division data objects.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT
 PLAYER_DATA:Name::STRING &quot;Player Name&quot;,
 GoalsStat.VALUE AS Goals,
@@ -347,7 +347,7 @@ Fees vary significantly from state to state, public to private, and ranking of i
 </div>
 <div class="section" id="institutional-charge-by-academic-branch">
 <h3>Institutional charge by academic branch<a class="headerlink" href="#institutional-charge-by-academic-branch" title="Permalink to this headline">¶</a></h3>
-<p>The details of fees by academic subjects like dentistry, medicine, optometry, osteopathic medicine, pharmacy, podiatry,
+<p>The details of the fees by academic subjects like dentistry, medicine, optometry, osteopathic medicine, pharmacy, podiatry,
 veterinary medicine, and law by institutions
 for in-state and out-of-state students are available in this section.</p>
 </div>
@@ -355,7 +355,7 @@ for in-state and out-of-state students are available in this section.</p>
 <h3>Institutional charge by residency type<a class="headerlink" href="#institutional-charge-by-residency-type" title="Permalink to this headline">¶</a></h3>
 <p>The residency type determines different fee structures in public
 universities for the same courses. Normally, in-state students
-are charged less than out-of-state. This set of attributes will provide insight around those patterns.</p>
+are charged less than out-of-state. This set of attributes will provide insight into those patterns.</p>
 </div>
 <div class="section" id="institutional-charge-by-category">
 <h3>Institutional charge by category<a class="headerlink" href="#institutional-charge-by-category" title="Permalink to this headline">¶</a></h3>
@@ -372,8 +372,8 @@ on-campus expenses are available in this section of the file.</p>
 </div></blockquote>
 </div>
 </div>
-<div class="section" id="staged-file-for-institution-charges">
-<h2>Staged file for institution charges<a class="headerlink" href="#staged-file-for-institution-charges" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="staged-file-for-institutional-charges">
+<h2>Staged file for institutional charges<a class="headerlink" href="#staged-file-for-institutional-charges" title="Permalink to this headline">¶</a></h2>
 <p>The staged file <strong>&#64;IPEDS_IC</strong> is used for keeping track of various institution charges.
 We can retrieve the details of a particular year, exemplified by the Snowflake SQL query
 seen below to select all rows for the year 2017 from staged ORC data.
@@ -528,8 +528,8 @@ WHERE LEFT(MetaData$FileName,4) = 2017;
 </div>
 </div>
 </div>
-<div class="section" id="operational-data-od-table-for-institutional-charge">
-<h2>Operational data (OD) table for institutional charge<a class="headerlink" href="#operational-data-od-table-for-institutional-charge" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="operational-data-od-table-for-an-institutional-charge">
+<h2>Operational data (OD) table for an institutional charge<a class="headerlink" href="#operational-data-od-table-for-an-institutional-charge" title="Permalink to this headline">¶</a></h2>
 <p>The OD table <strong>od_InstitutionalCharge</strong> is added to load institutional charge data from the staged file.
 It contains all the columns from the staged file <strong>&#64;IPEDS_IC</strong>.
 The Snowflake script for creating this table is shown below.</p>
@@ -668,8 +668,8 @@ The Snowflake script for creating this table is shown below.</p>
 </div>
 <p>The attributes of the OD table are categorized into a core group and the 3 groups shown below.</p>
 </div>
-<div class="section" id="charges-by-academic-branch">
-<h2>Charges by academic branch<a class="headerlink" href="#charges-by-academic-branch" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="charges-by-the-academic-branch">
+<h2>Charges by the academic branch<a class="headerlink" href="#charges-by-the-academic-branch" title="Permalink to this headline">¶</a></h2>
 <p>This section covers the fees charged by different professional colleges.</p>
 <p><strong>Chiropractic</strong></p>
 <blockquote>
@@ -1193,7 +1193,7 @@ institutional charge data called:</p>
 </div></blockquote>
 <p>All these fact tables have links to the
 dimension table <strong>AcademicInstitution</strong>. The relationship represents the star schema of
-dimensional modelling architecture. This is made possible by
+dimensional modeling architecture. This is made possible by
 adding the surrogate key column (<strong>AcademicInstitutionUniqueDWSID</strong>)
 of the dimension table <strong>AcademicInstitution</strong> to these fact tables.</p>
 <p>While processing the InstitutionalCharge dataset, tables
@@ -1288,7 +1288,7 @@ the servicing layer.</p>
 <p>The following views are created to transform columns to rows. These views will be used in stored procedures.</p>
 <div class="section" id="id2">
 <h3>Institutional charge by academic branch<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
-<p><strong>v_od_InstitutionalChargeByAcademicBranch</strong> is created to convert columns from the underlying OD dataset to rows for data processing layer.
+<p><strong>v_od_InstitutionalChargeByAcademicBranch</strong> is created to convert columns from the underlying OD dataset to rows for the data processing layer.
 The view generates output, one record per academic branch like chiropractic, medicine, osteopathic medicine, etc.
 These attributes from the source are further categorized into tuition and fees.</p>
 <div class="toggle docutils container">
@@ -1635,7 +1635,7 @@ These attributes from the source are further categorized into tuition and fees.<
 <h3>Institutional charge by residency type<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
 <p>The view <strong>v_od_InstitutionalChargeByResidencyType</strong> is built to convert
 columns to rows for data processing. This view is similar to
-<strong>v_od_InstitutionalChargeByAcademicBranch</strong>. This view outputs one record per
+<strong>v_od_InstitutionalChargeByAcademicBranch</strong>. This view outputs, one record per
 in-district, in-state, or out-of-state residency type. The view provides tuition
 information for complete course work like year-0-tuition, year-1-tuition, etc.</p>
 <div class="toggle docutils container">
@@ -2946,10 +2946,15 @@ are loaded by calling these stored procedures:</p>
 </div>
 <div class="section" id="summary">
 <h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
-<p>Ingesting ORC files in Snowflake is as easy as ingesting JSON data. We learned about a variety of transformations moving data from
+<p>Ingesting ORC files in Snowflake is as easy as ingesting JSON data. We learned about a variety of transformations, moving data from
 the landing layer to the servicing layer. We also covered how to unpivot data stored in the OD layer
-into servicing layer.
+and load into the servicing layer.
 Finally, we detailed an alternative approach using the JSON VARIANT data type to perform transformations.</p>
+<p>Spark executes much faster by caching data in memory across multiple parallel operations,
+whereas HDFS and MapReduce involve more reading and writing from disk. Along with Spark, industry also adopted
+writing these dataframes into Parquet format.
+In the next chapter, we will be creating a Snowflake pipeline to ingest
+Parquet data format.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p><em>Code is available to download at:</em>
@@ -3004,9 +3009,9 @@ Finally, we detailed an alternative approach using the JSON VARIANT data type to
 <li class="toctree-l3"><a class="reference internal" href="#institutional-charge-by-category">Institutional charge by category</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#staged-file-for-institution-charges">Staged file for institution charges</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#operational-data-od-table-for-institutional-charge">Operational data (OD) table for institutional charge</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#charges-by-academic-branch">Charges by academic branch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#staged-file-for-institutional-charges">Staged file for institutional charges</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#operational-data-od-table-for-an-institutional-charge">Operational data (OD) table for an institutional charge</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#charges-by-the-academic-branch">Charges by the academic branch</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#charges-by-residency-type">Charges by residency type</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id1">Institutional charge by category</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#stored-procedure-for-od-table-load">Stored procedure for OD table load</a></li>
@@ -3034,7 +3039,7 @@ Finally, we detailed an alternative approach using the JSON VARIANT data type to
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="ParquetIngestion.html">Parquet ingestion</a></li>
-<li class="toctree-l1"><a class="reference internal" href="SemiStructuredDataIngestion.html">Semi-structured data Load</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SemiStructuredDataIngestion.html">Multiple record formats ingestion</a></li>
 <li class="toctree-l1"><a class="reference internal" href="PipelineOrchestration.html">Pipeline orchestration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="BusinessInsights.html">Business insights</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>

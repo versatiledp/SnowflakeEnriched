@@ -41,13 +41,13 @@
 <h1>Introducing data platform<a class="headerlink" href="#introducing-data-platform" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="data-platform-overview">
 <h2>Data platform overview<a class="headerlink" href="#data-platform-overview" title="Permalink to this headline">¶</a></h2>
-<p>Modern data architecture allows enterprises to ingest data coming from
+<p>The modern data architecture allows enterprises to ingest data coming from
 multiple systems, in a variety of data formats, at different speeds, and at unknown
-intervals. Layered data platform design makes it easy to process big
+intervals. The layered data platform design makes it easy to process big
 data efficiently. It enables organizations to quickly deploy new analytical
 business-driven solutions to drive revenue and
 profitability.</p>
-<p>There are four main pillars of modern data platform:</p>
+<p>There are four main pillars of the modern data platform:</p>
 <ul class="simple">
 <li><p>Data source layer</p></li>
 <li><p>Data processing and storage layer</p></li>
@@ -60,7 +60,7 @@ profitability.</p>
 <li><p>Data sources can be inside or outside the enterprise.</p></li>
 <li><p>Data sources generate data in real-time and in batch mode.</p></li>
 <li><p>The <strong>variety</strong> of data formats can be structured, semi-structured, or unstructured.</p></li>
-<li><p>The <strong>velocity</strong> (speed of arrival) and <strong>volume</strong> (delivery amount) will differ by sources.</p></li>
+<li><p>The <strong>velocity</strong> (speed of arrival) and <strong>volume</strong> (delivery amount) will differ by source.</p></li>
 </ul>
 </div>
 <div class="section" id="data-processing-and-storage-layer">
@@ -72,8 +72,8 @@ stored in the Hadoop distributed file system store (HDFS). Large data
 processing is performed through Hadoop/Spark system. Data may
 undergo format changes as it is processed through these systems. Cloud
 service providers like Amazon, Google, and Microsoft allows to build and
-operate data-centric applications with an infinite scale. Robust and
-inexpensive storage is fundamental to the operation and scalability of
+operate data-centric applications on an infinite scale. Robust and
+inexpensive storage is fundamental to the operation and scalability of the
 big data architecture.</p>
 <p>BigQuery, Azure Synapse, Amazon Redshift, and Snowflake
 are used as standalone solutions for big data processing, or in
@@ -82,9 +82,9 @@ combination with the Hadoop/Spark ecosystems.</p>
 <div class="section" id="analytical-layer">
 <h3>Analytical layer<a class="headerlink" href="#analytical-layer" title="Permalink to this headline">¶</a></h3>
 <p>The Analytical layer reads the data ingested and transformed by the data
-processing and storage layer of big data ecosystem. This layer consists of a variety of data
+processing and storage layer of the big data ecosystem. This layer consists of a variety of data
 for different user requirements and
-provides data discovery mechanisms from large volumes of
+provides data discovery mechanisms on large volumes of
 data. Apache Spark SQL, Hive, Apache Spark Streaming, Apache Spark GraphX, machine learning
 libraries, SQL libraries, and a number of other toolsets
 are utilized in this layer to understand the underlying data landscape.</p>
@@ -109,16 +109,16 @@ The IES mission is to provide scientific evidence on which to ground education, 
 and to share this evidence in formats useful and accessible to educators,
 parents, policymakers, researchers, and the public.</p>
 <p>The Integrated Postsecondary Education Data System (IPEDS) <a class="reference external" href="https://nces.ed.gov/ipeds"  target="_blank">https://nces.ed.gov/ipeds</a>
-is the primary source provided by the IES containing information on U.S. colleges, universities, technical institutions, and vocational institutions.</p>
+is the primary source provided by the IES containing information on U.S. Colleges, universities, technical institutions, and vocational institutions.</p>
 <p>This book is designed to use data from the IES and build analytics engines in a manner beneficial to corporations.</p>
 <p>In this project, we seek to:</p>
 <ul class="simple">
 <li><p>Ingest variety of data formats.</p></li>
 <li><p>Transform data for business users.</p></li>
-<li><p>Build a data pipeline to process data on periodic basis.</p></li>
+<li><p>Build a data pipeline to process data on a periodic basis.</p></li>
 <li><p>Create descriptive analytics for use-cases laid out by businesses.</p></li>
 </ul>
-<p>All of the data used in this book is downloaded from: <a class="reference external" href="https://nces.ed.gov/ipeds/use-the-data"   target="_blank">https://nces.ed.gov/ipeds/use-the-data</a>.</p>
+<p>All of the data used in this book is downloaded from <a class="reference external" href="https://nces.ed.gov/ipeds/use-the-data"   target="_blank">https://nces.ed.gov/ipeds/use-the-data</a>.</p>
 <div class="figure align-center">
 <img alt="images/IPEDSScreenShot.png" src="images/IPEDSScreenShot.png" />
 </div>
@@ -145,7 +145,7 @@ from various sources into a single destination to make it available for further 
 These are initial physical tables created in Snowflake and consists of data
 that has undergone little to no transformation.
 The OD table structure very closely resembles that of the staged file with proper data types and column names, alongside
-additional columns to help track on data lineage.</p>
+additional columns to help track data lineage.</p>
 </div>
 <div class="section" id="servicing-layer">
 <h3>Servicing layer<a class="headerlink" href="#servicing-layer" title="Permalink to this headline">¶</a></h3>
@@ -221,7 +221,7 @@ The OD layer is used to process data for the destination layer with additional t
 <p>In our use-case, we are assuming enrollment (EFFY) files are ingested in the JSON format directly to Snowflake.
 ELT layer defines the mapped attributes for JSON with data types.
 The following diagram displays the data ingestion architecture for JSON files.
-The stage layer is used to process data for the destination layer with additional transformation.</p>
+The staging layer is used to process data for the destination layer with additional transformation.</p>
 <div class="figure align-center">
 <img alt="images/jsonIngestion.jpg" src="images/jsonIngestion.jpg" />
 </div>
@@ -231,8 +231,7 @@ The stage layer is used to process data for the destination layer with additiona
 <p>IC*AY files are converted to ORC format. The Optimized Row Columnar (ORC) file format provides a highly efficient way to store Hive data. ORC files improve performance when Hive is reading, writing, and processing data. The compact nature of this format is ideal, and enables skipping over irrelevant parts without needing large, complex, or manually maintained indices.</p>
 <p>In our use case, we are assuming that institutional charge  (ICAY) text files are ingested in HDFS and processed through Hive. The output of the big data processing (ORC files) is loaded in Snowflake.
 The ELT layer defines the schema for ORC file with data types.
-The following diagram displays the data ingestion architecture for ORC format files.
-The stage layer is used to process data for the destination layer with additional transformations and normalization.</p>
+The following diagram displays the data ingestion architecture for ORC format files.</p>
 <div class="figure align-center">
 <img alt="images/orcIngestion.jpg" src="images/orcIngestion.jpg" />
 </div>
@@ -248,7 +247,7 @@ from a wide table. Parquet provides optimizations to speed up queries.</p>
 In our use case, we are assuming that the IPEDs admission data text (ADM) files are ingested in HDFS and processed through Spark.
 We use the output of the spark processing (Parquet files) to process in Snowflake.
 The ELT layer defines the schema for Parquet file with data types. The following diagram displays mapping between
-the Parquet attribute and the stage layer. The stage layer is used to process data for the next destination with additional transformations.</p>
+the Parquet attribute and the stage layer.</p>
 <div class="figure align-center">
 <img alt="images/parquetIngestion.jpg" src="images/parquetIngestion.jpg" />
 </div>
@@ -280,7 +279,7 @@ Using these OD tables, servicing layer tables of the data-warehouse are populate
 <blockquote>
 <div><ul class="simple">
 <li><p>Tab delimited</p></li>
-<li><p>Comma separated with header</p></li>
+<li><p>Comma separated with a header record</p></li>
 <li><p>Comma separated with no header</p></li>
 </ul>
 </div></blockquote>
@@ -391,7 +390,7 @@ All the ORC partitions are loaded into a specific folder of ORC staging area.</p
 </pre></div>
 </div>
 <p>Load the Parquet admission (ADM) files.
-All the Parquet partitions are loaded into specific folder of Parquet staging area.</p>
+All the Parquet partitions are loaded into a specific folder of the Parquet staging area.</p>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">put</span> <span class="n">file</span><span class="p">:</span><span class="o">//</span><span class="n">C</span><span class="p">:</span>\<span class="n">snowflake</span>\<span class="n">data</span>\<span class="nb">input</span>\<span class="n">adm2017</span><span class="o">.</span><span class="n">parquet</span>\<span class="o">*.*</span> <span class="nd">@IPEDS_ADM</span><span class="o">/</span><span class="mi">2017</span><span class="o">/</span><span class="p">;</span>
 <span class="n">put</span> <span class="n">file</span><span class="p">:</span><span class="o">//</span><span class="n">C</span><span class="p">:</span>\<span class="n">snowflake</span>\<span class="n">data</span>\<span class="nb">input</span>\<span class="n">adm2018</span><span class="o">.</span><span class="n">parquet</span>\<span class="o">*.*</span> <span class="nd">@IPEDS_ADM</span><span class="o">/</span><span class="mi">2018</span><span class="o">/</span><span class="p">;</span>
 <span class="n">put</span> <span class="n">file</span><span class="p">:</span><span class="o">//</span><span class="n">C</span><span class="p">:</span>\<span class="n">snowflake</span>\<span class="n">data</span>\<span class="nb">input</span>\<span class="n">adm2019</span><span class="o">.</span><span class="n">parquet</span>\<span class="o">*.*</span> <span class="nd">@IPEDS_ADM</span><span class="o">/</span><span class="mi">2019</span><span class="o">/</span><span class="p">;</span>
@@ -438,13 +437,15 @@ If there are any issues in the stage area, drop them using <strong>remove &#64;I
 </div>
 <div class="section" id="summary">
 <h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
-<p>This chapter summarizes, data files, file formats, and process used to simplify
+<p>This chapter summarizes, data files, file formats, and processes used to simplify
 and streamline bulk loading data into various
 internal staging areas.
 The data from the transactional source systems go through multiple data processing layers.
 This results in a variety of data formats being created.
 We map these data files into the analytical metadata layer. This chapter
 summarized all the data formats we will be dealing with in the processing layer of the analytical data platform.</p>
+<p>With this understanding of Snowflake and data platform overview, let us start ingesting
+our first set of CSV files from the source system.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p><em>Code is available to download at:</em>
@@ -543,7 +544,7 @@ summarized all the data formats we will be dealing with in the processing layer 
 <li class="toctree-l1"><a class="reference internal" href="JSONIngestion.html">JSON ingestion</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ORCIngestion.html">ORC ingestion</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ParquetIngestion.html">Parquet ingestion</a></li>
-<li class="toctree-l1"><a class="reference internal" href="SemiStructuredDataIngestion.html">Semi-structured data Load</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SemiStructuredDataIngestion.html">Multiple record formats ingestion</a></li>
 <li class="toctree-l1"><a class="reference internal" href="PipelineOrchestration.html">Pipeline orchestration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="BusinessInsights.html">Business insights</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>

@@ -45,7 +45,7 @@ it easier to analyze. With some process, we can store them in the
 relation database. In our case,a single lookup file generated from the
 source system contains data for multiple entities. Based on the
 first attribute in the file, we can derive the name of an underlying entity.</p>
-<p>Data for multiple entities listed below is available in the single file.</p>
+<p>Data for multiple entities listed below are available in a single file.</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>Institution status</p></li>
@@ -171,7 +171,7 @@ FROM   @IPEDS_CM t
 service layer table. Furthermore, it is used for populating data dynamically from the staged file to the OD tables.</p>
 <p>We concatenate ‘<strong>od_</strong>’ to the table name column from the CodeDestination entity.
 In the <strong>pr_od_CodeMapping_Load</strong> stored procedure,
-we check if the corresponding table exist in the Snowflake.
+we check if the corresponding table exists in the Snowflake.
 If the table is there, it is truncated and the staged file data for
 that code is loaded into the specific OD table. If the table is missing, then a new table is added and used
 to load data.</p>
@@ -252,7 +252,7 @@ $$;
 </pre></div>
 </div>
 </div>
-<p>On executing the above stored procedure, following tables are added and loaded with data from the single staged file.</p>
+<p>On executing the above stored procedure, the following tables are added and loaded with data from the single staged file.</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>od_InstitutionStatus</p></li>
@@ -337,11 +337,14 @@ $$;
 </div>
 <div class="section" id="summary">
 <h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
-<p>There is significant flexibility built in Snowflake to manage a variety of data needs.
+<p>There is significant flexibility built-in Snowflake to manage a variety of data needs.
 We learned how to load data from a
 single file into multiple entities.
 With JavaScript based stored procedures, we can consume a variety of data record layouts programmatically.
 We have demonstrated how various lookup tables can be created dynamically using a mapping table.</p>
+<p>So far we ingested all this data by calling the Snowflake stored procedure. In real life,the data load
+needs to be on autopilot mode. In the next chapter, we will cover how to develop homegrown
+scheduler, that can be used to manage all the ingestion steps.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p><em>Code is available to download at:</em>
