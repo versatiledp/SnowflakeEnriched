@@ -39,11 +39,6 @@
             
   <div class="section" id="json-ingestion">
 <h1>JSON ingestion<a class="headerlink" href="#json-ingestion" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="enrollment">
-<h2>Enrollment<a class="headerlink" href="#enrollment" title="Permalink to this headline">¶</a></h2>
-<p>This section covers information about enrollments in various institutions for the years 2017, 2018 and 2019.
-The enrollments are categorized by race, ethnicity, and sex.
-The data files for enrollments are in JSON format and the staged file is invoked using &#64;IPEDS_EFFY.</p>
 <p>We will learn about:</p>
 <blockquote>
 <div><ul class="simple">
@@ -52,13 +47,18 @@ The data files for enrollments are in JSON format and the staged file is invoked
 <li><p>Executing stored procedures.</p></li>
 </ul>
 </div></blockquote>
-<p>Snowflake allows loading JSON data directly into relational tables. We can then query this
+<p>Snowflake allows loading JSON data directly into relational tables. We can query this
 data with SQL and join it to other data without having to do any transformations.
 At load time, Snowflake parses the JSON based on the key-value pairs.
 Structural information is derived based on the schema definition embedded in
 JSON string at reading time (Schema-on-Read).</p>
+<div class="section" id="enrollment">
+<h2>Enrollment<a class="headerlink" href="#enrollment" title="Permalink to this headline">¶</a></h2>
+<p>This section covers information about enrollments in various institutions for the years 2017, 2018, and 2019.
+The enrollments are categorized by race, ethnicity, and sex.
+The data files for enrollments are in JSON format and the staged file is invoked using &#64;IPEDS_EFFY.</p>
 <p>JSON data from the staged file is retrieved using the following code.</p>
-<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT N.$1 JASONdata FROM  @IPEDS_IC N;
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT N.$1 JASONdata FROM  @IPEDS_EFFY N;
 </pre></div>
 </div>
 <p>Each row holds one JSON document, ingested from the source into a staged file.</p>
@@ -835,7 +835,7 @@ RETURN &quot;success&quot; $$;
 </pre></div>
 </div>
 </div>
-<p>Then we execute this procedure to load data for 2017, 2018, and 2019.</p>
+<p>Then we execute this procedure to load data for years 2017, 2018, and 2019.</p>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">TRUNCATE</span> <span class="n">TABLE</span> <span class="n">Enrollment</span><span class="p">;</span>
 <span class="n">CALL</span> <span class="n">pr_Enrollment_Load</span><span class="p">(</span><span class="mi">2017</span><span class="p">::</span><span class="n">FLOAT</span><span class="p">);</span>
 <span class="n">CALL</span> <span class="n">pr_Enrollment_Load</span><span class="p">(</span><span class="mi">2018</span><span class="p">::</span><span class="n">FLOAT</span><span class="p">);</span>
@@ -906,7 +906,7 @@ files coming from the HDFS system.</p>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="ORCIngestion.html">ORC ingestion</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ParquetIngestion.html">Parquet ingestion</a></li>
-<li class="toctree-l1"><a class="reference internal" href="SemiStructuredDataIngestion.html">Multiple record formats ingestion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SemiStructuredDataIngestion.html">Multi format ingestion</a></li>
 <li class="toctree-l1"><a class="reference internal" href="PipelineOrchestration.html">Pipeline orchestration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="BusinessInsights.html">Business insights</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>

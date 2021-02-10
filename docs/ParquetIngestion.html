@@ -19,7 +19,7 @@
     <script src="static/copybutton.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Multiple record formats ingestion" href="SemiStructuredDataIngestion.html" />
+    <link rel="next" title="Multi format ingestion" href="SemiStructuredDataIngestion.html" />
     <link rel="prev" title="ORC ingestion" href="ORCIngestion.html" />
    
   <link rel="stylesheet" href="static/custom.css" type="text/css" />
@@ -178,7 +178,7 @@ WHERE CAST(LEFT(METADATA$FileName,4) AS
 <h2>OD table for admission statistics<a class="headerlink" href="#od-table-for-admission-statistics" title="Permalink to this headline">¶</a></h2>
 <p>To keep track of admission statistics by year,
 we create an operational data table called <strong>od_AdmissionStat</strong>.
-We add 3 additional columns named AcademicYear, IngestedFileName, and RowNumber.
+We have added 3 additional columns named AcademicYear, IngestedFileName, and RowNumber.
 When processing the Parquet data, all the partitions from the staged location are used. The staged location metadata also contains
 part of the partition key. In our case, the first 4 characters contain the year in YYYY format.</p>
 <p>The Snowflake SQL script for creating this table is given below.</p>
@@ -450,8 +450,8 @@ of the dimension table <strong>AcademicInstitution</strong> to the fact table <s
 <p>The service layer/fact table <strong>AdmissionStat</strong> is loaded from the OD table <strong>od_AdmissionStat</strong> by year.
 Every time this fact table is updated, it is loaded with the latest data for that year.
 Therefore, old data loaded for that year is deleted and new data is loaded from the OD table.
-We create a Javascript based stored procedure <strong>pr_AdmissionStat_Load</strong>, in which
-we use 2 variables, <strong>sql_DelCommand</strong> and <strong>sql_Command</strong>.
+We created a Javascript based stored procedure <strong>pr_AdmissionStat_Load</strong>, in which
+we use 2 variables, <strong>sql_DelCommand</strong>, and <strong>sql_Command</strong>.
 The variable sql_DelCommand contains the SQL commands to delete the records from the fact table for the year passed to the stored procedure.
 The other variable sql_Command contains the main logic for updating the fact table for that year.</p>
 <p>We have used a <strong>LEFT OUTER JOIN</strong> with <strong>AcademicInstitution</strong> on <strong>InstitutionIdentifier</strong> to get the matching
@@ -603,7 +603,7 @@ This data processing architecture is similar to that of CSV files and is made ea
 by Snowflake. We loaded 3 years of admission statistics in the stage file, from which
 we created and loaded the OD table, and later the fact table, for the servicing layer.</p>
 <p>Data engineers have to deal with multiple file layout situations along with CSV, JSON, ORC, and Parquet.
-Few of the examples, variable file formats,a single file containing data from multiple source systems,
+Few of the examples, variable file formats, a single file containing data from multiple source systems,
 and holding information on the different subject areas.
 Next chapter, we will cover one of these situations in our
 journey, where a file has records for multiple destination entities.</p>
@@ -662,7 +662,7 @@ journey, where a file has records for multiple destination entities.</p>
 <li class="toctree-l2"><a class="reference internal" href="#summary">Summary</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="SemiStructuredDataIngestion.html">Multiple record formats ingestion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SemiStructuredDataIngestion.html">Multi format ingestion</a></li>
 <li class="toctree-l1"><a class="reference internal" href="PipelineOrchestration.html">Pipeline orchestration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="BusinessInsights.html">Business insights</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
@@ -674,7 +674,7 @@ journey, where a file has records for multiple destination entities.</p>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
       <li>Previous: <a href="ORCIngestion.html" title="previous chapter">ORC ingestion</a></li>
-      <li>Next: <a href="SemiStructuredDataIngestion.html" title="next chapter">Multiple record formats ingestion</a></li>
+      <li>Next: <a href="SemiStructuredDataIngestion.html" title="next chapter">Multi format ingestion</a></li>
   </ul></li>
 </ul>
 </div>

@@ -66,13 +66,16 @@ ARRAY_SIZE(), LATERAL FLATTEN(), and PARSE_JSON().</p>
 semi-structured data to a relational format.</p>
 <p>FLATTEN() is a table function that extracts the objects and keys into a separate table.
 It takes a VARIANT, OBJECT, or ARRAY column and produces a lateral view.</p>
-<p>PARSE_JSON() function takes a string as input and returns a JSON-compatible variant.</p>
+<p>PARSE_JSON() function takes a string as input and returns a JSON-compatible VARIANT.</p>
 <p>ARRAY_SIZE() function returns size of the array in the VARIANT value.</p>
-<p>LATERAL FLATTEN() is used to extract the array from JSON data.</p>
-<p>Use the LATERAL FLATTEN function to flatten the data.</p>
+<p>LATERAL FLATTEN() is used to flatten the data and to extract array from JSON document.</p>
+<p>We are using a sample JSON file that contains the information about 3
+soccer players of English championships.
+This file is built as a hierarchical JSON format that contains
+simple key-value pairs as well as an array of nested objects.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
-<p>Show/Hide JSON for: JSON used in these functions</p>
+<p>Show/Hide: Sample JSON document used in these functions</p>
 </div>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>
 <span class="p">{</span><span class="s2">&quot;Name&quot;</span><span class="p">:</span><span class="s2">&quot;Rolando Aarons&quot;</span><span class="p">,</span>
@@ -163,22 +166,17 @@ It takes a VARIANT, OBJECT, or ARRAY column and produces a lateral view.</p>
 </pre></div>
 </div>
 </div>
-<p>We are using a sample JSON file that contains the information about 3
-soccer players of English championships.
-This file is built as a hierarchical JSON format that contains
-simple key-value pairs as well as an array of nested objects.</p>
-<p>In this case columns like Name, Club, Goals, Wins, etc. are simple key-value pairs.
-GoalsStatistics and Division are an array of nested objects which are grouped together.</p>
+<p>In this case columns like <strong>Name</strong>, <strong>Club</strong>, <strong>Goals</strong>, <strong>Wins</strong>, etc. are simple key-value pairs.
+GoalsStatistics and Division are an arrays of nested objects which are grouped together.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>{
 &quot;Name&quot;:&quot;Rolando Aarons&quot;,
 &quot;Club&quot;: &quot;Newcastle United&quot;,
 &quot;Position&quot;: &quot;Midfielder&quot;,
 &quot;Appearances&quot;: &quot;14&quot;,
 &quot;Goals&quot;: &quot;4&quot;,
-<span class="gh">&quot;Wins&quot;: &quot;3&quot;,</span>
-<span class="gh">.........</span>
-<span class="cp">.........</span>
-
+&quot;Wins&quot;: &quot;3&quot;,
+. .  .
+. .  .
 &quot;Value&quot;:&quot;20000000&quot;,
 &quot;Wage&quot;: &quot;5200000&quot;,
 &quot;ExtractDate&quot;:&quot;2020-10-06&quot;
@@ -186,7 +184,7 @@ GoalsStatistics and Division are an array of nested objects which are grouped to
 </pre></div>
 </div>
 <p>GoalsStatistics is an array that contains <strong>Season</strong> and <strong>Goals</strong> made by the
-player in that season. So GoalsStatistics can contain one or records for a particular player.</p>
+player in that season. So GoalsStatistics can contain one or more records for a particular player.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>&quot;GoalsStatistics&quot;: [
             {&quot;Season&quot;: &quot;2014-15&quot;, &quot;Goals&quot;: 2},
             {&quot;Season&quot;: &quot;2015-16&quot;, &quot;Goals&quot;: 1},
@@ -197,12 +195,12 @@ player in that season. So GoalsStatistics can contain one or records for a parti
         ]
 </pre></div>
 </div>
-<p>Similarly, Division is an array object that contains another array
+<p>Similarly, <strong>Division</strong> is an array object that contains another array
 of objects inside each array. So division name and an array of seasons
 the player played for that division. For example, the player has
 played for 2 divisions <strong>Premier League</strong> and <strong>Championship</strong>.
 For <strong>Premier League</strong> he has played four seasons 2014-15, 2015-16, 2017-18,
-2018-19, and 2019-20. And for ‘Championship’ he has played in 2016-17.</p>
+2018-19, and 2019-20. And for <strong>Championship</strong> he has played in 2016-17.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>&quot;Division&quot;:[
         {&quot;Name&quot;:&quot;Premier League&quot;,
         &quot;Season&quot;:[
@@ -278,7 +276,7 @@ FROM S_PLAYERS;
 </div>
 <p>LATERAL FLATTEN() is used to extract an array from JSON data.
 The query below uses LATERAL FLATTEN() to take the items in the list from
-PLAYER_DATA: GoalsStatistics and make them their own dataset.
+<strong>PLAYER_DATA</strong>: GoalsStatistics and make them their own dataset.
 INPUT, VALUE, INDEX are reserved keywords.
 It is important to give alias <strong>GoalsStat</strong> to flatten results.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT
@@ -294,7 +292,7 @@ FROM S_PLAYERS,
 <img alt="images/latteralflatten2.jpg" src="images/latteralflatten2.jpg" />
 </div>
 <p>We can have multiple FLATTEN functions within the same query as shown below.
-Here the query returns a list of arrays from GoalsStatistics and Division data objects.</p>
+Here the query returns a list of arrays from <strong>GoalsStatistics</strong> and <strong>Division</strong> data objects.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT
 PLAYER_DATA:Name::STRING &quot;Player Name&quot;,
 GoalsStat.VALUE AS Goals,
@@ -309,10 +307,10 @@ FROM S_PLAYERS,
 <div class="figure align-center">
 <img alt="images/latteralflatten3.jpg" src="images/latteralflatten3.jpg" />
 </div>
-<p>We are joining Division with Season using LATERAL FLATTEN and a left OUTER join.
+<p>We are joining <strong>Division</strong> with <strong>Season</strong> using LATERAL FLATTEN and a left OUTER join.
 The second FLATTEN clause is used to flatten the Season array within the flattened
-Division array and retrieve the “Season” played for each division.
-PARSE_JSON is used to create a JSON variant out of the Division and Season
+Division array and retrieve the <strong>Season</strong> played by each <strong>Division</strong>.
+PARSE_JSON is used to create a JSON VARIANT out of the <strong>Division</strong> and <strong>Season</strong>
 arrays joined using a LEFT OUTER join.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT
     d.PLAYER_DATA:Name::STRING &quot;Player Name&quot;,
@@ -342,7 +340,7 @@ Expenses such as books/supplies, boarding, and resources, are also available in 
 <p>The information in this large file is broadly categorized into 4 groups described below.</p>
 <div class="section" id="institutional-charge-general">
 <h3>Institutional charge (General)<a class="headerlink" href="#institutional-charge-general" title="Permalink to this headline">¶</a></h3>
-<p>This cross section of attributes covers average tuition/required fees, and per-credit fees charged by educational institutes.
+<p>This cross-section of attributes covers average tuition/required fees, and per-credit fees charged by educational institutes.
 Fees vary significantly from state to state, public to private, and ranking of institutes (demand vs supply).</p>
 </div>
 <div class="section" id="institutional-charge-by-academic-branch">
@@ -367,7 +365,7 @@ on-campus expenses are available in this section of the file.</p>
 <li><p>Use ingested ORC files from the staged Snowflake region.</p></li>
 <li><p>Transform data using JavaScript stored procedures.</p></li>
 <li><p>Execute stored procedures.</p></li>
-<li><p>Unpivot (convert columns to rows) data into JSON format.</p></li>
+<li><p>Unpivot (convert columns into rows) data into JSON format.</p></li>
 </ul>
 </div></blockquote>
 </div>
@@ -2951,7 +2949,7 @@ the landing layer to the servicing layer. We also covered how to unpivot data st
 and load into the servicing layer.
 Finally, we detailed an alternative approach using the JSON VARIANT data type to perform transformations.</p>
 <p>Spark executes much faster by caching data in memory across multiple parallel operations,
-whereas HDFS and MapReduce involve more reading and writing from disk. Along with Spark, industry also adopted
+whereas HDFS and MapReduce involve more reading and writing from disk. Along with Spark, the industry also adopted
 writing these dataframes into Parquet format.
 In the next chapter, we will be creating a Snowflake pipeline to ingest
 Parquet data format.</p>
@@ -3039,7 +3037,7 @@ Parquet data format.</p>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="ParquetIngestion.html">Parquet ingestion</a></li>
-<li class="toctree-l1"><a class="reference internal" href="SemiStructuredDataIngestion.html">Multiple record formats ingestion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SemiStructuredDataIngestion.html">Multi format ingestion</a></li>
 <li class="toctree-l1"><a class="reference internal" href="PipelineOrchestration.html">Pipeline orchestration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="BusinessInsights.html">Business insights</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>

@@ -103,7 +103,8 @@ business processes.</p>
 </div>
 <div class="section" id="project-data-source">
 <h2>Project data source<a class="headerlink" href="#project-data-source" title="Permalink to this headline">¶</a></h2>
-<p>The Institute of Education Sciences (IES) <a class="reference external" href="https://ies.ed.gov"  target="_blank">https://ies.ed.gov</a>  is the statistics, research, and evaluation arm of the U.S. Department
+<p>This book is designed to use data from the Institute of Education Sciences (IES) and build analytics echo system using this data.
+The IES <a class="reference external" href="https://ies.ed.gov"  target="_blank">https://ies.ed.gov</a>  is the statistics, research, and evaluation arm of the U.S. Department
 of Education. It is an independent and non-partisan organization.
 The IES mission is to provide scientific evidence on which to ground education, practice, and policy,
 and to share this evidence in formats useful and accessible to educators,
@@ -129,7 +130,7 @@ is the primary source provided by the IES containing information on U.S. College
 should not be used as a replacement for the original data and its results.
 Please refer to the IES website for actual statistics and research on academic institutions.</em></p>
 </div>
-<p>For the project in this book, we will be using these four layers of data transformation.</p>
+<p>For the project in this book, we will be using Snowflake staged files, transient tables, and master tables.</p>
 <div class="section" id="staged-file">
 <h3>Staged file<a class="headerlink" href="#staged-file" title="Permalink to this headline">¶</a></h3>
 <p>All the data from the source system will be brought into the internal staged file location of Snowflake.
@@ -145,19 +146,34 @@ from various sources into a single destination to make it available for further 
 These are initial physical tables created in Snowflake and consists of data
 that has undergone little to no transformation.
 The OD table structure very closely resembles that of the staged file with proper data types and column names, alongside
-additional columns to help track data lineage.</p>
+additional columns to help track data lineage. The OD also serves as transient place to store data coming from
+the source systems. It allows us have all the data within the bounds ready for processing and modeling</p>
 </div>
 <div class="section" id="servicing-layer">
 <h3>Servicing layer<a class="headerlink" href="#servicing-layer" title="Permalink to this headline">¶</a></h3>
 <p>This layer consists of the data that has undergone all the transformations and it is
 ready for consumption to the business intelligence layer.
-OD tables serve as input to the transformation process to populate servicing layer tables.</p>
+OD tables serve as input to the transformation process to populate servicing layer tables.
+This is our master schema with transformed data. It contains correctly modeled tables,
+that are named properly with business centeric column names, and correct data types.</p>
 </div>
 <div class="section" id="dataflow-summary">
 <h3>Dataflow summary<a class="headerlink" href="#dataflow-summary" title="Permalink to this headline">¶</a></h3>
-<p>Not all data from OD tables may land up in the servicing layer. Normally, business users like to use tools such as PowerBI and Tableau to
-perform raw queries on the dataset. The best place for business users to perform these analytics is the service layer.</p>
-<p>In data science, data attributes from the staged layer may be needed to build predictive analytics.
+<p>The data cleaning and transformation take place while moving data from OD into service layer.</p>
+<ul class="simple">
+<li><p>Standardising all date formats and time zones.</p></li>
+<li><p>Rounding numbers.</p></li>
+<li><p>Cleaning strings, character data.</p></li>
+<li><p>Standardising data to be of the same format.</p></li>
+<li><p>Splitting data out into multiple columns</p></li>
+<li><p>Extracting data from JSON</p></li>
+<li><p>Combining data from multiple columns to Single JSON objects</p></li>
+</ul>
+<p>Not all data from OD tables may land up in the servicing layer.
+Normally, business users like to use tools such as PowerBI and Tableau to
+perform raw queries on the dataset. The best place for business users
+to perform these analytics is the service layer.</p>
+<p>In data science, data attributes from the staged and OD layer may be needed to build predictive analytics.
 Thus, access can be granted to OD tables and
 service layer entities.</p>
 <p>Data engineering consists of creating transformations, performing metadata management, and
@@ -188,7 +204,7 @@ uniquely defined by the variables IPEDS, ID, and the level of enrollment.</p>
 <div class="section" id="admissions-and-test-scores-adm">
 <h3>Admissions and test scores [ADM]<a class="headerlink" href="#admissions-and-test-scores-adm" title="Permalink to this headline">¶</a></h3>
 <p>These files contain information about the undergraduate selection process
-for first-time, degree/certificate seeking prospective students.</p>
+for first-time, degree/certificate-seeking prospective students.</p>
 </div>
 <div class="section" id="student-charges-for-academic-year-programs-ic-ay">
 <h3>Student charges for academic year programs [IC*AY]<a class="headerlink" href="#student-charges-for-academic-year-programs-ic-ay" title="Permalink to this headline">¶</a></h3>
@@ -217,7 +233,7 @@ The OD layer is used to process data for the destination layer with additional t
 </div>
 <div class="section" id="enrollment-effy">
 <h3>Enrollment [EFFY]<a class="headerlink" href="#enrollment-effy" title="Permalink to this headline">¶</a></h3>
-<p>EFFY files are converted to JSON format. JSON is a common open standard file and data interchange format that uses human-readable text to store and transmit data objects consisting of attribute value pairs and array data types. This data format is used in a diverse range of applications and serves as a replacement for XML in AJAX systems.</p>
+<p>EFFY files are converted to JSON format. JSON is a common open standard file and data interchange format that uses human-readable text to store and transmit data objects consisting of attribute-value pairs and array data types. This data format is used in a diverse range of applications and serves as a replacement for XML in AJAX systems.</p>
 <p>In our use-case, we are assuming enrollment (EFFY) files are ingested in the JSON format directly to Snowflake.
 ELT layer defines the mapped attributes for JSON with data types.
 The following diagram displays the data ingestion architecture for JSON files.
@@ -230,7 +246,7 @@ The staging layer is used to process data for the destination layer with additio
 <h3>Institutional charges [IC]<a class="headerlink" href="#institutional-charges-ic" title="Permalink to this headline">¶</a></h3>
 <p>IC*AY files are converted to ORC format. The Optimized Row Columnar (ORC) file format provides a highly efficient way to store Hive data. ORC files improve performance when Hive is reading, writing, and processing data. The compact nature of this format is ideal, and enables skipping over irrelevant parts without needing large, complex, or manually maintained indices.</p>
 <p>In our use case, we are assuming that institutional charge  (ICAY) text files are ingested in HDFS and processed through Hive. The output of the big data processing (ORC files) is loaded in Snowflake.
-The ELT layer defines the schema for ORC file with data types.
+The ELT layer defines the schema for the ORC file with data types.
 The following diagram displays the data ingestion architecture for ORC format files.</p>
 <div class="figure align-center">
 <img alt="images/orcIngestion.jpg" src="images/orcIngestion.jpg" />
@@ -544,7 +560,7 @@ our first set of CSV files from the source system.</p>
 <li class="toctree-l1"><a class="reference internal" href="JSONIngestion.html">JSON ingestion</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ORCIngestion.html">ORC ingestion</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ParquetIngestion.html">Parquet ingestion</a></li>
-<li class="toctree-l1"><a class="reference internal" href="SemiStructuredDataIngestion.html">Multiple record formats ingestion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SemiStructuredDataIngestion.html">Multi format ingestion</a></li>
 <li class="toctree-l1"><a class="reference internal" href="PipelineOrchestration.html">Pipeline orchestration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="BusinessInsights.html">Business insights</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
