@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Multi format ingestion &#8212; Contents 9/28/2020 documentation</title>
+    <title>Multi-format ingestion &#8212; Contents 9/28/2020 documentation</title>
     <link rel="stylesheet" href="static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="static/my.css" type="text/css" />
@@ -19,7 +19,7 @@
     <script src="static/copybutton.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Pipeline orchestration" href="PipelineOrchestration.html" />
+    <link rel="next" title="Workflow orchestration" href="PipelineOrchestration.html" />
     <link rel="prev" title="Parquet ingestion" href="ParquetIngestion.html" />
    
   <link rel="stylesheet" href="static/custom.css" type="text/css" />
@@ -38,13 +38,18 @@
           <div class="body" role="main">
             
   <div class="section" id="multi-format-ingestion">
-<h1>Multi format ingestion<a class="headerlink" href="#multi-format-ingestion" title="Permalink to this headline">¶</a></h1>
-<p>By definition, semi-structured data is information that does not reside in
-a relational database. It has properties that make it easier to analyze.
-With some process, we can store them in the relation database. In our case,
+<h1>Multi-format ingestion<a class="headerlink" href="#multi-format-ingestion" title="Permalink to this headline">¶</a></h1>
+<p>Transactional system generates data into a variety of layouts like undefined formats and
+variable blocked files.
+Undefined format consists of records and blocks with no predefined single structure.
+Variable Blocked format places several variable-length records with an additional block descriptor.</p>
+<p>In our case,
 a single lookup file generated from the source system contains data for
 multiple entities. Based on the first attribute in the file, we
-can derive the name of an underlying entity.</p>
+can derive the name of an underlying entity.
+By definition, semi-structured data is information that does not reside in
+a relational database. It has properties that make it easier to analyze.
+With some process, we can store them in the relation database.</p>
 <p>Data for multiple entities listed below are available in a single file.</p>
 <blockquote>
 <div><ul class="simple">
@@ -56,8 +61,8 @@ can derive the name of an underlying entity.</p>
 <li><p><strong>…</strong></p></li>
 </ul>
 </div></blockquote>
-<div class="section" id="lookup-entities">
-<h2>Lookup entities<a class="headerlink" href="#lookup-entities" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="multi-format-files">
+<h2>Multi-format files<a class="headerlink" href="#multi-format-files" title="Permalink to this headline">¶</a></h2>
 <p>Files generated at the source system contain code value pair records for multiple lookup tables.
 Sample data from the source system is shown in the table below.</p>
 <table class="colwidths-given docutils align-default" id="id1">
@@ -340,6 +345,8 @@ $$;
 <p>There is significant flexibility built-in Snowflake to manage a variety of data needs.
 We learned how to load data from a
 single file into multiple entities.
+We have explained how to create lookup tables
+dynamically using code mapping.
 With JavaScript-based stored procedures, we can consume a variety of data record layouts programmatically.
 We have demonstrated how various lookup tables can be created dynamically using a mapping table.</p>
 <p>So far we ingested all this data by calling the Snowflake stored procedure. In real life, the data load
@@ -392,13 +399,13 @@ scheduler, that can be used to manage all the ingestion steps.</p>
 <li class="toctree-l1"><a class="reference internal" href="JSONIngestion.html">JSON ingestion</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ORCIngestion.html">ORC ingestion</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ParquetIngestion.html">Parquet ingestion</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Multi format ingestion</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#lookup-entities">Lookup entities</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Multi-format ingestion</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#multi-format-files">Multi-format files</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#merge-data">Merge data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#summary">Summary</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="PipelineOrchestration.html">Pipeline orchestration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PipelineOrchestration.html">Workflow orchestration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="BusinessInsights.html">Business insights</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Abbreviations.html">Abbreviations</a></li>
@@ -409,7 +416,7 @@ scheduler, that can be used to manage all the ingestion steps.</p>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
       <li>Previous: <a href="ParquetIngestion.html" title="previous chapter">Parquet ingestion</a></li>
-      <li>Next: <a href="PipelineOrchestration.html" title="next chapter">Pipeline orchestration</a></li>
+      <li>Next: <a href="PipelineOrchestration.html" title="next chapter">Workflow orchestration</a></li>
   </ul></li>
 </ul>
 </div>
