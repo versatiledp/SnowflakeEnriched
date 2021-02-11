@@ -65,26 +65,26 @@ The data files for enrollments are in JSON format and the staged file is invoked
 <div class="figure align-center">
 <img alt="images/jsonInternalStagedDataSelect.JPG" src="images/jsonInternalStagedDataSelect.JPG" />
 </div>
-<p>Let us retrieve column InstitutionIdentifier from JSON object in the staged file.</p>
-<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>select S.$1:UNITID AS InstitutionIdentifier
-    FROM @IPEDS_EFFY S;
-
-$1 = positional attribute in staged file
-An alias InstitutionIdentifier to the column name just like in regular SQL.
-</pre></div>
-</div>
-<p>If this JSON object is stored in a physical table called IPED Column jdata,
+<p>If this JSON object is stored in a physical table called <strong>IPED</strong> Column <strong>jdata</strong>,
 we could read InstitutionIdentifier as below.</p>
-<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>select jdata:UNITID AS InstitutionIdentifier
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT jdata:UNITID AS InstitutionIdentifier
    FROM IPED;
 
 jdata = the column name in the IPED table type VARIANT holding JSON object
 UNITID = attribute in the JSON schema
 </pre></div>
 </div>
+<p>Let us retrieve column InstitutionIdentifier from JSON object in the staged file.</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT S.$1:UNITID AS InstitutionIdentifier
+    FROM @IPEDS_EFFY S;
+
+$1 = positional attribute in staged file
+An alias InstitutionIdentifier to the column name just like in regular SQL.
+</pre></div>
+</div>
 <p>The column that was returned in the previous step comes back with double quotes around it.
 Now we are going to cast that data into an actual data type as shown below.</p>
-<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>select S.$1:UNITID::INTEGER
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT S.$1:UNITID::INTEGER
      AS InstitutionIdentifier FROM @IPEDS_EFFY S;
 
 We used :: to cast to a INTEGER data type.
