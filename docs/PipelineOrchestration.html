@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pipeline orchestration &#8212; Contents 9/28/2020 documentation</title>
+    <title>Workflow orchestration &#8212; Contents 9/28/2020 documentation</title>
     <link rel="stylesheet" href="static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="static/my.css" type="text/css" />
@@ -37,22 +37,20 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="pipeline-orchestration">
-<h1>Pipeline orchestration<a class="headerlink" href="#pipeline-orchestration" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="workflow">
-<h2>Workflow<a class="headerlink" href="#workflow" title="Permalink to this headline">¶</a></h2>
+  <div class="section" id="workflow-orchestration">
+<h1>Workflow orchestration<a class="headerlink" href="#workflow-orchestration" title="Permalink to this headline">¶</a></h1>
 <p>This chapter explains how to administer the Snowflake transformations
 through a single point of entry
 without using any third-party tools.</p>
 <dl class="simple">
 <dt>Workflow is divided into three stages:</dt><dd><ul class="simple">
-<li><p>Workflow configuration/definition</p></li>
-<li><p>Workflow execution</p></li>
+<li><p>Workflow configuration</p></li>
+<li><p>Workflow administration</p></li>
 <li><p>Workflow audit</p></li>
 </ul>
 </dd>
 </dl>
-<p><strong>Workflow configuration/definition:</strong>
+<p><strong>Workflow configuration:</strong>
 Workflow configuration is done by listing the Snowflake procedures to
 execute in a pre-defined sequential order. The source and destination tables used in the transformation are
 listed in the configuration table along
@@ -426,7 +424,6 @@ by the following code.</p>
 <span class="n">CALL</span> <span class="n">pr_IPEDS_Process</span><span class="p">(</span><span class="mi">2017</span><span class="p">::</span><span class="n">FLOAT</span><span class="p">);</span>
 </pre></div>
 </div>
-</div>
 <div class="section" id="summary">
 <h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
 <p>In this chapter, we learned how to manage data transformation using a workflow tool built from Snowflake.
@@ -483,8 +480,7 @@ the next chapter, we will learn how to create gleaming analytics insights using 
 <li class="toctree-l1"><a class="reference internal" href="ORCIngestion.html">ORC ingestion</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ParquetIngestion.html">Parquet ingestion</a></li>
 <li class="toctree-l1"><a class="reference internal" href="SemiStructuredDataIngestion.html">Multi format ingestion</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Pipeline orchestration</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#workflow">Workflow</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Workflow orchestration</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#summary">Summary</a></li>
 </ul>
 </li>

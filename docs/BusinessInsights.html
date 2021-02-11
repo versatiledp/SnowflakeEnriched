@@ -20,7 +20,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Summary" href="Summary.html" />
-    <link rel="prev" title="Pipeline orchestration" href="PipelineOrchestration.html" />
+    <link rel="prev" title="Workflow orchestration" href="PipelineOrchestration.html" />
    
   <link rel="stylesheet" href="static/custom.css" type="text/css" />
   
@@ -39,6 +39,15 @@
             
   <div class="section" id="business-insights">
 <h1>Business insights<a class="headerlink" href="#business-insights" title="Permalink to this headline">¶</a></h1>
+<p>Business insights leverages software and services to
+transform data into actionable items, that drive stakeholders to take
+strategic and tactical business decisions.
+It is used to analyze datasets and present
+findings in reports, dashboards, graphs, charts
+and maps to provide users with detailed analytics
+about the state of the business.</p>
+<p>Snowflake supports multiple business insights tools like
+Tableau, PowerBI, and other open-source tools like D3.js, Plotly.</p>
 <p>Dashboards can be created using all the data accumulated in the Snowflake servicing layer.
 The following diagram shows the relationship between different entities we have created in the servicing layer.</p>
 <div class="figure align-center">
@@ -51,7 +60,7 @@ The following diagram shows the relationship between different entities we have 
 <li><p>Data table with state codes and enrollment segments.</p></li>
 <li><p>Tuition cost details by various public colleges.</p></li>
 </ul>
-<p>All the business insights are generated using Google Colab, which provides a Jupyter notebook environment.
+<p>In this book, all the business insights are generated using Google Colab, which provides a Jupyter notebook environment.
 For running these insights from
 Colab, we first need to install the pre-requisites <strong>Snowflake connector drivers to python</strong> from
 <a class="reference external" href="https://docs.snowflake.com/en/user-guide/python-connector.html"  target="_blank">https://docs.snowflake.com/en/user-guide/python-connector.html</a></p>
@@ -86,7 +95,7 @@ provide powerful tools to explore, understand, and communicate valuable insights
 <div class="section" id="institution-reporting">
 <h2>Institution reporting<a class="headerlink" href="#institution-reporting" title="Permalink to this headline">¶</a></h2>
 <p>This visual is targeted to present academic institution information based
-on various segments using bar, donut and pie charts.</p>
+on various segments using bar, donut, and pie charts.</p>
 <p>Total institute count is segmented by:</p>
 <blockquote>
 <div><ul class="simple">
@@ -431,7 +440,7 @@ Enter Snowflake password··········
 </div>
 <div class="section" id="enrollment-by-geo-location">
 <h2>Enrollment by Geo location<a class="headerlink" href="#enrollment-by-geo-location" title="Permalink to this headline">¶</a></h2>
-<p>In this visual, we are presenting state wise total enrollment and percentage.
+<p>In this visual, we are presenting total enrollment and percentage by state.
 Enrollment percentage is calculated dividing state-level enrollment by national enrollment.</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">snowflake</span><span class="o">-</span><span class="n">connector</span><span class="o">-</span><span class="n">python</span><span class="o">==</span><span class="mf">2.3</span><span class="o">.</span><span class="mi">6</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span>
 </pre></div>
@@ -553,8 +562,9 @@ Enter Snowflake password:··········
 </div>
 <div class="section" id="public-college-tuition-cost">
 <h2>Public college tuition cost<a class="headerlink" href="#public-college-tuition-cost" title="Permalink to this headline">¶</a></h2>
-<p>This visual generate the list of the public institutions having the highest in-state tuition for the selected year.
-Result is displayed in HTML table format.</p>
+<p>This visual generate the list of the public institutions
+having the highest in-state tuition for the selected year.
+The result is displayed in HTML table format.</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">snowflake</span><span class="o">-</span><span class="n">connector</span><span class="o">-</span><span class="n">python</span><span class="o">==</span><span class="mf">2.3</span><span class="o">.</span><span class="mi">6</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span>
 </pre></div>
 </div>
@@ -737,7 +747,7 @@ that would be optimal for tackling business reporting.</p>
 <li class="toctree-l1"><a class="reference internal" href="ORCIngestion.html">ORC ingestion</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ParquetIngestion.html">Parquet ingestion</a></li>
 <li class="toctree-l1"><a class="reference internal" href="SemiStructuredDataIngestion.html">Multi format ingestion</a></li>
-<li class="toctree-l1"><a class="reference internal" href="PipelineOrchestration.html">Pipeline orchestration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PipelineOrchestration.html">Workflow orchestration</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Business insights</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#institution-reporting">Institution reporting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#enrollment-segment-by-state">Enrollment segment by state</a></li>
@@ -754,7 +764,7 @@ that would be optimal for tackling business reporting.</p>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="PipelineOrchestration.html" title="previous chapter">Pipeline orchestration</a></li>
+      <li>Previous: <a href="PipelineOrchestration.html" title="previous chapter">Workflow orchestration</a></li>
       <li>Next: <a href="Summary.html" title="next chapter">Summary</a></li>
   </ul></li>
 </ul>
