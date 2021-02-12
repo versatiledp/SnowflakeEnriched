@@ -224,9 +224,9 @@ The following diagram displays the data ingestion architecture for JSON files.</
 <img alt="images/jsonIngestion.jpg" src="images/jsonIngestion.jpg" />
 </div>
 <p>To create JSON file for simulation in this book,
-we have created python program. This python code converted CSV files from IES website to
+we are using python program. Python code converted CSV files from IPEDS universe to
 JSON format.</p>
-<p>We convert JSON data into relational table structure in OD tables.
+<p>We convert JSON data into relational table structure in OD tables of Snowflake transformation.
 OD layer is used to process data for the destination layer with additional transformation.</p>
 </div>
 <div class="section" id="institutional-charges-ic">
@@ -241,9 +241,9 @@ major Hadoop implementations.</p>
 <p>Data from different source systems are brought to Hadoop enviornment for big data processing. We would use ORC files
 coming out of Hadoop and ingest into Snowflake.</p>
 <p>To create ORC file for simulation in this book,
-we have created python program. This python code converted CSV files from IES website to
+we have second python convertor. This python code migrated CSV files from IPEDS universe to
 ORC format.</p>
-<p>We convert ORC data into relational table structure in OD tables.
+<p>We convert ORC data into relational table structure in OD tables of Snowflake transformation.
 OD layer is used to process data for the destination layer with additional transformation.</p>
 </div>
 <div class="section" id="admissions-and-test-scores-adm">
@@ -259,9 +259,9 @@ The following diagram lays out the architecture from data source to Parquet inge
 </div>
 <p>Apache Spark has become the de-facto standard for big data processing recently. Spark output is written in
 Parquet format.</p>
-<p>Here also for simulating Parquet data, we have written another utility to convert CSV files from IPEDs
+<p>For simulating Parquet data, we have written yet another utility to convert CSV files from IPEDS universe
 to Parquet files.</p>
-<p>We convert Parquet data into relational table structure in OD tables.
+<p>We convert Parquet data into relational table structure in OD tables of Snowflake transformation.
 OD layer is used to process data for the destination layer with additional transformation.</p>
 </div>
 <div class="section" id="code-mapping-data">
