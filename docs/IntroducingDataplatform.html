@@ -59,12 +59,9 @@ profitability.</p>
 </div>
 <div class="section" id="data-source-layer">
 <h3>Data source layer<a class="headerlink" href="#data-source-layer" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><p>Data sources can be inside or outside the enterprise.</p></li>
-<li><p>Data sources generate data in real-time and in batch mode.</p></li>
-<li><p>The <strong>variety</strong> of data formats can be structured, semi-structured, or unstructured.</p></li>
-<li><p>The <strong>velocity</strong> (speed of arrival) and <strong>volume</strong> (delivery amount) will differ by source.</p></li>
-</ul>
+<p>Data sources can be inside or outside the enterprise. Data sources generate data in real-time and in batch mode.
+The <strong>variety</strong> of data formats can be structured, semi-structured, or unstructured.
+The <strong>velocity</strong> (speed of arrival) and <strong>volume</strong> (delivery amount) will differ by source.</p>
 </div>
 <div class="section" id="data-processing-and-storage-layer">
 <h3>Data processing and storage layer<a class="headerlink" href="#data-processing-and-storage-layer" title="Permalink to this headline">¶</a></h3>
@@ -186,90 +183,93 @@ granted to all layers of the data platform.</p>
 </div>
 <div class="section" id="source-data-files">
 <h2>Source data files<a class="headerlink" href="#source-data-files" title="Permalink to this headline">¶</a></h2>
-<p>The files used in this book are:</p>
-<div class="section" id="institutional-characteristics-hdr">
-<h3>Institutional characteristics [HDR]<a class="headerlink" href="#institutional-characteristics-hdr" title="Permalink to this headline">¶</a></h3>
+<p>The files used though out this book are:</p>
+<p><strong>Academic institution [HDR]</strong></p>
 <p>These files contain directory information for every institution in the IPEDS universe.
 The files include the name, address, city, state, zip code, and various URL links to the institution’s home page,
 admissions, and financial aid offices, and net price calculator.</p>
-</div>
-<div class="section" id="month-enrollment-effy">
-<h3>12-Month enrollment [EFFY]<a class="headerlink" href="#month-enrollment-effy" title="Permalink to this headline">¶</a></h3>
+<p><strong>Enrollment 12-Month [EFFY]</strong></p>
 <p>These files contain the unduplicated headcount of students enrolled over a
 12-month period for both undergraduate and graduate levels. Each record is
 uniquely defined by the variables IPEDS, ID, and the level of enrollment.</p>
-</div>
-<div class="section" id="admissions-and-test-scores-adm">
-<h3>Admissions and test scores [ADM]<a class="headerlink" href="#admissions-and-test-scores-adm" title="Permalink to this headline">¶</a></h3>
-<p>These files contain information about the undergraduate selection process
-for first-time, degree/certificate-seeking prospective students.</p>
-</div>
-<div class="section" id="student-charges-for-academic-year-programs-ic-ay">
-<h3>Student charges for academic year programs [IC*AY]<a class="headerlink" href="#student-charges-for-academic-year-programs-ic-ay" title="Permalink to this headline">¶</a></h3>
+<p><strong>Institutional charges [IC_AY]</strong></p>
 <p>These files contain data on student charges for a full academic year. The price of attendance includes the
 published tuition and required fees, books and supplies, room and board, and other expenses.</p>
-</div>
-<div class="section" id="code-mapping-data">
-<h3>Code mapping data<a class="headerlink" href="#code-mapping-data" title="Permalink to this headline">¶</a></h3>
-<p>This semi-structured dataset has a special character delimiter. One file holds data for multiple destination tables, which are
-identified by the value of the first column in the file.</p>
-</div>
-</div>
-<div class="section" id="data-collection-notes">
-<h2>Data collection notes<a class="headerlink" href="#data-collection-notes" title="Permalink to this headline">¶</a></h2>
+<p><strong>Admissions and test scores [ADM]</strong></p>
+<p>These files contain information about the undergraduate selection process
+for first-time, degree/certificate-seeking prospective students.</p>
+<p><strong>Code mapping data</strong></p>
+<p>These files contain data for lookup tables. These tables will be used as refernce entities, to get
+descriptive details for the codes, example institute type description for given institute type code,
+state name given state code, etc..</p>
+<p>These files are coming to the data platform in the format like CSV, JSON, ORC, Parquet, and Multi-format.</p>
 <div class="section" id="academic-institution-hdr">
 <h3>Academic institution [HDR]<a class="headerlink" href="#academic-institution-hdr" title="Permalink to this headline">¶</a></h3>
-<p>These are CSV files.
+<p>These are available in CSV format at the source system.
 The institutional characteristics header files are directly ingested into
-Snowflake staging from the source system.
-ELT layer defines the schema for the CSV file with data types.
-The following diagram displays data flow between the source system and the Snowflake destination.
-The OD layer is used to process data for the destination layer with additional transformations.</p>
+Snowflake staging from the source system. The following diagram displays
+data flow between the source system and the Snowflake destination.</p>
 <div class="figure align-center">
 <img alt="images/csvIngestion.jpg" src="images/csvIngestion.jpg" />
 </div>
+<p>ELT layer defines the schema for the CSV file with data types.
+The OD layer is used to process data for the destination layer with additional transformations.</p>
 </div>
-<div class="section" id="enrollment-effy">
-<h3>Enrollment [EFFY]<a class="headerlink" href="#enrollment-effy" title="Permalink to this headline">¶</a></h3>
-<p>EFFY files are converted to JSON format. JSON is a common open standard file and data interchange format that uses human-readable text to store and transmit data objects consisting of attribute-value pairs and array data types. This data format is used in a diverse range of applications and serves as a replacement for XML in AJAX systems.</p>
-<p>In our use-case, we are assuming enrollment (EFFY) files are ingested in the JSON format directly to Snowflake.
-ELT layer defines the mapped attributes for JSON with data types.
-The following diagram displays the data ingestion architecture for JSON files.
-The staging layer is used to process data for the destination layer with additional transformation.</p>
+<div class="section" id="enrollment-12-month-effy">
+<h3>Enrollment 12-Month [EFFY]<a class="headerlink" href="#enrollment-12-month-effy" title="Permalink to this headline">¶</a></h3>
+<p>EFFY files data is in JSON format. JSON is a common open standard file and data interchange format that uses human-readable text to store and transmit data objects consisting of attribute-value pairs and array data types. This data format is used in a diverse range of applications and serves as a replacement for XML in AJAX systems.
+In our use-case, we are ingesting enrollment (EFFY) files in the JSON format directly to Snowflake.
+The following diagram displays the data ingestion architecture for JSON files.</p>
 <div class="figure align-center">
 <img alt="images/jsonIngestion.jpg" src="images/jsonIngestion.jpg" />
 </div>
+<p>To create JSON file for simulation in this book,
+we have created python program. This python code converted CSV files from IES website to
+JSON format.</p>
+<p>We convert JSON data into relational table structure in OD tables.
+OD layer is used to process data for the destination layer with additional transformation.</p>
 </div>
 <div class="section" id="institutional-charges-ic">
 <h3>Institutional charges [IC]<a class="headerlink" href="#institutional-charges-ic" title="Permalink to this headline">¶</a></h3>
-<p>IC*AY files are converted to ORC format. The Optimized Row Columnar (ORC) file format provides a highly efficient way to store Hive data. ORC files improve performance when Hive is reading, writing, and processing data. The compact nature of this format is ideal, and enables skipping over irrelevant parts without needing large, complex, or manually maintained indices.</p>
-<p>In our use case, we are assuming that institutional charge  (ICAY) text files are ingested in HDFS and processed through Hive. The output of the big data processing (ORC files) is loaded in Snowflake.
-The ELT layer defines the schema for the ORC file with data types.
-The following diagram displays the data ingestion architecture for ORC format files.</p>
+<p>IC_AY files are available in ORC format. The Optimized Row Columnar (ORC) file format provides a highly efficient way to store Hive data. ORC files improve performance when Hive is reading, writing, and processing data.
+The compact nature of this format is ideal, and enables skipping over irrelevant parts without needing large, complex, or manually maintained indices.</p>
+<p>The following diagram displays the data ingestion architecture for ORC format files. It provides view around
+major Hadoop implementations.</p>
 <div class="figure align-center">
 <img alt="images/orcIngestion.jpg" src="images/orcIngestion.jpg" />
 </div>
+<p>Data from different source systems are brought to Hadoop enviornment for big data processing. We would use ORC files
+coming out of Hadoop and ingest into Snowflake.</p>
+<p>To create ORC file for simulation in this book,
+we have created python program. This python code converted CSV files from IES website to
+ORC format.</p>
+<p>We convert ORC data into relational table structure in OD tables.
+OD layer is used to process data for the destination layer with additional transformation.</p>
 </div>
-<div class="section" id="admission-data-adm">
-<h3>Admission data [ADM]<a class="headerlink" href="#admission-data-adm" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="admissions-and-test-scores-adm">
+<h3>Admissions and test scores [ADM]<a class="headerlink" href="#admissions-and-test-scores-adm" title="Permalink to this headline">¶</a></h3>
 <p>Admission data (ADM) files are available in the Parquet data format.
 Parquet, an open-source file format for Hadoop stores nested data structures in a flat columnar format.
 Compared to a traditional approach where data is stored in a row-oriented approach, Parquet is more efficient
 in terms of storage and performance. It is especially useful for queries that read specific columns
-from a wide table. Parquet provides optimizations to speed up queries.</p>
-<p>The following diagram lays out the architecture from data source to Parquet ingestion.
-In our use case, we are assuming that the IPEDs admission data text (ADM) files are ingested in HDFS and processed through Spark.
-We use the output of the spark processing (Parquet files) to process in Snowflake.
-The ELT layer defines the schema for Parquet file with data types. The following diagram displays mapping between
-the Parquet attribute and the stage layer.</p>
+from a wide table. Parquet provides optimizations to speed up queries.
+The following diagram lays out the architecture from data source to Parquet ingestion.</p>
 <div class="figure align-center">
 <img alt="images/parquetIngestion.jpg" src="images/parquetIngestion.jpg" />
 </div>
+<p>Apache Spark has become the de-facto standard for big data processing recently. Spark output is written in
+Parquet format.</p>
+<p>Here also for simulating Parquet data, we have written another utility to convert CSV files from IPEDs
+to Parquet files.</p>
+<p>We convert Parquet data into relational table structure in OD tables.
+OD layer is used to process data for the destination layer with additional transformation.</p>
 </div>
-<div class="section" id="reference-lookup-data">
-<h3>Reference/Lookup data<a class="headerlink" href="#reference-lookup-data" title="Permalink to this headline">¶</a></h3>
-<p>The code value lookup files are available in CSV format. These files are directly ingested into Snowflake staging from the source system.
-The ELT layer defines the schema for the CSV file with data types.</p>
+<div class="section" id="code-mapping-data">
+<h3>Code mapping data<a class="headerlink" href="#code-mapping-data" title="Permalink to this headline">¶</a></h3>
+<p>This Multi-format dataset has a special character delimiter. One file holds data for multiple destination tables, which are
+identified by the value of the first column in the file.</p>
+<p>These files are directly ingested into Snowflake staging from the source system.
+Multiple OD tables will be populated from one lookup file.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p><em>Utilities to convert the CSV files into different data formats are available at:</em></p>
@@ -277,15 +277,16 @@ The ELT layer defines the schema for the CSV file with data types.</p>
 <p><em>All the data files used throughout this book are available to download at:</em></p>
 <p><a class="reference external" href="https://github.com/versatiledp/SnowflakeEnriched/tree/master/data/input"  target="_blank">https://github.com/versatiledp/SnowflakeEnriched/tree/master/data/input</a></p>
 </div>
-<p>After downloading the files, copy them to the folder C:\Snowflake\data\input\.
-The files in this book are loaded from the local folder (like C:\Snowflake\data\input\*.*) to the Snowflake stage area using SnowSQL CLI.</p>
-<p>Data files are received in various formats like CSV, ORC, Parquet, and JSON. These files are available in the folders by year. They are brought into Snowflake staged files using the PUT command.
-Each staged file contains the entire data for that specific year. From these staged files, OD tables are populated.
-Using these OD tables, servicing layer tables of the data-warehouse are populated. Snowflake’s stored procedures, views, and functions are used for ETL/ELT processes.</p>
+<p>Download the files from above GitRepo to local machine.
+After downloading the files, copy them to the folder <strong>C:\Snowflake\data\input\</strong>.
+The files in this book are loaded from the local folder (like <strong>C:\Snowflake\data\input\</strong> to the Snowflake stage area using SnowSQL CLI.</p>
 </div>
 </div>
 <div class="section" id="ingesting-snowflake-stage">
 <h2>Ingesting Snowflake stage<a class="headerlink" href="#ingesting-snowflake-stage" title="Permalink to this headline">¶</a></h2>
+<p>Data files are received in various formats like CSV, ORC, Parquet, and JSON. These files are available in the folders by year. They are brought into Snowflake staged files using the PUT command.
+Each staged file contains the entire data for that specific year. From these staged files, OD tables are populated.
+Using these OD tables, servicing layer tables of the data-warehouse are populated. Snowflake’s stored procedures, views, and functions are used for ETL/ELT processes.</p>
 <p>Internal named stage needs to be created for each of the file formats before loading data.</p>
 <div class="section" id="create-internal-stage-area-ipeds">
 <h3>Create internal stage area IPEDS<a class="headerlink" href="#create-internal-stage-area-ipeds" title="Permalink to this headline">¶</a></h3>
@@ -531,19 +532,11 @@ our first set of CSV files from the source system.</p>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#source-data-files">Source data files</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#institutional-characteristics-hdr">Institutional characteristics [HDR]</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#month-enrollment-effy">12-Month enrollment [EFFY]</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#admissions-and-test-scores-adm">Admissions and test scores [ADM]</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#student-charges-for-academic-year-programs-ic-ay">Student charges for academic year programs [IC*AY]</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#code-mapping-data">Code mapping data</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#data-collection-notes">Data collection notes</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#academic-institution-hdr">Academic institution [HDR]</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#enrollment-effy">Enrollment [EFFY]</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#enrollment-12-month-effy">Enrollment 12-Month [EFFY]</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#institutional-charges-ic">Institutional charges [IC]</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#admission-data-adm">Admission data [ADM]</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#reference-lookup-data">Reference/Lookup data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#admissions-and-test-scores-adm">Admissions and test scores [ADM]</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#code-mapping-data">Code mapping data</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#ingesting-snowflake-stage">Ingesting Snowflake stage</a><ul>

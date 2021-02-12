@@ -39,7 +39,9 @@
             
   <div class="section" id="introducing-snowflake">
 <h1>Introducing Snowflake<a class="headerlink" href="#introducing-snowflake" title="Permalink to this headline">¶</a></h1>
-<p>Snowflake is a cloud-based SaaS (Software-as-a-Service) data management
+<p>Snowflake is elastic data warehouse service.
+It handles infrastructure, optimization, availability, and data protection.
+It is a cloud-based SaaS (Software-as-a-Service) data management
 solution that makes it possible for organizations to:</p>
 <ul class="simple">
 <li><p>Bring all their business data together in one place for analysis.</p></li>
@@ -49,11 +51,8 @@ solution that makes it possible for organizations to:</p>
 <li><p>Leverage the existing ecosystem of tools to manage, extract transform load (ETL) or extract load transform (ELT) process.</p></li>
 <li><p>Integrate the current business intelligence stack like Tableau, PowerBI, and other open-source tools like D3.js, Plotly seamlessly.</p></li>
 </ul>
-<div class="section" id="snowflake-quick-overview">
-<h2>Snowflake quick overview<a class="headerlink" href="#snowflake-quick-overview" title="Permalink to this headline">¶</a></h2>
-<p>Snowflake is elastic data warehouse service. It handles infrastructure, optimization, availability, and data protection.</p>
 <div class="section" id="snowflake-advantages">
-<h3>Snowflake advantages<a class="headerlink" href="#snowflake-advantages" title="Permalink to this headline">¶</a></h3>
+<h2>Snowflake advantages<a class="headerlink" href="#snowflake-advantages" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Faster, easier to use, scalable, and far more flexible than other data platforms.</p></li>
 <li><p>Can be started quickly and delivers high-quality performance.</p></li>
@@ -66,7 +65,7 @@ solution that makes it possible for organizations to:</p>
 </ul>
 </div>
 <div class="section" id="snowflake-architecture">
-<h3>Snowflake architecture<a class="headerlink" href="#snowflake-architecture" title="Permalink to this headline">¶</a></h3>
+<h2>Snowflake architecture<a class="headerlink" href="#snowflake-architecture" title="Permalink to this headline">¶</a></h2>
 <p>The Snowflake architecture consists of three layers:
 The following diagram shows Snowflake architecture.</p>
 <div class="figure align-center">
@@ -81,10 +80,9 @@ These virtual warehouses are used to load data, run queries, or do both concurre
 <p><strong>Storage resources:</strong>  The actual underlying file system is backed by the Snowflake account, in which
 all data is encrypted, compressed, and distributed to optimize performance.
 Snowflake also provides excellent data durability, and availability.</p>
-<p>These layers are independently scalable, so organizations can adjust resources as they need and pay only for what they consumed.</p>
 </div>
 <div class="section" id="snowflake-connectivity">
-<h3>Snowflake connectivity<a class="headerlink" href="#snowflake-connectivity" title="Permalink to this headline">¶</a></h3>
+<h2>Snowflake connectivity<a class="headerlink" href="#snowflake-connectivity" title="Permalink to this headline">¶</a></h2>
 <p>Snowflake provides a few different methods to create database connectivity:</p>
 <ul class="simple">
 <li><p>ODBC and JDBC drivers can directly access a Snowflake instance.</p></li>
@@ -93,7 +91,7 @@ Snowflake also provides excellent data durability, and availability.</p>
 </ul>
 </div>
 <div class="section" id="snowflake-data-features">
-<h3>Snowflake data features<a class="headerlink" href="#snowflake-data-features" title="Permalink to this headline">¶</a></h3>
+<h2>Snowflake data features<a class="headerlink" href="#snowflake-data-features" title="Permalink to this headline">¶</a></h2>
 <p>In Snowflake, data can be ingested from a variety of data
 formats like CSV, Parquet, ORC, and XML data sources.
 It supports JSON to a great extent, and furthermore:</p>
@@ -108,7 +106,7 @@ AWS, and GCP. In other words, the Snowflake data warehouse can be built on top o
 cloud infrastructure, or Google cloud.</p>
 </div>
 <div class="section" id="setting-up-a-virtual-warehouse">
-<h3>Setting up a virtual warehouse<a class="headerlink" href="#setting-up-a-virtual-warehouse" title="Permalink to this headline">¶</a></h3>
+<h2>Setting up a virtual warehouse<a class="headerlink" href="#setting-up-a-virtual-warehouse" title="Permalink to this headline">¶</a></h2>
 <p>Snowflake defines a virtual warehouse as a cluster of compute resources.
 The warehouse provides all the resources like CPU, memory, and temporary storage
 required to start using Snowflake.</p>
@@ -119,7 +117,6 @@ Schemas are logical groupings of database objects like tables, views, and functi
 <p>Snowflake enables datalake, data sharing, data visualizations, data science, and data engineering.
 We will be working with real-world business use-cases, starting with data collection
 from various sources and presenting insights regarding the utilization of Snowflake.</p>
-</div>
 </div>
 <div class="section" id="snowflake-data-load">
 <h2>Snowflake data load<a class="headerlink" href="#snowflake-data-load" title="Permalink to this headline">¶</a></h2>
@@ -210,7 +207,7 @@ flexibility for accessing the data in Snowflake.</p>
 </pre></div>
 </div>
 <p>The user stages are referenced using &#64;~.</p>
-<p>For example, use list &#64;~ to list the files in a user stage.</p>
+<p>For example, use <strong>list &#64;~</strong> to list the files in a user stage.</p>
 </div>
 <div class="section" id="table-stage">
 <h3>Table stage<a class="headerlink" href="#table-stage" title="Permalink to this headline">¶</a></h3>
@@ -284,14 +281,11 @@ Snowflake using the user stage, table stage, and internal named stage database o
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="Introduction.html">Introduction</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Introducing Snowflake</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#snowflake-quick-overview">Snowflake quick overview</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#snowflake-advantages">Snowflake advantages</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#snowflake-architecture">Snowflake architecture</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#snowflake-connectivity">Snowflake connectivity</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#snowflake-data-features">Snowflake data features</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#setting-up-a-virtual-warehouse">Setting up a virtual warehouse</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="#snowflake-advantages">Snowflake advantages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#snowflake-architecture">Snowflake architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#snowflake-connectivity">Snowflake connectivity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#snowflake-data-features">Snowflake data features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setting-up-a-virtual-warehouse">Setting up a virtual warehouse</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#snowflake-data-load">Snowflake data load</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#snowsql-ui">SnowSQL UI</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#snowsql-cli">SnowSQL CLI</a></li>
