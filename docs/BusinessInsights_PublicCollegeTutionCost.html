@@ -40,7 +40,15 @@
 <p>This visual generate the list of the public institutions
 having the highest in-state tuition for the selected year.
 The result is displayed in HTML table format.</p>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">snowflake</span><span class="o">-</span><span class="n">connector</span><span class="o">-</span><span class="n">python</span><span class="o">==</span><span class="mf">2.3</span><span class="o">.</span><span class="mi">6</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span>
+<p>Output:</p>
+<div class="figure align-center">
+<img alt="images/BusinessInsights03.JPG" src="images/BusinessInsights03.JPG" />
+</div>
+<div class="toggle docutils container">
+<div class="header docutils container">
+<p>Show/Hide script for: Create OD AcademicInstitution Entity</p>
+<blockquote>
+<div><div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">snowflake</span><span class="o">-</span><span class="n">connector</span><span class="o">-</span><span class="n">python</span><span class="o">==</span><span class="mf">2.3</span><span class="o">.</span><span class="mi">6</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span>
 </pre></div>
 </div>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#read required information to connect to Snowflake database</span>
@@ -82,7 +90,7 @@ Enter Snowflake password:··········
 <span class="s2">  WITH CTE_Tution AS</span>
 <span class="s2">  (</span>
 <span class="s2">  SELECT</span>
-<span class="s2">     A.ACADEMICYEAR</span>
+<span class="s2">    A.ACADEMICYEAR</span>
 <span class="s2">    ,A.INSTITUTIONIDENTIFIER AS ID</span>
 <span class="s2">    ,B.INSTITUTIONNAME AS NAME</span>
 <span class="s2">    ,B.STATE</span>
@@ -98,7 +106,7 @@ Enter Snowflake password:··········
 <span class="s2">  INNER JOIN INSTITUTIONCONTROL ICTR</span>
 <span class="s2">    ON ICTR.CODE = B.CONTROLOFINSTITUTION</span>
 <span class="s2">  WHERE UPPER(ICTR.DESCRIPTION) LIKE &#39;%PUBLIC%&#39;</span>
-<span class="s2">       AND B.DEGREEGRANTINGSTATUS = 1</span>
+<span class="s2">      AND B.DEGREEGRANTINGSTATUS = 1</span>
 <span class="s2">  GROUP BY A.ACADEMICYEAR,ID,NAME,B.STATE</span>
 <span class="s2">)</span>
 <span class="s2">SELECT ACADEMICYEAR,</span>
@@ -161,9 +169,8 @@ Enter Snowflake password:··········
 <span class="n">HTML</span><span class="p">(</span><span class="n">dfFilter</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
 </pre></div>
 </div>
-<p>Output:</p>
-<div class="figure align-center">
-<img alt="images/BusinessInsights03.JPG" src="images/BusinessInsights03.JPG" />
+</div></blockquote>
+</div>
 </div>
 </div>
 

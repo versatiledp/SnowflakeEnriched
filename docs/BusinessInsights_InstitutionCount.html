@@ -48,6 +48,11 @@ on various segments using bar, donut, and pie charts.</p>
 <li><p>Program offering</p></li>
 </ul>
 </div></blockquote>
+<p>Output:</p>
+<img alt="images/output_7_0.png" class="align-center" src="images/output_7_0.png" />
+<div class="toggle docutils container">
+<div class="header docutils container">
+<p>Show/Hide script for: Create OD AcademicInstitution Entity</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">snowflake</span><span class="o">-</span><span class="n">connector</span><span class="o">-</span><span class="n">python</span><span class="o">==</span><span class="mf">2.3</span><span class="o">.</span><span class="mi">6</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span>
 </pre></div>
 </div>
@@ -86,7 +91,7 @@ Enter Snowflake password:··········
 <span class="n">cs</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
 
 <span class="k">try</span><span class="p">:</span>
-  <span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">SELECT</span>
 <span class="s2">    CASE TRIM(EB.DESCRIPTION)</span>
 <span class="s2">        WHEN &#39;US Service schools&#39; THEN &#39;US Service schools&#39;</span>
@@ -137,11 +142,11 @@ Enter Snowflake password:··········
 <span class="s2">WHERE INSTITUTIONISACTIVE = 1</span>
 <span class="s2">    AND HLO.CODE &gt; 0 AND EB.CODE &gt; 0;</span>
 <span class="s2">&quot;&quot;&quot;</span>
-  <span class="c1">#print (sql)</span>
-  <span class="n">cs</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
-  <span class="n">records</span> <span class="o">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
-  <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">cs</span><span class="o">.</span><span class="n">description</span><span class="p">]</span>
-  <span class="n">dfInst</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">records</span><span class="p">,</span><span class="n">columns</span> <span class="o">=</span> <span class="n">names</span><span class="p">)</span>
+<span class="c1">#print (sql)</span>
+<span class="n">cs</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+<span class="n">records</span> <span class="o">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+<span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">cs</span><span class="o">.</span><span class="n">description</span><span class="p">]</span>
+<span class="n">dfInst</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">records</span><span class="p">,</span><span class="n">columns</span> <span class="o">=</span> <span class="n">names</span><span class="p">)</span>
 <span class="k">finally</span><span class="p">:</span>
     <span class="n">cs</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
     <span class="n">ctx</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
@@ -149,7 +154,7 @@ Enter Snowflake password:··········
 </div>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="n">dfER</span> <span class="o">=</span> <span class="n">dfInst</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Economic Region&#39;</span><span class="p">]</span>
-                      <span class="p">,</span><span class="n">as_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="s1">&#39;Count&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+                    <span class="p">,</span><span class="n">as_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="s1">&#39;Count&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 <span class="n">dfER</span> <span class="o">=</span> <span class="n">dfER</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Count&#39;</span><span class="p">],</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">x1</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">dfER</span><span class="p">[</span><span class="s1">&#39;Economic Region&#39;</span><span class="p">])</span>
 <span class="n">y1</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">dfER</span><span class="p">[</span><span class="s1">&#39;Count&#39;</span><span class="p">])</span>
@@ -167,7 +172,7 @@ Enter Snowflake password:··········
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Education offering</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="n">dfER</span> <span class="o">=</span> <span class="n">dfInst</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Education offering&#39;</span><span class="p">]</span>
-                      <span class="p">,</span><span class="n">as_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="s1">&#39;Count&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+                    <span class="p">,</span><span class="n">as_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="s1">&#39;Count&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 <span class="n">dfER</span> <span class="o">=</span> <span class="n">dfER</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Count&#39;</span><span class="p">],</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">labels</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">dfER</span><span class="p">[</span><span class="s1">&#39;Education offering&#39;</span><span class="p">])</span>
 <span class="n">sections</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">dfER</span><span class="p">[</span><span class="s1">&#39;Count&#39;</span><span class="p">])</span>
@@ -191,7 +196,7 @@ Enter Snowflake password:··········
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Institution Type.</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="n">dfER</span> <span class="o">=</span> <span class="n">dfInst</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Institution Type&#39;</span><span class="p">]</span>
-                      <span class="p">,</span><span class="n">as_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="s1">&#39;Count&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+                    <span class="p">,</span><span class="n">as_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="s1">&#39;Count&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 <span class="n">dfER</span> <span class="o">=</span> <span class="n">dfER</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Institution Type&#39;</span><span class="p">])</span>
 <span class="n">labels</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">dfER</span><span class="p">[</span><span class="s1">&#39;Institution Type&#39;</span><span class="p">])</span>
 <span class="n">sections</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">dfER</span><span class="p">[</span><span class="s1">&#39;Count&#39;</span><span class="p">])</span>
@@ -213,7 +218,7 @@ Enter Snowflake password:··········
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Program Offering.</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="n">dfER</span> <span class="o">=</span> <span class="n">dfInst</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Program Offering&#39;</span><span class="p">]</span>
-                      <span class="p">,</span><span class="n">as_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="s1">&#39;Count&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+                    <span class="p">,</span><span class="n">as_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="s1">&#39;Count&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 <span class="n">dfER</span> <span class="o">=</span> <span class="n">dfER</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Count&#39;</span><span class="p">],</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">labels</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">dfER</span><span class="p">[</span><span class="s1">&#39;Program Offering&#39;</span><span class="p">])</span>
 <span class="n">sections</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">dfER</span><span class="p">[</span><span class="s1">&#39;Count&#39;</span><span class="p">])</span>
@@ -228,7 +233,8 @@ Enter Snowflake password:··········
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<img alt="images/output_7_0.png" src="images/output_7_0.png" />
+</div>
+</div>
 </div>
 
 

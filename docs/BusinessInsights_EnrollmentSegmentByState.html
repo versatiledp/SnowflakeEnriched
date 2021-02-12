@@ -58,6 +58,13 @@
 <li><p>Native Hawaiian women</p></li>
 </ul>
 </div></blockquote>
+<p>Output:</p>
+<div class="figure align-center">
+<img alt="images/BusinessInsights01.JPG" src="images/BusinessInsights01.JPG" />
+</div>
+<div class="toggle docutils container">
+<div class="header docutils container">
+<p>Show/Hide script for: Create OD AcademicInstitution Entity</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">snowflake</span><span class="o">-</span><span class="n">connector</span><span class="o">-</span><span class="n">python</span><span class="o">==</span><span class="mf">2.3</span><span class="o">.</span><span class="mi">6</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span>
 </pre></div>
 </div>
@@ -97,8 +104,8 @@ Enter Snowflake password··········
 <span class="p">)</span>
 <span class="n">cs</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
 <span class="k">try</span><span class="p">:</span>
-  <span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">  SELECT</span>
+<span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">SELECT</span>
 <span class="s2">    EN.AcademicYear</span>
 <span class="s2">    ,Inst.State</span>
 <span class="s2">    ,SUM(TOTALMEN) AS &quot;Total Men&quot;</span>
@@ -114,24 +121,24 @@ Enter Snowflake password··········
 <span class="s2">    ,SUM(EN.AsianMen) AS &quot;Asian Men&quot;</span>
 <span class="s2">    ,SUM(EN.AsianWomen) AS &quot;Asian Women&quot;</span>
 <span class="s2">    ,SUM(EN.AmericanIndianOrAlaskaNativeMen) AS &quot;American </span><span class="se">\</span>
-<span class="s2">          Indian /Alaska Native Men&quot;</span>
+<span class="s2">        Indian /Alaska Native Men&quot;</span>
 <span class="s2">    ,SUM(EN.AmericanIndianOrAlaskaNativeWomen) AS &quot;American </span><span class="se">\</span>
-<span class="s2">          Indian /Alaska Native Women&quot;</span>
+<span class="s2">        Indian /Alaska Native Women&quot;</span>
 <span class="s2">    ,SUM(EN.HAWAIIANPACIFICISLANDERMEN) AS &quot;Native Hawaiian Men&quot;</span>
 <span class="s2">    ,SUM(EN.HAWAIIANPACIFICISLANDERWOMEN)</span>
 <span class="s2">        AS &quot;Native Hawaiian Women&quot;</span>
-<span class="s2">  FROM ENROLLMENT EN</span>
-<span class="s2">  INNER JOIN ACADEMICINSTITUTION Inst</span>
+<span class="s2">FROM ENROLLMENT EN</span>
+<span class="s2">INNER JOIN ACADEMICINSTITUTION Inst</span>
 <span class="s2">    ON EN.INSTITUTIONIDENTIFIER = Inst.INSTITUTIONIDENTIFIER</span>
-<span class="s2">  WHERE Inst.DEGREEGRANTINGSTATUS = 1</span>
-<span class="s2">  AND Inst.State IN (&#39;TX&#39;,&#39;FL&#39;,&#39;CA&#39;,&#39;NY&#39;,&#39;PA&#39;,&#39;IL&#39;,&#39;OH&#39;,&#39;GA&#39;,&#39;NC&#39;</span><span class="se">\</span>
-<span class="s2">      ,&#39;MI&#39;,&#39;NJ&#39;,&#39;VA&#39;,&#39;WA&#39;,&#39;AZ&#39;,&#39;MA&#39;,&#39;TN&#39;,&#39;IN&#39;,&#39;MO&#39;,&#39;WI&#39;,&#39;MD&#39;)</span>
-<span class="s2">  GROUP BY EN.AcademicYear,Inst.State ;</span>
-<span class="s2"> &quot;&quot;&quot;</span>
-  <span class="n">cs</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
-  <span class="n">records</span> <span class="o">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
-  <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">cs</span><span class="o">.</span><span class="n">description</span><span class="p">]</span>
-  <span class="n">df1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">records</span><span class="p">,</span><span class="n">columns</span><span class="o">=</span><span class="n">names</span><span class="p">)</span>
+<span class="s2">WHERE Inst.DEGREEGRANTINGSTATUS = 1</span>
+<span class="s2">AND Inst.State IN (&#39;TX&#39;,&#39;FL&#39;,&#39;CA&#39;,&#39;NY&#39;,&#39;PA&#39;,&#39;IL&#39;,&#39;OH&#39;,&#39;GA&#39;,&#39;NC&#39;</span><span class="se">\</span>
+<span class="s2">    ,&#39;MI&#39;,&#39;NJ&#39;,&#39;VA&#39;,&#39;WA&#39;,&#39;AZ&#39;,&#39;MA&#39;,&#39;TN&#39;,&#39;IN&#39;,&#39;MO&#39;,&#39;WI&#39;,&#39;MD&#39;)</span>
+<span class="s2">GROUP BY EN.AcademicYear,Inst.State ;</span>
+<span class="s2">&quot;&quot;&quot;</span>
+<span class="n">cs</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+<span class="n">records</span> <span class="o">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+<span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">cs</span><span class="o">.</span><span class="n">description</span><span class="p">]</span>
+<span class="n">df1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">records</span><span class="p">,</span><span class="n">columns</span><span class="o">=</span><span class="n">names</span><span class="p">)</span>
 <span class="k">finally</span><span class="p">:</span>
     <span class="n">cs</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
     <span class="n">ctx</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
@@ -140,14 +147,14 @@ Enter Snowflake password··········
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Convert all the integer columns to float.</span>
 <span class="c1"># Float allows to use the formatting while printing dataframe</span>
 <span class="k">for</span> <span class="p">(</span><span class="n">columnName</span><span class="p">,</span> <span class="n">columnData</span><span class="p">)</span> <span class="ow">in</span> <span class="n">df1</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
-   <span class="c1">#print(&#39;Colunm Name : &#39;, columnName)</span>
-   <span class="k">if</span> <span class="p">(</span><span class="n">columnName</span> <span class="o">!=</span> <span class="s1">&#39;ACADEMICYEAR&#39;</span> <span class="ow">and</span> <span class="n">columnName</span> <span class="o">!=</span> <span class="s1">&#39;STATE&#39;</span><span class="p">)</span> <span class="p">:</span>
-     <span class="n">df1</span><span class="p">[</span><span class="n">columnName</span><span class="p">]</span> <span class="o">=</span> <span class="n">df1</span><span class="p">[</span><span class="n">columnName</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+<span class="c1">#print(&#39;Colunm Name : &#39;, columnName)</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">columnName</span> <span class="o">!=</span> <span class="s1">&#39;ACADEMICYEAR&#39;</span> <span class="ow">and</span> <span class="n">columnName</span> <span class="o">!=</span> <span class="s1">&#39;STATE&#39;</span><span class="p">)</span> <span class="p">:</span>
+    <span class="n">df1</span><span class="p">[</span><span class="n">columnName</span><span class="p">]</span> <span class="o">=</span> <span class="n">df1</span><span class="p">[</span><span class="n">columnName</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Select the year for report</span>
 <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">Year</span><span class="p">):</span>
-  <span class="k">return</span> <span class="n">Year</span>
+    <span class="k">return</span> <span class="n">Year</span>
 
 <span class="n">w</span> <span class="o">=</span> <span class="n">interactive</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">Year</span> <span class="o">=</span> <span class="n">df1</span><span class="o">.</span><span class="n">ACADEMICYEAR</span> <span class="o">.</span><span class="n">unique</span><span class="p">());</span>
 <span class="n">display</span><span class="p">(</span><span class="n">w</span><span class="p">);</span>
@@ -181,9 +188,7 @@ Enter Snowflake password··········
 <span class="n">HTML</span><span class="p">(</span><span class="n">new_df</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
 </pre></div>
 </div>
-<p>Output:</p>
-<div class="figure align-center">
-<img alt="images/BusinessInsights01.JPG" src="images/BusinessInsights01.JPG" />
+</div>
 </div>
 </div>
 
