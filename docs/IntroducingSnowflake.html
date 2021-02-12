@@ -145,6 +145,23 @@ operation. Also, it automatically deletes the staged file after loading.</p>
 and performs all DDL and DML operations. It is an easy way to access Snowflake from the command line and has
 the same capabilities as the Snowflake UI.</p>
 </div>
+<div class="section" id="snowpipe">
+<h3>Snowpipe<a class="headerlink" href="#snowpipe" title="Permalink to this headline">¶</a></h3>
+<p>Snowpipe is a mechanism to load high frequency or streaming data.
+It can load data in a near real-time manner. It also allows for the processing of data in micro-batches.
+Micro-batch processing is very similar to traditional batch processing in that data is usually processed as a group.
+Snowpipe is a serverless architecture
+and does not use virtual warehouse resources. It has its own resources that are managed by Snowflakes instances.</p>
+<p>Snowpipe makes REST API available to load data from:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Amazon Web Services (AWS) - Amazon S3</p></li>
+<li><p>Google Cloud Platform - Cloud Storage</p></li>
+<li><p>Microsoft Azure Blob Storage, and Azure Data Lake Storage Gen2 (ADLS-Gen2)</p></li>
+<li><p>Hadoop and Spark big data platforms</p></li>
+</ul>
+</div></blockquote>
+</div>
 </div>
 <div class="section" id="installing-snowflake-cli">
 <h2>Installing Snowflake CLI<a class="headerlink" href="#installing-snowflake-cli" title="Permalink to this headline">¶</a></h2>
@@ -167,23 +184,6 @@ the same capabilities as the Snowflake UI.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>snowsql -a xxxxxx.us-east-1 -u xxxxxx -d demo_db -s public
 Password:<span class="gs">*****</span>*
 </pre></div>
-</div>
-<div class="section" id="snowpipe">
-<h3>Snowpipe<a class="headerlink" href="#snowpipe" title="Permalink to this headline">¶</a></h3>
-<p>Snowpipe is a mechanism to load high frequency or streaming data.
-It can load data in a near real-time manner. It also allows for the processing of data in micro-batches.
-Micro-batch processing is very similar to traditional batch processing in that data is usually processed as a group.
-Snowpipe is a serverless architecture
-and does not use virtual warehouse resources. It has its own resources that are managed by Snowflakes instances.</p>
-<p>Snowpipe makes REST API available to load data from:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>Amazon Web Services (AWS) - Amazon S3</p></li>
-<li><p>Google Cloud Platform - Cloud Storage</p></li>
-<li><p>Microsoft Azure Blob Storage, and Azure Data Lake Storage Gen2 (ADLS-Gen2)</p></li>
-<li><p>Hadoop and Spark big data platforms</p></li>
-</ul>
-</div></blockquote>
 </div>
 </div>
 <div class="section" id="snowflake-staged-area">
@@ -295,12 +295,10 @@ Snowflake using the user stage, table stage, and internal named stage database o
 <li class="toctree-l2"><a class="reference internal" href="#snowflake-data-load">Snowflake data load</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#snowsql-ui">SnowSQL UI</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#snowsql-cli">SnowSQL CLI</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#installing-snowflake-cli">Installing Snowflake CLI</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#snowpipe">Snowpipe</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#installing-snowflake-cli">Installing Snowflake CLI</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#snowflake-staged-area">Snowflake staged area</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#user-stage">User stage</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#table-stage">Table stage</a></li>
