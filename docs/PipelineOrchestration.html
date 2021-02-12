@@ -42,28 +42,26 @@
 <p>This chapter explains how to administer the Snowflake transformations
 through a single point of entry
 without using any third-party tools.</p>
-<dl class="simple">
-<dt>Workflow is divided into three stages:</dt><dd><ul class="simple">
-<li><p>Workflow configuration</p></li>
-<li><p>Workflow administration</p></li>
-<li><p>Workflow audit</p></li>
-</ul>
-</dd>
-</dl>
-<p><strong>Workflow configuration:</strong>
-Workflow configuration is done by listing the Snowflake procedures to
+<div class="section" id="workflow-configuration">
+<h2>Workflow configuration<a class="headerlink" href="#workflow-configuration" title="Permalink to this headline">¶</a></h2>
+<p>Workflow configuration is done by listing the Snowflake procedures to
 execute in a pre-defined sequential order. The source and destination tables used in the transformation are
 listed in the configuration table along
 with the stored procedure.</p>
-<p><strong>Workflow administration:</strong>
-Workflow administration executes the list of stored procedures in the order defined by the
+</div>
+<div class="section" id="workflow-administration">
+<h2>Workflow administration<a class="headerlink" href="#workflow-administration" title="Permalink to this headline">¶</a></h2>
+<p>Workflow administration executes the list of stored procedures in the order defined by the
 <strong>IPEDS_Workflow</strong> table. For each procedure execution, it checks the row counts from the source and destination tables.
 At the end, it logs the details in the <strong>IPEDS_Audit</strong> table for further analysis.</p>
-<p><strong>Workflow audit:</strong>
-Workflow audit provides the details of the executions as well as row counts before and after.
+</div>
+<div class="section" id="workflow-audit">
+<h2>Workflow audit<a class="headerlink" href="#workflow-audit" title="Permalink to this headline">¶</a></h2>
+<p>Workflow audit provides the details of the executions as well as row counts before and after.
 This audit table can be used to identify the number of records processed in each execution.</p>
-<p>The steps laid out here are easy to navigate and provide full control over sequencing. These steps can be easily extended to accommodate
-other needs as per different requirements.</p>
+</div>
+<div class="section" id="workflow-datasetup">
+<h2>Workflow datasetup<a class="headerlink" href="#workflow-datasetup" title="Permalink to this headline">¶</a></h2>
 <p>We have added a workflow table with attributes given below.</p>
 <blockquote>
 <div><ul class="simple">
@@ -424,6 +422,7 @@ by the following code.</p>
 <span class="n">CALL</span> <span class="n">pr_IPEDS_Process</span><span class="p">(</span><span class="mi">2017</span><span class="p">::</span><span class="n">FLOAT</span><span class="p">);</span>
 </pre></div>
 </div>
+</div>
 <div class="section" id="summary">
 <h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
 <p>In this chapter, we learned how to manage data transformation using a workflow tool built from Snowflake.
@@ -481,6 +480,10 @@ the next chapter, we will learn how to create gleaming analytics insights using 
 <li class="toctree-l1"><a class="reference internal" href="ParquetIngestion.html">Parquet ingestion</a></li>
 <li class="toctree-l1"><a class="reference internal" href="SemiStructuredDataIngestion.html">Multi-format ingestion</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Workflow orchestration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#workflow-configuration">Workflow configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#workflow-administration">Workflow administration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#workflow-audit">Workflow audit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#workflow-datasetup">Workflow datasetup</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#summary">Summary</a></li>
 </ul>
 </li>
