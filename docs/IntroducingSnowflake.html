@@ -67,21 +67,21 @@ solution that makes it possible for organizations to:</p>
 </div>
 <div class="section" id="snowflake-architecture">
 <h3>Snowflake architecture<a class="headerlink" href="#snowflake-architecture" title="Permalink to this headline">¶</a></h3>
-<p>The Snowflake architecture consists of three layers:</p>
-<p><strong>Database Storage:</strong>  The actual underlying file system is backed by the Snowflake account, in which
-all data is encrypted, compressed, and distributed to optimize performance.
-Snowflake also provides excellent data durability, and availability.</p>
-<p><strong>Query Processing:</strong> Snowflake provides the ability to create virtual warehouses,
-which are basically compute clusters provisioned behind the scenes.
-These virtual warehouses are used to load data, run queries, or do both concurrently.</p>
-<p><strong>Cloud Services:</strong> This layer coordinates and handles all other services in Snowflake,
-including sessions, authentication, SQL compilation, encryption, etc.</p>
-<p>These layers are independently scalable, so organizations can adjust resources as they need and pay only for what they consumed.</p>
-<p>The following diagram shows Snowflake architecture.</p>
+<p>The Snowflake architecture consists of three layers:
+The following diagram shows Snowflake architecture.</p>
 <div class="figure align-center">
 <img alt="images/snowflakeArchitecture.JPG" src="images/snowflakeArchitecture.JPG" />
 </div>
 <p>Source: <a class="reference external" href="https://www.snowflake.com/blog/5-reasons-to-love-snowflakes-architecture-for-your-data-warehouse/" target="_blank">https://www.snowflake.com/blog/5-reasons-to-love-snowflakes-architecture-for-your-data-warehouse/</a></p>
+<p><strong>Cloud Services:</strong> This layer coordinates and handles all other services in Snowflake,
+including sessions, authentication, SQL compilation, encryption, etc.</p>
+<p><strong>Compute resources:</strong> Snowflake provides the ability to create virtual warehouses,
+which are basically compute clusters provisioned behind the scenes.
+These virtual warehouses are used to load data, run queries, or do both concurrently.</p>
+<p><strong>Storage resources:</strong>  The actual underlying file system is backed by the Snowflake account, in which
+all data is encrypted, compressed, and distributed to optimize performance.
+Snowflake also provides excellent data durability, and availability.</p>
+<p>These layers are independently scalable, so organizations can adjust resources as they need and pay only for what they consumed.</p>
 </div>
 <div class="section" id="snowflake-connectivity">
 <h3>Snowflake connectivity<a class="headerlink" href="#snowflake-connectivity" title="Permalink to this headline">¶</a></h3>
