@@ -231,37 +231,38 @@ multiple tables. It is accessible by multiple users. File formats can be specifi
 </div>
 <p>Snowflake adds a primary sample dataset for this account.
 We can login into the Snowflake with the newly created account.</p>
-<p>Once logged in, we land in the Snowflake account home page setup as shown below.</p>
+<p>Once logged in, we land in the Snowflake account home page as shown below.</p>
 <div class="figure align-center">
 <img alt="images/Snowflakepane.JPG" src="images/Snowflakepane.JPG" />
 </div>
-<p>We see navigational menu bar at top of the page.
-Left hand side, we get database pane. Here we choose database.
-Center of the screen, we see the worksheets area. This the place to write and execute the SQL Code.
-Bottom of the screen displays results pane.  Results of the query execution will be rendered in this area.
-We are ready to execute our first Snowflake command. We will be adding database called IPEDS here.</p>
-<p>Go to worksheet area and paste the the following command. Execute the command from query pane.</p>
-<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>CREATE DATABASE IPEDS
+<p>Similar to other SQL toolsets, Snowflake provides navigational menu bar at top of the page.
+On the left side we get database pane, worksheet area in the middle, and results pane at the bottom.
+Worksheet area is used to write and execute the SQL Code.
+Results of the query execution are rendered in the result pane.</p>
+<p>Now we are ready to execute our first Snowflake command. Let us add a new database called <strong>IPEDS</strong> here.</p>
+<p>Go to worksheet and use the the following command and execute from query pane.</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>CREATE DATABASE IPEDS;
 </pre></div>
 </div>
-<p>New database is added to the collection of databases in the Snowflake. We see on the left hand side, one additional database appears in the
-existing collection of database list.
-We will be working in IPEDS database through out this book. Before running any SQL commands from this book,
-we need to use the newly created database.
-The following command can be executed to change the context of the current
-database to newly created IPEDS database.</p>
-<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>USE DATABASE IPEDS
+<p>New database is added to the collection of databases in the Snowflake.
+The <strong>IPEDS</strong> database appears in the existing collection of databases.
+Throughout this book <strong>IPEDS</strong> database is used for data ingestion, transformation, and consumption.
+Before running any SQL commands from this book, always use the newly created database.</p>
+<p>The following command can be executed to change the context of the current
+database and schema to the newly created <strong>IPEDS</strong> database.</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>USE DATABASE IPEDS;
+USE SCHEMA PUBLIC;
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Make sure to change the database context to IPEDS before executing any SQL from the book.</p>
+<p><em>Make sure to change the database context to IPEDS with public schema before executing any SQL from the book</em>.</p>
 </div>
 <div class="section" id="snowflake-cli">
 <h3>Snowflake CLI<a class="headerlink" href="#snowflake-cli" title="Permalink to this headline">¶</a></h3>
-<p>We are ready to work in new Snowflake database we created.  We would need client components to connect this
-database from our remote machine. Next , we will install Snowflake CLI on our machine.</p>
-<p>Login into Snowflake and download the Snowflake CLI.</p>
+<p>We are ready to work in the newly added Snowflake database. Client components are required to connect this
+database from a local machine. Now, let us install Snowflake CLI on our machine.</p>
+<p>Login into Snowflake account, download Snowflake CLI and install on the local desktop.</p>
 <div class="figure align-center">
 <img alt="images/SnowflakeCLI.png" src="images/SnowflakeCLI.png" />
 </div>
@@ -270,16 +271,15 @@ database from our remote machine. Next , we will install Snowflake CLI on our ma
 <div class="figure align-center">
 <img alt="images/SnowflakeCLI_Source.png" src="images/SnowflakeCLI_Source.png" />
 </div>
-<p>SnowSQL CLI gets invoked with snowsql.exe.</p>
-<p><strong>SnowSQL Command Usage</strong></p>
-<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>snowsql -a accountName -u userName -d databaseName -s schemaName
-</pre></div>
-</div>
-<p>We can use the following command to connect to Snowflake using SnowSQL.
+<p>SnowSQL CLI gets invoked with snowsql.exe from the command prompt.
 After SnowSQL CLI is installed, to log in: Go to <strong>Command prompt</strong>.
 Use the following command to connect Snowflake from the Windows command line.</p>
-<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>snowsql -a newlycreatedsnowflakeAccount -u UserID -d IPEDS -s public
-Password:<span class="gs">*****</span>*
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>    ---  snowsql command usage
+snowsql -a accountName -u userName -d databaseName -s schemaName
+
+    --- In our case use the following
+    snowsql -a newlycreatedsnowflakeAccount -u UserID -d IPEDS -s public
+    Password:<span class="gs">*****</span>*
 </pre></div>
 </div>
 <p>SnowSQL CLI will connect to Snowflake instance and respond with command SQL command as shown below</p>
