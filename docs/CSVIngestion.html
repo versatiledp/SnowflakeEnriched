@@ -573,7 +573,7 @@ The automatic sequencing is achieved in Snowflake by defining <strong>SEQUENCE</
 VARIANT allows semi-structured data to be loaded. Snowflake automatically discovers the attributes,
 keys, and the structure that exists in the JSON document from VARIANT datatype. We can also add statistics that enable optimization.
 Snowflake enables to reverse-engineer a JSON document from relational data.
-OBJECT_CONSTRUCT returns a VARIANT object, a JSON document, as an output.</p>
+<strong>OBJECT_CONSTRUCT</strong> returns a VARIANT object, a JSON document, as an output.</p>
 <p>The following Snowflake SQL script is used for creating the AcademicInstitution dimension.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
@@ -1418,7 +1418,7 @@ WHERE
 <p>Data attributes associated with Carnegie classification are grouped
 into JSON object and stored in the servicing layer.
 Servicing layer entity has a column with data type VARIANT to store this JSON object. When additional attributes
-are added/dropped in the input file, we only need to change JSON <strong>OBJECT_CONSTRUCT</strong> function to pass in additional
+are added/dropped in the input file, we only need to change JSON OBJECT_CONSTRUCT function to pass in additional
 attributes. There is no schema change needed in the servicing layer.</p>
 <p>Stored procedure pr_od_AcademicInstitution_Load is updated to accommodate
 structural changes in source files from 2018 onwards.</p>
