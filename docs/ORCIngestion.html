@@ -40,13 +40,14 @@
   <div class="section" id="orc-ingestion">
 <h1>ORC ingestion<a class="headerlink" href="#orc-ingestion" title="Permalink to this headline">¶</a></h1>
 <p>Optimized Row Columnar(ORC) is a self-describing type-aware columnar
-file format designed for Hadoop workloads. It is optimized for large streaming reads,
-but with integrated support for finding required rows quickly. Storing data in a columnar
-format lets the reader read, decompress, and process only the values that are
+file format designed for Hadoop workloads. It is optimized for large streaming reads.
+By storing data in a columnar format it allows user to read, decompress,
+and process only the values that are
 required for the current process.
 Snowflake manages AVRO and ORC files similar to semi-structured JSON data from VARIANT type.</p>
-<p>We can convert VARIANT  ORC data column to a multi-column table with
-specifying column names and data types. ORC data loaded into the staged file is retrieved using the following code.</p>
+<p>We can convert VARIANT ORC data column to a multi-column table by
+specifying column names and data types. ORC data from the staged file
+is retrieved using the following code.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT O.$1 JASONdata FROM  @IPEDS_IC O;
 </pre></div>
 </div>
@@ -59,7 +60,7 @@ specifying column names and data types. ORC data loaded into the staged file is 
 <div class="section" id="functions-to-manage-semi-structured-data">
 <h2>Functions to manage semi-structured data<a class="headerlink" href="#functions-to-manage-semi-structured-data" title="Permalink to this headline">¶</a></h2>
 <p>JSON data sets are a simple concatenation of multiple key-value pairs.
-In this section, we are going to cover few new Snowflake functions FLATTEN(),
+In this section, we are going to cover few new Snowflake functions like FLATTEN(),
 ARRAY_SIZE(), LATERAL FLATTEN(), and PARSE_JSON().</p>
 <p>These functions are used to query the semi-structured data and convert
 semi-structured data to a relational format.</p>
@@ -166,7 +167,7 @@ simple key-value pairs as well as an array of nested objects.</p>
 </div>
 </div>
 <p>In this case columns like <strong>Name</strong>, <strong>Club</strong>, <strong>Goals</strong>, <strong>Wins</strong>, etc. are simple key-value pairs.
-GoalsStatistics and Division are an arrays of nested objects which are grouped together.</p>
+<strong>GoalsStatistics</strong> and <strong>Division</strong> are arrays of nested objects which are grouped together.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>{
 &quot;Name&quot;:&quot;Rolando Aarons&quot;,
 &quot;Club&quot;: &quot;Newcastle United&quot;,
@@ -182,8 +183,8 @@ GoalsStatistics and Division are an arrays of nested objects which are grouped t
 }
 </pre></div>
 </div>
-<p>GoalsStatistics is an array that contains <strong>Season</strong> and <strong>Goals</strong> made by the
-player in that season. So GoalsStatistics can contain one or more records for a particular player.</p>
+<p><strong>GoalsStatistics</strong> is an array that contains <strong>Season</strong> and <strong>Goals</strong> made by the
+player in that season. So, <strong>GoalsStatistics</strong> can contain one or more records for a particular player.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>&quot;GoalsStatistics&quot;: [
             {&quot;Season&quot;: &quot;2014-15&quot;, &quot;Goals&quot;: 2},
             {&quot;Season&quot;: &quot;2015-16&quot;, &quot;Goals&quot;: 1},
@@ -218,7 +219,7 @@ For <strong>Premier League</strong> he has played four seasons 2014-15, 2015-16,
     ]
 </pre></div>
 </div>
-<p>Create the stage file &#64;FooballStg using the script shown below.</p>
+<p>Create the staged file &#64;FooballStg using the script shown below.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>DROP STAGE IF EXISTS FooballStg;
 CREATE OR REPLACE stage FooballStg file_format = JSONFORMAT;
 </pre></div>

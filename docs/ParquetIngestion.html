@@ -41,16 +41,16 @@
 <h1>Parquet ingestion<a class="headerlink" href="#parquet-ingestion" title="Permalink to this headline">¶</a></h1>
 <p>Apache Parquet is a column-oriented binary file format that provides optimizations
 to speed up the process and is a far more efficient file format than CSV or JSON.
-It is known for its both performance, data compression and its ability to handle a
+It is known for its features like performance, data compression, and ability to handle a
 wide variety of encoding types. Parquet files
 enable to fetch only the required columns and values,
 load those in memory and answer the query.
 If a row-based file format like CSV was used, the entire table would have to have been
 loaded in memory, resulting in increased I/O and worse performance.
 Snowflake manages Parquet files similar to semi-structured JSON data from VARIANT type.</p>
-<p>We can convert VARIANT column Parquet data to a multi-column table with
+<p>We can convert VARIANT column Parquet data to a multi-column table by
 specifying column names and data types.
-Parquet data loaded into the staged file is retrieved using the following code.</p>
+Parquet data is retrieved from staged file using the following code.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT P.$1 Parquetdata FROM  @IPEDS_ADM P;
 </pre></div>
 </div>
@@ -450,7 +450,7 @@ of the dimension table <strong>AcademicInstitution</strong> to the fact table <s
 <p>The service layer/fact table <strong>AdmissionStat</strong> is loaded from the OD table <strong>od_AdmissionStat</strong> by year.
 Every time this fact table is updated, it is loaded with the latest data for that year.
 Therefore, old data loaded for that year is deleted and new data is loaded from the OD table.
-We created a Javascript based stored procedure <strong>pr_AdmissionStat_Load</strong>, in which
+We created a Javascript-based stored procedure <strong>pr_AdmissionStat_Load</strong>, in which
 we use 2 variables, <strong>sql_DelCommand</strong>, and <strong>sql_Command</strong>.
 The variable sql_DelCommand contains the SQL commands to delete the records from the fact table for the year passed to the stored procedure.
 The other variable sql_Command contains the main logic for updating the fact table for that year.</p>
@@ -600,9 +600,9 @@ $$;
 <h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
 <p>In this chapter, we went through the data loading process Parquet files in Snowflake.
 This data processing architecture is similar to that of CSV files and is made easily consumable
-by Snowflake. We loaded 3 years of admission statistics in the stage file, from which
-we created and loaded the OD table, and later the fact table, for the servicing layer.</p>
-<p>Data engineers have to deal with multiple file layout situations along with CSV, JSON, ORC, and Parquet.
+by Snowflake. We loaded 3 years of admission statistics files in the staged area. We added
+the OD table, and the fact table for the servicing layer.</p>
+<p>Data engineers have to deal with multiple file layout situations along with CSV, JSON, ORC, and Parquet formats.
 Most notable examples are variable record layout file formats and a single file containing
 data from multiple record layout.
 In the next chapter, we will cover one of these situations in our
