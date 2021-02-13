@@ -50,7 +50,7 @@ loaded in memory, resulting in increased I/O and worse performance.
 Snowflake manages Parquet files similar to semi-structured JSON data from VARIANT type.</p>
 <p>We can convert VARIANT column Parquet data to a multi-column table by
 specifying column names and data types.
-Parquet data is retrieved from staged file using the following code.</p>
+Parquet data is retrieved from <strong>&#64;IPEDS_ADM</strong> staged file using the following code.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p><em>Please refer to the section ‘Load the files to the internal stage for IPEDS’ in the chapter ‘Introducing data platform’ for creating staged files</em>.</p>
@@ -77,7 +77,7 @@ These statistics are stored in Parquet format.</p>
 <li><p>Execute the stored procedures.</p></li>
 </ul>
 </div></blockquote>
-<p>The staged file for keeping track of institution admission statistics is <strong>&#64;IPEDS_ADM</strong>.
+<p>The staged file for keeping track of institution admission statistics is &#64;IPEDS_ADM.
 Please note that the columns are selected using <strong>$1 :&lt;column_name&gt;</strong>.
 This is because the data files used here are in the Parquet format.
 We can retrieve the details of a particular year as below.</p>
@@ -389,7 +389,7 @@ admission statistics called <strong>AdmissionStat</strong>, which has links to t
 dimension table <strong>AcademicInstitution</strong>. The relationship represents the star schema of
 dimensional modeling architecture. This is made possible by
 adding the surrogate key column (<strong>AcademicInstitutionUniqueDWSID</strong>)
-of the dimension table <strong>AcademicInstitution</strong> to the fact table <strong>AdmissionStat</strong>.</p>
+of the dimension table AcademicInstitution to the fact table AdmissionStat.</p>
 <p>Here is the script for creating the table AdmissionStat in Snowflake.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
@@ -451,17 +451,17 @@ of the dimension table <strong>AcademicInstitution</strong> to the fact table <s
 </div>
 <div class="section" id="admission-statistics-data-load">
 <h2>Admission statistics data load<a class="headerlink" href="#admission-statistics-data-load" title="Permalink to this headline">¶</a></h2>
-<p>The service layer/fact table <strong>AdmissionStat</strong> is loaded from the OD table <strong>od_AdmissionStat</strong> by year.
+<p>The service layer/fact table AdmissionStat is loaded from the OD table od_AdmissionStat by year.
 Every time this fact table is updated, it is loaded with the latest data for that year.
 Therefore, old data loaded for that year is deleted and new data is loaded from the OD table.
 We created a Javascript-based stored procedure <strong>pr_AdmissionStat_Load</strong>, in which
 we use 2 variables, <strong>sql_DelCommand</strong>, and <strong>sql_Command</strong>.
 The variable sql_DelCommand contains the SQL commands to delete the records from the fact table for the year passed to the stored procedure.
 The other variable sql_Command contains the main logic for updating the fact table for that year.</p>
-<p>We have used a <strong>LEFT OUTER JOIN</strong> with <strong>AcademicInstitution</strong> on <strong>InstitutionIdentifier</strong> to get the matching
+<p>We have used a <strong>LEFT OUTER JOIN</strong> with AcademicInstitution on InstitutionIdentifier to get the matching
 surrogate key from the dimension table AcademicInstitution.
-If we do not find the matching record, we assign -1 to the corresponding entry of <strong>AcademicInstitutionUniqueDWSID</strong> in the fact table.
-To achieve this, we use the <strong>IFNULL</strong> command as <strong>IFNULL(D.AcademicInstitutionUniqueDWSID, - 1)</strong>.</p>
+If we do not find the matching record, we assign -1 to the corresponding entry of AcademicInstitutionUniqueDWSID in the fact table.
+To achieve this, we use the <strong>IFNULL</strong> command as IFNULL(D.AcademicInstitutionUniqueDWSID, - 1).</p>
 <p>Here is the Snowflake stored procedure for processing the AdmissionStat table.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">

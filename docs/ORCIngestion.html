@@ -49,7 +49,7 @@ Snowflake manages AVRO and ORC files similar to semi-structured JSON data from V
 <p class="admonition-title">Note</p>
 <p><em>Please refer to the section ‘Load the files to the internal stage for IPEDS’ in the chapter ‘Introducing data platform’ for creating staged files</em>.</p>
 </div>
-<p>We can convert VARIANT ORC data column to a multi-column table by
+<p>We can convert VARIANT type column having ORC data to a multi-column table by
 specifying column names and data types. ORC data from the staged file <strong>&#64;IPEDS_IC</strong>
 is retrieved using the following code.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT O.$1 JASONdata FROM  @IPEDS_IC O;
