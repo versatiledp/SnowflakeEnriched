@@ -84,8 +84,8 @@ This audit table can be used to identify the number of records processed in each
 </div>
 <p>We can easily enhance this framework with additional functionality, like actions for success/failure
 and parallel processing.
-The results of workflow steps are then stored in the <strong>IPEDS_Audit</strong> table.
-The <strong>IPEDS_Audit</strong> table holds information about the steps executed including:</p>
+The results of workflow steps are then stored in the IPEDS_Audit table.
+The IPEDS_Audit table holds information about the steps executed including:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>Row count from the source table.</p></li>
@@ -107,7 +107,7 @@ The <strong>IPEDS_Audit</strong> table holds information about the steps execute
 <span class="p">);</span>
 </pre></div>
 </div>
-<p>The following script is used to populate  <strong>IPEDS_Workflow</strong>.
+<p>The following script is used to populate IPEDS_Workflow.
 The script populates the workflow control table, which contains information about
 the stored procedure to be called, the input table name,
 the output table name, and the sequence of each execution.</p>
@@ -243,7 +243,7 @@ the output table name, and the sequence of each execution.</p>
 </div>
 <p>The stored procedure <strong>pr_IPEDS_Process</strong> is used as a master controller.
 When we call this controller, the following steps are executed.</p>
-<p>All data from the <strong>IPEDS_Workflow</strong> table is read in order of ExecutionOrder.
+<p>All data from the IPEDS_Workflow table is read in order of ExecutionOrder.
 For each of these data rows:</p>
 <blockquote>
 <div><ul class="simple">
