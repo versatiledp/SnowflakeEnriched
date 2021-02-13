@@ -51,6 +51,10 @@ Snowflake manages Parquet files similar to semi-structured JSON data from VARIAN
 <p>We can convert VARIANT column Parquet data to a multi-column table by
 specifying column names and data types.
 Parquet data is retrieved from staged file using the following code.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><em>Please refer to the section ‘Load the files to the internal stage for IPEDS’ in the chapter ‘Introducing data platform’ for creating staged files</em>.</p>
+</div>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT P.$1 Parquetdata FROM  @IPEDS_ADM P;
 </pre></div>
 </div>

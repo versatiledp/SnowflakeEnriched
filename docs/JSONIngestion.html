@@ -56,6 +56,10 @@ JSON string at reading time (Schema-on-Read).</p>
 <h2>Enrollment<a class="headerlink" href="#enrollment" title="Permalink to this headline">¶</a></h2>
 <p>This section covers information about enrollments in various institutions for the academic years 2017, 2018, and 2019.
 The enrollments are categorized by race, ethnicity, and sex.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><em>Please refer to the section ‘Load the files to the internal stage for IPEDS’ in the chapter ‘Introducing data platform’ for creating staged files</em>.</p>
+</div>
 <p>The data files for enrollments are in JSON format and the staged file is invoked using &#64;IPEDS_EFFY.
 JSON data from the staged file is retrieved using the following code.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT N.$1 JASONdata FROM  @IPEDS_EFFY N;
