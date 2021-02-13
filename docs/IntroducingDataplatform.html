@@ -288,6 +288,10 @@ The files in this book are loaded from the local folder (like <strong>C:\Snowfla
 Each staged file contains the entire data for that specific year. From these staged files, OD tables are populated.
 Using these OD tables, servicing layer tables of the data-warehouse are populated. Snowflake’s stored procedures, views, and functions are used for ETL/ELT processes.</p>
 <p>Internal named stage needs to be created for each of the file formats before loading data.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>All the Snowflake commands in this book are to be executed from Snowflake worksheet unless specified different.  Login to Snowflake account. Use IPEDS database . Copy the code from book and execute.</p>
+</div>
 <div class="section" id="create-internal-stage-area-ipeds">
 <h3>Create internal stage area IPEDS<a class="headerlink" href="#create-internal-stage-area-ipeds" title="Permalink to this headline">¶</a></h3>
 <p>First, create the file formats and stage area for the following data formats:</p>
@@ -384,7 +388,8 @@ we can validate their availability.</p>
 </div>
 <div class="section" id="load-the-files-to-internal-stage-for-ipeds">
 <h3>Load the files to internal stage for IPEDS<a class="headerlink" href="#load-the-files-to-internal-stage-for-ipeds" title="Permalink to this headline">¶</a></h3>
-<p>Connect to the Snowflake database using SnowSQL CLI and load the following files to the staging area.</p>
+<p>Connect to the Snowflake database using SnowSQL CLI from the remote machine. Execute all the
+commands in this section from SnowSQL CLI. It will load the following data files to the staging area.</p>
 <p>Load the CSV academic institution (HD) files.</p>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">put</span> <span class="n">file</span><span class="p">:</span><span class="o">//</span><span class="n">C</span><span class="p">:</span>\<span class="n">snowflake</span>\<span class="n">data</span>\<span class="nb">input</span>\<span class="n">HD2017</span><span class="o">.</span><span class="n">csv</span> <span class="nd">@IPEDS_HD</span><span class="p">;</span>
 <span class="n">put</span> <span class="n">file</span><span class="p">:</span><span class="o">//</span><span class="n">C</span><span class="p">:</span>\<span class="n">snowflake</span>\<span class="n">data</span>\<span class="nb">input</span>\<span class="n">HD2018</span><span class="o">.</span><span class="n">csv</span> <span class="nd">@IPEDS_HD</span><span class="p">;</span>
@@ -415,7 +420,8 @@ All the Parquet partitions are loaded into a specific folder of the Parquet stag
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">put</span> <span class="n">file</span><span class="p">:</span><span class="o">//</span><span class="n">C</span><span class="p">:</span>\<span class="n">snowflake</span>\<span class="n">data</span>\<span class="nb">input</span>\<span class="n">CodeMappingData</span><span class="o">.</span><span class="n">txt</span> <span class="nd">@IPEDS_CM</span><span class="p">;</span>
 </pre></div>
 </div>
-<p>Once these files are loaded to the stage area, we can check their availability in the internal stage area as follows:</p>
+<p>Once these files are loaded to the stage area,
+we can check their availability in the internal stage area by executing the code from Snowflake worksheet area as follows:</p>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">list</span> <span class="nd">@IPEDS_HD</span><span class="p">;</span>
 </pre></div>
 </div>
@@ -447,7 +453,10 @@ All the Parquet partitions are loaded into a specific folder of the Parquet stag
 <img alt="images/csvOther.JPG" src="images/csvOther.JPG" />
 </div>
 <p>All the files from the source system are ingested into the Snowflake staged area.
-If there are any issues in the stage area, drop them using <strong>remove &#64;IPEDS_ADM</strong>.</p>
+If there are any issues in the staged area, drop staged area using <strong>remove &#64;StageAreaName</strong>.
+Example to drop ADM file stage area, execute the command <strong>remove &#64;IPEDS_ADM</strong>.
+To recreate dropped staged area, we will need to re-run the
+create staged area and load data file code again .</p>
 </div>
 </div>
 <div class="section" id="summary">

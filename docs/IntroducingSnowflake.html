@@ -51,8 +51,17 @@ solution that makes it possible for organizations to:</p>
 <li><p>Leverage the existing ecosystem of tools to manage, extract transform load (ETL) or extract load transform (ELT) process.</p></li>
 <li><p>Integrate the current business intelligence stack like Tableau, PowerBI, and other open-source tools like D3.js, Plotly seamlessly.</p></li>
 </ul>
-<div class="section" id="snowflake-advantages">
-<h2>Snowflake advantages<a class="headerlink" href="#snowflake-advantages" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="snowflake">
+<h2>Snowflake<a class="headerlink" href="#snowflake" title="Permalink to this headline">¶</a></h2>
+<p>Snowflake data warehousing is built with cloud-first architecture. separation of storage and compute is the most
+notable feature built in the core of Snowflake.
+Snowflake core is built with separation of storage and compute. Because of this,
+it allows infinite scalability for data storage and compute resources.
+This also enables organizations to execute data load pipelines and creating analytical insights at the same time
+, without competing for resources. Snowflake also provides all the capabilities needed for
+enabling data lake, data exchange, data applications, and data engineering.</p>
+<div class="section" id="advantages">
+<h3>Advantages<a class="headerlink" href="#advantages" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Faster, easier to use, scalable, and far more flexible than other data platforms.</p></li>
 <li><p>Can be started quickly and delivers high-quality performance.</p></li>
@@ -64,8 +73,8 @@ solution that makes it possible for organizations to:</p>
 <li><p>Fully automated platform.</p></li>
 </ul>
 </div>
-<div class="section" id="snowflake-architecture">
-<h2>Snowflake architecture<a class="headerlink" href="#snowflake-architecture" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="architecture">
+<h3>Architecture<a class="headerlink" href="#architecture" title="Permalink to this headline">¶</a></h3>
 <p>The Snowflake architecture consists of three layers:
 The following diagram shows Snowflake architecture.</p>
 <div class="figure align-center">
@@ -81,8 +90,8 @@ These virtual warehouses are used to load data, run queries, or do both concurre
 all data is encrypted, compressed, and distributed to optimize performance.
 Snowflake also provides excellent data durability, and availability.</p>
 </div>
-<div class="section" id="snowflake-connectivity">
-<h2>Snowflake connectivity<a class="headerlink" href="#snowflake-connectivity" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="connectivity">
+<h3>Connectivity<a class="headerlink" href="#connectivity" title="Permalink to this headline">¶</a></h3>
 <p>Snowflake provides a few different methods to create database connectivity:</p>
 <ul class="simple">
 <li><p>ODBC and JDBC drivers can directly access a Snowflake instance.</p></li>
@@ -90,8 +99,8 @@ Snowflake also provides excellent data durability, and availability.</p>
 <li><p>SnowSQL CLI is also used to establish connectivity to Snowflake.</p></li>
 </ul>
 </div>
-<div class="section" id="snowflake-data-features">
-<h2>Snowflake data features<a class="headerlink" href="#snowflake-data-features" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="data-features">
+<h3>Data features<a class="headerlink" href="#data-features" title="Permalink to this headline">¶</a></h3>
 <p>In Snowflake, data can be ingested from a variety of data
 formats like CSV, Parquet, ORC, and XML data sources.
 It supports JSON to a great extent, and furthermore:</p>
@@ -105,8 +114,9 @@ It supports JSON to a great extent, and furthermore:</p>
 AWS, and GCP. In other words, the Snowflake data warehouse can be built on top of Amazon web services, Microsoft Azure
 cloud infrastructure, or Google cloud.</p>
 </div>
-<div class="section" id="setting-up-a-virtual-warehouse">
-<h2>Setting up a virtual warehouse<a class="headerlink" href="#setting-up-a-virtual-warehouse" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="virtual-warehouse">
+<h2>Virtual warehouse<a class="headerlink" href="#virtual-warehouse" title="Permalink to this headline">¶</a></h2>
 <p>Snowflake defines a virtual warehouse as a cluster of compute resources.
 The warehouse provides all the resources like CPU, memory, and temporary storage
 required to start using Snowflake.</p>
@@ -118,8 +128,8 @@ Schemas are logical groupings of database objects like tables, views, and functi
 We will be working with real-world business use-cases, starting with data collection
 from various sources and presenting insights regarding the utilization of Snowflake.</p>
 </div>
-<div class="section" id="snowflake-data-load">
-<h2>Snowflake data load<a class="headerlink" href="#snowflake-data-load" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="data-load">
+<h2>Data load<a class="headerlink" href="#data-load" title="Permalink to this headline">¶</a></h2>
 <p>Snowflake data load can be achieved using:</p>
 <blockquote>
 <div><ul class="simple">
@@ -160,8 +170,44 @@ and does not use virtual warehouse resources. It has its own resources that are 
 </div></blockquote>
 </div>
 </div>
-<div class="section" id="installing-snowflake-cli">
-<h2>Installing Snowflake CLI<a class="headerlink" href="#installing-snowflake-cli" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="account-creation">
+<h2>Account creation<a class="headerlink" href="#account-creation" title="Permalink to this headline">¶</a></h2>
+<p>First, we need to create an account to access Snowflake. We can create a trial account on the page below.</p>
+<div class="figure align-center">
+<img alt="images/SnowflakeSubscription.jpg" src="images/SnowflakeSubscription.jpg" />
+</div>
+<p>Snowflake adds a primary sample data set for this account.
+We can login into the Snowflake with newly created account.</p>
+<p>Once we logged in, we see Snowflake view as shown below.</p>
+<div class="figure align-center">
+<img alt="images/Snowflakepane.jpg" src="images/Snowflakepane.jpg" />
+</div>
+<p>We see navigational menu bar at top of the page.
+Left hand side, we get database pane. Here we choose database.
+Center of the screen, we see the worksheets area. This the place to write and execute the SQL Code.
+Bottom of the screen displays results pane.  Results of the query execution will be rendered in this area.
+We are ready to execute our first Snowflake command. We will be adding database called IPEDS here.</p>
+<p>Go to worksheet area and paste the the following command. Execute the command from query pane.</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>CREATE DATABASE IPEDS
+</pre></div>
+</div>
+<p>New database is added to the collection of databases in the Snowflake. We see on the left hand side, one additional database appears in the
+existing collection of database list.
+We will be working in IPEDS database through out this book. Before running any SQL commands from this book,
+we need to use the newly created database.
+The following command can be executed to change the context of the current
+database to newly created IPEDS database.</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>USE DATABASE IPEDS
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Make sure to change the database context to IPEDS before executing any SQL from the book.</p>
+</div>
+<div class="section" id="snowflake-cli">
+<h3>Snowflake CLI<a class="headerlink" href="#snowflake-cli" title="Permalink to this headline">¶</a></h3>
+<p>We are ready to work in new Snowflake database we created.  We would need client components to connect this
+database from our remote machine. Next , we will install Snowflake CLI on our machine.</p>
 <p>Login into Snowflake and download the Snowflake CLI.</p>
 <div class="figure align-center">
 <img alt="images/SnowflakeCLI.png" src="images/SnowflakeCLI.png" />
@@ -173,14 +219,34 @@ and does not use virtual warehouse resources. It has its own resources that are 
 </div>
 <p>SnowSQL CLI gets invoked with snowsql.exe.</p>
 <p><strong>SnowSQL Command Usage</strong></p>
-<p>We can use the following command to connect to Snowflake using SnowSQL.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>snowsql -a accountName -u userName -d databaseName -s schemaName
 </pre></div>
 </div>
-<p>Alternatively, use the following command to connect Snowflake from the Windows command line.</p>
-<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>snowsql -a xxxxxx.us-east-1 -u xxxxxx -d demo_db -s public
+<p>We can use the following command to connect to Snowflake using SnowSQL.
+After SnowSQL CLI is installed, to log in: Go to <strong>Command prompt</strong>.
+Use the following command to connect Snowflake from the Windows command line.</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>snowsql -a newlycreatedsnowflakeAccount -u UserID -d IPEDS -s public
 Password:<span class="gs">*****</span>*
 </pre></div>
+</div>
+<p>SnowSQL CLI will connect to Snowflake instance and respond with command SQL command as shown below</p>
+<div class="figure align-center">
+<img alt="images/SnowCLILogin.jpg" src="images/SnowCLILogin.jpg" />
+</div>
+<p>We are ready to use database and query. Let us run our first SQL command</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT CURRENT_DATABASE(), CURRENT_SCHEMA();
+</pre></div>
+</div>
+<p>We should get the database and schema names as shown below</p>
+<div class="figure align-center">
+<img alt="images/SnowCLIResults.JPG" src="images/SnowCLIResults.JPG" />
+</div>
+<p>To terminate the current session run the following commands</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>!exit
+</pre></div>
+</div>
+<p>We have successfully created Snowflake account. We learned how to connect and run query in Snowflake web interface worksheet environment.
+We also connected to the Snowflake account from our desktop using SnowSQL CLI. We are ready to work on our project.</p>
 </div>
 </div>
 <div class="section" id="snowflake-staged-area">
@@ -241,7 +307,8 @@ multiple tables. It is accessible by multiple users. File formats can be specifi
 <h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
 <p>This chapter has covered Snowflake architectural components, data features, and the various tools used in data loading.
 Multiple ways of connecting to Snowflake services alongside learning about the supported data formats
-are outlined in this chapter. It also summarized various methods for loading files into
+are outlined in this chapter. We also created snowflake account, connected to database, and executed our first set of qeries.
+It also summarized various methods for loading files into
 Snowflake using the user stage, table stage, and internal named stage database objects.</p>
 <p>In the next chapter, we will cover modern-day data platforms, data formats, and input datasets used throughout this book.</p>
 <table class="docutils align-default">
@@ -281,18 +348,24 @@ Snowflake using the user stage, table stage, and internal named stage database o
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="Introduction.html">Introduction</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Introducing Snowflake</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#snowflake-advantages">Snowflake advantages</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#snowflake-architecture">Snowflake architecture</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#snowflake-connectivity">Snowflake connectivity</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#snowflake-data-features">Snowflake data features</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#setting-up-a-virtual-warehouse">Setting up a virtual warehouse</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#snowflake-data-load">Snowflake data load</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#snowflake">Snowflake</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#advantages">Advantages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#architecture">Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#connectivity">Connectivity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#data-features">Data features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#virtual-warehouse">Virtual warehouse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#data-load">Data load</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#snowsql-ui">SnowSQL UI</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#snowsql-cli">SnowSQL CLI</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#snowpipe">Snowpipe</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#installing-snowflake-cli">Installing Snowflake CLI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#account-creation">Account creation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#snowflake-cli">Snowflake CLI</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#snowflake-staged-area">Snowflake staged area</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#user-stage">User stage</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#table-stage">Table stage</a></li>
