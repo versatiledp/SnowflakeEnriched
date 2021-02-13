@@ -64,7 +64,7 @@ AWS, and GCP. In other words, the Snowflake data warehouse can be built on top o
 cloud infrastructure, or Google cloud.</p>
 <div class="section" id="architecture">
 <h3>Architecture<a class="headerlink" href="#architecture" title="Permalink to this headline">¶</a></h3>
-<p>The Snowflake architecture consists of three layers:
+<p>The Snowflake architecture consists of three layers.
 The following diagram shows Snowflake architecture.</p>
 <div class="figure align-center">
 <img alt="images/snowflakeArchitecture.JPG" src="images/snowflakeArchitecture.JPG" />
@@ -186,11 +186,11 @@ Results of the query execution are rendered in the result pane.</p>
 </pre></div>
 </div>
 <p>New database is added to the collection of databases in the Snowflake.
-The <strong>IPEDS</strong> database appears in the existing collection of databases.
-Throughout this book <strong>IPEDS</strong> database is used for data ingestion, transformation, and consumption.
+The IPEDS database appears in the existing collection of databases.
+Throughout this book IPEDS database is used for data ingestion, transformation, and consumption.
 Before running any SQL commands from this book, always use the newly created database.</p>
 <p>The following command can be executed to change the context of the current
-database and schema to the newly created <strong>IPEDS</strong> database.</p>
+database and schema to the newly created IPEDS database.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>USE DATABASE IPEDS;
 USE SCHEMA PUBLIC;
 </pre></div>
@@ -261,7 +261,7 @@ flexibility for accessing the data in Snowflake.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>put file://D:\Snowflake\sample_file.csv @~/staged;
 </pre></div>
 </div>
-<p>The file will be uploaded to the user stage and a user can verify the same using LIST command.</p>
+<p>The file will be uploaded to the user stage and a user can verify the same using <strong>list</strong> command.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>list @~/staged;
 </pre></div>
 </div>
@@ -270,7 +270,11 @@ flexibility for accessing the data in Snowflake.</p>
 </div>
 <div class="section" id="table-stage">
 <h3>Table stage<a class="headerlink" href="#table-stage" title="Permalink to this headline">¶</a></h3>
-<p>Each table has a Snowflake stage allocated for storing files. Multiple users can access a single table stage area.</p>
+<p>Each table has a Snowflake stage allocated for storing files. Multiple users can access a
+single table stage area.
+Table stages are storage locations held within a table object.
+This is helpful when files only need to be loaded into the specific table.
+Table stages do not support setting file format options.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>put file://D:\Snowflake\sample_file.csv @%test;
 </pre></div>
 </div>
@@ -283,8 +287,6 @@ flexibility for accessing the data in Snowflake.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>list @%test
 </pre></div>
 </div>
-<p>Table stages have the same name as the table. The table stages cannot be altered or dropped.</p>
-<p>Table stages do not support setting file format options. Instead, they specify file format details in the COPY command.</p>
 </div>
 <div class="section" id="internal-named-stage">
 <h3>Internal named stage<a class="headerlink" href="#internal-named-stage" title="Permalink to this headline">¶</a></h3>

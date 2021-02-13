@@ -178,7 +178,7 @@ service layer entities.</p>
 <p>Data engineering consists of creating transformations, performing metadata management, and
 keeping track of data pipelines. So, access should be
 granted to all layers of the data platform.</p>
-<p>After staging load, all data processing and transformation is performed using stored procedures.</p>
+<p>In this book after staging load, all data processing and transformation is performed using stored procedures.</p>
 </div>
 </div>
 <div class="section" id="source-data-files">
@@ -278,8 +278,8 @@ Multiple OD tables will be populated from one lookup file.</p>
 <p><a class="reference external" href="https://github.com/versatiledp/SnowflakeEnriched/tree/master/data/input"  target="_blank">https://github.com/versatiledp/SnowflakeEnriched/tree/master/data/input</a></p>
 </div>
 <p>Download the files from GitRepo <a class="reference external" href="https://github.com/versatiledp/SnowflakeEnriched/tree/master/data/input"  target="_blank">https://github.com/versatiledp/SnowflakeEnriched/tree/master/data/input</a> to local machine.
-After downloading the files, copy them to the folder <strong>C:\Snowflake\data\input\</strong>.
-The files in this book are loaded from the local folder (like <strong>C:\Snowflake\data\input\</strong> to the Snowflake stage area using SnowSQL CLI.</p>
+Create folder <strong>C:\Snowflake\data\input\</strong> and copy downloaded files to this folder.
+The files in this book are loaded from the above folder to the Snowflake stage area using SnowSQL CLI.</p>
 </div>
 </div>
 <div class="section" id="ingesting-snowflake-stage">
@@ -392,7 +392,7 @@ we can validate their availability.</p>
 <div class="section" id="load-the-files-to-internal-stage-for-ipeds">
 <h3>Load the files to internal stage for IPEDS<a class="headerlink" href="#load-the-files-to-internal-stage-for-ipeds" title="Permalink to this headline">¶</a></h3>
 <p>In this section, we are ingesting all the files to the Snowflake staging area. We assume you have
-downloaded the files from GitRepo and copied to local drive  <strong>C:\Snowflake\data\input\</strong></p>
+downloaded the files from GitRepo and copied to the folder C:\Snowflake\data\input\.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p><em>Right click on command promt application in windows machine and run as administrator</em></p>
@@ -472,7 +472,7 @@ we can check their availability in the internal stage area by executing the code
 </div>
 <p>All the files from the source system are ingested into the Snowflake staged area.
 If there are any issues in the staged area, drop staged area using <strong>remove &#64;StageAreaName</strong>.
-Example to drop ADM file stage area, execute the command <strong>remove &#64;IPEDS_ADM</strong>.
+Example to drop ADM file stage area, execute the command remove &#64;IPEDS_ADM.
 To recreate dropped staged area, we will need to re-run the
 create staged area and load data file code again .</p>
 </div>

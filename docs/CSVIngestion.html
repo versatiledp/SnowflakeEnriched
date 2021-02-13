@@ -73,7 +73,7 @@ Staged files are identified by the &#64; character prefixed to the name.</p>
 <p>Academic institution data files are received in CSV format.
 In this case, <strong>&#64;IPEDS_HD</strong>  is the staged file containing information about the academic institutions.
 Data is retrieved using the SQL command <strong>SELECT $&lt;column_number&gt;</strong>, from the staged files created using CSV format,
-The <strong>&lt;column_number&gt;</strong> represents the order in which the columns are available in the text file starting with the number 1.
+The &lt;column_number&gt; represents the order in which the columns are available in the text file starting with the number 1.
 In other words, $1 refers to first column values, $2 refers to second column values, and $n refers to nth column values from the staged file.</p>
 <p>For example: SELECT $1, $2 FROM &#64;IPEDS_HD;</p>
 <p>The above command returns the first and second column values of the institution file.</p>
@@ -110,8 +110,8 @@ IngestedFileName, and RowNumber, to the OD table, to use them in the ETL/ELT pro
 <p><strong>METADATA$FILE_ROW_NUMBER</strong> is a pseudo column that identifies the row number of staged data file.</p>
 <p>Once the column mapping is clearly defined, we have to populate our
 operational data table for academic institutions called <strong>od_AcademicInstitution</strong>
-out of this staged file <strong>&#64;IPEDS_HD</strong>.</p>
-<p>Here is the SQL command to create an OD table <strong>od_AcademicInstitution</strong>.</p>
+out of this staged file &#64;IPEDS_HD.</p>
+<p>Here is the SQL command to create an OD table od_AcademicInstitution.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Create OD AcademicInstitution Entity</p>
@@ -200,7 +200,7 @@ out of this staged file <strong>&#64;IPEDS_HD</strong>.</p>
 </div>
 <p>The additional columns like AcademicYear, IngestedFileName, and RowNumber
 are derived from the metadata of the staged file.</p>
-<p>We used the metadata columns <strong>METADATA$FILENAME</strong>, and <strong>METADATA$FILE_ROW_NUMBER</strong> for populating these new columns.</p>
+<p>We used the metadata columns METADATA$FILENAME, and METADATA$FILE_ROW_NUMBER for populating these new columns.</p>
 <p>Please note that, for the files having header rows, column names will be on the first row,
 and the data will start from the second row.</p>
 <p>The following Snowflake SQL will get us the filename and row number from the staged file.</p>
@@ -324,8 +324,8 @@ WHERE
 </div>
 <p>If the internal staged area has multiple files, the view created on staged files will have access to all underlying files ingested.</p>
 <p>In Snowflake, views behave just like tables and we can retrieve the records for a
-given academic year using the view <strong>v_od_AcademicInstitution</strong>, as below. As we ingest three files from the source system,
-<strong>&#64;IPEDS_HD</strong> will have data from all academic years.</p>
+given academic year using the view v_od_AcademicInstitution, as below. As we ingest three files from the source system,
+&#64;IPEDS_HD will have data from all academic years.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT TOP 100 * FROM v_od_AcademicInstitution
 WHERE AcademicYear = 2017;
 </pre></div>
@@ -346,16 +346,16 @@ In Snowflake, stored procedures are similar to functions, and can be executed mu
 <li><p>The Procedure returns a string.</p></li>
 <li><p>SQL code (text) is stored in JavaScript variable.</p></li>
 <li><p>Call <strong>snowflake.execute</strong> and pass the javascript variable that contains SQL script.</p></li>
-<li><p>Check the results of <strong>snowflake.execute</strong> call.</p></li>
+<li><p>Check the results of snowflake.execute call.</p></li>
 </ul>
 </div></blockquote>
 <p>A storedprocedure is created with a CREATE PROCEDURE command and executed with a CALL command.</p>
-<p>We have created a process to load the OD table <strong>od_AcademicInstitution</strong> data from the view,
+<p>We have created a process to load the OD table od_AcademicInstitution data from the view,
 one year of data at a time. For this purpose, we have created a stored procedure
 <strong>pr_od_AcademicInstitution_Load</strong>. This stored procedure takes a parameter
-YEAR and retrieves the data from the view <strong>v_od_AcademicInstitution</strong>  for that year.
+YEAR and retrieves the data from the view v_od_AcademicInstitution for that year.
 The retrieved records are then inserted into the OD table.</p>
-<p>Here is the script for creating the Snowflake stored procedure <strong>pr_od_AcademicInstitution_Load</strong>.</p>
+<p>Here is the script for creating the Snowflake stored procedure pr_od_AcademicInstitution_Load.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Create OD AcademicInstitution load stored procedure</p>
@@ -560,11 +560,11 @@ This dimension table will be used by fact tables at the servicing layer in forth
 <p>In general, a dimension table contains keys, columns, and other attributes that are associated with the business key.
 A system-generated key (primary key) is used to uniquely identify a row in the dimension and it is also known as a surrogate key. In a dimensional data warehouse architecture,
 the surrogate key is placed in the fact table and a foreign key is defined to establish the relationship between the two tables.</p>
-<p>In the case of the dimension table <strong>AcademicInstitution</strong>, we have defined the
+<p>In the case of the dimension table AcademicInstitution, we have defined the
 column <strong>AcademicInstitutionUniqueDWSID</strong> as the primary key.
 This primary key gets a unique sequence value for every record inserted.
 The automatic sequencing is achieved in Snowflake by defining <strong>SEQUENCE</strong> and using with <strong>NEXTVAL</strong>.</p>
-<p>Here is the script for creating the sequence SEQ_IPEDS.</p>
+<p>Here is the script for creating the sequence <strong>SEQ_IPEDS</strong>.</p>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CREATE</span> <span class="n">OR</span> <span class="n">REPLACE</span> <span class="n">SEQUENCE</span>
         <span class="n">SEQ_IPEDS_HD</span> <span class="n">START</span> <span class="o">=</span> <span class="mi">1</span> <span class="n">INCREMENT</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
 </pre></div>
@@ -574,7 +574,7 @@ VARIANT allows semi-structured data to be loaded. Snowflake automatically discov
 keys, and the structure that exists in the JSON document from VARIANT datatype. We can also add statistics that enable optimization.
 Snowflake enables to reverse-engineer a JSON document from relational data.
 OBJECT_CONSTRUCT returns a VARIANT object, a JSON document, as an output.</p>
-<p>The following Snowflake SQL script is used for creating the <strong>AcademicInstitution</strong> dimension.</p>
+<p>The following Snowflake SQL script is used for creating the AcademicInstitution dimension.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Create AcademicInstitution entity</p>
@@ -690,23 +690,23 @@ Thus, another VARIANT data type column WebAddress is also created.</p>
 </div>
 <div class="section" id="load-dimension-table">
 <h2>Load dimension table<a class="headerlink" href="#load-dimension-table" title="Permalink to this headline">¶</a></h2>
-<p>Once the dimension table is created, we need to load the dimension table <strong>AcademicInstitution</strong>
-with data from the operational data table <strong>od_AcademicInstitution</strong>.
-This is made possible by using the Snowflake MERGE command.</p>
+<p>Once the dimension table is created, we need to load the dimension table AcademicInstitution
+with data from the operational data table od_AcademicInstitution.
+This is made possible by using the Snowflake <strong>MERGE</strong> command.</p>
 <p>The MERGE command uses source and target tables for the merge operation.
-In our case, the OD table <strong>od_AcademicInstitution</strong> is the source
-table and the dimension table <strong>AcademicInstitution</strong> is the target table.
-The business key <strong>InstitutionIdentifier</strong> is used for the dimension <strong>AcademicInstitution</strong> MERGE.</p>
+In our case, the OD table od_AcademicInstitution is the source
+table and the dimension table AcademicInstitution is the target table.
+The business key <strong>InstitutionIdentifier</strong> is used for the dimension AcademicInstitution MERGE.</p>
 <p>MERGE in Snowflake works similar to the standard SQL MERGE.
 We join the source and target using the business key.
 Then, we compare the new data in the OD table against the existing column values in the dimension table.
 If any of the column values are updated in the OD table, that value is updated in the dimension table.
-If the business key <strong>InstitutionIdentifier</strong> is not present in the dimension table (new records in the OD table),
+If the business key InstitutionIdentifier is not present in the dimension table (new records in the OD table),
 that record is inserted into the dimension table.</p>
 <p>We are using Type 1 slowly changing dimension, in which new data overwrites existing data.
 However, Snowflake’s time travel feature can be used to view the original data before the update.</p>
 <p>We have created a stored procedure <strong>pr_AcademicInstitution_Load</strong> for merging data from the staging
-table <strong>od_AcademicInstitution</strong> to the dimension table <strong>AcademicInstitution</strong>.
+table od_AcademicInstitution to the dimension table AcademicInstitution.
 The script to create the stored procedure is given below.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
@@ -1165,13 +1165,13 @@ try {
 </pre></div>
 </div>
 </div>
-<p>And the stored procedure is called to load the <strong>AcademicInstitution</strong> table from OD.</p>
+<p>And the stored procedure is called to load the AcademicInstitution table from OD.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>CALL pr_AcademicInstitution_Load(2017::FLOAT) ;
 -- Check data on underlying table
 SELECT * FROM AcademicInstitution
 </pre></div>
 </div>
-<p>The following diagram shows the <strong>AcademicInstitution</strong> table updated with new data.</p>
+<p>The following diagram shows the AcademicInstitution table updated with new data.</p>
 <div class="figure align-center">
 <img alt="images/IPEDTableData_BB.JPG" src="images/IPEDTableData_BB.JPG" />
 </div>
@@ -1203,7 +1203,7 @@ changes in the input files generated from the source system.</p>
 </ul>
 </div></blockquote>
 <p>Also, there are some changes in the position of a few existing columns in the file.</p>
-<p>Our goal is to process both old and new files using the same process to load <strong>od_AcademicInstitution</strong>.
+<p>Our goal is to process both old and new files using the same process to load od_AcademicInstitution.
 We have added the new columns to the OD table using ALTER TABLE as below.</p>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ALTER</span> <span class="n">TABLE</span>  <span class="n">od_AcademicInstitution</span>
 <span class="n">ADD</span> <span class="p">(</span>
@@ -1215,18 +1215,18 @@ We have added the new columns to the OD table using ALTER TABLE as below.</p>
 <span class="n">CarnegieClassification2018SizeSetting</span> <span class="n">INTEGER</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>Also, we updated the view <strong>v_od_AcademicInstitution</strong>  to include newly added columns using the Snowflake
+<p>Also, we updated the view v_od_AcademicInstitution to include newly added columns using the Snowflake
 UNION command as below.
 This has made it possible to ingest files with different structures for 2017 and more recent years.</p>
 <p>The deleted columns are populated with NULL values for the year greater than 2017.
 Newly added columns are mapped with NULL for the year 2017.</p>
 <p>We have to modify the following Snowflake data objects (views/stored procedures) to incorporate the above structural
-change along with table change in the tables <strong>od_AcademicInstitution</strong> and <strong>AcademicInstitution</strong>.</p>
+change along with table change in the tables od_AcademicInstitution and AcademicInstitution.</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>View <strong>v_od_AcademicInstitution</strong> reads the data from the stage table.</p></li>
-<li><p>Stored procedure <strong>pr_od_AcademicInstitution_Load</strong> loads data to the staging table.</p></li>
-<li><p>Stored procedure <strong>pr_AcademicInstitution_Load</strong> processes dimension table.</p></li>
+<li><p>View v_od_AcademicInstitution reads the data from the stage table.</p></li>
+<li><p>Stored procedure pr_od_AcademicInstitution_Load loads data to the staging table.</p></li>
+<li><p>Stored procedure pr_AcademicInstitution_Load processes dimension table.</p></li>
 </ul>
 </div></blockquote>
 <p>View code to accommodate staged file layout changes:</p>
@@ -1420,7 +1420,7 @@ into JSON object and stored in the servicing layer.
 Servicing layer entity has a column with data type VARIANT to store this JSON object. When additional attributes
 are added/dropped in the input file, we only need to change JSON OBJECT_CONSTRUCT function to pass in additional
 attributes. There is no schema change needed in the servicing layer.</p>
-<p>Stored procedure <strong>pr_od_AcademicInstitution_Load</strong> is updated to accommodate
+<p>Stored procedure pr_od_AcademicInstitution_Load is updated to accommodate
 structural changes in source files from 2018 onwards.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
@@ -1632,7 +1632,7 @@ in practice we would process only one year of data at a time.</p>
 as changes in ELT and the transformation layer. If data is processed without the change in code,
 it will result into bad attribute value mapping.</em></p>
 </div>
-<p>The stored procedure <strong>pr_AcademicInstitution_Load</strong> is modified to accommodate the new columns added.</p>
+<p>The stored procedure pr_AcademicInstitution_Load is modified to accommodate the new columns added.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Alter AcademicInstitution load stored procedure</p>
@@ -2145,7 +2145,7 @@ try {
 </div>
 <div class="section" id="merge-using-the-hash-key">
 <h2>MERGE using the hash key<a class="headerlink" href="#merge-using-the-hash-key" title="Permalink to this headline">¶</a></h2>
-<p>In the hash key stored procedure, we join the source and target tables using the business key <strong>InstitutionIdentifier</strong>.
+<p>In the hash key stored procedure, we join the source and target tables using the business key InstitutionIdentifier.
 When a matching record is found, we compare individual
 columns between the source and target tables using hash keys to find any column values changed in the source.
 Hash keys are created using hash functions. In a hash function, a plain text of arbitrary size is
@@ -2180,7 +2180,7 @@ which is then passed to the hash function SHA1 to generate a hash key.</p>
 </pre></div>
 </div>
 </div>
-<p>Here are the scripts for creating the function <strong>Hash_Key</strong>.</p>
+<p>Here are the scripts for creating the function Hash_Key.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Create function to Hash data</p>
@@ -2702,7 +2702,7 @@ for the years 2017, 2018, and 2019. We created a staged file and a corresponding
 institution details by year. We discussed in detail the views and stored procedures used to populate
 the dimension table using the Snowflake MERGE command.
 We reviewed sequence objects in Snowflake for creating a primary key in the dimension table,
-<strong>AcademicInstitution</strong>. We also demonstrated how to group various
+AcademicInstitution. We also demonstrated how to group various
 columns in the staged file using the JSON string and VARIANT data types.
 Furthermore, we learned
 transformation logic to handle the schema drifts in the incoming data files.
