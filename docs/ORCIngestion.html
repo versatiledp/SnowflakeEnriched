@@ -45,13 +45,13 @@ By storing data in a columnar format it allows user to read, decompress,
 and process only the values that are
 required for the current process.
 Snowflake manages AVRO and ORC files similar to semi-structured JSON data from VARIANT type.</p>
-<p>We can convert VARIANT ORC data column to a multi-column table by
-specifying column names and data types. ORC data from the staged file <strong>&#64;IPEDS_IC</strong>
-is retrieved using the following code.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p><em>Please refer to the section ‘Load the files to the internal stage for IPEDS’ in the chapter ‘Introducing data platform’ for creating staged files</em>.</p>
 </div>
+<p>We can convert VARIANT ORC data column to a multi-column table by
+specifying column names and data types. ORC data from the staged file <strong>&#64;IPEDS_IC</strong>
+is retrieved using the following code.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT O.$1 JASONdata FROM  @IPEDS_IC O;
 </pre></div>
 </div>
@@ -202,7 +202,7 @@ player in that season. So, <em>GoalsStatistics</em> can contain one or more reco
 <p>Similarly, <em>Division</em> is an array object that contains another array
 of objects inside each array. So division name and an array of seasons
 the player played for that division. For example, the player has
-played for 2 divisions <em>Premier League*</em> and <em>Championship</em>.
+played for 2 divisions <em>Premier League</em> and <em>Championship</em>.
 For <em>Premier League</em> he has played four seasons 2014-15, 2015-16, 2017-18,
 2018-19, and 2019-20. And for <em>Championship</em> he has played in 2016-17.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>&quot;Division&quot;:[
@@ -265,7 +265,7 @@ CREATE TABLE IF NOT EXISTS S_PLAYERS
 </pre></div>
 </div>
 <p>The function ARRAY_SIZE() returns the size of an array in the VARIANT value.
-In this case, it contains 2 arrays: GoalsStatistics and Division.</p>
+In this case, it contains 2 arrays: <em>GoalsStatistics</em> and <em>Division</em>.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT
 PLAYER_DATA:Name::STRING &quot;Player Name&quot;,
 ARRAY_SIZE(PLAYER_DATA:GoalsStatistics)
@@ -1193,7 +1193,7 @@ of the dimension table AcademicInstitution to these fact tables.</p>
 <p>While processing the InstitutionalCharge dataset, tables
 are normalized from the OD layer and mapped to the servicing layer.</p>
 <p>The following scripts are used to create these tables.</p>
-<p><strong>InstitutionalCharge</strong> Entity:</p>
+<p>InstitutionalCharge Entity:</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Create InstitutionalCharge entity</p>
@@ -1228,7 +1228,7 @@ are normalized from the OD layer and mapped to the servicing layer.</p>
 </pre></div>
 </div>
 </div>
-<p><strong>InstitutionalChargeByAcademicBranch</strong> Entity:</p>
+<p>InstitutionalChargeByAcademicBranch Entity:</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Create InstitutionalChargeByAcademicBranch entity</p>
@@ -1243,7 +1243,7 @@ are normalized from the OD layer and mapped to the servicing layer.</p>
 </pre></div>
 </div>
 </div>
-<p><strong>InstitutionalChargeByResidencyType</strong> Entity:</p>
+<p>InstitutionalChargeByResidencyType Entity:</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Create InstitutionalChargeByResidencyType entity</p>
@@ -1258,7 +1258,7 @@ are normalized from the OD layer and mapped to the servicing layer.</p>
 </pre></div>
 </div>
 </div>
-<p><strong>InstitutionalChargeByCategory</strong> Entity:</p>
+<p>InstitutionalChargeByCategory Entity:</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Create InstitutionalChargeByCategory entity</p>
