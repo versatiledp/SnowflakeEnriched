@@ -75,7 +75,7 @@ In this case, <strong>&#64;IPEDS_HD</strong>  is the staged file containing info
 Data is retrieved using the SQL command <strong>SELECT $&lt;column_number&gt;</strong>, from the staged files created using CSV format,
 The &lt;column_number&gt; represents the order in which the columns are available in the text file starting with the number 1.
 In other words, $1 refers to first column values, $2 refers to second column values, and $n refers to nth column values from the staged file.</p>
-<p>For example: SELECT $1, $2 FROM &#64;IPEDS_HD;</p>
+<p>For example: <em>SELECT $1, $2 FROM &#64;IPEDS_HD;</em></p>
 <p>The above command returns the first and second column values of the institution file.</p>
 <p>Here is the output from &#64;IPEDS_HD using the SQL command. The header record from the input file is presented as a data record:</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT $1,$2,$3,$4,$5,$6,$7,<span class="ge">***</span>*,$71,$72 FROM @IPEDS_HD;
@@ -693,12 +693,11 @@ Thus, another VARIANT data type column WebAddress is also created.</p>
 <p>Once the dimension table is created, we need to load the dimension table AcademicInstitution
 with data from the operational data table od_AcademicInstitution.
 This is made possible by using the Snowflake <strong>MERGE</strong> command.</p>
-<p>The MERGE command uses source and target tables for the merge operation.
-In our case, the OD table od_AcademicInstitution is the source
-table and the dimension table AcademicInstitution is the target table.
-The business key <strong>InstitutionIdentifier</strong> is used for the dimension AcademicInstitution MERGE.</p>
 <p>MERGE in Snowflake works similar to the standard SQL MERGE.
-We join the source and target using the business key.
+The merge routine joins the source and target tables using the business key.
+In our case, od_AcademicInstitution is the source
+table and AcademicInstitution is the target dimension.
+The business key <strong>InstitutionIdentifier</strong> is used for AcademicInstitution dimension MERGE.
 Then, we compare the new data in the OD table against the existing column values in the dimension table.
 If any of the column values are updated in the OD table, that value is updated in the dimension table.
 If the business key InstitutionIdentifier is not present in the dimension table (new records in the OD table),
@@ -1216,7 +1215,7 @@ We have added the new columns to the OD table using <strong>ALTER TABLE</strong>
 </pre></div>
 </div>
 <p>Also, we updated the view v_od_AcademicInstitution to include newly added columns using the Snowflake
-UNION command as below.
+<strong>UNION</strong> command as below.
 This has made it possible to ingest files with different structures for 2017 and more recent years.</p>
 <p>The deleted columns are populated with NULL values for the year greater than 2017.
 Newly added columns are mapped with NULL for the year 2017.</p>
