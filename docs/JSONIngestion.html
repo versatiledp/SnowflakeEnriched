@@ -74,7 +74,7 @@ we could read InstitutionIdentifier as below.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT jdata:UNITID AS InstitutionIdentifier
    FROM IPED;
 
-jdata = the column name in the IPED table type VARIANT holding JSON object
+jdata = Column name in IPED table type VARIANT holding JSON object
 UNITID = attribute in the JSON schema
 </pre></div>
 </div>
@@ -83,7 +83,7 @@ UNITID = attribute in the JSON schema
     FROM @IPEDS_EFFY S;
 
 $1 = positional attribute in staged file
-An alias InstitutionIdentifier to the column name just like in regular SQL.
+An alias InstitutionIdentifier to column name
 </pre></div>
 </div>
 <p>The column that was returned in the previous step comes back with double quotes around it.

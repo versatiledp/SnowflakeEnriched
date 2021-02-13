@@ -42,26 +42,26 @@
 <p>This chapter explains how to administer the Snowflake transformations
 through a single point of entry
 without using any third-party tools.</p>
-<div class="section" id="workflow-configuration">
-<h2>Workflow configuration<a class="headerlink" href="#workflow-configuration" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
 <p>Workflow configuration is done by listing the Snowflake procedures to
 execute in a pre-defined sequential order. The source and destination tables used in the transformation are
 listed in the configuration table along
 with the stored procedure.</p>
 </div>
-<div class="section" id="workflow-administration">
-<h2>Workflow administration<a class="headerlink" href="#workflow-administration" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="administration">
+<h2>Administration<a class="headerlink" href="#administration" title="Permalink to this headline">¶</a></h2>
 <p>Workflow administration executes the list of stored procedures in the order defined by the
 <strong>IPEDS_Workflow</strong> table. For each procedure execution, it checks the row counts from the source and destination tables.
 At the end, it logs the details in the <strong>IPEDS_Audit</strong> table for further analysis.</p>
 </div>
-<div class="section" id="workflow-audit">
-<h2>Workflow audit<a class="headerlink" href="#workflow-audit" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="audit">
+<h2>Audit<a class="headerlink" href="#audit" title="Permalink to this headline">¶</a></h2>
 <p>Workflow audit provides the details of the executions as well as row counts before and after.
 This audit table can be used to identify the number of records processed in each execution.</p>
 </div>
-<div class="section" id="workflow-data-setup">
-<h2>Workflow data setup<a class="headerlink" href="#workflow-data-setup" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="data-setup">
+<h2>Data setup<a class="headerlink" href="#data-setup" title="Permalink to this headline">¶</a></h2>
 <p>We have added a workflow table with attributes given below.</p>
 <blockquote>
 <div><ul class="simple">
@@ -69,7 +69,7 @@ This audit table can be used to identify the number of records processed in each
 <li><p>ProcedureName - Name of the stored procedure to be called</p></li>
 <li><p>SourceTableName - Input table used in Snowflake data transformation</p></li>
 <li><p>TargetTableName - Destination table for data used in the procedure</p></li>
-<li><p>ExecutionOrder - What is the sequence for this step to be executed</p></li>
+<li><p>ExecutionOrder - What is the sequence of the step to be executed</p></li>
 </ul>
 </div></blockquote>
 <p>The following script is used to create the IPEDS_Workflow table.</p>
@@ -84,8 +84,8 @@ This audit table can be used to identify the number of records processed in each
 </div>
 <p>We can easily enhance this framework with additional functionality, like actions for success/failure
 and parallel processing.
-The results of workflow steps are then stored in the IPEDS_Audit table.
-The IPEDS_Audit table holds information about the steps executed, including:</p>
+The results of workflow steps are then stored in the <strong>IPEDS_Audit</strong> table.
+The <strong>IPEDS_Audit</strong> table holds information about the steps executed including:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>Row count from the source table.</p></li>
@@ -110,7 +110,7 @@ The IPEDS_Audit table holds information about the steps executed, including:</p>
 <p>The following script is used to populate  <strong>IPEDS_Workflow</strong>.
 The script populates the workflow control table, which contains information about
 the stored procedure to be called, the input table name,
-the output table name, and the sequence number to execute this SP.</p>
+the output table name, and the sequence of each execution.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Load Workflow data</p>
@@ -243,8 +243,8 @@ the output table name, and the sequence number to execute this SP.</p>
 </div>
 <p>The stored procedure <strong>pr_IPEDS_Process</strong> is used as a master controller.
 When we call this controller, the following steps are executed.</p>
-<p>All data from the IPEDS_Workflow table is read in order of ExecutionOrder.
-For each of the rows:</p>
+<p>All data from the <strong>IPEDS_Workflow</strong> table is read in order of ExecutionOrder.
+For each of these data rows:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>It will record the row count from the source and destination table.</p></li>
@@ -416,8 +416,9 @@ $$;
 </pre></div>
 </div>
 </div>
-<p>Truncating the OD table and loading data from the IPEDS dataset into the staging files is performed
-by the following code.</p>
+<p>The following code truncates the OD tables and
+loads data from the IPEDS staged files to multiple tables.
+It also creates any missing tables before the load.</p>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CALL</span> <span class="n">pr_od_Truncate</span><span class="p">();</span>
 <span class="n">CALL</span> <span class="n">pr_IPEDS_Process</span><span class="p">(</span><span class="mi">2017</span><span class="p">::</span><span class="n">FLOAT</span><span class="p">);</span>
 </pre></div>
@@ -429,7 +430,7 @@ by the following code.</p>
 This process helps in navigating data lineage across staged files, operational data tables, and servicing layer entities.
 It works for cases where we have a one-to-one mapping between source and destination tables.
 We can easily enhance the process to accommodate other needs in tracking data transformation.</p>
-<p>All data is available in the Snowflake servicing layer. We also automated data ingestion steps. In
+<p>All data is available in the Snowflake servicing layer. We also automated the data ingestion steps. In
 the next chapter, we will learn how to create gleaming analytics insights using this data.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -481,10 +482,10 @@ the next chapter, we will learn how to create gleaming analytics insights using 
 <li class="toctree-l1"><a class="reference internal" href="ParquetIngestion.html">Parquet ingestion</a></li>
 <li class="toctree-l1"><a class="reference internal" href="SemiStructuredDataIngestion.html">Multi-format ingestion</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Workflow orchestration</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#workflow-configuration">Workflow configuration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#workflow-administration">Workflow administration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#workflow-audit">Workflow audit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#workflow-data-setup">Workflow data setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configuration">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#administration">Administration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#audit">Audit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#data-setup">Data setup</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#summary">Summary</a></li>
 </ul>
 </li>
