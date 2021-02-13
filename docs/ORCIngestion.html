@@ -46,7 +46,7 @@ and process only the values that are
 required for the current process.
 Snowflake manages AVRO and ORC files similar to semi-structured JSON data from VARIANT type.</p>
 <p>We can convert VARIANT ORC data column to a multi-column table by
-specifying column names and data types. ORC data from the staged file
+specifying column names and data types. ORC data from the staged file <strong>&#64;IPEDS_IC</strong>
 is retrieved using the following code.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -68,11 +68,11 @@ In this section, we are going to cover few new Snowflake functions like FLATTEN(
 ARRAY_SIZE(), LATERAL FLATTEN(), and PARSE_JSON().</p>
 <p>These functions are used to query the semi-structured data and convert
 semi-structured data to a relational format.</p>
-<p>FLATTEN() is a table function that extracts the objects and keys into a separate table.
+<p><strong>FLATTEN()</strong> is a table function that extracts the objects and keys into a separate table.
 It takes a VARIANT, OBJECT, or ARRAY column and produces a lateral view.</p>
-<p>PARSE_JSON() function takes a string as input and returns a JSON-compatible VARIANT.</p>
-<p>ARRAY_SIZE() function returns size of the array in the VARIANT value.</p>
-<p>LATERAL FLATTEN() is used to flatten the data and to extract array from JSON document.</p>
+<p><strong>PARSE_JSON()</strong> function takes a string as input and returns a JSON-compatible VARIANT.</p>
+<p><strong>ARRAY_SIZE()</strong> function returns size of the array in the VARIANT value.</p>
+<p><strong>LATERAL FLATTEN()</strong> is used to flatten the data and to extract array from JSON document.</p>
 <p>We are using a sample JSON file that contains the information about 3
 soccer players of English championships.
 This file is built as a hierarchical JSON format that contains
@@ -170,8 +170,8 @@ simple key-value pairs as well as an array of nested objects.</p>
 </pre></div>
 </div>
 </div>
-<p>In this case columns like <strong>Name</strong>, <strong>Club</strong>, <strong>Goals</strong>, <strong>Wins</strong>, etc. are simple key-value pairs.
-<strong>GoalsStatistics</strong> and <strong>Division</strong> are arrays of nested objects which are grouped together.</p>
+<p>In this case columns like <em>Name</em>, <em>Club</em>, <em>Goals</em>, <em>Wins</em>, etc. are simple key-value pairs.
+<em>GoalsStatistics</em> and <em>Division</em> are arrays of nested objects which are grouped together.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>{
 &quot;Name&quot;:&quot;Rolando Aarons&quot;,
 &quot;Club&quot;: &quot;Newcastle United&quot;,
@@ -187,8 +187,8 @@ simple key-value pairs as well as an array of nested objects.</p>
 }
 </pre></div>
 </div>
-<p><strong>GoalsStatistics</strong> is an array that contains <strong>Season</strong> and <strong>Goals</strong> made by the
-player in that season. So, <strong>GoalsStatistics</strong> can contain one or more records for a particular player.</p>
+<p><em>GoalsStatistics</em> is an array that contains <em>Season</em> and <em>Goals</em> made by the
+player in that season. So, <em>GoalsStatistics</em> can contain one or more records for a particular player.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>&quot;GoalsStatistics&quot;: [
             {&quot;Season&quot;: &quot;2014-15&quot;, &quot;Goals&quot;: 2},
             {&quot;Season&quot;: &quot;2015-16&quot;, &quot;Goals&quot;: 1},
@@ -199,12 +199,12 @@ player in that season. So, <strong>GoalsStatistics</strong> can contain one or m
         ]
 </pre></div>
 </div>
-<p>Similarly, <strong>Division</strong> is an array object that contains another array
+<p>Similarly, <em>Division</em> is an array object that contains another array
 of objects inside each array. So division name and an array of seasons
 the player played for that division. For example, the player has
-played for 2 divisions <strong>Premier League</strong> and <strong>Championship</strong>.
-For <strong>Premier League</strong> he has played four seasons 2014-15, 2015-16, 2017-18,
-2018-19, and 2019-20. And for <strong>Championship</strong> he has played in 2016-17.</p>
+played for 2 divisions <em>Premier League*</em> and <em>Championship</em>.
+For <em>Premier League</em> he has played four seasons 2014-15, 2015-16, 2017-18,
+2018-19, and 2019-20. And for <em>Championship</em> he has played in 2016-17.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>&quot;Division&quot;:[
         {&quot;Name&quot;:&quot;Premier League&quot;,
         &quot;Season&quot;:[
@@ -223,12 +223,12 @@ For <strong>Premier League</strong> he has played four seasons 2014-15, 2015-16,
     ]
 </pre></div>
 </div>
-<p>Create the staged file &#64;FooballStg using the script shown below.</p>
+<p>Create the staged file <strong>&#64;FooballStg</strong> using the script shown below.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>DROP STAGE IF EXISTS FooballStg;
 CREATE OR REPLACE stage FooballStg file_format = JSONFORMAT;
 </pre></div>
 </div>
-<p>Load the staged file &#64;FooballStg using the following PUT command from the Windows command prompt.</p>
+<p>Load the staged file &#64;FooballStg using the following <strong>PUT</strong> command from the Windows command prompt.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>put file://c:\test\data\fpl-book.json @FooballStg auto_compress=true;
 </pre></div>
 </div>
@@ -250,7 +250,7 @@ FROM @FooballStg;
 <img alt="images/latteralflatten0.jpg" src="images/latteralflatten0.jpg" />
 </div>
 <dl class="simple">
-<dt>Following scripts used to create table S_PLAYERS with a column of</dt><dd><p>VARIANT data type and it is used to store semi-structured data.</p>
+<dt>Following scripts used to create table <em>S_PLAYERS</em> with a column of</dt><dd><p>VARIANT data type and it is used to store semi-structured data.</p>
 </dd>
 </dl>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>DROP TABLE IF EXISTS S_PLAYERS;
@@ -280,9 +280,9 @@ FROM S_PLAYERS;
 </div>
 <p>LATERAL FLATTEN() is used to extract an array from JSON data.
 The query below uses LATERAL FLATTEN() to take the items in the list from
-<strong>PLAYER_DATA</strong>: GoalsStatistics and make them their own dataset.
+<em>PLAYER_DATA</em>: GoalsStatistics and make them their own dataset.
 INPUT, VALUE, INDEX are reserved keywords.
-It is important to give alias <strong>GoalsStat</strong> to flatten results.</p>
+It is important to give alias <em>GoalsStat</em> to flatten results.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT
 PLAYER_DATA:Name::STRING &quot;Player Name&quot;,
 GoalsStat.VALUE AS Goals,
@@ -296,7 +296,7 @@ FROM S_PLAYERS,
 <img alt="images/latteralflatten2.jpg" src="images/latteralflatten2.jpg" />
 </div>
 <p>We can have multiple FLATTEN functions within the same query as shown below.
-Here the query returns a list of arrays from <strong>GoalsStatistics</strong> and <strong>Division</strong> data objects.</p>
+Here the query returns a list of arrays from <em>GoalsStatistics</em> and <em>Division</em> data objects.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT
 PLAYER_DATA:Name::STRING &quot;Player Name&quot;,
 GoalsStat.VALUE AS Goals,
@@ -311,11 +311,11 @@ FROM S_PLAYERS,
 <div class="figure align-center">
 <img alt="images/latteralflatten3.jpg" src="images/latteralflatten3.jpg" />
 </div>
-<p>We are joining <strong>Division</strong> with <strong>Season</strong> using LATERAL FLATTEN and a left OUTER join.
+<p>We are joining <em>Division</em> with <em>Season</em> using LATERAL FLATTEN and a left OUTER join.
 The second FLATTEN clause is used to flatten the Season array within the flattened
-Division array and retrieve the <strong>Season</strong> played by each <strong>Division</strong>.
-PARSE_JSON is used to create a JSON VARIANT out of the <strong>Division</strong> and <strong>Season</strong>
-arrays joined using a LEFT OUTER join.</p>
+Division array and retrieve the <em>Season</em> played by each <em>Division</em>.
+PARSE_JSON is used to create a JSON VARIANT out of the <em>Division</em> and <em>Season</em>
+arrays joined using a <strong>LEFT OUTER</strong> join.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT
     d.PLAYER_DATA:Name::STRING &quot;Player Name&quot;,
     c.value:Name::STRING &quot;Division Name&quot;,
@@ -368,7 +368,7 @@ on-campus expenses are available in this section of the file.</p>
 </div>
 <div class="section" id="staged-file-for-institutional-charges">
 <h2>Staged file for institutional charges<a class="headerlink" href="#staged-file-for-institutional-charges" title="Permalink to this headline">¶</a></h2>
-<p>The staged file <strong>&#64;IPEDS_IC</strong> is used for keeping track of various institution charges.
+<p>The staged file &#64;IPEDS_IC is used for keeping track of various institution charges.
 We can retrieve the details of a particular year, exemplified by the Snowflake SQL query
 seen below to select all rows for the year 2017 from staged ORC data.
 Please note that the columns are selected using <strong>$1 :&lt;column_name&gt;</strong>.
@@ -525,7 +525,7 @@ WHERE LEFT(MetaData$FileName,4) = 2017;
 <div class="section" id="operational-data-od-table-for-an-institutional-charge">
 <h2>Operational data (OD) table for an institutional charge<a class="headerlink" href="#operational-data-od-table-for-an-institutional-charge" title="Permalink to this headline">¶</a></h2>
 <p>The OD table <strong>od_InstitutionalCharge</strong> is added to load institutional charge data from the staged file.
-It contains all the columns from the staged file <strong>&#64;IPEDS_IC</strong>.
+It contains all the columns from the staged file &#64;IPEDS_IC.
 The Snowflake script for creating this table is shown below.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
@@ -1189,7 +1189,7 @@ institutional charge data called:</p>
 dimension table <strong>AcademicInstitution</strong>. The relationship represents the star schema of
 dimensional modeling architecture. This is made possible by
 adding the surrogate key column (<strong>AcademicInstitutionUniqueDWSID</strong>)
-of the dimension table <strong>AcademicInstitution</strong> to these fact tables.</p>
+of the dimension table AcademicInstitution to these fact tables.</p>
 <p>While processing the InstitutionalCharge dataset, tables
 are normalized from the OD layer and mapped to the servicing layer.</p>
 <p>The following scripts are used to create these tables.</p>
@@ -1626,7 +1626,7 @@ These attributes from the source are further categorized into tuition and fees.<
 <p><strong>Institutional charge by residency type</strong></p>
 <p>The view <strong>v_od_InstitutionalChargeByResidencyType</strong> is built to convert
 columns to rows for data processing. This view is similar to
-<strong>v_od_InstitutionalChargeByAcademicBranch</strong>. This view outputs, one record per
+v_od_InstitutionalChargeByAcademicBranch. This view outputs, one record per
 in-district, in-state, or out-of-state residency type. The view provides tuition
 information for complete course work like year-0-tuition, year-1-tuition, etc.</p>
 <div class="toggle docutils container">
@@ -1965,7 +1965,7 @@ information for complete course work like year-0-tuition, year-1-tuition, etc.</
 </div>
 <p><strong>Institutional charge by category</strong></p>
 <p>The view <strong>v_od_InstitutionalChargeByCategory</strong> provides granular details about expenses on books, supplies, rent, food, and other expenditures during college education. The logic to build it is very similar
-to <strong>v_od_InstitutionalChargeByResidencyType</strong> and <strong>v_od_InstitutionalChargeByAcademicBranch</strong>.</p>
+to v_od_InstitutionalChargeByResidencyType and v_od_InstitutionalChargeByAcademicBranch.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Create OD InstitutionalChargeByCategory view</p>
@@ -2245,7 +2245,7 @@ JSON data structure is easy to consume in the application layer, as we will furt
 </div>
 </div>
 <p><strong>Stored procedure to load OD table</strong></p>
-<p>The stored procedure <strong>pr_od_InstitutionalCharge_Load</strong> is modified to create JSON objects and
+<p>The stored procedure pr_od_InstitutionalCharge_Load is modified to create JSON objects and
 copy data from the staged file to the OD table.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
@@ -2611,7 +2611,7 @@ $$
 </div>
 <div class="section" id="data-load-into-the-servicing-layer">
 <h2>Data load into the servicing layer<a class="headerlink" href="#data-load-into-the-servicing-layer" title="Permalink to this headline">¶</a></h2>
-<p>We will be using the OD table <strong>od_InstitutionalCharge</strong> and the above three views to finally land data to its destination.
+<p>We will be using the OD table od_InstitutionalCharge and the above three views to finally land data to its destination.
 There are four stored procedures that use these data sources and process them into the respective servicing layer tables,
 taking the academic year as their input parameter.
 For the given year, these procedures will delete existing data from the destination tables and transform and load data from the OD layer.</p>
