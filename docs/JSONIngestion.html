@@ -55,9 +55,9 @@ JSON string at reading time (Schema-on-Read).</p>
 <div class="section" id="enrollment">
 <h2>Enrollment<a class="headerlink" href="#enrollment" title="Permalink to this headline">¶</a></h2>
 <p>This section covers information about enrollments in various institutions for the academic years 2017, 2018, and 2019.
-The enrollments are categorized by race, ethnicity, and sex.
-The data files for enrollments are in JSON format and the staged file is invoked using &#64;IPEDS_EFFY.</p>
-<p>JSON data from the staged file is retrieved using the following code.</p>
+The enrollments are categorized by race, ethnicity, and sex.</p>
+<p>The data files for enrollments are in JSON format and the staged file is invoked using &#64;IPEDS_EFFY.
+JSON data from the staged file is retrieved using the following code.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT N.$1 JASONdata FROM  @IPEDS_EFFY N;
 </pre></div>
 </div>
@@ -850,8 +850,8 @@ We discussed the JSON-formatted data ingestion process. JSON data can be loaded 
 columns of type VARIANT. These VARIANT columns
 are queried using SQL SELECT statements that reference JSON document elements by the hierarchical paths.
 We also explored building transformation logic in stored procedures to map additional attributes.</p>
-<p>High volume data are ingested in the Hadoop Distributed File System (HDFS).
-The Consumption layer needs data analyzed in HDFS. In the next chapter, we will cover how to ingest ORC
+<p>In the majority of the current big data platform, high volume data is ingested in the Hadoop Distributed File System (HDFS).
+In the next chapter, we will cover how to ingest ORC
 files coming from the HDFS system.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -893,6 +893,7 @@ files coming from the HDFS system.</p>
 
 <p class="caption"></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Preface.html">Preface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="IntroducingSnowflake.html">Introducing Snowflake</a></li>
 <li class="toctree-l1"><a class="reference internal" href="IntroducingDataplatform.html">Introducing data platform</a></li>

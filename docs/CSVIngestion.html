@@ -65,10 +65,10 @@ for the years 2017, 2018 and 2019, respectively.</p>
 </div></blockquote>
 <p>In staged files, data can be located in an internal stage (in a Snowflake database)
 or an external named stage (Amazon S3, Google Cloud Storage, or Microsoft Azure).
-Staged files are identified by the &#64; character prefixed to the name.
-Academic institution data files are received in CSV format.</p>
-<p>In this case, <strong>&#64;IPEDS_HD</strong>  is the staged file containing information about the academic institutions.
-From the staged files created using CSV format, data is retrieved using the SQL command <strong>SELECT $&lt;column_number&gt;</strong>.
+Staged files are identified by the &#64; character prefixed to the name.</p>
+<p>Academic institution data files are received in CSV format.
+In this case, <strong>&#64;IPEDS_HD</strong>  is the staged file containing information about the academic institutions.
+Data is retrieved using the SQL command <strong>SELECT $&lt;column_number&gt;</strong>, from the staged files created using CSV format,
 The <strong>&lt;column_number&gt;</strong> represents the order in which the columns are available in the text file starting with the number 1.
 In other words, $1 refers to first column values, $2 refers to second column values, and $n refers to nth column values from the staged file.</p>
 <p>For example: SELECT $1, $2 FROM &#64;IPEDS_HD;</p>
@@ -94,8 +94,8 @@ between staged layer and column names in OD tables (
 <a class="reference external" href="https://versatiledp.github.io/SnowflakeEnriched/Mapping/AcademicInstitute.htm"   target="_blank">SnowflakeEnriched/Mapping/AcademicInstitute</a>
 ).</p>
 </div>
-<div class="section" id="od-table-for-an-academic-institution">
-<h2>OD table for an academic institution<a class="headerlink" href="#od-table-for-an-academic-institution" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="od-table-for-academic-institution">
+<h2>OD table for academic institution<a class="headerlink" href="#od-table-for-academic-institution" title="Permalink to this headline">¶</a></h2>
 <p>Operational data (OD) tables are physical tables populated from the corresponding staged files.
 The ELT process will copy the data from staged files to OD tables.
 OD tables are defined by column types and descriptive column names.
@@ -2709,7 +2709,7 @@ transformation logic to handle the schema drifts in the incoming data files.
 Finally, we demonstrated yet another approach to MERGE the dimension table using hash keys.</p>
 <p>Transactional systems are using lightweight JSON
 as the preferred data exchange and data storage format.
-we will learn JSON ingestion in the next chapter.</p>
+We will learn about JSON ingestion in the next chapter.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p><em>Code is available to download at:</em>
@@ -2750,12 +2750,13 @@ we will learn JSON ingestion in the next chapter.</p>
 
 <p class="caption"></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Preface.html">Preface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="IntroducingSnowflake.html">Introducing Snowflake</a></li>
 <li class="toctree-l1"><a class="reference internal" href="IntroducingDataplatform.html">Introducing data platform</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">CSV ingestion</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#academic-institution">Academic institution</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#od-table-for-an-academic-institution">OD table for an academic institution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#od-table-for-academic-institution">OD table for academic institution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#snowflake-view-and-stored-procedure">Snowflake view and stored procedure</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#managing-metadata-of-the-staged-file">Managing metadata of the staged file</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#stored-procedure-for-od-table-load">Stored procedure for OD table load</a></li>

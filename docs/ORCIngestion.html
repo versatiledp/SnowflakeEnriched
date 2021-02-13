@@ -43,11 +43,10 @@
 file format designed for Hadoop workloads. It is optimized for large streaming reads,
 but with integrated support for finding required rows quickly. Storing data in a columnar
 format lets the reader read, decompress, and process only the values that are
-required for the current process.</p>
-<p>Snowflake manages AVRO and ORC files similar to semi-structured JSON data from VARIANT type.
-We can convert VARIANT  ORC data column to a multi-column table with
-specifying column names and data types.</p>
-<p>ORC data loaded into the staged file is retrieved using the following code.</p>
+required for the current process.
+Snowflake manages AVRO and ORC files similar to semi-structured JSON data from VARIANT type.</p>
+<p>We can convert VARIANT  ORC data column to a multi-column table with
+specifying column names and data types. ORC data loaded into the staged file is retrieved using the following code.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT O.$1 JASONdata FROM  @IPEDS_IC O;
 </pre></div>
 </div>
@@ -2951,8 +2950,8 @@ Finally, we detailed an alternative approach using the JSON VARIANT data type to
 <p>Spark executes much faster by caching data in memory across multiple parallel operations,
 whereas HDFS and MapReduce involve more reading and writing from disk. Along with Spark, the industry also adopted
 writing these dataframes into Parquet format.
-In the next chapter, we will be creating a Snowflake pipeline to ingest
-Parquet data format.</p>
+In the next chapter, we will be creating a Snowflake pipeline to ingest files having Parquet
+Parquet format.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p><em>Code is available to download at:</em>
@@ -2993,6 +2992,7 @@ Parquet data format.</p>
 
 <p class="caption"></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Preface.html">Preface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="IntroducingSnowflake.html">Introducing Snowflake</a></li>
 <li class="toctree-l1"><a class="reference internal" href="IntroducingDataplatform.html">Introducing data platform</a></li>

@@ -290,7 +290,10 @@ Using these OD tables, servicing layer tables of the data-warehouse are populate
 <p>Internal named stage needs to be created for each of the file formats before loading data.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>All the Snowflake commands in this book are to be executed from Snowflake worksheet unless specified different.  Login to Snowflake account. Use IPEDS database . Copy the code from book and execute.</p>
+<p><em>All the Snowflake SQL commands in this book are to be executed from Snowflake worksheet unless specified differently</em>.</p>
+<p><em>Login to the Snowflake account</em>.</p>
+<p><em>Use IPEDS database</em>.</p>
+<p><em>Copy the code from book and execute</em>.</p>
 </div>
 <div class="section" id="create-internal-stage-area-ipeds">
 <h3>Create internal stage area IPEDS<a class="headerlink" href="#create-internal-stage-area-ipeds" title="Permalink to this headline">¶</a></h3>
@@ -388,8 +391,19 @@ we can validate their availability.</p>
 </div>
 <div class="section" id="load-the-files-to-internal-stage-for-ipeds">
 <h3>Load the files to internal stage for IPEDS<a class="headerlink" href="#load-the-files-to-internal-stage-for-ipeds" title="Permalink to this headline">¶</a></h3>
-<p>Connect to the Snowflake database using SnowSQL CLI from the remote machine. Execute all the
-commands in this section from SnowSQL CLI. It will load the following data files to the staging area.</p>
+<p>In this section, we are ingesting all the files to the Snowflake staging area. We assume you have
+downloaded the files from GitRepo and copied to local drive  <strong>C:\Snowflake\data\input\</strong></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><em>Right click on command promt application in windows machine and run as administrator</em></p>
+<p><em>Change directory by executing CD C:\Snowflake\data\input from the command prompt</em></p>
+<p><em>Check content of the folder with DIR command</em></p>
+<div class="figure align-center">
+<img alt="images/inputfileList.JPG" src="images/inputfileList.JPG" />
+</div>
+<p><em>Connect to the Snowflake database using SnowSQL CLI</em>.</p>
+<p><em>Execute all the commands listed below in this section from SnowSQL CLI</em>.</p>
+</div>
 <p>Load the CSV academic institution (HD) files.</p>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">put</span> <span class="n">file</span><span class="p">:</span><span class="o">//</span><span class="n">C</span><span class="p">:</span>\<span class="n">snowflake</span>\<span class="n">data</span>\<span class="nb">input</span>\<span class="n">HD2017</span><span class="o">.</span><span class="n">csv</span> <span class="nd">@IPEDS_HD</span><span class="p">;</span>
 <span class="n">put</span> <span class="n">file</span><span class="p">:</span><span class="o">//</span><span class="n">C</span><span class="p">:</span>\<span class="n">snowflake</span>\<span class="n">data</span>\<span class="nb">input</span>\<span class="n">HD2018</span><span class="o">.</span><span class="n">csv</span> <span class="nd">@IPEDS_HD</span><span class="p">;</span>
@@ -451,6 +465,10 @@ we can check their availability in the internal stage area by executing the code
 </div>
 <div class="figure align-center">
 <img alt="images/csvOther.JPG" src="images/csvOther.JPG" />
+</div>
+<p>Terminate the current session.</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>!exit
+</pre></div>
 </div>
 <p>All the files from the source system are ingested into the Snowflake staged area.
 If there are any issues in the staged area, drop staged area using <strong>remove &#64;StageAreaName</strong>.
@@ -523,6 +541,7 @@ our first set of CSV files from the source system.</p>
 
 <p class="caption"></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Preface.html">Preface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="IntroducingSnowflake.html">Introducing Snowflake</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Introducing data platform</a><ul>
