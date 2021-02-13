@@ -655,8 +655,7 @@ OBJECT_CONSTRUCT returns a VARIANT object, a JSON document, as an output.</p>
 These columns are used to store JSON data in the table.
 The DATETIME columns RecordCreateDateTime and RecordUpdateDateTime are added for auditing data upserts.</em></p>
 </div>
-<div class="section" id="carnegie-classification-transformation">
-<h3>Carnegie classification transformation<a class="headerlink" href="#carnegie-classification-transformation" title="Permalink to this headline">¶</a></h3>
+<p><strong>Carnegie classification transformation</strong></p>
 <p>We have grouped together certain columns from the OD table.
 The following columns belong to CarnegieClassification and are stored in the dimension table in JSON format.
 Hence, the column CarnegieClassification is created with the VARIANT data type.</p>
@@ -672,9 +671,7 @@ Hence, the column CarnegieClassification is created with the VARIANT data type.<
 <li><p>CarnegieClassification2015SizeSetting</p></li>
 </ul>
 </div></blockquote>
-</div>
-<div class="section" id="web-address-transformation">
-<h3>Web address transformation<a class="headerlink" href="#web-address-transformation" title="Permalink to this headline">¶</a></h3>
+<p><strong>Web address transformation</strong></p>
 <p>Similarly, we have grouped together the below columns holding various web addresses under
 the name WebAddress and stored in a JSON format.
 Thus, another VARIANT data type column WebAddress is also created.</p>
@@ -690,7 +687,6 @@ Thus, another VARIANT data type column WebAddress is also created.</p>
 <li><p>DisabilityServicesWebAddress</p></li>
 </ul>
 </div></blockquote>
-</div>
 </div>
 <div class="section" id="load-dimension-table">
 <h2>Load dimension table<a class="headerlink" href="#load-dimension-table" title="Permalink to this headline">¶</a></h2>
@@ -2764,11 +2760,7 @@ We will learn about JSON ingestion in the next chapter.</p>
 <li class="toctree-l2"><a class="reference internal" href="#snowflake-view-and-stored-procedure">Snowflake view and stored procedure</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#managing-metadata-of-the-staged-file">Managing metadata of the staged file</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#stored-procedure-for-od-table-load">Stored procedure for OD table load</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#academic-institution-data-processing">Academic institution data processing</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#carnegie-classification-transformation">Carnegie classification transformation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#web-address-transformation">Web address transformation</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="#academic-institution-data-processing">Academic institution data processing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#load-dimension-table">Load dimension table</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#schema-drift">Schema drift</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#merge-using-the-hash-key">MERGE using the hash key</a></li>
