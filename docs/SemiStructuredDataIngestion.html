@@ -115,7 +115,7 @@ FROM   @IPEDS_CM t
 </pre></div>
 </div>
 <p>We have added a mapping table <strong>CodeDestinationTable</strong> that provides the destination table name for the code.</p>
-<p>The following script will create and load the table called <strong>CodeDestinationTable</strong>.</p>
+<p>The following script will create and load the table called CodeDestinationTable.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Create CodeDestination entity and load data</p>
@@ -174,7 +174,7 @@ FROM   @IPEDS_CM t
 </pre></div>
 </div>
 </div>
-<p>The <strong>CodeDestination</strong> table is used to create the corresponding OD table and
+<p>The CodeDestination table is used to create the corresponding OD table and
 service layer table. Furthermore, it is used for populating data dynamically from the staged file to the OD tables.</p>
 <p>We concatenate ‘<strong>od_</strong>’ to the table name column from the CodeDestination entity.
 In the <strong>pr_od_CodeMapping_Load</strong> stored procedure,
@@ -182,10 +182,10 @@ we check if the corresponding table exists in the Snowflake.
 If the table is there, it is truncated and the staged file data for
 that code is loaded into the specific OD table. If the table is missing, then a new table is added and used
 to load data.</p>
-<p>The combination of the <strong>CodeDestinationTable</strong> table and <strong>&#64;IPEDS_CM</strong> staged file is used to populate multiple operational data stores.
+<p>The combination of the CodeDestinationTable table and &#64;IPEDS_CM staged file is used to populate multiple operational data stores.
 For example, when the code column content has value <strong>stabbr</strong>, then the destination table will be <strong>od_StateAbbreviation</strong>. The
-content of the TableData column from <strong>&#64;IPEDS_CM</strong>, with <strong>$1 = ‘StateAbbreviation’</strong>,
-will be used to populate <strong>od_StateAbbreviation</strong>.</p>
+content of the TableData column from &#64;IPEDS_CM, with <strong>$1 = ‘StateAbbreviation’</strong>,
+will be used to populate od_StateAbbreviation.</p>
 <p>The following script outlines this process.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
