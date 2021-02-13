@@ -51,14 +51,13 @@ solution that makes it possible for organizations to:</p>
 <li><p>Leverage the existing ecosystem of tools to manage, extract transform load (ETL) or extract load transform (ELT) process.</p></li>
 <li><p>Integrate the current business intelligence stack like Tableau, PowerBI, and other open-source tools like D3.js, Plotly seamlessly.</p></li>
 </ul>
-<div class="section" id="snowflake">
-<h2>Snowflake<a class="headerlink" href="#snowflake" title="Permalink to this headline">¶</a></h2>
-<p>Snowflake data warehousing is built with cloud-first architecture. separation of storage and compute is the most
-notable feature built in the core of Snowflake.
+<div class="section" id="snowflake-in-a-nutshell">
+<h2>Snowflake in a nutshell<a class="headerlink" href="#snowflake-in-a-nutshell" title="Permalink to this headline">¶</a></h2>
+<p>Snowflake data warehousing is built with cloud-first architecture.
 Snowflake core is built with separation of storage and compute. Because of this,
 it allows infinite scalability for data storage and compute resources.
-This also enables organizations to execute data load pipelines and creating analytical insights at the same time
-, without competing for resources. Snowflake also provides all the capabilities needed for
+This also enables organizations to execute data load pipelines and create analytical insights at the same time,
+without competing for resources. Snowflake also provides all the capabilities needed for
 enabling data lake, data exchange, data applications, and data engineering.</p>
 <div class="section" id="advantages">
 <h3>Advantages<a class="headerlink" href="#advantages" title="Permalink to this headline">¶</a></h3>
@@ -170,15 +169,69 @@ and does not use virtual warehouse resources. It has its own resources that are 
 </div></blockquote>
 </div>
 </div>
-<div class="section" id="account-creation">
-<h2>Account creation<a class="headerlink" href="#account-creation" title="Permalink to this headline">¶</a></h2>
-<p>First, we need to create an account to access Snowflake. We can create a trial account on the page below.</p>
+<div class="section" id="snowflake-staged-area">
+<h2>Snowflake staged area<a class="headerlink" href="#snowflake-staged-area" title="Permalink to this headline">¶</a></h2>
+<p>Snowflake allows several types of staged file areas. A stage is a temporary storage area in the Snowflake warehouse.</p>
+<p>Snowflake supports external and internal staged files.</p>
+<p>External stages are storage locations outside the Snowflake environment in another cloud storage location.
+It could be Amazon S3 storage, Microsoft Azure Storage, or Google Cloud Storage buckets. This provides greater
+flexibility for accessing the data in Snowflake.</p>
+<div class="line-block">
+<div class="line">The internal stage stores data files within Snowflake. Internal stages can be either permanent or temporary.</div>
+</div>
+<div class="line-block">
+<div class="line">Internal storage is classified into three categories.</div>
+</div>
+<div class="section" id="user-stage">
+<h3>User stage<a class="headerlink" href="#user-stage" title="Permalink to this headline">¶</a></h3>
+<p>Each Snowflake user is attached to the default stage to store the file. The user stage is only accessible by the specific user.</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>put file://D:\Snowflake\sample_file.csv @~/staged;
+</pre></div>
+</div>
+<p>The file will be uploaded to the user stage and a user can verify the same using LIST command.</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>list @~/staged;
+</pre></div>
+</div>
+<p>The user stages are referenced using &#64;~.</p>
+<p>For example, use <strong>list &#64;~</strong> to list the files in a user stage.</p>
+</div>
+<div class="section" id="table-stage">
+<h3>Table stage<a class="headerlink" href="#table-stage" title="Permalink to this headline">¶</a></h3>
+<p>Each table has a Snowflake stage allocated for storing files. Multiple users can access a single table stage area.</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>put file://D:\Snowflake\sample_file.csv @%test;
+</pre></div>
+</div>
+<p>Users can also specify the subfolder within the table stage to upload the files.</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>put file://D:\Snowflake\sample_file.csv @%test/sample_csv/;
+</pre></div>
+</div>
+<p>The table stages are referenced using <strong>&#64;%&lt;tableName&gt;</strong>.</p>
+<p>For example, to list the files in a table stage:</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>list @%test
+</pre></div>
+</div>
+<p>Table stages have the same name as the table. The table stages cannot be altered or dropped.</p>
+<p>Table stages do not support setting file format options. Instead, they specify file format details in the COPY command.</p>
+</div>
+<div class="section" id="internal-named-stage">
+<h3>Internal named stage<a class="headerlink" href="#internal-named-stage" title="Permalink to this headline">¶</a></h3>
+<p>Internal stage is named database objects. It is most recommended for loading. It is available to load
+multiple tables. It is accessible by multiple users. File formats can be specified while creating an internal named stage.</p>
+<p>Internal storage copies data within the Snowflake warehouse as shown below.</p>
+<div class="figure align-center">
+<img alt="images/InternalStorage.jpg" src="images/InternalStorage.jpg" />
+</div>
+</div>
+</div>
+<div class="section" id="enviornment-setup">
+<h2>Enviornment setup<a class="headerlink" href="#enviornment-setup" title="Permalink to this headline">¶</a></h2>
+<p>First, we need to create the Snowflake account using URL <a class="reference external" href="https://signup.snowflake.com/">https://signup.snowflake.com/</a>.</p>
 <div class="figure align-center">
 <img alt="images/SnowflakeSubscription.jpg" src="images/SnowflakeSubscription.jpg" />
 </div>
-<p>Snowflake adds a primary sample data set for this account.
-We can login into the Snowflake with newly created account.</p>
-<p>Once we logged in, we see Snowflake view as shown below.</p>
+<p>Snowflake adds a primary sample dataset for this account.
+We can login into the Snowflake with the newly created account.</p>
+<p>Once logged in, we land in the Snowflake account home page setup as shown below.</p>
 <div class="figure align-center">
 <img alt="images/Snowflakepane.jpg" src="images/Snowflakepane.jpg" />
 </div>
@@ -249,60 +302,6 @@ Password:<span class="gs">*****</span>*
 We also connected to the Snowflake account from our desktop using SnowSQL CLI. We are ready to work on our project.</p>
 </div>
 </div>
-<div class="section" id="snowflake-staged-area">
-<h2>Snowflake staged area<a class="headerlink" href="#snowflake-staged-area" title="Permalink to this headline">¶</a></h2>
-<p>Snowflake allows several types of staged file areas. A stage is a temporary storage area in the Snowflake warehouse.</p>
-<p>Snowflake supports external and internal staged files.</p>
-<p>External stages are storage locations outside the Snowflake environment in another cloud storage location.
-It could be Amazon S3 storage, Microsoft Azure Storage, or Google Cloud Storage buckets. This provides greater
-flexibility for accessing the data in Snowflake.</p>
-<div class="line-block">
-<div class="line">The internal stage stores data files within Snowflake. Internal stages can be either permanent or temporary.</div>
-</div>
-<div class="line-block">
-<div class="line">Internal storage is classified into three categories.</div>
-</div>
-<div class="section" id="user-stage">
-<h3>User stage<a class="headerlink" href="#user-stage" title="Permalink to this headline">¶</a></h3>
-<p>Each Snowflake user is attached to the default stage to store the file. The user stage is only accessible by the specific user.</p>
-<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>put file://D:\Snowflake\sample_file.csv @~/staged;
-</pre></div>
-</div>
-<p>The file will be uploaded to the user stage and a user can verify the same using LIST command.</p>
-<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>list @~/staged;
-</pre></div>
-</div>
-<p>The user stages are referenced using &#64;~.</p>
-<p>For example, use <strong>list &#64;~</strong> to list the files in a user stage.</p>
-</div>
-<div class="section" id="table-stage">
-<h3>Table stage<a class="headerlink" href="#table-stage" title="Permalink to this headline">¶</a></h3>
-<p>Each table has a Snowflake stage allocated for storing files. Multiple users can access a single table stage area.</p>
-<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>put file://D:\Snowflake\sample_file.csv @%test;
-</pre></div>
-</div>
-<p>Users can also specify the subfolder within the table stage to upload the files.</p>
-<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>put file://D:\Snowflake\sample_file.csv @%test/sample_csv/;
-</pre></div>
-</div>
-<p>The table stages are referenced using <strong>&#64;%&lt;tableName&gt;</strong>.</p>
-<p>For example, to list the files in a table stage:</p>
-<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>list @%test
-</pre></div>
-</div>
-<p>Table stages have the same name as the table. The table stages cannot be altered or dropped.</p>
-<p>Table stages do not support setting file format options. Instead, they specify file format details in the COPY command.</p>
-</div>
-<div class="section" id="internal-named-stage">
-<h3>Internal named stage<a class="headerlink" href="#internal-named-stage" title="Permalink to this headline">¶</a></h3>
-<p>Internal stage is named database objects. It is most recommended for loading. It is available to load
-multiple tables. It is accessible by multiple users. File formats can be specified while creating an internal named stage.</p>
-<p>Internal storage copies data within the Snowflake warehouse as shown below.</p>
-<div class="figure align-center">
-<img alt="images/InternalStorage.jpg" src="images/InternalStorage.jpg" />
-</div>
-</div>
-</div>
 <div class="section" id="summary">
 <h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
 <p>This chapter has covered Snowflake architectural components, data features, and the various tools used in data loading.
@@ -349,7 +348,7 @@ Snowflake using the user stage, table stage, and internal named stage database o
 <li class="toctree-l1"><a class="reference internal" href="Preface.html">Preface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Introduction.html">Introduction</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Introducing Snowflake</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#snowflake">Snowflake</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#snowflake-in-a-nutshell">Snowflake in a nutshell</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#advantages">Advantages</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#architecture">Architecture</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#connectivity">Connectivity</a></li>
@@ -363,14 +362,14 @@ Snowflake using the user stage, table stage, and internal named stage database o
 <li class="toctree-l3"><a class="reference internal" href="#snowpipe">Snowpipe</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#account-creation">Account creation</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#snowflake-cli">Snowflake CLI</a></li>
-</ul>
-</li>
 <li class="toctree-l2"><a class="reference internal" href="#snowflake-staged-area">Snowflake staged area</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#user-stage">User stage</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#table-stage">Table stage</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#internal-named-stage">Internal named stage</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#enviornment-setup">Enviornment setup</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#snowflake-cli">Snowflake CLI</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#summary">Summary</a></li>
