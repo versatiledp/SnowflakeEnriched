@@ -349,7 +349,7 @@ In Snowflake, stored procedures are similar to functions, and can be executed mu
 <li><p>Check the results of snowflake.execute call.</p></li>
 </ul>
 </div></blockquote>
-<p>A storedprocedure is created with a CREATE PROCEDURE command and executed with a CALL command.</p>
+<p>A storedprocedure is created with a <strong>CREATE PROCEDURE</strong> command and executed with a <strong>CALL</strong> command.</p>
 <p>We have created a process to load the OD table od_AcademicInstitution data from the view,
 one year of data at a time. For this purpose, we have created a stored procedure
 <strong>pr_od_AcademicInstitution_Load</strong>. This stored procedure takes a parameter
@@ -1204,7 +1204,7 @@ changes in the input files generated from the source system.</p>
 </div></blockquote>
 <p>Also, there are some changes in the position of a few existing columns in the file.</p>
 <p>Our goal is to process both old and new files using the same process to load od_AcademicInstitution.
-We have added the new columns to the OD table using ALTER TABLE as below.</p>
+We have added the new columns to the OD table using <strong>ALTER TABLE</strong> as below.</p>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ALTER</span> <span class="n">TABLE</span>  <span class="n">od_AcademicInstitution</span>
 <span class="n">ADD</span> <span class="p">(</span>
 <span class="n">CarnegieClassification2018Basic</span> <span class="n">INTEGER</span><span class="p">,</span>
@@ -1418,7 +1418,7 @@ WHERE
 <p>Data attributes associated with Carnegie classification are grouped
 into JSON object and stored in the servicing layer.
 Servicing layer entity has a column with data type VARIANT to store this JSON object. When additional attributes
-are added/dropped in the input file, we only need to change JSON OBJECT_CONSTRUCT function to pass in additional
+are added/dropped in the input file, we only need to change JSON <strong>OBJECT_CONSTRUCT</strong> function to pass in additional
 attributes. There is no schema change needed in the servicing layer.</p>
 <p>Stored procedure pr_od_AcademicInstitution_Load is updated to accommodate
 structural changes in source files from 2018 onwards.</p>
