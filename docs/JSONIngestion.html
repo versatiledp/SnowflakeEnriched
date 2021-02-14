@@ -48,7 +48,7 @@
 </ul>
 </div></blockquote>
 <p>Snowflake allows loading JSON data directly into relational tables. We can query this
-data with SQL and join it to other data without having to do any transformations.
+data with SQL and join it to other data without doing any transformations.
 At load time, Snowflake parses the JSON based on the key-value pairs.
 Structural information is derived based on the schema definition embedded in
 JSON string at reading time (Schema-on-Read).</p>
@@ -517,7 +517,8 @@ for that year and then re-inserts them to Enrollment from that year’s od_Enrol
 To do so, we read the imputation column to obtain the total number of imputed and reported variable counts,
 which we store in <strong>VariablesReportedCount</strong> and  <strong>VariablesImputedCount</strong>.
 Then, we calculate their percentages and store them in <strong>ImputationVarPercent</strong> and <strong>ReportedVarPercent</strong>, respectively.</p>
-<p>Stored procedure pr_Enrollment_Load executes multiple SQL statements.</p>
+<p>The stored procedure script for pr_Enrollment_Load is available below.
+The data transformation needed to get ImputationVarPercent and ReportedVarPercent is performed in the same stored procedure.</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>The procedure is defined with argument.</p></li>
@@ -530,8 +531,6 @@ Then, we calculate their percentages and store them in <strong>ImputationVarPerc
 <li><p>Check the results on each call of snowflake.execute.</p></li>
 </ul>
 </div></blockquote>
-<p>The stored procedure script for pr_Enrollment_Load is available below.
-The data transformation needed to get ImputationVarPercent and ReportedVarPercent is performed in the same stored procedure.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Create Enrollment entity load stored procedure</p>

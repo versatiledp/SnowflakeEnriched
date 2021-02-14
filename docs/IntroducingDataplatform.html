@@ -158,11 +158,11 @@ that are named properly with business centeric column names, and correct data ty
 <ul class="simple">
 <li><p>Standardising all date formats and time zones.</p></li>
 <li><p>Rounding numbers.</p></li>
-<li><p>Cleaning strings, character data.</p></li>
+<li><p>Cleaning strings and character data.</p></li>
 <li><p>Standardising data to be of the same format.</p></li>
-<li><p>Splitting data out into multiple columns</p></li>
-<li><p>Extracting data from JSON</p></li>
-<li><p>Combining data from multiple columns to Single JSON objects</p></li>
+<li><p>Splitting data out into multiple columns.</p></li>
+<li><p>Extracting data from JSON.</p></li>
+<li><p>Combining data from multiple columns to Single JSON objects.</p></li>
 </ul>
 <p>The diagram below shows the data flow process between files and the final destination in Snowflake.</p>
 <div class="figure align-center">
@@ -178,7 +178,7 @@ service layer entities.</p>
 <p>Data engineering consists of creating transformations, performing metadata management, and
 keeping track of data pipelines. So, access should be
 granted to all layers of the data platform.</p>
-<p>In this book after staging load, all data processing and transformation is performed using stored procedures.</p>
+<p>For this project in the book, after staging files all data processing and transformation is performed using stored procedures.</p>
 </div>
 </div>
 <div class="section" id="source-data-files">
@@ -199,13 +199,13 @@ published tuition and required fees, books and supplies, room and board, and oth
 <p>These files contain information about the undergraduate selection process
 for first-time, degree/certificate-seeking prospective students.</p>
 <p><strong>Code mapping data</strong></p>
-<p>These files contain data for lookup tables. These tables will be used as refernce entities, to get
-descriptive details for the codes, example institute type description for given institute type code,
+<p>These files contain data for lookup tables. These tables will be used as reference entities to get
+descriptive details for the codes example institute type description for given institute type code,
 state name given state code, etc..</p>
 <p>These files are coming to the data platform in the format like CSV, JSON, ORC, Parquet, and Multi-format.</p>
 <div class="section" id="academic-institution-hdr">
 <h3>Academic institution [HDR]<a class="headerlink" href="#academic-institution-hdr" title="Permalink to this headline">¶</a></h3>
-<p>These are available in CSV format at the source system.
+<p>These files are available in CSV format at the source system.
 The institutional characteristics header files are directly ingested into
 Snowflake staging from the source system. The following diagram displays
 data flow between the source system and the Snowflake destination.</p>
@@ -217,15 +217,13 @@ The OD layer is used to process data for the destination layer with additional t
 </div>
 <div class="section" id="enrollment-12-month-effy">
 <h3>Enrollment 12-Month [EFFY]<a class="headerlink" href="#enrollment-12-month-effy" title="Permalink to this headline">¶</a></h3>
-<p>EFFY files data is in JSON format. JSON is a common open standard file and data interchange format that uses human-readable text to store and transmit data objects consisting of attribute-value pairs and array data types. This data format is used in a diverse range of applications and serves as a replacement for XML in AJAX systems.
+<p>EFFY data files are in JSON format. JSON is a common open standard file and data interchange format that uses human-readable text to store and transmit data objects consisting of attribute-value pairs and array data types. This data format is used in a diverse range of applications and serves as a replacement for XML in AJAX systems.
 In our use-case, we are ingesting enrollment (EFFY) files in the JSON format directly to Snowflake.
 The following diagram displays the data ingestion architecture for JSON files.</p>
 <div class="figure align-center">
 <img alt="images/jsonIngestion.jpg" src="images/jsonIngestion.jpg" />
 </div>
-<p>To create JSON file for simulation in this book,
-we are using python program. Python code converted CSV files from IPEDS universe to
-JSON format.</p>
+<p>In this book, we utilised Python programming to create JSON file used for simulation. Python code is used to convert CSV files from IPEDS universe to JSON format.</p>
 <p>We convert JSON data into relational table structure in OD tables of Snowflake transformation.
 OD layer is used to process data for the destination layer with additional transformation.</p>
 </div>
@@ -240,10 +238,10 @@ major Hadoop implementations.</p>
 </div>
 <p>Data from different source systems are brought to Hadoop enviornment for big data processing. We would use ORC files
 coming out of Hadoop and ingest into Snowflake.</p>
-<p>To create ORC file for simulation in this book,
-we have second python convertor. This python code migrated CSV files from IPEDS universe to
+<p>To create ORC file for simulation in this book, we have used second python convertor.
+This python code migrated CSV files from IPEDS universe to
 ORC format.</p>
-<p>We convert ORC data into relational table structure in OD tables of Snowflake transformation.
+<p>ORC data is converted into relational table structure in OD tables of Snowflake transformation.
 OD layer is used to process data for the destination layer with additional transformation.</p>
 </div>
 <div class="section" id="admissions-and-test-scores-adm">
@@ -466,7 +464,7 @@ we can check their availability in the internal stage area by executing the code
 <div class="figure align-center">
 <img alt="images/csvOther.JPG" src="images/csvOther.JPG" />
 </div>
-<p>Terminate the current session.</p>
+<p>Terminate the current session as shown below.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>!exit
 </pre></div>
 </div>

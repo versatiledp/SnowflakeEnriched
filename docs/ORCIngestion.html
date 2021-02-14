@@ -200,11 +200,11 @@ player in that season. So, <em>GoalsStatistics</em> can contain one or more reco
 </pre></div>
 </div>
 <p>Similarly, <em>Division</em> is an array object that contains another array
-of objects inside each array. So division name and an array of seasons
+of objects inside each array: the division name and an array of seasons
 the player played for that division. For example, the player has
 played for 2 divisions <em>Premier League</em> and <em>Championship</em>.
-For <em>Premier League</em> he has played four seasons 2014-15, 2015-16, 2017-18,
-2018-19, and 2019-20. And for <em>Championship</em> he has played in 2016-17.</p>
+For <em>Premier League</em> he has played five seasons 2014-15, 2015-16, 2017-18,
+2018-19, and 2019-20. And for <em>Championship</em> he has played during 2016-17.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>&quot;Division&quot;:[
         {&quot;Name&quot;:&quot;Premier League&quot;,
         &quot;Season&quot;:[
@@ -232,7 +232,7 @@ CREATE OR REPLACE stage FooballStg file_format = JSONFORMAT;
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>put file://c:\test\data\fpl-book.json @FooballStg auto_compress=true;
 </pre></div>
 </div>
-<p>List out the player name and their club</p>
+<p>List out the player names and their club</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT S.$1:Name, S.$1:Club
 FROM @FooballStg as S;
 </pre></div>
@@ -280,7 +280,7 @@ FROM S_PLAYERS;
 </div>
 <p>LATERAL FLATTEN() is used to extract an array from JSON data.
 The query below uses LATERAL FLATTEN() to take the items in the list from
-<em>PLAYER_DATA</em>: GoalsStatistics and make them their own dataset.
+<em>PLAYER_DATA</em>: <em>GoalsStatistics</em> and make them their own dataset.
 INPUT, VALUE, INDEX are reserved keywords.
 It is important to give alias <em>GoalsStat</em> to flatten results.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT
@@ -312,8 +312,8 @@ FROM S_PLAYERS,
 <img alt="images/latteralflatten3.jpg" src="images/latteralflatten3.jpg" />
 </div>
 <p>We are joining <em>Division</em> with <em>Season</em> using LATERAL FLATTEN and a left OUTER join.
-The second FLATTEN clause is used to flatten the Season array within the flattened
-Division array and retrieve the <em>Season</em> played by each <em>Division</em>.
+The second FLATTEN clause is used to flatten the <em>Season</em> array within the flattened
+<em>Division</em> array and retrieve the <em>Season</em> played by each <em>Division</em>.
 PARSE_JSON is used to create a JSON VARIANT out of the <em>Division</em> and <em>Season</em>
 arrays joined using a <strong>LEFT OUTER</strong> join.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT
@@ -1964,7 +1964,7 @@ information for complete course work like year-0-tuition, year-1-tuition, etc.</
 </div>
 </div>
 <p><strong>Institutional charge by category</strong></p>
-<p>The view <strong>v_od_InstitutionalChargeByCategory</strong> provides granular details about expenses on books, supplies, rent, food, and other expenditures during college education. The logic to build it is very similar
+<p>The view <strong>v_od_InstitutionalChargeByCategory</strong> provides granular details about expenses on books, supplies, rent, food, and other expenditures during college education. The logic to build this view is very similar
 to v_od_InstitutionalChargeByResidencyType and v_od_InstitutionalChargeByAcademicBranch.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
@@ -2542,8 +2542,8 @@ $$
 <blockquote>
 <div><ul class="simple">
 <li><p>v_od_InstitutionalChargeByAcademicBranch</p></li>
-<li><p>v_od_InstitutionalChargeByCategory</p></li>
 <li><p>v_od_InstitutionalChargeByResidencyType</p></li>
+<li><p>v_od_InstitutionalChargeByCategory</p></li>
 </ul>
 </div></blockquote>
 <div class="toggle docutils container">

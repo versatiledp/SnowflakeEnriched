@@ -152,7 +152,7 @@ the same capabilities as the Snowflake UI.</p>
 It can load data in a near real-time manner. It also allows for the processing of data in micro-batches.
 Micro-batch processing is very similar to traditional batch processing in that data is usually processed as a group.
 Snowpipe is a serverless architecture
-and does not use virtual warehouse resources. It has its own resources that are managed by Snowflakes instances.</p>
+and does not use virtual warehouse resources. It has its own resources that are managed by Snowflake instances.</p>
 <p>Snowpipe makes REST API available to load data from:</p>
 <blockquote>
 <div><ul class="simple">
@@ -164,9 +164,9 @@ and does not use virtual warehouse resources. It has its own resources that are 
 </div></blockquote>
 </div>
 </div>
-<div class="section" id="enviornment-setup">
-<h2>Enviornment setup<a class="headerlink" href="#enviornment-setup" title="Permalink to this headline">¶</a></h2>
-<p>First, we need to create the Snowflake account using URL <a class="reference external" href="https://signup.snowflake.com/">https://signup.snowflake.com/</a>.</p>
+<div class="section" id="environment-setup">
+<h2>Environment setup<a class="headerlink" href="#environment-setup" title="Permalink to this headline">¶</a></h2>
+<p>First, we need to create the Snowflake account using URL <a class="reference external" href="https://signup.snowflake.com/" target="_blank" >https://signup.snowflake.com/</a>.</p>
 <div class="figure align-center">
 <img alt="images/SnowflakeSubscription.JPG" src="images/SnowflakeSubscription.JPG" />
 </div>
@@ -185,8 +185,8 @@ Results of the query execution are rendered in the result pane.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>CREATE DATABASE IPEDS;
 </pre></div>
 </div>
-<p>New database is added to the collection of databases in the Snowflake.
-The IPEDS database appears in the existing collection of databases.
+<p>New database is added.
+The IPEDS database appears in the existing collection of Snowflake databases.
 Throughout this book IPEDS database is used for data ingestion, transformation, and consumption.
 Before running any SQL commands from this book, always use the newly created database.</p>
 <p>The following command can be executed to change the context of the current
@@ -290,8 +290,8 @@ Table stages do not support setting file format options.</p>
 </div>
 <div class="section" id="internal-named-stage">
 <h3>Internal named stage<a class="headerlink" href="#internal-named-stage" title="Permalink to this headline">¶</a></h3>
-<p>Internal stage is named database objects. It is most recommended for loading. It is available to load
-multiple tables. It is accessible by multiple users. File formats can be specified while creating an internal named stage.</p>
+<p>Internal stage is named database objects. This stage is most recommended for loading. It is available to load
+multiple tables. Multiple users have access to the internal named stage. File formats can be specified while creating an internal named stage.</p>
 <p>Internal storage copies data within the Snowflake warehouse as shown below.</p>
 <div class="figure align-center">
 <img alt="images/InternalStorage.jpg" src="images/InternalStorage.jpg" />
@@ -302,10 +302,10 @@ multiple tables. It is accessible by multiple users. File formats can be specifi
 <h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
 <p>This chapter has covered Snowflake architectural components, data features, and the various tools used in data loading.
 Multiple ways of connecting to Snowflake services alongside learning about the supported data formats
-are outlined in this chapter. We also created snowflake account, connected to database, and executed our first set of qeries.
+are outlined in this chapter. We also created Snowflake account, connected to database, and executed our first set of queries.
 It also summarized various methods for loading files into
 Snowflake using the user stage, table stage, and internal named stage database objects.</p>
-<p>In the next chapter, we will cover modern-day data platforms, data formats, and input datasets used throughout this book.</p>
+<p>In the next chapter, we will cover modern-day data platforms, data formats, and input datasets used throughout this book.</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 33%" />
@@ -358,7 +358,7 @@ Snowflake using the user stage, table stage, and internal named stage database o
 <li class="toctree-l3"><a class="reference internal" href="#snowpipe">Snowpipe</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#enviornment-setup">Enviornment setup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#environment-setup">Environment setup</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#snowflake-cli">Snowflake CLI</a></li>
 </ul>
 </li>

@@ -39,16 +39,13 @@
             
   <div class="section" id="multi-format-ingestion">
 <h1>Multi-format ingestion<a class="headerlink" href="#multi-format-ingestion" title="Permalink to this headline">¶</a></h1>
-<p>Transactional system generates data into a variety of layouts like undefined formats and
-variable blocked files.
-Undefined format consists of records and blocks with no predefined single structure.
-Variable blocked format places several variable-length records with an additional block descriptor.</p>
-<p>In our case,
-a single lookup file generated from the source system contains data for
-multiple entities. Based on the first attribute in the file, we
-can derive the name of an underlying entity. By definition, semi-structured data is the information that does not reside in
-a relational database. But, it has some properties that make it easier to analyze.
-With some additional transformation logic, we can store them in the relation database.</p>
+<p>Transactional system generates data into a variety of layouts like undefined formats and variable blocked files. Undefined format consists of records and blocks with no predefined single structure. Variable blocked format places several variable-length records with an additional block descriptor.</p>
+<p>In our case,
+a single lookup file generated from the source system contains data for
+multiple entities. Based on the first attribute in the file, we
+can derive the name of an underlying entity. By definition, semi-structured data is the information that does not reside in
+a relational database. But, it has some properties that make it easier to analyze.
+With some additional transformation logic, we can store them in the relation database.</p>
 <p>Data for multiple entities listed below is available in a single file.</p>
 <blockquote>
 <div><ul class="simple">
@@ -102,7 +99,7 @@ separated by an <strong>‘=’</strong> sign.</p>
 The StateAbbrevation table should be loaded with two attributes: code and description.
 The attribute values for the first row are <strong>‘AL’</strong> and <strong>‘Alabama’</strong>.
 Similarly, AccountStatus should be loaded with the values <strong>‘A’</strong> and <strong>‘Active - institution active’</strong>
-, <strong>‘N’</strong> and <strong>’New (active) - added during the current year’</strong> etc..</p>
+, <strong>N</strong> and <strong>‘New (active) - added during the current year’</strong> etc..</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p><em>Please refer to the section ‘Load the files to the internal stage for IPEDS’ in the chapter ‘Introducing data platform’ for creating staged files</em>.</p>
