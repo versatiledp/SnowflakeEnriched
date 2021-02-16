@@ -95,8 +95,8 @@ We used :: to cast to a INTEGER data type.
 </pre></div>
 </div>
 <p>We have ingested JSON formatted enrollment data into staged file &#64;IPEDS_EFFY.
-The following SQL shows the content of JSON VARIANT converted to subcolumns with proper data type casting.
-These subcolumns dataset will be used to populate the operational data store.</p>
+The following SQL shows the content of JSON VARIANT converted to sub-columns with proper data type casting.
+These sub-columns dataset will be used to populate the operational data store.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Select from Staged file JSON data script</p>
@@ -446,7 +446,7 @@ $$;
 <p>We have created a table for <strong>Enrollment</strong> in the servicing layer. The
 Enrollment table has links to the
 dimension table <strong>AcademicInstitution</strong>. The relationship represents the star schema of
-dimensional modeling architecture. This is made possible by
+dimensional modelling architecture. This is made possible by
 adding the surrogate key column (<strong>AcademicInstitutionUniqueDWSID</strong>)
 of the dimension table AcademicInstitution to the fact table Enrollment.
 Here is the script for creating the table Enrollment.</p>
@@ -525,7 +525,7 @@ The data transformation needed to get ImputationVarPercent and ReportedVarPercen
 <li><p>Runtime language is defined as javascript.</p></li>
 <li><p>The Procedure returns a string.</p></li>
 <li><p>Multiple JavaScript variables are used.</p></li>
-<li><p>Single sql command/text is assigned to one JavaScript variable.</p></li>
+<li><p>Single SQL command/text is assigned to one JavaScript variable.</p></li>
 <li><p>These variables are combined into a string array.</p></li>
 <li><p>For loop is used to execute all SQL commands by calling <strong>snowflake.execute</strong> and passing the javascript variable.</p></li>
 <li><p>Check the results on each call of snowflake.execute.</p></li>

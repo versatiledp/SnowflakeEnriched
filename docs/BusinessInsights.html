@@ -61,7 +61,7 @@ The following diagram shows the relationship between different entities we have 
 <li><p>Tuition cost details by various public colleges.</p></li>
 </ul>
 <p>In this book, all the business insights are generated using <strong>Google Colab</strong>, which provides a Jupyter notebook environment.
-Launch the Colab using URL <a class="reference external" href="https://colab.research.google.com/notebooks/intro.ipynb#recent=true">https://colab.research.google.com/notebooks/intro.ipynb#recent=true</a>.
+Launch the Colab using URL <a class="reference external" href="https://colab.research.google.com/notebooks/intro.ipynb#recent=true"  target="_blank" >https://colab.research.google.com/notebooks/intro.ipynb#recent=true</a>.
 Colab opens with launch pad as shown below. Click on the <strong>New Notebook</strong> and we are ready to start writing our first notebook code.</p>
 <div class="figure align-center">
 <img alt="images/colab.JPG" src="images/colab.JPG" />
@@ -448,6 +448,16 @@ Enter Snowflake password··········
 <h2>Enrollment by geo location<a class="headerlink" href="#enrollment-by-geo-location" title="Permalink to this headline">¶</a></h2>
 <p>In this visual, we are presenting total enrollment and percentage by state.
 Enrollment percentage is calculated dividing state-level enrollment by national enrollment.</p>
+<p>Steps:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Join the <strong>AcademicInstitution</strong> and <strong>Enrollment</strong> to get sum annual enrollment by State.</p></li>
+<li><p>Use the <strong>RATIO_TO_REPORT</strong> function to calculate ratio of a value within a group.</p></li>
+<li><p>calculate enrollment ratio within academic year by applying RATIO_TO_REPORT function.</p></li>
+<li><p>Allow user to choose academic year.</p></li>
+<li><p>Display dataset using Plotly grpah functions for selected year.</p></li>
+</ul>
+</div></blockquote>
 <p>Output:</p>
 <div class="figure align-center">
 <img alt="images/BusinessInsights02.JPG" src="images/BusinessInsights02.JPG" />

@@ -342,14 +342,14 @@ In Snowflake, stored procedures are similar to functions, and can be executed mu
 <blockquote>
 <div><ul class="simple">
 <li><p>The procedure is defined with argument.</p></li>
-<li><p>Runtime language is defined as javascript.</p></li>
+<li><p>Runtime language is defined as JavaScript.</p></li>
 <li><p>The Procedure returns a string.</p></li>
 <li><p>SQL code (text) is stored in JavaScript variable.</p></li>
-<li><p>Call <strong>snowflake.execute</strong> and pass the javascript variable that contains SQL script.</p></li>
+<li><p>Call <strong>snowflake.execute</strong> and pass the JavaScript variable that contains SQL script.</p></li>
 <li><p>Check the results of snowflake.execute call.</p></li>
 </ul>
 </div></blockquote>
-<p>A storedprocedure is created with a <strong>CREATE PROCEDURE</strong> command and executed with a <strong>CALL</strong> command.</p>
+<p>A stored procedure is created with a <strong>CREATE PROCEDURE</strong> command and executed with a <strong>CALL</strong> command.</p>
 <p>We have created a process to load the OD table od_AcademicInstitution data from the view,
 one year of data at a time. For this purpose, we have created a stored procedure
 <strong>pr_od_AcademicInstitution_Load</strong>. This stored procedure takes a parameter
@@ -558,7 +558,7 @@ CALL pr_od_AcademicInstitution_Load(2017::FLOAT);
 <p>Using the academic institution files, we have built a dimension table called <strong>AcademicInstitution</strong>.
 This dimension table will be used by fact tables at the servicing layer in forthcoming chapters.</p>
 <p>In general, a dimension table contains keys, columns, and other attributes that are associated with the business key.
-A system-generated key (primary key) is used to uniquely identify a row in the dimension and it is also known as a surrogate key. In a dimensional data warehouse architecture,
+A system-generated key (primary key) is used to uniquely identify a row in the dimension and it is also known as a surrogate key. In dimensional data warehouse architecture,
 the surrogate key is placed in the fact table and a foreign key is defined to establish the relationship between the two tables.</p>
 <p>In the case of the dimension table AcademicInstitution, we have defined the
 column <strong>AcademicInstitutionUniqueDWSID</strong> as the primary key.
@@ -571,7 +571,7 @@ The automatic sequencing is achieved in Snowflake by defining <strong>SEQUENCE</
 </div>
 <p>Snowflake stores JSON objects as VARIANT data type.
 VARIANT allows semi-structured data to be loaded. Snowflake automatically discovers the attributes,
-keys, and the structure that exists in the JSON document from VARIANT datatype. We can also add statistics that enable optimization.
+keys, and the structure that exists in the JSON document from VARIANT data type. We can also add statistics that enable optimization.
 Snowflake enables to reverse-engineer a JSON document from relational data.
 <strong>OBJECT_CONSTRUCT</strong> returns a VARIANT object, a JSON document as an output.</p>
 <p>The following Snowflake SQL script is used for creating the AcademicInstitution dimension.</p>

@@ -112,6 +112,31 @@ It supports JSON to a great extent, and furthermore:</p>
 <li><p>Enables time travel functions to query the history of data changes over a period of time.</p></li>
 </ul>
 </div>
+<div class="section" id="data-sharing">
+<h3>Data sharing<a class="headerlink" href="#data-sharing" title="Permalink to this headline">¶</a></h3>
+<p>Snowflake data sharing is a powerful, simple feature to share
+the data from one account and to another account.
+The data producer can provide access to the live data without copying
+or moving the data. The data consumer can query the shared data from
+the producer without any performance bottlenecks because of multi-cluster shared data architecture.</p>
+</div>
+<div class="section" id="security">
+<h3>Security<a class="headerlink" href="#security" title="Permalink to this headline">¶</a></h3>
+<p>Snowflake provides out-of-the-box network access control via network policies,
+allowing to restrict account access to specific IP addresses.
+Snowflake offers Role Based Access Control. Users can be
+defined in the Snowflake as well as external identity providers
+such as Active Directory and Okta. External identities allow federation of user management.
+We can set the privileges to specific roles. These roles are assigned to the users.</p>
+</div>
+<div class="section" id="time-travel">
+<h3>Time travel<a class="headerlink" href="#time-travel" title="Permalink to this headline">¶</a></h3>
+<p>The time travel feature allows querying the histrocail data of a table.
+If we delete or update data rows, we can retrieve the status of the
+table at point in time before we executed that statement.
+The time travel is applied by default on all tables in Snowflake
+for 1 day and can be configured for 90 days.</p>
+</div>
 <div class="section" id="connectivity">
 <h3>Connectivity<a class="headerlink" href="#connectivity" title="Permalink to this headline">¶</a></h3>
 <p>Snowflake provides a few different methods to create database connectivity:</p>
@@ -349,6 +374,9 @@ Snowflake using the user stage, table stage, and internal named stage database o
 <li class="toctree-l3"><a class="reference internal" href="#virtual-warehouse">Virtual warehouse</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#advantages">Advantages</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#data-features">Data features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#data-sharing">Data sharing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#security">Security</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#time-travel">Time travel</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#connectivity">Connectivity</a></li>
 </ul>
 </li>

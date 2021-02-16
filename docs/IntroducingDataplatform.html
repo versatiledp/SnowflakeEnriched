@@ -59,7 +59,9 @@ profitability.</p>
 </div>
 <div class="section" id="data-source-layer">
 <h3>Data source layer<a class="headerlink" href="#data-source-layer" title="Permalink to this headline">¶</a></h3>
-<p>Data sources can be inside or outside the enterprise. Data sources generate data in real-time and in batch mode.
+<p>Data source layer receives data from various sources.
+Each source can be either internal or external to an organization
+and generates data in real-time or in batch mode.
 The <strong>variety</strong> of data formats can be structured, semi-structured, or unstructured.
 The <strong>velocity</strong> (speed of arrival) and <strong>volume</strong> (delivery amount) will differ by source.</p>
 </div>
@@ -69,7 +71,7 @@ The <strong>velocity</strong> (speed of arrival) and <strong>volume</strong> (de
 format for the data servicing and analytics tool, and stores the
 data. For example, large amounts of data are
 stored in the Hadoop distributed file system store (HDFS). Large data
-processing is performed through Hadoop/Spark system. Data may
+processing is performed through Hadoop/Spark systems. Data may
 undergo format changes as it is processed through these systems. Cloud
 service providers like Amazon, Google, and Microsoft allows to build and
 operate data-centric applications on an infinite scale. Robust and
@@ -99,86 +101,28 @@ business processes.</p>
 </div>
 <div class="section" id="project-data-source">
 <h2>Project data source<a class="headerlink" href="#project-data-source" title="Permalink to this headline">¶</a></h2>
-<p>This book is designed to use data from the Institute of Education Sciences (IES) and build analytics echo system using this data.
-The IES <a class="reference external" href="https://ies.ed.gov"  target="_blank">https://ies.ed.gov</a>  is the statistics, research, and evaluation arm of the U.S. Department
-of Education. It is an independent and non-partisan organization.
-The IES mission is to provide scientific evidence on which to ground education, practice, and policy,
-and to share this evidence in formats useful and accessible to educators,
-parents, policymakers, researchers, and the public.</p>
-<p>All of the data used in this book is downloaded from <a class="reference external" href="https://nces.ed.gov/ipeds/use-the-data"   target="_blank">https://nces.ed.gov/ipeds/use-the-data</a>.</p>
+<p>This book is designed to use data from the Integrated Postsecondary Education Data System (IPEDS)
+and build analytics echo system using this data.</p>
+<p>The National Center for Education Statistics (NCES) is the primary federal entity for collecting
+and analyzing data related to education in the U.S. and other nations.
+NCES is located within the U.S. Department of Education and the Institute of Education Sciences.
+NCES fulfills a Congressional mandate to collect, collate, analyze, and report complete statistics
+on the condition of American education; conduct and publish reports; and review and report on
+education activities internationally. The Integrated Postsecondary Education Data System (IPEDS),
+established as the core postsecondary education data collection program for NCES.
+IPEDS  <a class="reference external" href="https://nces.ed.gov/ipeds"  target="_blank">https://nces.ed.gov/ipeds</a>
+is the primary source for information on U.S. Colleges,
+universities, technical institutions, and vocational institutions.</p>
 <div class="figure align-center">
 <img alt="images/IPEDSScreenShot.png" src="images/IPEDSScreenShot.png" />
 </div>
-<p>The Integrated Postsecondary Education Data System (IPEDS) <a class="reference external" href="https://nces.ed.gov/ipeds"  target="_blank">https://nces.ed.gov/ipeds</a>
-is the primary source provided by the IES containing information on U.S. Colleges, universities, technical institutions, and vocational institutions.</p>
-<p>In this project, we seek to:</p>
-<ul class="simple">
-<li><p>Ingest variety of data formats.</p></li>
-<li><p>Transform data for business users.</p></li>
-<li><p>Build a data pipeline to process data on a periodic basis.</p></li>
-<li><p>Create descriptive analytics for use-cases laid out by businesses.</p></li>
-</ul>
+<p>All of the data used in this book is downloaded from <a class="reference external" href="https://nces.ed.gov/ipeds/use-the-data"   target="_blank">https://nces.ed.gov/ipeds/use-the-data</a>.</p>
 <p>Data is downloaded for the three academic years (2017, 2018, and 2019).</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p><em>Disclaimer: We have modified this data to explore Snowflake functionality. Therefore, analytics results from this book
 should not be used as a replacement for the original data and its results.
 Please refer to the IES website for actual statistics and research on academic institutions.</em></p>
-</div>
-<p>For the project in this book, we will be using Snowflake staged files, transient tables, and master tables.</p>
-<div class="section" id="staged-file">
-<h3>Staged file<a class="headerlink" href="#staged-file" title="Permalink to this headline">¶</a></h3>
-<p>All the data from the source system will be brought into the internal staged file location of Snowflake.
-This data is directly from transactional systems or existing big data platforms,
-with no transformations applied.</p>
-</div>
-<div class="section" id="operational-datastore-od">
-<h3>Operational datastore (OD)<a class="headerlink" href="#operational-datastore-od" title="Permalink to this headline">¶</a></h3>
-<p>An operational datastore (OD) is a central store that provides a snapshot of
-the latest data from multiple transactional systems.
-It enables organizations to combine data in its original format
-from various sources into a single destination to make it available for further processing.
-These are initial physical tables created in Snowflake and consists of data
-that has undergone little to no transformation.
-The OD table structure very closely resembles that of the staged file with proper data types and column names, alongside
-additional columns to help track data lineage. The OD also serves as transient place to store data coming from
-the source systems. It allows us have all the data within the bounds ready for processing and modeling</p>
-</div>
-<div class="section" id="servicing-layer">
-<h3>Servicing layer<a class="headerlink" href="#servicing-layer" title="Permalink to this headline">¶</a></h3>
-<p>This layer consists of the data that has undergone all the transformations and it is
-ready for consumption to the business intelligence layer.
-OD tables serve as input to the transformation process to populate servicing layer tables.
-This is our master schema with transformed data. It contains correctly modeled tables,
-that are named properly with business centeric column names, and correct data types.</p>
-</div>
-<div class="section" id="dataflow-summary">
-<h3>Dataflow summary<a class="headerlink" href="#dataflow-summary" title="Permalink to this headline">¶</a></h3>
-<p>The data cleaning and transformation take place while moving data from OD into service layer.</p>
-<ul class="simple">
-<li><p>Standardising all date formats and time zones.</p></li>
-<li><p>Rounding numbers.</p></li>
-<li><p>Cleaning strings and character data.</p></li>
-<li><p>Standardising data to be of the same format.</p></li>
-<li><p>Splitting data out into multiple columns.</p></li>
-<li><p>Extracting data from JSON.</p></li>
-<li><p>Combining data from multiple columns to Single JSON objects.</p></li>
-</ul>
-<p>The diagram below shows the data flow process between files and the final destination in Snowflake.</p>
-<div class="figure align-center">
-<img alt="images/ingestionlayout.jpg" src="images/ingestionlayout.jpg" />
-</div>
-<p>Not all data from OD tables may land up in the servicing layer.
-Normally, business users like to use tools such as PowerBI and Tableau to
-perform raw queries on the dataset. The best place for business users
-to perform these analytics is the service layer.</p>
-<p>In data science, data attributes from the staged and OD layer may be needed to build predictive analytics.
-Thus, access can be granted to OD tables and
-service layer entities.</p>
-<p>Data engineering consists of creating transformations, performing metadata management, and
-keeping track of data pipelines. So, access should be
-granted to all layers of the data platform.</p>
-<p>For this project in the book, after staging files all data processing and transformation is performed using stored procedures.</p>
 </div>
 </div>
 <div class="section" id="source-data-files">
@@ -199,8 +143,9 @@ published tuition and required fees, books and supplies, room and board, and oth
 <p>These files contain information about the undergraduate selection process
 for first-time, degree/certificate-seeking prospective students.</p>
 <p><strong>Code mapping data</strong></p>
-<p>These files contain data for lookup tables. These tables will be used as reference entities to get
-descriptive details for the codes example institute type description for given institute type code,
+<p>These files contain data for lookup tables.
+A lookup table acts as a dictionary. It provides descriptions for a business codes.
+Few examples are institute type description for given institute type code,
 state name given state code, etc..</p>
 <p>These files are coming to the data platform in the format like CSV, JSON, ORC, Parquet, and Multi-format.</p>
 <div class="section" id="academic-institution-hdr">
@@ -278,6 +223,76 @@ Multiple OD tables will be populated from one lookup file.</p>
 <p>Download the files from GitRepo <a class="reference external" href="https://github.com/versatiledp/SnowflakeEnriched/tree/master/data/input"  target="_blank">https://github.com/versatiledp/SnowflakeEnriched/tree/master/data/input</a> to local machine.
 Create folder <strong>C:\Snowflake\data\input\</strong> and copy downloaded files to this folder.
 The files in this book are loaded from the above folder to the Snowflake stage area using SnowSQL CLI.</p>
+</div>
+</div>
+<div class="section" id="snowflake-data-pillers">
+<h2>Snowflake data pillers<a class="headerlink" href="#snowflake-data-pillers" title="Permalink to this headline">¶</a></h2>
+<p>For the project in this book, we will be using Snowflake staged files, transient tables, and master tables.
+Transient tables are referenced as operational data tables through out the book.
+Master tables are also called as the servicing layer entities.
+Snowflake staged files, transient tables along with the source system
+represent data source layer.
+Stored procedures are used for data processing.
+Storage and analytical layer is implemented in the transformed servicing entities.
+Google Colab is used for the consumption layer.</p>
+<p>The project work in this book, we seek to:</p>
+<ul class="simple">
+<li><p>Ingest variety of data formats.</p></li>
+<li><p>Transform data for business users.</p></li>
+<li><p>Build a data pipeline to process data on a periodic basis.</p></li>
+<li><p>Create descriptive analytics for use-cases laid out by businesses.</p></li>
+</ul>
+<div class="section" id="staged-file">
+<h3>Staged file<a class="headerlink" href="#staged-file" title="Permalink to this headline">¶</a></h3>
+<p>All the data from the source system will be brought into the internal staged file location of Snowflake.
+This data is directly from transactional systems or existing big data platforms,
+with no transformations applied.</p>
+</div>
+<div class="section" id="operational-datastore-od">
+<h3>Operational datastore (OD)<a class="headerlink" href="#operational-datastore-od" title="Permalink to this headline">¶</a></h3>
+<p>An operational datastore (OD) is a central store that provides a snapshot of
+the latest data from multiple transactional systems.
+It enables organizations to combine data in its original format
+from various sources into a single destination to make it available for further processing.
+These are initial physical tables created in Snowflake and consists of data
+that has undergone little to no transformation.
+The OD table structure very closely resembles that of the staged file with proper data types and column names, alongside
+additional columns to help track data lineage. The OD also serves as transient place to store data coming from
+the source systems. It allows us have all the data within the bounds ready for processing and modeling</p>
+</div>
+<div class="section" id="servicing-layer">
+<h3>Servicing layer<a class="headerlink" href="#servicing-layer" title="Permalink to this headline">¶</a></h3>
+<p>This layer consists of the data that has undergone all sorts of transformations and it is
+ready for consumption to the business intelligence layer.
+OD tables serve as input to the transformation process to populate servicing layer tables.
+This is our master schema with transformed data. It contains correctly modeled tables,
+that are named properly with business centeric column names with appropriate data types.</p>
+</div>
+<div class="section" id="dataflow-summary">
+<h3>Dataflow summary<a class="headerlink" href="#dataflow-summary" title="Permalink to this headline">¶</a></h3>
+<p>The data cleaning and transformation takes place while moving data from OD into service layer.</p>
+<ul class="simple">
+<li><p>Standardising all date formats and time zones.</p></li>
+<li><p>Rounding numbers.</p></li>
+<li><p>Cleaning strings and character data.</p></li>
+<li><p>Standardising data to be of the same format.</p></li>
+<li><p>Splitting out data into multiple columns.</p></li>
+<li><p>Extracting data from CSV, JSON, ORC, and Parquet.</p></li>
+<li><p>Combining data from multiple columns to Single JSON objects.</p></li>
+</ul>
+<p>The diagram below shows the data flow process between files and the final destination in Snowflake.</p>
+<div class="figure align-center">
+<img alt="images/ingestionlayout.jpg" src="images/ingestionlayout.jpg" />
+</div>
+<p>Not all data from OD tables may land up in the servicing layer.
+Normally, business users like to use tools such as PowerBI and Tableau to
+perform raw queries on the datasets. The best place for business users
+to perform these analytics is the service layer.</p>
+<p>In data science, data attributes from the staged and OD layer may be needed to build predictive analytics.
+Thus, access can be granted to OD and service layer entities.</p>
+<p>Data engineering consists of creating transformations, performing metadata management, and
+keeping track of data pipelines. So, access should be
+granted to all layers of the data platform.</p>
 </div>
 </div>
 <div class="section" id="ingesting-snowflake-stage">
@@ -550,19 +565,20 @@ our first set of CSV files from the source system.</p>
 <li class="toctree-l3"><a class="reference internal" href="#consumption-layer">Consumption layer</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#project-data-source">Project data source</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#staged-file">Staged file</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#operational-datastore-od">Operational datastore (OD)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#servicing-layer">Servicing layer</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#dataflow-summary">Dataflow summary</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="#project-data-source">Project data source</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#source-data-files">Source data files</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#academic-institution-hdr">Academic institution [HDR]</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#enrollment-12-month-effy">Enrollment 12-Month [EFFY]</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#institutional-charges-ic">Institutional charges [IC]</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#admissions-and-test-scores-adm">Admissions and test scores [ADM]</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#code-mapping-data">Code mapping data</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#snowflake-data-pillers">Snowflake data pillers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#staged-file">Staged file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#operational-datastore-od">Operational datastore (OD)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#servicing-layer">Servicing layer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dataflow-summary">Dataflow summary</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#ingesting-snowflake-stage">Ingesting Snowflake stage</a><ul>

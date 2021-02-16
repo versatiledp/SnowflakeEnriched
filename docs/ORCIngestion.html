@@ -232,7 +232,7 @@ CREATE OR REPLACE stage FooballStg file_format = JSONFORMAT;
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>put file://c:\test\data\fpl-book.json @FooballStg auto_compress=true;
 </pre></div>
 </div>
-<p>List out the player names and their club</p>
+<p>List out the player names and their clubs</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT S.$1:Name, S.$1:Club
 FROM @FooballStg as S;
 </pre></div>
@@ -1187,7 +1187,7 @@ institutional charge data called:</p>
 </div></blockquote>
 <p>All these fact tables have links to the
 dimension table <strong>AcademicInstitution</strong>. The relationship represents the star schema of
-dimensional modeling architecture. This is made possible by
+dimensional modelling architecture. This is made possible by
 adding the surrogate key column (<strong>AcademicInstitutionUniqueDWSID</strong>)
 of the dimension table AcademicInstitution to these fact tables.</p>
 <p>While processing the InstitutionalCharge dataset, tables
@@ -2837,7 +2837,7 @@ $$;
 </pre></div>
 </div>
 </div>
-<p><strong>Institutional charge By category load</strong></p>
+<p><strong>Institutional charge by category load</strong></p>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Create InstitutionalChargeByCategory load stored procedure</p>
