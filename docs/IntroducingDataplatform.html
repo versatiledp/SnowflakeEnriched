@@ -117,17 +117,7 @@ universities, technical institutions, and vocational institutions.</p>
 <img alt="images/IPEDSScreenShot.png" src="images/IPEDSScreenShot.png" />
 </div>
 <p>All of the data used in this book is downloaded from <a class="reference external" href="https://nces.ed.gov/ipeds/use-the-data"   target="_blank">https://nces.ed.gov/ipeds/use-the-data</a>.</p>
-<p>Data is downloaded for the three academic years (2017, 2018, and 2019).</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p><em>Disclaimer: We have modified this data to explore Snowflake functionality. Therefore, analytics results from this book
-should not be used as a replacement for the original data and its results.
-Please refer to the IES website for actual statistics and research on academic institutions.</em></p>
-</div>
-</div>
-<div class="section" id="source-data-files">
-<h2>Source data files<a class="headerlink" href="#source-data-files" title="Permalink to this headline">¶</a></h2>
-<p>The files used though out this book are:</p>
+<p>From IPEDS, we are downloading the files listed below. Data is downloaded for the three academic years (2017, 2018, and 2019).</p>
 <p><strong>Academic institution [HDR]</strong></p>
 <p>These files contain directory information for every institution in the IPEDS universe.
 The files include the name, address, city, state, zip code, and various URL links to the institution’s home page,
@@ -147,6 +137,16 @@ for first-time, degree/certificate-seeking prospective students.</p>
 A lookup table acts as a dictionary. It provides descriptions for a business codes.
 Few examples are institute type description for given institute type code,
 state name given state code, etc..</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><em>Disclaimer: We have modified this data to explore Snowflake functionality. Therefore, analytics results from this book
+should not be used as a replacement for the original data and its results.
+Please refer to the IES website for actual statistics and research on academic institutions.</em></p>
+<p><em>Utilities to convert the CSV files into different data formats are available at:</em></p>
+<p><a class="reference external" href="https://github.com/versatiledp/SnowflakeEnriched/tree/master/utilities"   target="_blank">https://github.com/versatiledp/SnowflakeEnriched/tree/master/utilities</a></p>
+<p><em>All the data files used throughout this book are available to download at:</em></p>
+<p><a class="reference external" href="https://github.com/versatiledp/SnowflakeEnriched/tree/master/data/input"  target="_blank">https://github.com/versatiledp/SnowflakeEnriched/tree/master/data/input</a></p>
+</div>
 <p>These files are coming to the data platform in the format like CSV, JSON, ORC, Parquet, and Multi-format.</p>
 <div class="section" id="academic-institution-hdr">
 <h3>Academic institution [HDR]<a class="headerlink" href="#academic-institution-hdr" title="Permalink to this headline">¶</a></h3>
@@ -213,13 +213,6 @@ OD layer is used to process data for the destination layer with additional trans
 identified by the value of the first column in the file.</p>
 <p>These files are directly ingested into Snowflake staging from the source system.
 Multiple OD tables will be populated from one lookup file.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p><em>Utilities to convert the CSV files into different data formats are available at:</em></p>
-<p><a class="reference external" href="https://github.com/versatiledp/SnowflakeEnriched/tree/master/utilities"   target="_blank">https://github.com/versatiledp/SnowflakeEnriched/tree/master/utilities</a></p>
-<p><em>All the data files used throughout this book are available to download at:</em></p>
-<p><a class="reference external" href="https://github.com/versatiledp/SnowflakeEnriched/tree/master/data/input"  target="_blank">https://github.com/versatiledp/SnowflakeEnriched/tree/master/data/input</a></p>
-</div>
 <p>Download the files from GitRepo <a class="reference external" href="https://github.com/versatiledp/SnowflakeEnriched/tree/master/data/input"  target="_blank">https://github.com/versatiledp/SnowflakeEnriched/tree/master/data/input</a> to local machine.
 Create folder <strong>C:\Snowflake\data\input\</strong> and copy downloaded files to this folder.
 The files in this book are loaded from the above folder to the Snowflake stage area using SnowSQL CLI.</p>
@@ -565,8 +558,7 @@ our first set of CSV files from the source system.</p>
 <li class="toctree-l3"><a class="reference internal" href="#consumption-layer">Consumption layer</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#project-data-source">Project data source</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#source-data-files">Source data files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#project-data-source">Project data source</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#academic-institution-hdr">Academic institution [HDR]</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#enrollment-12-month-effy">Enrollment 12-Month [EFFY]</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#institutional-charges-ic">Institutional charges [IC]</a></li>
