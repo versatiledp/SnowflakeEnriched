@@ -58,10 +58,34 @@
 <li><p>Native Hawaiian women</p></li>
 </ul>
 </div></blockquote>
-<p>Output:</p>
+<div class="section" id="steps">
+<h2>Steps<a class="headerlink" href="#steps" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>Join the <strong>AcademicInstitution</strong> to <strong>Enrollment</strong>.</p></li>
+<li><p>Filter degree granting schools in very specific state only.</p></li>
+<li><p>Agreegate enrollment at various levels like <em>TotalMen</em>, <em>TotalWomen</em>, <em>WhiteMen</em>, <em>WhiteWomen</em>, etc..</p></li>
+<li><p>Allow user to select academic year.</p></li>
+<li><dl class="simple">
+<dt>Transpose data from rows to column.</dt><dd><ol class="loweralpha simple">
+<li><p>Convert all the rows (state code) to columns.</p></li>
+<li><p>Convert all the column names (enrollment type) to rows.</p></li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><p>Display data in the HTML table format.</p></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="expected-output">
+<h2>Expected output<a class="headerlink" href="#expected-output" title="Permalink to this headline">¶</a></h2>
 <div class="figure align-center">
 <img alt="images/BusinessInsights01.JPG" src="images/BusinessInsights01.JPG" />
 </div>
+</div>
+<div class="section" id="notebook-code">
+<h2>Notebook code<a class="headerlink" href="#notebook-code" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">snowflake</span><span class="o">-</span><span class="n">connector</span><span class="o">-</span><span class="n">python</span><span class="o">==</span><span class="mf">2.3</span><span class="o">.</span><span class="mi">6</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span>
 </pre></div>
 </div>
@@ -184,6 +208,7 @@ Enter Snowflake password··········
 <span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">HTML</span>
 <span class="n">HTML</span><span class="p">(</span><span class="n">new_df</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
 </pre></div>
+</div>
 </div>
 </div>
 

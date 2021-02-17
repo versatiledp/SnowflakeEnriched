@@ -39,17 +39,39 @@
 <h1>Institution reporting<a class="headerlink" href="#institution-reporting" title="Permalink to this headline">¶</a></h1>
 <p>This visual is targeted to present academic institution information based
 on various segments using bar, donut, and pie charts.</p>
-<p>Total institute count is segmented by:</p>
+<div class="section" id="steps">
+<h2>Steps<a class="headerlink" href="#steps" title="Permalink to this headline">¶</a></h2>
 <blockquote>
-<div><ul class="simple">
-<li><p>Economic region</p></li>
-<li><p>Education offering</p></li>
-<li><p>Institution type</p></li>
-<li><p>Program offering</p></li>
+<div><ul>
+<li><p>Join <strong>AcademicInstitution</strong> to the lookup tables  <strong>EconomicBureauRegion</strong>, <strong>HighestLevelOffering</strong>, <strong>Institutionalcategory</strong>, <strong>InstitutionControl</strong>, and <strong>Institutionlevel</strong>.</p></li>
+<li><p>Filter for active institutions with defined economic bureau region and highest level offering.</p></li>
+<li><p>Convert economic region descriptions to the business defined economic region descriptions.</p></li>
+<li><p>Plot the institution counts by:</p>
+<blockquote>
+<div><ol class="loweralpha simple">
+<li><p>Economic region bar graph.</p></li>
+<li><p>Education offering donut graph.</p></li>
+<li><p>Institution type donut graph.</p></li>
+<li><p>Program offering pie chart.</p></li>
+</ol>
+</div></blockquote>
+</li>
 </ul>
 </div></blockquote>
-<p>Output:</p>
+</div>
+<div class="section" id="expected-output">
+<h2>Expected output<a class="headerlink" href="#expected-output" title="Permalink to this headline">¶</a></h2>
+<p><strong>Economic region bar graph</strong></p>
+<img alt="images/output_4_0.png" class="align-center" src="images/output_4_0.png" />
+<p><strong>Education offering donut graph</strong></p>
+<img alt="images/output_5_0.png" class="align-center" src="images/output_5_0.png" />
+<p><strong>Institution type donut graph</strong></p>
+<img alt="images/output_6_0.png" class="align-center" src="images/output_6_0.png" />
+<p><strong>Program offering pie chart</strong></p>
 <img alt="images/output_7_0.png" class="align-center" src="images/output_7_0.png" />
+</div>
+<div class="section" id="notebook-code">
+<h2>Notebook code<a class="headerlink" href="#notebook-code" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">snowflake</span><span class="o">-</span><span class="n">connector</span><span class="o">-</span><span class="n">python</span><span class="o">==</span><span class="mf">2.3</span><span class="o">.</span><span class="mi">6</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span>
 </pre></div>
 </div>
@@ -165,7 +187,6 @@ Enter Snowflake password:··········
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<img alt="images/output_4_0.png" src="images/output_4_0.png" />
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Education offering</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="n">dfER</span> <span class="o">=</span> <span class="n">dfInst</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Education offering&#39;</span><span class="p">]</span>
@@ -189,7 +210,6 @@ Enter Snowflake password:··········
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<img alt="images/output_5_0.png" src="images/output_5_0.png" />
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Institution Type.</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="n">dfER</span> <span class="o">=</span> <span class="n">dfInst</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Institution Type&#39;</span><span class="p">]</span>
@@ -211,7 +231,6 @@ Enter Snowflake password:··········
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<img alt="images/output_6_0.png" src="images/output_6_0.png" />
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Program Offering.</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="n">dfER</span> <span class="o">=</span> <span class="n">dfInst</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Program Offering&#39;</span><span class="p">]</span>
@@ -229,6 +248,7 @@ Enter Snowflake password:··········
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Program Offering&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
+</div>
 </div>
 </div>
 

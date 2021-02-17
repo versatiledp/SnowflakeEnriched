@@ -39,7 +39,8 @@
 <h1>Enrollment by geo location<a class="headerlink" href="#enrollment-by-geo-location" title="Permalink to this headline">¶</a></h1>
 <p>In this visual, we are presenting total enrollment and percentage by state.
 Enrollment percentage is calculated dividing state-level enrollment by national enrollment.</p>
-<p>Steps:</p>
+<div class="section" id="steps">
+<h2>Steps<a class="headerlink" href="#steps" title="Permalink to this headline">¶</a></h2>
 <blockquote>
 <div><ul class="simple">
 <li><p>Join the <strong>AcademicInstitution</strong> and <strong>Enrollment</strong> to agreegate annual enrollment by state.</p></li>
@@ -49,10 +50,15 @@ Enrollment percentage is calculated dividing state-level enrollment by national 
 <li><p>Display dataset using <strong>Plotly</strong> grpah functions for the selected year.</p></li>
 </ul>
 </div></blockquote>
-<p>Output:</p>
+</div>
+<div class="section" id="expected-output">
+<h2>Expected output<a class="headerlink" href="#expected-output" title="Permalink to this headline">¶</a></h2>
 <div class="figure align-center">
 <img alt="images/BusinessInsights02.JPG" src="images/BusinessInsights02.JPG" />
 </div>
+</div>
+<div class="section" id="notebook-code">
+<h2>Notebook code<a class="headerlink" href="#notebook-code" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">snowflake</span><span class="o">-</span><span class="n">connector</span><span class="o">-</span><span class="n">python</span><span class="o">==</span><span class="mf">2.3</span><span class="o">.</span><span class="mi">6</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span>
 </pre></div>
 </div>
@@ -165,6 +171,7 @@ Enter Snowflake password:··········
 
 <span class="n">interact</span><span class="p">(</span><span class="n">plot_graph</span><span class="p">,</span> <span class="n">Year</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">YEAR</span><span class="o">.</span><span class="n">unique</span><span class="p">());</span>
 </pre></div>
+</div>
 </div>
 </div>
 
