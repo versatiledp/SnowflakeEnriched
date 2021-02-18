@@ -341,9 +341,9 @@ Enter Snowflake password:··········
 <blockquote>
 <div><ul class="simple">
 <li><p>Join the <strong>AcademicInstitution</strong> to <strong>Enrollment</strong>.</p></li>
-<li><p>Filter degree granting schools in very specific state only.</p></li>
-<li><p>Agreegate enrollment at various levels like <em>TotalMen</em>, <em>TotalWomen</em>, <em>WhiteMen</em>, <em>WhiteWomen</em>, etc..</p></li>
-<li><p>Allow user to select academic year.</p></li>
+<li><p>Filter degree-granting schools in a specific state.</p></li>
+<li><p>Aggregate enrollment at various levels like <em>TotalMen</em>, <em>TotalWomen</em>, <em>WhiteMen</em>, <em>WhiteWomen</em>, etc..</p></li>
+<li><p>Allow users to select academic year.</p></li>
 <li><dl class="simple">
 <dt>Transpose data from rows to column.</dt><dd><ol class="loweralpha simple">
 <li><p>Convert all the rows (state code) to columns.</p></li>
@@ -497,7 +497,7 @@ Enrollment percentage is calculated dividing state-level enrollment by national 
 <h3>Steps<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
 <blockquote>
 <div><ul class="simple">
-<li><p>Join the <strong>AcademicInstitution</strong> and <strong>Enrollment</strong> to agreegate annual enrollment by state.</p></li>
+<li><p>Join the <strong>AcademicInstitution</strong> and <strong>Enrollment</strong> to aggregate annual enrollment by state.</p></li>
 <li><p>Use the <strong>RATIO_TO_REPORT()</strong> function to calculate ratio of a value within a group.</p></li>
 <li><p>Calculate enrollment ratio within academic year by applying RATIO_TO_REPORT() function.</p></li>
 <li><p>Allow user to choose an academic year.</p></li>
@@ -637,9 +637,9 @@ The result is displayed in HTML table format.</p>
 <h3>Steps<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
 <blockquote>
 <div><ul class="simple">
-<li><p>Join the tables <strong>AcademicInstitution</strong> With the <strong>InstitutionalCharge</strong>, and <strong>InstitutionControl</strong>.</p></li>
+<li><p>Join the tables <strong>AcademicInstitution</strong> with the <strong>InstitutionalCharge</strong>, and <strong>InstitutionControl</strong>.</p></li>
 <li><p>Select only degree granting public universities.</p></li>
-<li><p>Agreegate InStateTution and OutOfStateTution.</p></li>
+<li><p>Aggregate InStateTution and OutOfStateTution.</p></li>
 <li><p>Use the <strong>ROW_NUMBER()</strong> function to record indentifier.</p></li>
 <li><p>Rank the school based on total tution charges in academic year using ROW_NUMBER() function.</p></li>
 <li><p>Allow user to select the academic year and total number of institutions to be displayed on the report.</p></li>
