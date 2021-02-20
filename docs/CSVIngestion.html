@@ -59,7 +59,7 @@ CSV is a simple file format used to store tabular data, such as a spreadsheet or
 Files in the CSV format can be imported to and exported from programs that store data in tables.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><em>Please refer to the section ‘Load the files to the internal stage for IPEDS’ in the chapter ‘Introducing data platform’ for creating staged files</em>.</p>
+<p><em>Please refer to the section 'Load the files to the internal stage for IPEDS' in the chapter 'Introducing data platform' for creating staged files</em>.</p>
 </div>
 <p>Academic institution data files are received in CSV format. The academic institution dataset contain high-level information about institutions in US
 for the years 2017, 2018 and 2019, respectively.</p>
@@ -700,7 +700,7 @@ If any of the column values are updated in the OD table, that value is updated i
 If the business key InstitutionIdentifier is not present in the dimension table (new records in the OD table),
 that record is inserted into the dimension table.</p>
 <p>We are using Type 1 slowly changing dimension, in which new data overwrites existing data.
-However, Snowflake’s time travel feature can be used to view the original data before the update.</p>
+However, Snowflake's time travel feature can be used to view the original data before the update.</p>
 <p>We have created a stored procedure <strong>pr_AcademicInstitution_Load</strong> for merging data from the staging
 table od_AcademicInstitution to the dimension table AcademicInstitution.
 The script to create the stored procedure is given below.</p>
