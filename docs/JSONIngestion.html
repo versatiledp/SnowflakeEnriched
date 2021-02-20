@@ -60,7 +60,7 @@ Structural information is derived based on the schema definition embedded in
 JSON string at reading time (Schema-on-Read).</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><em>Please refer to the section ‘Load the files to the internal stage for IPEDS’ in the chapter ‘Introducing data platform’ for creating staged files</em>.</p>
+<p><em>Please refer to the section  'Load the files to the internal stage for IPEDS ' in the chapter  'Introducing data platform ' for creating staged files</em>.</p>
 </div>
 <p>Enrollments files contains information around enrollment rates in various institutions for the academic years 2017, 2018, and 2019.
 The enrollments are categorized by race, ethnicity, and sex. The data files for enrollments are in JSON format and the staged file is invoked using <strong>&#64;IPEDS_EFFY</strong>.
@@ -515,7 +515,7 @@ Here is the script for creating the table Enrollment.</p>
 <p>The stored procedure <strong>pr_Enrollment_Load</strong> is used for loading
 the servicing layer table. The stored procedure loads data for specific years based on the parameter passed to it.
 Each time when this stored procedure is called, it deletes records from Enrollment
-for that year and then re-inserts them to Enrollment from that year’s od_Enrollment.</p>
+for that year and then re-inserts them to Enrollment from that year's od_Enrollment.</p>
 <p>We are interested in determining the distribution of data that has been imputed vs reported.
 To do so, we read the imputation column to obtain the total number of imputed and reported variable counts,
 which we store in <strong>VariablesReportedCount</strong> and  <strong>VariablesImputedCount</strong>.

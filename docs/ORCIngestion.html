@@ -64,7 +64,7 @@ In this chapter, we are using few Snowflake native functions to work with semi-s
 We can query ORC data with SQL and join it to other data without doing any transformations.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><em>Please refer to the section ‘Load the files to the internal stage for IPEDS’ in the chapter ‘Introducing data platform’ for creating staged files</em>.</p>
+<p><em>Please refer to the section 'Load the files to the internal stage for IPEDS' in the chapter 'Introducing data platform' for creating staged files</em>.</p>
 </div>
 <p>Institutional charge files contain data on student charges for a full academic year. These files include the information about the price of attendance,
 published tuition and required fees, books and supplies, room and board, and other expenses. Institutional charge ORC data from the staged file <strong>&#64;IPEDS_IC</strong>
@@ -279,7 +279,7 @@ CREATE TABLE IF NOT EXISTS S_PLAYERS
 </div>
 <p>Copy players data from staged file to the physical table as below.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>COPY INTO S_PLAYERS FROM @FooballStg FILE_FORMAT
-    = (FORMAT_NAME = &#39;JSONFORMAT&#39;) ON_ERROR = CONTINUE;
+    = (FORMAT_NAME = \&#39;JSONFORMAT\&#39;) ON_ERROR = CONTINUE;
 </pre></div>
 </div>
 <p>The function ARRAY_SIZE() returns the size of an array in the VARIANT value.
