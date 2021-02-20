@@ -38,7 +38,15 @@
           <div class="body" role="main">
             
   <div class="section" id="multi-format-ingestion">
-<h1>Multi-format ingestion<a class="headerlink" href="#multi-format-ingestion" title="Permalink to this headline">Â¶</a></h1>
+<h1>Multi-format ingestion<a class="headerlink" href="#multi-format-ingestion" title="Permalink to this headline">¶</a></h1>
+<p>We will learn how to:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Multiformat data layouts.</p></li>
+<li><p>Dynamic SQL table creation and load.</p></li>
+<li><p>Servicing layer load for multiple tables.</p></li>
+</ul>
+</div></blockquote>
 <p>Transactional system generates data into a variety of layouts like undefined formats and variable blocked files. Undefined format consists of records and blocks with no predefined single structure. Variable blocked format places several variable-length records with an additional block descriptor.</p>
 <p>In our case,
 a single lookup file generated from the source system contains data for
@@ -54,14 +62,14 @@ With some additional transformation logic, we can store them in the relation dat
 <li><p>Economic bureau region</p></li>
 <li><p>TitleIV eligibility code</p></li>
 <li><p>Institution type</p></li>
-<li><p><strong>â€¦</strong></p></li>
+<li><p><strong>…</strong></p></li>
 </ul>
 </div></blockquote>
-<div class="section" id="data-files">
-<h2>Data files<a class="headerlink" href="#data-files" title="Permalink to this headline">Â¶</a></h2>
+<div class="section" id="multiformat-data-layout">
+<h2>Multiformat data layout<a class="headerlink" href="#multiformat-data-layout" title="Permalink to this headline">¶</a></h2>
 <p>Sample data from the source system is shown in the table below.</p>
 <table class="colwidths-given docutils align-default" id="id1">
-<caption><span class="caption-text">Source system data layout</span><a class="headerlink" href="#id1" title="Permalink to this table">Â¶</a></caption>
+<caption><span class="caption-text">Source system data layout</span><a class="headerlink" href="#id1" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col style="width: 25%" />
 <col style="width: 75%" />
@@ -73,36 +81,36 @@ With some additional transformation logic, we can store them in the relation dat
 </thead>
 <tbody>
 <tr class="row-even"><td><p>stabbr</p></td>
-<td><p>â€˜ALâ€™=â€™Alabamaâ€™</p></td>
+<td><p>‘AL’=’Alabama’</p></td>
 </tr>
 <tr class="row-odd"><td><p>stabbr</p></td>
-<td><p>â€˜AKâ€™=â€™Alaskaâ€™</p></td>
+<td><p>‘AK’=’Alaska’</p></td>
 </tr>
 <tr class="row-even"><td><p>stabbr</p></td>
-<td><p>â€˜AZâ€™=â€™Arizonaâ€™</p></td>
+<td><p>‘AZ’=’Arizona’</p></td>
 </tr>
 <tr class="row-odd"><td><p>ACT</p></td>
-<td><p>â€˜Aâ€™=â€™Active - institution activeâ€™</p></td>
+<td><p>‘A’=’Active - institution active’</p></td>
 </tr>
 <tr class="row-even"><td><p>ACT</p></td>
-<td><p>â€˜Nâ€™=â€™New (active) - added during the current yearâ€™</p></td>
+<td><p>‘N’=’New (active) - added during the current year’</p></td>
 </tr>
 <tr class="row-odd"><td><p>ACT</p></td>
-<td><p>â€˜Râ€™=â€™Restore (active) - restored to the current universeâ€™</p></td>
+<td><p>‘R’=’Restore (active) - restored to the current universe’</p></td>
 </tr>
 </tbody>
 </table>
 <p>The first column helps to identify the target entity
 and the second column is the actual data row for target tables. Data for multiple columns is
-separated by an <strong>â€˜=â€™</strong> sign.</p>
+separated by an <strong>‘=’</strong> sign.</p>
 <p>In the above example, we are creating 2 lookup tables, one for StateAbbrevation and another for AccountStatus.
 The StateAbbrevation table should be loaded with two attributes: code and description.
-The attribute values for the first row are <strong>â€˜ALâ€™</strong> and <strong>â€˜Alabamaâ€™</strong>.
-Similarly, AccountStatus should be loaded with the values <strong>â€˜Aâ€™</strong> and <strong>â€˜Active - institution activeâ€™</strong>
-, <strong>N</strong> and <strong>â€˜New (active) - added during the current yearâ€™</strong> etc..</p>
+The attribute values for the first row are <strong>‘AL’</strong> and <strong>‘Alabama’</strong>.
+Similarly, AccountStatus should be loaded with the values <strong>‘A’</strong> and <strong>‘Active - institution active’</strong>
+, <strong>N</strong> and <strong>‘New (active) - added during the current year’</strong> etc..</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><em>Please refer to the section â€˜Load the files to the internal stage for IPEDSâ€™ in the chapter â€˜Introducing data platformâ€™ for creating staged files</em>.</p>
+<p><em>Please refer to the section ‘Load the files to the internal stage for IPEDS’ in the chapter ‘Introducing data platform’ for creating staged files</em>.</p>
 </div>
 <p>Data is available for processing in the staged file <strong>&#64;IPEDS_CM</strong>.</p>
 <p>The following query is used to get rows from the staged file.</p>
@@ -111,6 +119,9 @@ Similarly, AccountStatus should be loaded with the values <strong>â€˜Aâ€™</stron
 FROM   @IPEDS_CM t
 </pre></div>
 </div>
+</div>
+<div class="section" id="dynamic-od-table-creation-and-load">
+<h2>Dynamic OD table creation and load<a class="headerlink" href="#dynamic-od-table-creation-and-load" title="Permalink to this headline">¶</a></h2>
 <p>We have added a mapping table <strong>CodeDestinationTable</strong> that provides the destination table name for the code.</p>
 <p>The following script will create and load the table called CodeDestinationTable.</p>
 <div class="toggle docutils container">
@@ -173,7 +184,7 @@ FROM   @IPEDS_CM t
 </div>
 <p>The CodeDestination table is used to create the corresponding OD table and
 service layer table. Furthermore, it is used for populating data dynamically from the staged file to the OD tables.</p>
-<p>We concatenate â€˜<strong>od_</strong>â€™ to the table name column from the CodeDestination entity.
+<p>We concatenate ‘<strong>od_</strong>’ to the table name column from the CodeDestination entity.
 In the <strong>pr_od_CodeMapping_Load</strong> stored procedure,
 we check if the corresponding table exists in the Snowflake.
 If the table is there, it is truncated and the staged file data for
@@ -181,7 +192,7 @@ that code is loaded into the specific OD table. If the table is missing, then a 
 to load data.</p>
 <p>The combination of the CodeDestinationTable table and &#64;IPEDS_CM staged file is used to populate multiple operational data stores.
 For example, when the code column content has value <strong>stabbr</strong>, then the destination table will be <strong>od_StateAbbreviation</strong>. The
-content of the TableData column from &#64;IPEDS_CM, with <strong>$1 = â€˜StateAbbreviationâ€™</strong>,
+content of the TableData column from &#64;IPEDS_CM, with <strong>$1 = ‘StateAbbreviation’</strong>,
 will be used to populate od_StateAbbreviation.</p>
 <p>The following script outlines this process.</p>
 <div class="toggle docutils container">
@@ -266,7 +277,7 @@ $$;
 <li><p>od_StateCongressionalDistricID</p></li>
 <li><p>od_InstitutionControl</p></li>
 <li><p>od_CountryCode</p></li>
-<li><p><strong>â€¦â€¦..</strong></p></li>
+<li><p><strong>……..</strong></p></li>
 <li><p>od_IdentificationNumberMultiCampusOrganization</p></li>
 <li><p>od_MultiinstitutionMulticampusOrganization</p></li>
 <li><p>od_FIPSStateCode</p></li>
@@ -278,8 +289,8 @@ $$;
 </ul>
 </div></blockquote>
 </div>
-<div class="section" id="merge-data">
-<h2>Merge data<a class="headerlink" href="#merge-data" title="Permalink to this headline">Â¶</a></h2>
+<div class="section" id="servicing-layer-merge-data-load">
+<h2>Servicing layer merge data load<a class="headerlink" href="#servicing-layer-merge-data-load" title="Permalink to this headline">¶</a></h2>
 <p>Once data is loaded into the operational data zone, we use a similar approach to merge data to the final servicing layer entities.
 We check the existence of these entities dynamically, and missing entities are added. Data is merged from the OD to these entities using
 <strong>pr_CodeMapping_Load</strong>.</p>
@@ -340,7 +351,7 @@ $$;
 </div>
 </div>
 <div class="section" id="summary">
-<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">Â¶</a></h2>
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
 <p>There is significant flexibility built-in Snowflake to manage a variety of data needs.
 We learned how to load data from a
 single file into multiple entities.
@@ -400,8 +411,9 @@ scheduler, that can be used to manage all the ingestion steps.</p>
 <li class="toctree-l1"><a class="reference internal" href="ORCIngestion.html">ORC ingestion</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ParquetIngestion.html">Parquet ingestion</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Multi-format ingestion</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#data-files">Data files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#merge-data">Merge data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#multiformat-data-layout">Multiformat data layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dynamic-od-table-creation-and-load">Dynamic OD table creation and load</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#servicing-layer-merge-data-load">Servicing layer merge data load</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#summary">Summary</a></li>
 </ul>
 </li>

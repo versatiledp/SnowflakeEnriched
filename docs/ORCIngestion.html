@@ -38,19 +38,36 @@
           <div class="body" role="main">
             
   <div class="section" id="orc-ingestion">
-<h1>ORC ingestion<a class="headerlink" href="#orc-ingestion" title="Permalink to this headline">Â¶</a></h1>
+<h1>ORC ingestion<a class="headerlink" href="#orc-ingestion" title="Permalink to this headline">¶</a></h1>
+<p>This section explains:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>ORC Processing.</p></li>
+<li><p>JSON functions.</p></li>
+<li><p>Ingesting ORC data.</p></li>
+<li><p>Alternative approach to manage wide column files.</p></li>
+<li><p>Servicing layer desing for ORC.</p></li>
+<li><p>Loading ORC data to the servicing layer.</p></li>
+</ul>
+</div></blockquote>
+<div class="section" id="orc-processing">
+<h2>ORC processing<a class="headerlink" href="#orc-processing" title="Permalink to this headline">¶</a></h2>
 <p>Optimized Row Columnar(ORC) is a self-describing type-aware columnar
 file format designed for Hadoop workloads. It is optimized for large streaming reads.
 By storing data in a columnar format it allows user to read, decompress,
 and process only the values that are
 required for the current process.
 Snowflake manages AVRO and ORC files similar to semi-structured JSON data from VARIANT type.</p>
+<p>Snowflake allows loading ORC data directly into relational tables from the staged file.
+ORC data is stored as a JSON document. JSON document processing can be used to transform ORC data.
+In this chapter, we are using few Snowflake native functions to work with semi-structured JSON data.
+We can query ORC data with SQL and join it to other data without doing any transformations.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><em>Please refer to the section â€˜Load the files to the internal stage for IPEDSâ€™ in the chapter â€˜Introducing data platformâ€™ for creating staged files</em>.</p>
+<p><em>Please refer to the section ‘Load the files to the internal stage for IPEDS’ in the chapter ‘Introducing data platform’ for creating staged files</em>.</p>
 </div>
-<p>We can convert VARIANT type column having ORC data to a multi-column table by
-specifying column names and data types. ORC data from the staged file <strong>&#64;IPEDS_IC</strong>
+<p>Institutional charge files contain data on student charges for a full academic year. These files include the information about the price of attendance,
+published tuition and required fees, books and supplies, room and board, and other expenses. Institutional charge ORC data from the staged file <strong>&#64;IPEDS_IC</strong>
 is retrieved using the following code.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT O.$1 JASONdata FROM  @IPEDS_IC O;
 </pre></div>
@@ -59,10 +76,11 @@ is retrieved using the following code.</p>
 <div class="figure align-center">
 <img alt="images/ORCInternalStagedDataSelect.JPG" src="images/ORCInternalStagedDataSelect.JPG" />
 </div>
-<p>ORC data is stored as a JSON document. JSON document processing can be used to transform ORC data.</p>
-<p>We are using few Snowflake native functions to work with semi-structured JSON data.</p>
-<div class="section" id="functions-to-manage-semi-structured-data">
-<h2>Functions to manage semi-structured data<a class="headerlink" href="#functions-to-manage-semi-structured-data" title="Permalink to this headline">Â¶</a></h2>
+<p>We can convert VARIANT type column having ORC data to a multi-column table by
+specifying column names and data types.</p>
+</div>
+<div class="section" id="functions-to-manage-json">
+<h2>Functions to manage JSON<a class="headerlink" href="#functions-to-manage-json" title="Permalink to this headline">¶</a></h2>
 <p>JSON data sets are a simple concatenation of multiple key-value pairs.
 In this section, we are going to cover few new Snowflake functions like FLATTEN(),
 ARRAY_SIZE(), LATERAL FLATTEN(), and PARSE_JSON().</p>
@@ -332,42 +350,8 @@ FROM
 <img alt="images/latteralflatten4.jpg" src="images/latteralflatten4.jpg" />
 </div>
 </div>
-<div class="section" id="institutional-charges">
-<h2>Institutional charges<a class="headerlink" href="#institutional-charges" title="Permalink to this headline">Â¶</a></h2>
-<p>This section covers data ingestion concerning tuition fees charged by institutions for
-various courses and branches during the 2017, 2018, and 2019 academic years.
-The data files received for institutional charges are in ORC format.</p>
-<p>The dataset also categorizes fees for graduate programs
-like Medicine, Dentistry, Pharmacy, Law, etc., as a different set of attributes within academic institutions charge records.</p>
-<p>Fees are also categorized for In-State and Out-of-State students.
-Expenses such as books/supplies, boarding, and resources, are also available in these data files.</p>
-<p>The information in this large file is broadly categorized into 4 groups described below.</p>
-<p><strong>Institutional charge (General)</strong></p>
-<p>This cross-section of attributes covers average tuition/required fees, and per-credit fees charged by educational institutes.
-Fees vary significantly from state to state, public to private, and ranking of institutes (demand vs supply).</p>
-<p><strong>Institutional charge by academic branch</strong></p>
-<p>The details of the fees by academic subjects like dentistry, medicine, optometry, osteopathic medicine, pharmacy, podiatry,
-veterinary medicine, and law by institutions
-for in-state and out-of-state students are available in this section.</p>
-<p><strong>Institutional charge by residency type</strong></p>
-<p>The residency type determines different fee structures in public
-universities for the same courses. Normally, in-state students
-are charged less than out-of-state. This set of attributes will provide insight into those patterns.</p>
-<p><strong>Institutional charge by category</strong></p>
-<p>Various fees like on-campus boarding, books/supplies, and other
-on-campus expenses are available in this section of the file.</p>
-<p>We will learn how to:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>Use ingested ORC files from the staged Snowflake region.</p></li>
-<li><p>Transform data using JavaScript stored procedures.</p></li>
-<li><p>Execute stored procedures.</p></li>
-<li><p>Unpivot (convert columns into rows) data into JSON format.</p></li>
-</ul>
-</div></blockquote>
-</div>
-<div class="section" id="staged-file-for-institutional-charges">
-<h2>Staged file for institutional charges<a class="headerlink" href="#staged-file-for-institutional-charges" title="Permalink to this headline">Â¶</a></h2>
+<div class="section" id="ingesting-orc-data">
+<h2>Ingesting ORC data<a class="headerlink" href="#ingesting-orc-data" title="Permalink to this headline">¶</a></h2>
 <p>The staged file &#64;IPEDS_IC is used for keeping track of various institution charges.
 We can retrieve the details of a particular year, exemplified by the Snowflake SQL query
 seen below to select all rows for the year 2017 from staged ORC data.
@@ -521,9 +505,8 @@ WHERE LEFT(MetaData$FileName,4) = 2017;
 </pre></div>
 </div>
 </div>
-</div>
-<div class="section" id="operational-data-od-table-for-an-institutional-charge">
-<h2>Operational data (OD) table for an institutional charge<a class="headerlink" href="#operational-data-od-table-for-an-institutional-charge" title="Permalink to this headline">Â¶</a></h2>
+<div class="section" id="operational-data-od-table">
+<h3>Operational data (OD) table<a class="headerlink" href="#operational-data-od-table" title="Permalink to this headline">¶</a></h3>
 <p>The OD table <strong>od_InstitutionalCharge</strong> is added to load institutional charge data from the staged file.
 It contains all the columns from the staged file &#64;IPEDS_IC.
 The Snowflake script for creating this table is shown below.</p>
@@ -660,92 +643,9 @@ The Snowflake script for creating this table is shown below.</p>
 </pre></div>
 </div>
 </div>
-<p>The attributes of the OD table are categorized into a core group and the 3 groups shown below.</p>
 </div>
-<div class="section" id="charges-by-the-academic-branch">
-<h2>Charges by the academic branch<a class="headerlink" href="#charges-by-the-academic-branch" title="Permalink to this headline">Â¶</a></h2>
-<p>This section covers the fees charged by different professional colleges.</p>
-<p><strong>Chiropractic</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><p>Chiropractic_InStateTuition</p></li>
-<li><p>Chiropractic_InStateRequiredFees</p></li>
-<li><p>Chiropractic_OutOfStateTuition</p></li>
-<li><p>Chiropractic_OutOfStateRequiredFees</p></li>
-</ul>
-</div></blockquote>
-<p><strong>Medicine</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><p>Medicine_InStateTuition</p></li>
-<li><p>Medicine_InStateRequiredFees</p></li>
-<li><p>Medicine_OutOfStateTuition</p></li>
-<li><p>Medicine_OutOfStateRequiredFees</p></li>
-</ul>
-</div></blockquote>
-</div>
-<div class="section" id="charges-by-residency-type">
-<h2>Charges by residency type<a class="headerlink" href="#charges-by-residency-type" title="Permalink to this headline">Â¶</a></h2>
-<p><strong>InDistrictTuition</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><p>PublishedInDistrictTuitionYear0</p></li>
-<li><p>PublishedInDistrictTuitionYear1</p></li>
-<li><p>PublishedInDistrictTuitionYear2</p></li>
-<li><p>PublishedInDistrictTuitionYear3</p></li>
-</ul>
-</div></blockquote>
-<p><strong>InDistrictFees</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><p>PublishedInDistrictFeesYear0</p></li>
-<li><p>PublishedInDistrictFeesYear1</p></li>
-<li><p>PublishedInDistrictFeesYear2</p></li>
-<li><p>PublishedInDistrictFeesYear3</p></li>
-</ul>
-</div></blockquote>
-<p><strong>InDistrictTuitionFees</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><p>PublishedInDistrictTuitionFeesYear0</p></li>
-<li><p>PublishedInDistrictTuitionFeesYear1</p></li>
-<li><p>PublishedInDistrictTuitionFeesYear2</p></li>
-<li><p>PublishedInDistrictTuitionFeesYear3</p></li>
-</ul>
-</div></blockquote>
-<p><strong>InStateTuition</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><p>PublishedInStateTuitionYear0</p></li>
-<li><p>PublishedInStateTuitionYear1</p></li>
-<li><p>PublishedInStateTuitionYear2</p></li>
-<li><p>PublishedInStateTuitionYear3</p></li>
-</ul>
-</div></blockquote>
-</div>
-<div class="section" id="institutional-charge-by-category">
-<h2>Institutional charge by category<a class="headerlink" href="#institutional-charge-by-category" title="Permalink to this headline">Â¶</a></h2>
-<p><strong>BooksSupplies</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><p>BooksSuppliesYear0</p></li>
-<li><p>BooksSuppliesYear1</p></li>
-<li><p>BooksSuppliesYear2</p></li>
-<li><p>BooksSuppliesYear3</p></li>
-</ul>
-</div></blockquote>
-<p><strong>OnCampusRoomBoard</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><p>OnCampusRoomBoardYear0</p></li>
-<li><p>OnCampusRoomBoardYear1</p></li>
-<li><p>OnCampusRoomBoardYear2</p></li>
-<li><p>OnCampusRoomBoardYear3</p></li>
-</ul>
-</div></blockquote>
-</div>
-<div class="section" id="stored-procedure-for-od-table-load">
-<h2>Stored procedure for OD table load<a class="headerlink" href="#stored-procedure-for-od-table-load" title="Permalink to this headline">Â¶</a></h2>
+<div class="section" id="od-table-load">
+<h3>OD table load<a class="headerlink" href="#od-table-load" title="Permalink to this headline">¶</a></h3>
 <p>A stored procedure called <strong>pr_od_InstitutionalCharge_Load</strong> is added
 to load the OD table with institutional
 charge records from the staged file.</p>
@@ -1163,20 +1063,124 @@ $$
 <span class="n">CALL</span> <span class="n">pr_od_InstitutionalCharge_Load</span><span class="p">(</span><span class="mi">2019</span><span class="p">::</span><span class="n">FLOAT</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>We have added the following entities to the servicing layer. These entities will be populated in the transformation layer.</p>
+</div>
+</div>
+<div class="section" id="data-analysis">
+<h2>Data analysis<a class="headerlink" href="#data-analysis" title="Permalink to this headline">¶</a></h2>
+<p>The ORC files of institutional charges dataset categorizes fees for graduate programs
+like Medicine, Dentistry, Pharmacy, Law, etc., as a different set of attributes.
+Another group of columns provides details of In-State and Out-of-State students tuition fees.
+Expenses such as books/supplies, boarding, and resources, are also available in these data files.</p>
+<p>The information in this wide column file is broadly categorized into 4 groups described below.</p>
+<p><strong>Institutional charge (General)</strong></p>
+<p>This cross-section of attributes covers average tuition/required fees, and per-credit fees charged by educational institutes.
+Fees vary significantly from state to state, public to private, and ranking of institutes (demand vs supply).</p>
+<p><strong>Institutional charge by academic branch</strong></p>
+<p>The details of the fees by academic subjects like dentistry, medicine, optometry, osteopathic medicine, pharmacy, podiatry,
+veterinary medicine, and law by institutions
+for in-state and out-of-state students are available in this section.</p>
+<p><strong>Institutional charge by residency type</strong></p>
+<p>The residency type determines different fee structures in public
+universities for the same courses. Normally, in-state students
+are charged less than out-of-state. This set of attributes will provide insight into those patterns.</p>
+<p><strong>Institutional charge by category</strong></p>
+<p>Various fees like on-campus boarding, books/supplies, and other
+on-campus expenses are available in this section of the file.</p>
+<p>ORC dataset is extremely denormalized file coming from the big data platform.
+To serve this data for reporting engine,
+we need to rethink servicing layer strucutre differently than just loading data into the single servicing layer table.
+Deeper inside of data helps us to understand,
+the attributes of the OD table are categorized into a core group and the 3 groups shown below.</p>
+<div class="section" id="charges-by-the-academic-branch">
+<h3>Charges by the academic branch<a class="headerlink" href="#charges-by-the-academic-branch" title="Permalink to this headline">¶</a></h3>
+<p>This section covers the fees charged by different professional colleges.</p>
+<p><strong>Chiropractic</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><p>InstitutionalCharge</p></li>
-<li><p>InstitutionalChargeByAcademicBranch</p></li>
-<li><p>InstitutionalChargeByResidencyType</p></li>
-<li><p>InstitutionalChargeByCategory</p></li>
+<li><p>Chiropractic_InStateTuition</p></li>
+<li><p>Chiropractic_InStateRequiredFees</p></li>
+<li><p>Chiropractic_OutOfStateTuition</p></li>
+<li><p>Chiropractic_OutOfStateRequiredFees</p></li>
+</ul>
+</div></blockquote>
+<p><strong>Medicine</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Medicine_InStateTuition</p></li>
+<li><p>Medicine_InStateRequiredFees</p></li>
+<li><p>Medicine_OutOfStateTuition</p></li>
+<li><p>Medicine_OutOfStateRequiredFees</p></li>
 </ul>
 </div></blockquote>
 </div>
-<div class="section" id="servicing-layer-data-structure">
-<h2>Servicing layer data structure<a class="headerlink" href="#servicing-layer-data-structure" title="Permalink to this headline">Â¶</a></h2>
-<p>We create a fact tables for
-institutional charge data called:</p>
+<div class="section" id="charges-by-residency-type">
+<h3>Charges by residency type<a class="headerlink" href="#charges-by-residency-type" title="Permalink to this headline">¶</a></h3>
+<p><strong>InDistrictTuition</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>PublishedInDistrictTuitionYear0</p></li>
+<li><p>PublishedInDistrictTuitionYear1</p></li>
+<li><p>PublishedInDistrictTuitionYear2</p></li>
+<li><p>PublishedInDistrictTuitionYear3</p></li>
+</ul>
+</div></blockquote>
+<p><strong>InDistrictFees</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>PublishedInDistrictFeesYear0</p></li>
+<li><p>PublishedInDistrictFeesYear1</p></li>
+<li><p>PublishedInDistrictFeesYear2</p></li>
+<li><p>PublishedInDistrictFeesYear3</p></li>
+</ul>
+</div></blockquote>
+<p><strong>InDistrictTuitionFees</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>PublishedInDistrictTuitionFeesYear0</p></li>
+<li><p>PublishedInDistrictTuitionFeesYear1</p></li>
+<li><p>PublishedInDistrictTuitionFeesYear2</p></li>
+<li><p>PublishedInDistrictTuitionFeesYear3</p></li>
+</ul>
+</div></blockquote>
+<p><strong>InStateTuition</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>PublishedInStateTuitionYear0</p></li>
+<li><p>PublishedInStateTuitionYear1</p></li>
+<li><p>PublishedInStateTuitionYear2</p></li>
+<li><p>PublishedInStateTuitionYear3</p></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="institutional-charge-by-category">
+<h3>Institutional charge by category<a class="headerlink" href="#institutional-charge-by-category" title="Permalink to this headline">¶</a></h3>
+<p><strong>BooksSupplies</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>BooksSuppliesYear0</p></li>
+<li><p>BooksSuppliesYear1</p></li>
+<li><p>BooksSuppliesYear2</p></li>
+<li><p>BooksSuppliesYear3</p></li>
+</ul>
+</div></blockquote>
+<p><strong>OnCampusRoomBoard</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>OnCampusRoomBoardYear0</p></li>
+<li><p>OnCampusRoomBoardYear1</p></li>
+<li><p>OnCampusRoomBoardYear2</p></li>
+<li><p>OnCampusRoomBoardYear3</p></li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="servicing-layer-entities-for-orc">
+<h2>Servicing layer entities for ORC<a class="headerlink" href="#servicing-layer-entities-for-orc" title="Permalink to this headline">¶</a></h2>
+<p>After analyzing dataset, we decided to add the following entities to the servicing layer.
+These entities will be populated in the transformation logic. All these tables will hold numeric data associated with the
+specific type of charges. While processing the InstitutionalCharge dataset, data is
+normalized from the OD layer and mapped to the servicing layer tables.
+The fact tables for institutional charge data called:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p><strong>InstitutionalCharge</strong></p></li>
@@ -1190,8 +1194,6 @@ dimension table <strong>AcademicInstitution</strong>. The relationship represent
 dimensional modelling architecture. This is made possible by
 adding the surrogate key column (<strong>AcademicInstitutionUniqueDWSID</strong>)
 of the dimension table AcademicInstitution to these fact tables.</p>
-<p>While processing the InstitutionalCharge dataset, tables
-are normalized from the OD layer and mapped to the servicing layer.</p>
 <p>The following scripts are used to create these tables.</p>
 <p>InstitutionalCharge Entity:</p>
 <div class="toggle docutils container">
@@ -1274,8 +1276,8 @@ are normalized from the OD layer and mapped to the servicing layer.</p>
 </div>
 </div>
 </div>
-<div class="section" id="unpivot-data-to-load-into-the-servicing-layer">
-<h2>Unpivot data to load into the servicing layer<a class="headerlink" href="#unpivot-data-to-load-into-the-servicing-layer" title="Permalink to this headline">Â¶</a></h2>
+<div class="section" id="data-prepration-for-servicing-layer-load">
+<h2>Data prepration for servicing layer load<a class="headerlink" href="#data-prepration-for-servicing-layer-load" title="Permalink to this headline">¶</a></h2>
 <p>In our case, data is stored in the OD layer in a pivoted record structure. We will need to unpivot these attributes to load
 the servicing layer.</p>
 <p>We can unpivot data structure in a traditional SQL environment by creating a UNION on underlying attributes.</p>
@@ -2196,11 +2198,14 @@ to v_od_InstitutionalChargeByResidencyType and v_od_InstitutionalChargeByAcademi
 </div>
 </div>
 </div>
-<div class="section" id="alternative-approach">
-<h2>Alternative approach<a class="headerlink" href="#alternative-approach" title="Permalink to this headline">Â¶</a></h2>
+<div class="section" id="alternative-approach-for-data-prepration">
+<h2>Alternative approach for data prepration<a class="headerlink" href="#alternative-approach-for-data-prepration" title="Permalink to this headline">¶</a></h2>
+<p>Alternative approach is to bring data from staged files to the OD table in the above groups.
+We use these data groups to load the servicing layer and simplify unpivot logic. Also make it easy to adjust the load
+process, if the new groups gets added in the furture. This will need some transformation as part of ingestion process.</p>
 <p>We store JSON objects in the OD layer to simplify the load.
 As new attributes are added, it is easy to manage data ingestion.
-JSON data structure is easy to consume in the application layer, as we will further detail in the next section.</p>
+JSON data structure is easy to consume in the Snowflake data processing, as we will further detail in the next section.</p>
 <p><strong>Change in institutional charge operational datastore</strong></p>
 <p>The staged file data is grouped into three JSON objects:</p>
 <ul class="simple">
@@ -2610,7 +2615,7 @@ $$
 </div>
 </div>
 <div class="section" id="data-load-into-the-servicing-layer">
-<h2>Data load into the servicing layer<a class="headerlink" href="#data-load-into-the-servicing-layer" title="Permalink to this headline">Â¶</a></h2>
+<h2>Data load into the servicing layer<a class="headerlink" href="#data-load-into-the-servicing-layer" title="Permalink to this headline">¶</a></h2>
 <p>We will be using the OD table od_InstitutionalCharge and the above three views to finally land data to its destination.
 There are four stored procedures that use these data sources and process them into the respective servicing layer tables,
 taking the academic year as their input parameter.
@@ -2919,7 +2924,7 @@ are loaded by calling these stored procedures:</p>
 </div>
 </div>
 <div class="section" id="summary">
-<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">Â¶</a></h2>
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
 <p>Ingesting ORC files in Snowflake is as easy as ingesting JSON data. We learned about a variety of transformations, moving data from
 the landing layer to the servicing layer. We also covered how to unpivot data stored in the OD layer
 and load into the servicing layer.
@@ -2975,17 +2980,22 @@ In the next chapter, we will be creating a Snowflake pipeline to ingest Parquet 
 <li class="toctree-l1"><a class="reference internal" href="CSVIngestion.html">CSV ingestion</a></li>
 <li class="toctree-l1"><a class="reference internal" href="JSONIngestion.html">JSON ingestion</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">ORC ingestion</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#functions-to-manage-semi-structured-data">Functions to manage semi-structured data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#institutional-charges">Institutional charges</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#staged-file-for-institutional-charges">Staged file for institutional charges</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#operational-data-od-table-for-an-institutional-charge">Operational data (OD) table for an institutional charge</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#charges-by-the-academic-branch">Charges by the academic branch</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#charges-by-residency-type">Charges by residency type</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#institutional-charge-by-category">Institutional charge by category</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#stored-procedure-for-od-table-load">Stored procedure for OD table load</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#servicing-layer-data-structure">Servicing layer data structure</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#unpivot-data-to-load-into-the-servicing-layer">Unpivot data to load into the servicing layer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#alternative-approach">Alternative approach</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#orc-processing">ORC processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#functions-to-manage-json">Functions to manage JSON</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ingesting-orc-data">Ingesting ORC data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#operational-data-od-table">Operational data (OD) table</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#od-table-load">OD table load</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#data-analysis">Data analysis</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#charges-by-the-academic-branch">Charges by the academic branch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#charges-by-residency-type">Charges by residency type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#institutional-charge-by-category">Institutional charge by category</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#servicing-layer-entities-for-orc">Servicing layer entities for ORC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#data-prepration-for-servicing-layer-load">Data prepration for servicing layer load</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#alternative-approach-for-data-prepration">Alternative approach for data prepration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#data-load-into-the-servicing-layer">Data load into the servicing layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#summary">Summary</a></li>
 </ul>

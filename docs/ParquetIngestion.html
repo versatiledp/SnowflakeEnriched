@@ -38,7 +38,17 @@
           <div class="body" role="main">
             
   <div class="section" id="parquet-ingestion">
-<h1>Parquet ingestion<a class="headerlink" href="#parquet-ingestion" title="Permalink to this headline">Â¶</a></h1>
+<h1>Parquet ingestion<a class="headerlink" href="#parquet-ingestion" title="Permalink to this headline">¶</a></h1>
+<p>We will learn how to:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Ingest Parquet files from the staged Snowflake region.</p></li>
+<li><p>Servicing layer for Parquet data.</p></li>
+<li><p>Loading servicing layer from Parquet data.</p></li>
+</ul>
+</div></blockquote>
+<div class="section" id="parquet-processing">
+<h2>Parquet processing<a class="headerlink" href="#parquet-processing" title="Permalink to this headline">¶</a></h2>
 <p>Apache Parquet is a column-oriented binary file format that provides optimizations
 to speed up the process and is a far more efficient file format than CSV or JSON.
 It is known for its features like performance, data compression, and ability to handle a
@@ -47,14 +57,16 @@ enable to fetch only the required columns and values,
 load those in memory and answer the query.
 If a row-based file format like CSV was used, the entire table would have to have been
 loaded in memory, resulting in increased I/O and worse performance.
-Snowflake manages Parquet files similar to semi-structured JSON data from VARIANT type.</p>
-<p>We can convert VARIANT column Parquet data to a multi-column table by
-specifying column names and data types.
-Parquet data is retrieved from <strong>&#64;IPEDS_ADM</strong> staged file using the following code.</p>
+Snowflake manages Parquet files similar to semi-structured JSON data from VARIANT type.
+Snowflake allows loading Parquet data directly into relational tables from the staged file.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><em>Please refer to the section â€˜Load the files to the internal stage for IPEDSâ€™ in the chapter â€˜Introducing data platformâ€™ for creating staged files</em>.</p>
+<p><em>Please refer to the section ‘Load the files to the internal stage for IPEDS’ in the chapter ‘Introducing data platform’ for creating staged files</em>.</p>
 </div>
+<p>The admission statistics contain information about the number of applicants by various categories:
+admission test scores, SAT/ACT percentile scores, and so on.
+These statistics are stored in Parquet format.
+Parquet data is retrieved from <strong>&#64;IPEDS_ADM</strong> staged file using the following code.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT P.$1 Parquetdata FROM  @IPEDS_ADM P;
 </pre></div>
 </div>
@@ -62,23 +74,9 @@ Parquet data is retrieved from <strong>&#64;IPEDS_ADM</strong> staged file using
 <div class="figure align-center">
 <img alt="images/ParquetInternalStagedDataSelect.JPG" src="images/ParquetInternalStagedDataSelect.JPG" />
 </div>
-<p>Parquet data is also stored as JSON documents.
-JSON document processing can be used to transform Parquet data.</p>
-<div class="section" id="admission-statistics">
-<h2>Admission statistics<a class="headerlink" href="#admission-statistics" title="Permalink to this headline">Â¶</a></h2>
-<p>The admission statistics contain information about the number of applicants by various categories:
-admission test scores, SAT/ACT percentile scores, and so on.
-These statistics are stored in Parquet format.</p>
-<p>We will learn how to:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>Ingest Parquet files from the staged Snowflake region.</p></li>
-<li><p>Transform data using the Snowflake JavaScript stored procedures.</p></li>
-<li><p>Execute the stored procedures.</p></li>
-</ul>
-</div></blockquote>
-<p>The staged file for keeping track of institution admission statistics is &#64;IPEDS_ADM.
-Please note that the columns are selected using <strong>$1 :&lt;column_name&gt;</strong>.
+<p>We can convert VARIANT column Parquet data to a multi-column table by
+specifying column names and data types.</p>
+<p>Please note that the columns are selected using <strong>$1 :&lt;column_name&gt;</strong>.
 This is because the data files used here are in the Parquet format.
 We can retrieve the details of a particular year as below.</p>
 <div class="toggle docutils container">
@@ -178,8 +176,8 @@ WHERE CAST(LEFT(METADATA$FileName,4) AS
 </div>
 </div>
 </div>
-<div class="section" id="od-table-for-admission-statistics">
-<h2>OD table for admission statistics<a class="headerlink" href="#od-table-for-admission-statistics" title="Permalink to this headline">Â¶</a></h2>
+<div class="section" id="ingesting-parquet-data">
+<h2>Ingesting Parquet data<a class="headerlink" href="#ingesting-parquet-data" title="Permalink to this headline">¶</a></h2>
 <p>To keep track of admission statistics by year,
 we create an operational data table called <strong>od_AdmissionStat</strong>.
 We have added 3 additional columns named AcademicYear, IngestedFileName, and RowNumber.
@@ -241,10 +239,9 @@ part of the partition key. In our case, the first 4 characters contain the year 
 </pre></div>
 </div>
 </div>
-</div>
-<div class="section" id="stored-procedure-for-the-staging-table">
-<h2>Stored procedure for the staging table<a class="headerlink" href="#stored-procedure-for-the-staging-table" title="Permalink to this headline">Â¶</a></h2>
-<p>Once the staging table is created, we need to populate the table
+<div class="section" id="load-stored-procedure">
+<h3>Load stored procedure<a class="headerlink" href="#load-stored-procedure" title="Permalink to this headline">¶</a></h3>
+<p>Once the OD table is created, we need to populate the table
 with admission statistics data for each year from the staged file.
 For that purpose, we have created a stored procedure called <strong>pr_od_AdmissionStat_Load</strong>.
 This stored procedure takes the YEAR parameter and retrieves the records from the staged file for that year.
@@ -382,8 +379,9 @@ $$
 </pre></div>
 </div>
 </div>
-<div class="section" id="admission-statistics-servicing-layer">
-<h2>Admission statistics servicing layer<a class="headerlink" href="#admission-statistics-servicing-layer" title="Permalink to this headline">Â¶</a></h2>
+</div>
+<div class="section" id="servicing-layer-for-parquet">
+<h2>Servicing layer for Parquet<a class="headerlink" href="#servicing-layer-for-parquet" title="Permalink to this headline">¶</a></h2>
 <p>We create a fact table for
 admission statistics called <strong>AdmissionStat</strong>, which has links to the
 dimension table <strong>AcademicInstitution</strong>. The relationship represents the star schema of
@@ -448,9 +446,8 @@ of the dimension table AcademicInstitution to the fact table AdmissionStat.</p>
 </pre></div>
 </div>
 </div>
-</div>
-<div class="section" id="admission-statistics-data-load">
-<h2>Admission statistics data load<a class="headerlink" href="#admission-statistics-data-load" title="Permalink to this headline">Â¶</a></h2>
+<div class="section" id="servicing-layer-data-load">
+<h3>Servicing layer data load<a class="headerlink" href="#servicing-layer-data-load" title="Permalink to this headline">¶</a></h3>
 <p>The service layer/fact table AdmissionStat is loaded from the OD table od_AdmissionStat by year.
 Every time this fact table is updated, it is loaded with the latest data for that year.
 Therefore, old data loaded for that year is deleted and new data is loaded from the OD table.
@@ -600,8 +597,9 @@ $$;
 </pre></div>
 </div>
 </div>
+</div>
 <div class="section" id="summary">
-<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">Â¶</a></h2>
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
 <p>In this chapter, we went through the data loading process of Parquet files in Snowflake.
 This data processing architecture is similar to that of CSV files and is made easily consumable
 by Snowflake. We loaded 3 years of admission statistics files in the staged area. We added
@@ -658,11 +656,15 @@ where a file has records for multiple destination entities.</p>
 <li class="toctree-l1"><a class="reference internal" href="JSONIngestion.html">JSON ingestion</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ORCIngestion.html">ORC ingestion</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Parquet ingestion</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#admission-statistics">Admission statistics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#od-table-for-admission-statistics">OD table for admission statistics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#stored-procedure-for-the-staging-table">Stored procedure for the staging table</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#admission-statistics-servicing-layer">Admission statistics servicing layer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#admission-statistics-data-load">Admission statistics data load</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#parquet-processing">Parquet processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ingesting-parquet-data">Ingesting Parquet data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#load-stored-procedure">Load stored procedure</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#servicing-layer-for-parquet">Servicing layer for Parquet</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#servicing-layer-data-load">Servicing layer data load</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#summary">Summary</a></li>
 </ul>
 </li>

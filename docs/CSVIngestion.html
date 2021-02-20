@@ -38,23 +38,30 @@
           <div class="body" role="main">
             
   <div class="section" id="csv-ingestion">
-<h1>CSV ingestion<a class="headerlink" href="#csv-ingestion" title="Permalink to this headline">Â¶</a></h1>
+<h1>CSV ingestion<a class="headerlink" href="#csv-ingestion" title="Permalink to this headline">¶</a></h1>
 <p>This section explains how to:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>Use ingested CSV files from the staged Snowflake region.</p></li>
+<li><p>Build views in Snowflake.</p></li>
 <li><p>Transform data using Snowflake JavaScript stored procedures.</p></li>
 <li><p>Execute stored procedures.</p></li>
-<li><p>Build views in Snowflake.</p></li>
 <li><p>Manage schema drifts from one file to another file.</p></li>
 <li><p>Build processes so that the schema drift does not interfere with the processing of historical data.</p></li>
 <li><p>Combine column attributes to form JSON objects as part of the transformation.</p></li>
 <li><p>Perform SQL MERGE using the hash key.</p></li>
 </ul>
 </div></blockquote>
-<div class="section" id="academic-institution">
-<h2>Academic institution<a class="headerlink" href="#academic-institution" title="Permalink to this headline">Â¶</a></h2>
-<p>The academic institution files contain high-level information about institutions in US
+<div class="section" id="csv-processing">
+<h2>CSV  processing<a class="headerlink" href="#csv-processing" title="Permalink to this headline">¶</a></h2>
+<p>CSV stands for comma-separated values. Its data fields are most often separated, or delimited, by a comma.
+CSV is a simple file format used to store tabular data, such as a spreadsheet or database.
+Files in the CSV format can be imported to and exported from programs that store data in tables.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><em>Please refer to the section ‘Load the files to the internal stage for IPEDS’ in the chapter ‘Introducing data platform’ for creating staged files</em>.</p>
+</div>
+<p>Academic institution data files are received in CSV format. The academic institution dataset contain high-level information about institutions in US
 for the years 2017, 2018 and 2019, respectively.</p>
 <blockquote>
 <div><ul class="simple">
@@ -63,15 +70,8 @@ for the years 2017, 2018 and 2019, respectively.</p>
 <li><p>HD2019.csv</p></li>
 </ul>
 </div></blockquote>
-<p>In staged files, data can be located in an internal stage (in a Snowflake database)
-or an external named stage (Amazon S3, Google Cloud Storage, or Microsoft Azure).
-Staged files are identified by the &#64; character prefixed to the name.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p><em>Please refer to the section â€˜Load the files to the internal stage for IPEDSâ€™ in the chapter â€˜Introducing data platformâ€™ for creating staged files</em>.</p>
-</div>
-<p>Academic institution data files are received in CSV format.
-In this case, <strong>&#64;IPEDS_HD</strong>  is the staged file containing information about the academic institutions.
+<p>In this case, <strong>&#64;IPEDS_HD</strong>  is the staged file containing information about the academic institutions. Staged files are identified by the &#64; character prefixed to the name.
+The staged file &#64;IPEDS_HD is available in the internal Snowflake stage.
 Data is retrieved using the SQL command <strong>SELECT $&lt;column_number&gt;</strong> from the staged files created using CSV format.
 The &lt;column_number&gt; represents the order in which the columns are available in the text file starting with the number 1.
 In other words, $1 refers to first column values, $2 refers to second column values, and $n refers to nth column values from the staged file.</p>
@@ -84,7 +84,8 @@ In other words, $1 refers to first column values, $2 refers to second column val
 <div class="figure align-center">
 <img alt="images/IPEDTableData.jpg" src="images/IPEDTableData.jpg" />
 </div>
-<p>To ignore header records from loading into the data table, we can skip the header information row of the staged file as below.</p>
+<p>To ignore header records from loading into the data table,
+we can skip the header information row of the staged file as below.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT $1,$2,$3,$4,$5,$6,$7,<span class="ge">***</span>*,$71,$72
 FROM @IPEDS_HD WHERE metadata$file_row_number &gt; 1;
 </pre></div>
@@ -98,8 +99,8 @@ between staged layer and column names in OD tables (
 <a class="reference external" href="https://versatiledp.github.io/SnowflakeEnriched/Mapping/AcademicInstitute.htm"   target="_blank">SnowflakeEnriched/Mapping/AcademicInstitute</a>
 ).</p>
 </div>
-<div class="section" id="od-table-for-academic-institution">
-<h2>OD table for academic institution<a class="headerlink" href="#od-table-for-academic-institution" title="Permalink to this headline">Â¶</a></h2>
+<div class="section" id="ingesting-csv-data">
+<h2>Ingesting CSV data<a class="headerlink" href="#ingesting-csv-data" title="Permalink to this headline">¶</a></h2>
 <p>Operational data (OD) tables are physical tables populated from the corresponding staged files.
 The ELT process will copy the data from staged files to OD tables.
 OD tables are defined by column types and descriptive column names.
@@ -214,17 +215,12 @@ IngestedFileName = METADATA$FILENAME
 RowNumber  = METADATA$FILE_ROW_NUMBER
 </pre></div>
 </div>
-</div>
-<div class="section" id="snowflake-view-and-stored-procedure">
-<h2>Snowflake view and stored procedure<a class="headerlink" href="#snowflake-view-and-stored-procedure" title="Permalink to this headline">Â¶</a></h2>
-<p>We have introduced a Snowflake view and a stored procedure in between
+<div class="section" id="managing-metadata-of-the-staged-file">
+<h3>Managing metadata of the staged file<a class="headerlink" href="#managing-metadata-of-the-staged-file" title="Permalink to this headline">¶</a></h3>
+<p>We have introduced a Snowflake view in between
 the staged files and operational data (OD) table to manage data processing using extract load and transform (ELT).
 The view is built on top of the staged file to do the necessary mapping and create
-appropriate column names for the result set. The stored procedure consumes this
-view and loads the OD table for a specific year.</p>
-</div>
-<div class="section" id="managing-metadata-of-the-staged-file">
-<h2>Managing metadata of the staged file<a class="headerlink" href="#managing-metadata-of-the-staged-file" title="Permalink to this headline">Â¶</a></h2>
+appropriate column names for the result set.</p>
 <p>The academic institution information for the years 2017, 2018, and 2019 is now available in the staged file.
 The view <strong>v_od_AcademicInstitution</strong> is added using the mapping table defined earlier for the staged file &#64;IPEDS_HD.
 Later, this view will be used for populating the staging table.</p>
@@ -333,11 +329,16 @@ WHERE AcademicYear = 2017;
 <p>The ETL process can ingest data for one year at a time and process it. It can drop
 the ingested file from the staged area and process the next year data.</p>
 </div>
-<div class="section" id="stored-procedure-for-od-table-load">
-<h2>Stored procedure for OD table load<a class="headerlink" href="#stored-procedure-for-od-table-load" title="Permalink to this headline">Â¶</a></h2>
+<div class="section" id="loading-operational-datastore-table-for-csv">
+<h3>Loading operational datastore table for CSV<a class="headerlink" href="#loading-operational-datastore-table-for-csv" title="Permalink to this headline">¶</a></h3>
 <p>Stored procedures are created to perform one or more DML operations.
 They are simply a group of SQL statements that accept some input, perform some task, and may or may not return a value.
 In Snowflake, stored procedures are similar to functions, and can be executed multiple times.</p>
+<p>We have created a process to load the OD table od_AcademicInstitution data from the view,
+one year of data at a time. For this purpose, we have created a stored procedure
+<strong>pr_od_AcademicInstitution_Load</strong>. This stored procedure takes a parameter
+YEAR and retrieves the data from the view v_od_AcademicInstitution for that year.
+The retrieved records are then inserted into the OD table.</p>
 <p>Stored procedures allow us to extend Snowflake SQL by combining it with JavaScript.</p>
 <blockquote>
 <div><ul class="simple">
@@ -350,11 +351,6 @@ In Snowflake, stored procedures are similar to functions, and can be executed mu
 </ul>
 </div></blockquote>
 <p>A stored procedure is created with a <strong>CREATE PROCEDURE</strong> command and executed with a <strong>CALL</strong> command.</p>
-<p>We have created a process to load the OD table od_AcademicInstitution data from the view,
-one year of data at a time. For this purpose, we have created a stored procedure
-<strong>pr_od_AcademicInstitution_Load</strong>. This stored procedure takes a parameter
-YEAR and retrieves the data from the view v_od_AcademicInstitution for that year.
-The retrieved records are then inserted into the OD table.</p>
 <p>Here is the script for creating the Snowflake stored procedure pr_od_AcademicInstitution_Load.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
@@ -538,7 +534,7 @@ $$
 </pre></div>
 </div>
 </div>
-<p>The orchestration engine needs to delete old data from the OD table and load new data.</p>
+<p>The orchestration engine needs to delete old data from the OD table and load data for specific year from staged file.</p>
 <p>The OD table is truncated and data for 2017 is loaded as below.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>TRUNCATE TABLE od_AcademicInstitution;
 CALL pr_od_AcademicInstitution_Load(2017::FLOAT);
@@ -553,9 +549,10 @@ CALL pr_od_AcademicInstitution_Load(2017::FLOAT);
 <img alt="images/academicInstitute.jpg" src="images/academicInstitute.jpg" />
 </div>
 </div>
-<div class="section" id="academic-institution-data-processing">
-<h2>Academic institution data processing<a class="headerlink" href="#academic-institution-data-processing" title="Permalink to this headline">Â¶</a></h2>
-<p>Using the academic institution files, we have built a dimension table called <strong>AcademicInstitution</strong>.
+</div>
+<div class="section" id="servicing-layer-entity-for-csv-data">
+<h2>Servicing layer entity for CSV data<a class="headerlink" href="#servicing-layer-entity-for-csv-data" title="Permalink to this headline">¶</a></h2>
+<p>We have built a dimension table called <strong>AcademicInstitution</strong> in the servicing layer.
 This dimension table will be used by fact tables at the servicing layer in forthcoming chapters.</p>
 <p>In general, a dimension table contains keys, columns, and other attributes that are associated with the business key.
 A system-generated key (primary key) is used to uniquely identify a row in the dimension and it is also known as a surrogate key. In dimensional data warehouse architecture,
@@ -689,7 +686,7 @@ Thus, another VARIANT data type column WebAddress is also created.</p>
 </div></blockquote>
 </div>
 <div class="section" id="load-dimension-table">
-<h2>Load dimension table<a class="headerlink" href="#load-dimension-table" title="Permalink to this headline">Â¶</a></h2>
+<h2>Load dimension table<a class="headerlink" href="#load-dimension-table" title="Permalink to this headline">¶</a></h2>
 <p>Once the dimension table is created, we need to load the dimension table AcademicInstitution
 with data from the operational data table od_AcademicInstitution.
 This is made possible by using the Snowflake <strong>MERGE</strong> command.</p>
@@ -703,7 +700,7 @@ If any of the column values are updated in the OD table, that value is updated i
 If the business key InstitutionIdentifier is not present in the dimension table (new records in the OD table),
 that record is inserted into the dimension table.</p>
 <p>We are using Type 1 slowly changing dimension, in which new data overwrites existing data.
-However, Snowflakeâ€™s time travel feature can be used to view the original data before the update.</p>
+However, Snowflake’s time travel feature can be used to view the original data before the update.</p>
 <p>We have created a stored procedure <strong>pr_AcademicInstitution_Load</strong> for merging data from the staging
 table od_AcademicInstitution to the dimension table AcademicInstitution.
 The script to create the stored procedure is given below.</p>
@@ -1176,7 +1173,7 @@ SELECT * FROM AcademicInstitution
 </div>
 </div>
 <div class="section" id="schema-drift">
-<h2>Schema drift<a class="headerlink" href="#schema-drift" title="Permalink to this headline">Â¶</a></h2>
+<h2>Schema drift<a class="headerlink" href="#schema-drift" title="Permalink to this headline">¶</a></h2>
 <p>Structural changes in the incoming data files are quite common in a data warehouse environment.
 In our case, from 2018 we have noticed the following structural
 changes in the input files generated from the source system.</p>
@@ -2143,7 +2140,7 @@ try {
 </div>
 </div>
 <div class="section" id="merge-using-the-hash-key">
-<h2>MERGE using the hash key<a class="headerlink" href="#merge-using-the-hash-key" title="Permalink to this headline">Â¶</a></h2>
+<h2>MERGE using the hash key<a class="headerlink" href="#merge-using-the-hash-key" title="Permalink to this headline">¶</a></h2>
 <p>In the hash key stored procedure, we join the source and target tables using the business key InstitutionIdentifier.
 When a matching record is found, we compare individual
 columns between the source and target tables using hash keys to find any column values changed in the source.
@@ -2695,7 +2692,7 @@ try {
 </div>
 </div>
 <div class="section" id="summary">
-<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">Â¶</a></h2>
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
 <p>In this chapter, we traveled through the process of loading and processing academic institution files
 for the years 2017, 2018, and 2019. We created a staged file and a corresponding operational data table to store
 institution details by year. We discussed in detail the views and stored procedures used to populate
@@ -2754,12 +2751,13 @@ We will learn about JSON ingestion in the next chapter.</p>
 <li class="toctree-l1"><a class="reference internal" href="IntroducingSnowflake.html">Introducing Snowflake</a></li>
 <li class="toctree-l1"><a class="reference internal" href="IntroducingDataplatform.html">Introducing data platform</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">CSV ingestion</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#academic-institution">Academic institution</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#od-table-for-academic-institution">OD table for academic institution</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#snowflake-view-and-stored-procedure">Snowflake view and stored procedure</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#managing-metadata-of-the-staged-file">Managing metadata of the staged file</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#stored-procedure-for-od-table-load">Stored procedure for OD table load</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#academic-institution-data-processing">Academic institution data processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#csv-processing">CSV  processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ingesting-csv-data">Ingesting CSV data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#managing-metadata-of-the-staged-file">Managing metadata of the staged file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#loading-operational-datastore-table-for-csv">Loading operational datastore table for CSV</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#servicing-layer-entity-for-csv-data">Servicing layer entity for CSV data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#load-dimension-table">Load dimension table</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#schema-drift">Schema drift</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#merge-using-the-hash-key">MERGE using the hash key</a></li>

@@ -116,12 +116,13 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="CSVIngestion.html">CSV ingestion</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="CSVIngestion.html#academic-institution">Academic institution</a></li>
-<li class="toctree-l2"><a class="reference internal" href="CSVIngestion.html#od-table-for-academic-institution">OD table for academic institution</a></li>
-<li class="toctree-l2"><a class="reference internal" href="CSVIngestion.html#snowflake-view-and-stored-procedure">Snowflake view and stored procedure</a></li>
-<li class="toctree-l2"><a class="reference internal" href="CSVIngestion.html#managing-metadata-of-the-staged-file">Managing metadata of the staged file</a></li>
-<li class="toctree-l2"><a class="reference internal" href="CSVIngestion.html#stored-procedure-for-od-table-load">Stored procedure for OD table load</a></li>
-<li class="toctree-l2"><a class="reference internal" href="CSVIngestion.html#academic-institution-data-processing">Academic institution data processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CSVIngestion.html#csv-processing">CSV  processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CSVIngestion.html#ingesting-csv-data">Ingesting CSV data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CSVIngestion.html#managing-metadata-of-the-staged-file">Managing metadata of the staged file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CSVIngestion.html#loading-operational-datastore-table-for-csv">Loading operational datastore table for CSV</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="CSVIngestion.html#servicing-layer-entity-for-csv-data">Servicing layer entity for CSV data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="CSVIngestion.html#load-dimension-table">Load dimension table</a></li>
 <li class="toctree-l2"><a class="reference internal" href="CSVIngestion.html#schema-drift">Schema drift</a></li>
 <li class="toctree-l2"><a class="reference internal" href="CSVIngestion.html#merge-using-the-hash-key">MERGE using the hash key</a></li>
@@ -129,40 +130,51 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="JSONIngestion.html">JSON ingestion</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="JSONIngestion.html#enrollment">Enrollment</a></li>
-<li class="toctree-l2"><a class="reference internal" href="JSONIngestion.html#operational-data-od-table-for-enrollment">Operational data (OD) table for enrollment</a></li>
-<li class="toctree-l2"><a class="reference internal" href="JSONIngestion.html#enrollment-load">Enrollment load</a></li>
+<li class="toctree-l2"><a class="reference internal" href="JSONIngestion.html#json-processing">JSON processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="JSONIngestion.html#ingesting-json-data">Ingesting JSON data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="JSONIngestion.html#servicing-layer-transforming-json-data">Servicing layer Transforming JSON data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="JSONIngestion.html#executing-load-procedures">Executing load procedures</a></li>
 <li class="toctree-l2"><a class="reference internal" href="JSONIngestion.html#summary">Summary</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="ORCIngestion.html">ORC ingestion</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="ORCIngestion.html#functions-to-manage-semi-structured-data">Functions to manage semi-structured data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ORCIngestion.html#institutional-charges">Institutional charges</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ORCIngestion.html#staged-file-for-institutional-charges">Staged file for institutional charges</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ORCIngestion.html#operational-data-od-table-for-an-institutional-charge">Operational data (OD) table for an institutional charge</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ORCIngestion.html#charges-by-the-academic-branch">Charges by the academic branch</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ORCIngestion.html#charges-by-residency-type">Charges by residency type</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ORCIngestion.html#institutional-charge-by-category">Institutional charge by category</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ORCIngestion.html#stored-procedure-for-od-table-load">Stored procedure for OD table load</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ORCIngestion.html#servicing-layer-data-structure">Servicing layer data structure</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ORCIngestion.html#unpivot-data-to-load-into-the-servicing-layer">Unpivot data to load into the servicing layer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ORCIngestion.html#alternative-approach">Alternative approach</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ORCIngestion.html#orc-processing">ORC processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ORCIngestion.html#functions-to-manage-json">Functions to manage JSON</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ORCIngestion.html#ingesting-orc-data">Ingesting ORC data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ORCIngestion.html#operational-data-od-table">Operational data (OD) table</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ORCIngestion.html#od-table-load">OD table load</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ORCIngestion.html#data-analysis">Data analysis</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ORCIngestion.html#charges-by-the-academic-branch">Charges by the academic branch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ORCIngestion.html#charges-by-residency-type">Charges by residency type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ORCIngestion.html#institutional-charge-by-category">Institutional charge by category</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ORCIngestion.html#servicing-layer-entities-for-orc">Servicing layer entities for ORC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ORCIngestion.html#data-prepration-for-servicing-layer-load">Data prepration for servicing layer load</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ORCIngestion.html#alternative-approach-for-data-prepration">Alternative approach for data prepration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ORCIngestion.html#data-load-into-the-servicing-layer">Data load into the servicing layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ORCIngestion.html#summary">Summary</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="ParquetIngestion.html">Parquet ingestion</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="ParquetIngestion.html#admission-statistics">Admission statistics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ParquetIngestion.html#od-table-for-admission-statistics">OD table for admission statistics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ParquetIngestion.html#stored-procedure-for-the-staging-table">Stored procedure for the staging table</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ParquetIngestion.html#admission-statistics-servicing-layer">Admission statistics servicing layer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ParquetIngestion.html#admission-statistics-data-load">Admission statistics data load</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ParquetIngestion.html#parquet-processing">Parquet processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ParquetIngestion.html#ingesting-parquet-data">Ingesting Parquet data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ParquetIngestion.html#load-stored-procedure">Load stored procedure</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ParquetIngestion.html#servicing-layer-for-parquet">Servicing layer for Parquet</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ParquetIngestion.html#servicing-layer-data-load">Servicing layer data load</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="ParquetIngestion.html#summary">Summary</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="SemiStructuredDataIngestion.html">Multi-format ingestion</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="SemiStructuredDataIngestion.html#data-files">Data files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="SemiStructuredDataIngestion.html#merge-data">Merge data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SemiStructuredDataIngestion.html#multiformat-data-layout">Multiformat data layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SemiStructuredDataIngestion.html#dynamic-od-table-creation-and-load">Dynamic OD table creation and load</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SemiStructuredDataIngestion.html#servicing-layer-merge-data-load">Servicing layer merge data load</a></li>
 <li class="toctree-l2"><a class="reference internal" href="SemiStructuredDataIngestion.html#summary">Summary</a></li>
 </ul>
 </li>
