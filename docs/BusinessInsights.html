@@ -61,25 +61,38 @@ The following diagram shows the relationship between different entities we have 
 <li><p>Tuition cost details by various public colleges.</p></li>
 </ul>
 <p>In this book, all the business insights are generated using <strong>Google Colab</strong>, which provides a Jupyter notebook environment.
-Launch the Colab using URL <a class="reference external" href="https://colab.research.google.com/notebooks/intro.ipynb#recent=true"  target="_blank" >https://colab.research.google.com/notebooks/intro.ipynb#recent=true</a>.
-Colab opens with launch pad as shown below. Click on the <strong>New Notebook</strong> and we are ready to start writing our first notebook code.</p>
+Login to the Google account and launch the Colab using URL <a class="reference external" href="https://colab.research.google.com/notebooks/intro.ipynb">https://colab.research.google.com/notebooks/intro.ipynb</a>.
+Colab opens with launch pad as shown below.</p>
 <div class="figure align-center">
 <img alt="images/colab.JPG" src="images/colab.JPG" />
 </div>
-<p>For running these insights from
-Colab, we first need to install the pre-requisites Snowflake connector drivers to python from
-<a class="reference external" href="https://docs.snowflake.com/en/user-guide/python-connector.html"  target="_blank">https://docs.snowflake.com/en/user-guide/python-connector.html</a></p>
-<p>Then from Colab, connect to the Snowflake database using the Snowflake account, username, password, warehouse, database, and schema.
-These credentials can be stored in a key vault and retrieved at runtime.</p>
-<p>Snowflake SQL execution steps:</p>
+<p>Steps for running all the notesbooks for this chapter:</p>
 <ul class="simple">
-<li><p>Connect to snowflake with the required credentials</p></li>
+<li><p>Download Colab notebooks used in this chapter.</p></li>
+<li><p>Upload these notebooks to Colab using File-&gt;Upload Notebook option.</p></li>
+<li><p>Execute the notebook code.</p></li>
+</ul>
+<p>Activities in the Colab notebook:</p>
+<ul class="simple">
+<li><p>Install Snowflake drivers</p></li>
+<li><p>Connect to Snowflake with the required credentials</p></li>
 <li><p>Create cursor</p></li>
 <li><p>Execute SQL statements</p></li>
 <li><p>Fetch result</p></li>
 <li><p>Close cursor</p></li>
 <li><p>Close connection</p></li>
+<li><p>Process data read from Snowflake</p></li>
+<li><p>Get the user input</p></li>
+<li><p>Display the results</p></li>
 </ul>
+<p><strong>The code covers the following steps for the user.</strong></p>
+<p>It installs the pre-requisites Snowflake connector drivers from
+<a class="reference external" href="https://docs.snowflake.com/en/user-guide/python-connector.html"  target="_blank">https://docs.snowflake.com/en/user-guide/python-connector.html</a></p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>pip install snowflake-connector-python
+</pre></div>
+</div>
+<p>Then from Colab, it creates connection to the Snowflake database using the Snowflake account, username, password, warehouse, database, and schema.
+These credentials can be stored in a key vault and retrieved at runtime.</p>
 <p>The following example dictates how to create a connection object using login parameters.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>conn = snowflake.connector.connect(
                 user=&#39;USER&#39;,
@@ -91,11 +104,11 @@ These credentials can be stored in a key vault and retrieved at runtime.</p>
                 )
 </pre></div>
 </div>
-<p>Widgets are python objects that have a representation in the browser, often as a control like a slider, textbox, etc. We are using <strong>ipywidgets</strong>
+<p>With the connection, it executes the query in the Snowflake and populate Spark data frame in the Notebook.
+All manipulation before the presentation of data is done using these dataframes in Colab notebooks.</p>
+<p>It uses widgets to interact with the users. Widgets are python objects that have a representation in the browser, often as a control like a slider, textbox, etc. We are using <strong>ipywidgets</strong>
 to control parameters for dashboards. We are also using these widgets to build interactive GUIs for our notebooks.</p>
-<p>Data from the Snowflake cursor is copied to Pandas dataframes. All manipulation before the presentation of data
-is done using these dataframes in Colab notebooks.
-We have used <strong>matplotlib</strong> and <strong>plotly</strong> to create data visualizations. These two libraries
+<p>It uses <strong>matplotlib</strong> and <strong>plotly</strong> to create data visualizations. These two libraries
 provide powerful tools to explore, understand, and communicate valuable insights.</p>
 <div class="section" id="institution-reporting">
 <h2>Institution reporting<a class="headerlink" href="#institution-reporting" title="Permalink to this headline">¶</a></h2>
