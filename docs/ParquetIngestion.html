@@ -38,7 +38,7 @@
           <div class="body" role="main">
             
   <div class="section" id="parquet-ingestion">
-<h1>Parquet ingestion<a class="headerlink" href="#parquet-ingestion" title="Permalink to this headline">¶</a></h1>
+<h1>Parquet ingestion<a class="headerlink" href="#parquet-ingestion" title="Permalink to this headline">Â¶</a></h1>
 <p>We will learn how to:</p>
 <blockquote>
 <div><ul class="simple">
@@ -48,7 +48,7 @@
 </ul>
 </div></blockquote>
 <div class="section" id="parquet-processing">
-<h2>Parquet processing<a class="headerlink" href="#parquet-processing" title="Permalink to this headline">¶</a></h2>
+<h2>Parquet processing<a class="headerlink" href="#parquet-processing" title="Permalink to this headline">Â¶</a></h2>
 <p>Apache Parquet is a column-oriented binary file format that provides optimizations
 to speed up the process and is a far more efficient file format than CSV or JSON.
 It is known for its features like performance, data compression, and ability to handle a
@@ -61,7 +61,7 @@ Snowflake manages Parquet files similar to semi-structured JSON data from VARIAN
 Snowflake allows loading Parquet data directly into relational tables from the staged file.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><em>Please refer to the section ‘Load the files to the internal stage for IPEDS’ in the chapter ‘Introducing data platform’ for creating staged files</em>.</p>
+<p><em>Please refer to the section â€˜Load the files to the internal stage for IPEDSâ€™ in the chapter â€˜Introducing data platformâ€™ for creating staged files</em>.</p>
 </div>
 <p>The admission statistics contain information about the number of applicants by various categories:
 admission test scores, SAT/ACT percentile scores, and so on.
@@ -177,7 +177,7 @@ WHERE CAST(LEFT(METADATA$FileName,4) AS
 </div>
 </div>
 <div class="section" id="ingesting-parquet-data">
-<h2>Ingesting Parquet data<a class="headerlink" href="#ingesting-parquet-data" title="Permalink to this headline">¶</a></h2>
+<h2>Ingesting Parquet data<a class="headerlink" href="#ingesting-parquet-data" title="Permalink to this headline">Â¶</a></h2>
 <p>To keep track of admission statistics by year,
 we create an operational data table called <strong>od_AdmissionStat</strong>.
 We have added 3 additional columns named AcademicYear, IngestedFileName, and RowNumber.
@@ -240,7 +240,7 @@ part of the partition key. In our case, the first 4 characters contain the year 
 </div>
 </div>
 <div class="section" id="load-stored-procedure">
-<h3>Load stored procedure<a class="headerlink" href="#load-stored-procedure" title="Permalink to this headline">¶</a></h3>
+<h3>Load stored procedure<a class="headerlink" href="#load-stored-procedure" title="Permalink to this headline">Â¶</a></h3>
 <p>Once the OD table is created, we need to populate the table
 with admission statistics data for each year from the staged file.
 For that purpose, we have created a stored procedure called <strong>pr_od_AdmissionStat_Load</strong>.
@@ -381,7 +381,7 @@ $$
 </div>
 </div>
 <div class="section" id="servicing-layer-for-parquet">
-<h2>Servicing layer for Parquet<a class="headerlink" href="#servicing-layer-for-parquet" title="Permalink to this headline">¶</a></h2>
+<h2>Servicing layer for Parquet<a class="headerlink" href="#servicing-layer-for-parquet" title="Permalink to this headline">Â¶</a></h2>
 <p>We create a fact table for
 admission statistics called <strong>AdmissionStat</strong>, which has links to the
 dimension table <strong>AcademicInstitution</strong>. The relationship represents the star schema of
@@ -447,7 +447,7 @@ of the dimension table AcademicInstitution to the fact table AdmissionStat.</p>
 </div>
 </div>
 <div class="section" id="servicing-layer-data-load">
-<h3>Servicing layer data load<a class="headerlink" href="#servicing-layer-data-load" title="Permalink to this headline">¶</a></h3>
+<h3>Servicing layer data load<a class="headerlink" href="#servicing-layer-data-load" title="Permalink to this headline">Â¶</a></h3>
 <p>The service layer/fact table AdmissionStat is loaded from the OD table od_AdmissionStat by year.
 Every time this fact table is updated, it is loaded with the latest data for that year.
 Therefore, old data loaded for that year is deleted and new data is loaded from the OD table.
@@ -599,7 +599,7 @@ $$;
 </div>
 </div>
 <div class="section" id="summary">
-<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">Â¶</a></h2>
 <p>In this chapter, we went through the data loading process of Parquet files in Snowflake.
 This data processing architecture is similar to that of CSV files and is made easily consumable
 by Snowflake. We loaded 3 years of admission statistics files in the staged area. We added

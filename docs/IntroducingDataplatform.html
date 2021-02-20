@@ -38,7 +38,7 @@
           <div class="body" role="main">
             
   <div class="section" id="introducing-data-platform">
-<h1>Introducing data platform<a class="headerlink" href="#introducing-data-platform" title="Permalink to this headline">¶</a></h1>
+<h1>Introducing data platform<a class="headerlink" href="#introducing-data-platform" title="Permalink to this headline">Â¶</a></h1>
 <p>The modern data architecture allows enterprises to ingest data coming from
 multiple systems, in a variety of data formats, at different speeds, and at unknown
 intervals. The layered data platform design makes it easy to process big
@@ -46,7 +46,7 @@ data efficiently. It enables organizations to quickly deploy new analytical
 business-driven solutions to drive revenue and
 profitability.</p>
 <div class="section" id="pillars-of-data-platform">
-<h2>Pillars of data platform<a class="headerlink" href="#pillars-of-data-platform" title="Permalink to this headline">¶</a></h2>
+<h2>Pillars of data platform<a class="headerlink" href="#pillars-of-data-platform" title="Permalink to this headline">Â¶</a></h2>
 <p>There are four main pillars of the modern data platform:</p>
 <ul class="simple">
 <li><p>Data source layer</p></li>
@@ -58,7 +58,7 @@ profitability.</p>
 <img alt="images/DataPlatform.jpg" src="images/DataPlatform.jpg" />
 </div>
 <div class="section" id="data-source-layer">
-<h3>Data source layer<a class="headerlink" href="#data-source-layer" title="Permalink to this headline">¶</a></h3>
+<h3>Data source layer<a class="headerlink" href="#data-source-layer" title="Permalink to this headline">Â¶</a></h3>
 <p>Data source layer receives data from various sources.
 Each source can be either internal or external to an organization
 and generates data in real-time or in batch mode.
@@ -66,7 +66,7 @@ The <strong>variety</strong> of data formats can be structured, semi-structured,
 The <strong>velocity</strong> (speed of arrival) and <strong>volume</strong> (delivery amount) will differ by source.</p>
 </div>
 <div class="section" id="data-processing-and-storage-layer">
-<h3>Data processing and storage layer<a class="headerlink" href="#data-processing-and-storage-layer" title="Permalink to this headline">¶</a></h3>
+<h3>Data processing and storage layer<a class="headerlink" href="#data-processing-and-storage-layer" title="Permalink to this headline">Â¶</a></h3>
 <p>The data processing layer receives data from the data sources, converts the data into a comprehensible
 format for the data servicing and analytics tool, and stores the
 data. For example, large amounts of data are
@@ -82,7 +82,7 @@ are used as standalone solutions for big data processing, or in
 combination with the Hadoop/Spark ecosystems.</p>
 </div>
 <div class="section" id="analytical-layer">
-<h3>Analytical layer<a class="headerlink" href="#analytical-layer" title="Permalink to this headline">¶</a></h3>
+<h3>Analytical layer<a class="headerlink" href="#analytical-layer" title="Permalink to this headline">Â¶</a></h3>
 <p>The Analytical layer reads the data ingested and transformed by the data
 processing and storage layer of the big data ecosystem. This layer consists of a variety of data
 for different user requirements and
@@ -92,7 +92,7 @@ libraries, SQL libraries, and a number of other toolsets
 are utilized in this layer to understand the underlying data landscape.</p>
 </div>
 <div class="section" id="consumption-layer">
-<h3>Consumption layer<a class="headerlink" href="#consumption-layer" title="Permalink to this headline">¶</a></h3>
+<h3>Consumption layer<a class="headerlink" href="#consumption-layer" title="Permalink to this headline">Â¶</a></h3>
 <p>The consumption layer is also called the business intelligence layer. This layer
 receives results from the analytical layer and presents the results
 using visualization tools and
@@ -100,7 +100,7 @@ business processes.</p>
 </div>
 </div>
 <div class="section" id="project-data-source">
-<h2>Project data source<a class="headerlink" href="#project-data-source" title="Permalink to this headline">¶</a></h2>
+<h2>Project data source<a class="headerlink" href="#project-data-source" title="Permalink to this headline">Â¶</a></h2>
 <p>This book is designed to use data from the Integrated Postsecondary Education Data System (IPEDS)
 and build analytics echo system using this data.</p>
 <p>The National Center for Education Statistics (NCES) is the primary federal entity for collecting
@@ -120,7 +120,7 @@ universities, technical institutions, and vocational institutions.</p>
 <p>From IPEDS, we are downloading the files listed below. Data is downloaded for the three academic years (2017, 2018, and 2019).</p>
 <p><strong>Academic institution [HDR]</strong></p>
 <p>These files contain directory information for every institution in the IPEDS universe.
-The files include the name, address, city, state, zip code, and various URL links to the institution’s home page,
+The files include the name, address, city, state, zip code, and various URL links to the institutionâ€™s home page,
 admissions, and financial aid offices, and net price calculator.</p>
 <p><strong>Enrollment 12-Month [EFFY]</strong></p>
 <p>These files contain the unduplicated headcount of students enrolled over a
@@ -149,7 +149,7 @@ Please refer to the NCES website for actual statistics and research on academic 
 </div>
 <p>These files are coming to the data platform in the format like CSV, JSON, ORC, Parquet, and Multi-format.</p>
 <div class="section" id="academic-institution-hdr">
-<h3>Academic institution [HDR]<a class="headerlink" href="#academic-institution-hdr" title="Permalink to this headline">¶</a></h3>
+<h3>Academic institution [HDR]<a class="headerlink" href="#academic-institution-hdr" title="Permalink to this headline">Â¶</a></h3>
 <p>These files are available in CSV format at the source system.
 The institutional characteristics header files are directly ingested into
 Snowflake staging from the source system. The following diagram displays
@@ -161,7 +161,7 @@ data flow between the source system and the Snowflake destination.</p>
 The OD layer is used to process data for the destination layer with additional transformations.</p>
 </div>
 <div class="section" id="enrollment-12-month-effy">
-<h3>Enrollment 12-Month [EFFY]<a class="headerlink" href="#enrollment-12-month-effy" title="Permalink to this headline">¶</a></h3>
+<h3>Enrollment 12-Month [EFFY]<a class="headerlink" href="#enrollment-12-month-effy" title="Permalink to this headline">Â¶</a></h3>
 <p>EFFY data files are in JSON format. JSON is a common open standard file and data interchange format that uses human-readable text to store and transmit data objects consisting of attribute-value pairs and array data types. This data format is used in a diverse range of applications and serves as a replacement for XML in AJAX systems.
 In our use-case, we are ingesting enrollment (EFFY) files in the JSON format directly to Snowflake.
 The following diagram displays the data ingestion architecture for JSON files.</p>
@@ -173,7 +173,7 @@ The following diagram displays the data ingestion architecture for JSON files.</
 OD layer is used to process data for the destination layer with additional transformation.</p>
 </div>
 <div class="section" id="institutional-charges-ic">
-<h3>Institutional charges [IC]<a class="headerlink" href="#institutional-charges-ic" title="Permalink to this headline">¶</a></h3>
+<h3>Institutional charges [IC]<a class="headerlink" href="#institutional-charges-ic" title="Permalink to this headline">Â¶</a></h3>
 <p>IC_AY files are available in ORC format. The Optimized Row Columnar (ORC) file format provides a highly efficient way to store Hive data. ORC files improve performance when Hive is reading, writing, and processing data.
 The compact nature of this format is ideal, and enables skipping over irrelevant parts without needing large, complex, or manually maintained indices.</p>
 <p>The following diagram displays the data ingestion architecture for ORC format files. It provides view around
@@ -190,7 +190,7 @@ ORC format.</p>
 OD layer is used to process data for the destination layer with additional transformation.</p>
 </div>
 <div class="section" id="admissions-and-test-scores-adm">
-<h3>Admissions and test scores [ADM]<a class="headerlink" href="#admissions-and-test-scores-adm" title="Permalink to this headline">¶</a></h3>
+<h3>Admissions and test scores [ADM]<a class="headerlink" href="#admissions-and-test-scores-adm" title="Permalink to this headline">Â¶</a></h3>
 <p>Admission data (ADM) files are available in the Parquet data format.
 Parquet, an open-source file format for Hadoop stores nested data structures in a flat columnar format.
 Compared to a traditional approach where data is stored in a row-oriented approach, Parquet is more efficient
@@ -208,7 +208,7 @@ to Parquet files.</p>
 OD layer is used to process data for the destination layer with additional transformation.</p>
 </div>
 <div class="section" id="code-mapping-data">
-<h3>Code mapping data<a class="headerlink" href="#code-mapping-data" title="Permalink to this headline">¶</a></h3>
+<h3>Code mapping data<a class="headerlink" href="#code-mapping-data" title="Permalink to this headline">Â¶</a></h3>
 <p>This Multi-format dataset has a special character delimiter. One file holds data for multiple destination tables, which are
 identified by the value of the first column in the file.</p>
 <p>These files are directly ingested into Snowflake staging from the source system.
@@ -219,7 +219,7 @@ The files in this book are loaded from the above folder to the Snowflake stage a
 </div>
 </div>
 <div class="section" id="snowflake-data-pillers">
-<h2>Snowflake data pillers<a class="headerlink" href="#snowflake-data-pillers" title="Permalink to this headline">¶</a></h2>
+<h2>Snowflake data pillers<a class="headerlink" href="#snowflake-data-pillers" title="Permalink to this headline">Â¶</a></h2>
 <p>For the project in this book, we will be using Snowflake staged files, transient tables, and master tables.
 Transient tables are referenced as operational data tables through out the book.
 Master tables are also called as the servicing layer entities.
@@ -236,13 +236,13 @@ Google Colab is used for the consumption layer.</p>
 <li><p>Create descriptive analytics for use-cases laid out by businesses.</p></li>
 </ul>
 <div class="section" id="staged-file">
-<h3>Staged file<a class="headerlink" href="#staged-file" title="Permalink to this headline">¶</a></h3>
+<h3>Staged file<a class="headerlink" href="#staged-file" title="Permalink to this headline">Â¶</a></h3>
 <p>All the data from the source system will be brought into the internal staged file location of Snowflake.
 This data is directly from transactional systems or existing big data platforms,
 with no transformations applied.</p>
 </div>
 <div class="section" id="operational-datastore-od">
-<h3>Operational datastore (OD)<a class="headerlink" href="#operational-datastore-od" title="Permalink to this headline">¶</a></h3>
+<h3>Operational datastore (OD)<a class="headerlink" href="#operational-datastore-od" title="Permalink to this headline">Â¶</a></h3>
 <p>An operational datastore (OD) is a central store that provides a snapshot of
 the latest data from multiple transactional systems.
 It enables organizations to combine data in its original format
@@ -254,7 +254,7 @@ additional columns to help track data lineage. The OD also serves as transient p
 the source systems. It allows us have all the data within the bounds ready for processing and modeling</p>
 </div>
 <div class="section" id="servicing-layer">
-<h3>Servicing layer<a class="headerlink" href="#servicing-layer" title="Permalink to this headline">¶</a></h3>
+<h3>Servicing layer<a class="headerlink" href="#servicing-layer" title="Permalink to this headline">Â¶</a></h3>
 <p>This layer consists of the data that has undergone all sorts of transformations and it is
 ready for consumption to the business intelligence layer.
 OD tables serve as input to the transformation process to populate servicing layer tables.
@@ -262,7 +262,7 @@ This is our master schema with transformed data. It contains correctly modeled t
 that are named properly with business centeric column names with appropriate data types.</p>
 </div>
 <div class="section" id="dataflow-summary">
-<h3>Dataflow summary<a class="headerlink" href="#dataflow-summary" title="Permalink to this headline">¶</a></h3>
+<h3>Dataflow summary<a class="headerlink" href="#dataflow-summary" title="Permalink to this headline">Â¶</a></h3>
 <p>The data cleaning and transformation takes place while moving data from OD into service layer.</p>
 <ul class="simple">
 <li><p>Standardising all date formats and time zones.</p></li>
@@ -289,10 +289,10 @@ granted to all layers of the data platform.</p>
 </div>
 </div>
 <div class="section" id="ingesting-snowflake-stage">
-<h2>Ingesting Snowflake stage<a class="headerlink" href="#ingesting-snowflake-stage" title="Permalink to this headline">¶</a></h2>
+<h2>Ingesting Snowflake stage<a class="headerlink" href="#ingesting-snowflake-stage" title="Permalink to this headline">Â¶</a></h2>
 <p>Data files are received in various formats like CSV, ORC, Parquet, and JSON. These files are available in the folders by year. They are brought into Snowflake staged files using the PUT command.
 Each staged file contains the entire data for that specific year. From these staged files, OD tables are populated.
-Using these OD tables, servicing layer tables of the data-warehouse are populated. Snowflake’s stored procedures, views, and functions are used for ETL/ELT processes.</p>
+Using these OD tables, servicing layer tables of the data-warehouse are populated. Snowflakeâ€™s stored procedures, views, and functions are used for ETL/ELT processes.</p>
 <p>Internal named stage needs to be created for each of the file formats before loading data.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -302,7 +302,7 @@ Using these OD tables, servicing layer tables of the data-warehouse are populate
 <p><em>Copy the code from book and execute</em>.</p>
 </div>
 <div class="section" id="create-internal-stage-area-ipeds">
-<h3>Create internal stage area IPEDS<a class="headerlink" href="#create-internal-stage-area-ipeds" title="Permalink to this headline">¶</a></h3>
+<h3>Create internal stage area IPEDS<a class="headerlink" href="#create-internal-stage-area-ipeds" title="Permalink to this headline">Â¶</a></h3>
 <p>First, create the file formats and stage area for the following data formats:</p>
 <blockquote>
 <div><ul class="simple">
@@ -343,7 +343,7 @@ Using these OD tables, servicing layer tables of the data-warehouse are populate
                         <span class="o">=</span> <span class="n">ff_IPEDS_CSVSkipHeaderTabDelimited</span><span class="p">;</span>
 </pre></div>
 </div>
-<p>— Next, create the JSON file format and stage area.</p>
+<p>â€” Next, create the JSON file format and stage area.</p>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">--</span> <span class="n">Create</span> <span class="n">file</span> <span class="nb">format</span> <span class="n">to</span> <span class="n">load</span> <span class="n">JSON</span> <span class="n">file</span>
 <span class="n">CREATE</span> <span class="n">OR</span> <span class="n">REPLACE</span> <span class="n">FILE</span> <span class="n">FORMAT</span> <span class="n">ff_IPEDS_Json</span>
                 <span class="n">TYPE</span> <span class="o">=</span><span class="n">JSON</span> <span class="n">TRIM_SPACE</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">;</span>
@@ -351,7 +351,7 @@ Using these OD tables, servicing layer tables of the data-warehouse are populate
 <span class="n">CREATE</span> <span class="n">OR</span> <span class="n">REPLACE</span> <span class="n">stage</span> <span class="n">IPEDS_EFFY</span> <span class="n">FILE_FORMAT</span> <span class="o">=</span> <span class="n">ff_IPEDS_Json</span><span class="p">;</span>
 </pre></div>
 </div>
-<p>— Then, create the ORC file format and stage area.</p>
+<p>â€” Then, create the ORC file format and stage area.</p>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">--</span> <span class="n">Create</span> <span class="n">file</span> <span class="nb">format</span> <span class="n">to</span> <span class="n">load</span> <span class="n">ORC</span> <span class="n">file</span>
 <span class="n">CREATE</span> <span class="n">OR</span> <span class="n">REPLACE</span> <span class="n">FILE</span> <span class="n">FORMAT</span> <span class="n">ff_IPEDS_ORC</span>
                         <span class="n">TYPE</span> <span class="o">=</span><span class="n">ORC</span> <span class="n">TRIM_SPACE</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">;</span>
@@ -359,7 +359,7 @@ Using these OD tables, servicing layer tables of the data-warehouse are populate
 <span class="n">CREATE</span> <span class="n">OR</span> <span class="n">REPLACE</span> <span class="n">stage</span> <span class="n">IPEDS_IC</span> <span class="n">FILE_FORMAT</span> <span class="o">=</span> <span class="n">ff_IPEDS_ORC</span><span class="p">;</span>
 </pre></div>
 </div>
-<p>— Finally, create the Parquet file format and stage area.</p>
+<p>â€” Finally, create the Parquet file format and stage area.</p>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">--</span> <span class="n">Create</span> <span class="n">Parquet</span> <span class="n">file</span> <span class="nb">format</span>
 <span class="n">CREATE</span> <span class="n">OR</span> <span class="n">REPLACE</span>  <span class="n">FILE</span> <span class="n">FORMAT</span> <span class="n">ff_IPEDS_Parquet</span>
                         <span class="n">TYPE</span> <span class="o">=</span><span class="n">PARQUET</span> <span class="n">TRIM_SPACE</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">;</span>
@@ -396,7 +396,7 @@ we can validate their availability.</p>
 </div></blockquote>
 </div>
 <div class="section" id="load-the-files-to-internal-stage-for-ipeds">
-<h3>Load the files to internal stage for IPEDS<a class="headerlink" href="#load-the-files-to-internal-stage-for-ipeds" title="Permalink to this headline">¶</a></h3>
+<h3>Load the files to internal stage for IPEDS<a class="headerlink" href="#load-the-files-to-internal-stage-for-ipeds" title="Permalink to this headline">Â¶</a></h3>
 <p>In this section, we are ingesting all the files to the Snowflake staging area. We assume you have
 downloaded the files from GitRepo and copied to the folder C:\Snowflake\data\input\.</p>
 <div class="admonition note">
@@ -484,7 +484,7 @@ create staged area and load data file code again .</p>
 </div>
 </div>
 <div class="section" id="summary">
-<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">Â¶</a></h2>
 <p>This chapter summarizes, data files, file formats, and processes used to simplify
 and streamline bulk loading data into various
 internal staging areas.

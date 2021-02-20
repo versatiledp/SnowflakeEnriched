@@ -38,7 +38,7 @@
           <div class="body" role="main">
             
   <div class="section" id="json-ingestion">
-<h1>JSON ingestion<a class="headerlink" href="#json-ingestion" title="Permalink to this headline">¶</a></h1>
+<h1>JSON ingestion<a class="headerlink" href="#json-ingestion" title="Permalink to this headline">Â¶</a></h1>
 <p>We will learn about:</p>
 <blockquote>
 <div><ul class="simple">
@@ -48,7 +48,7 @@
 </ul>
 </div></blockquote>
 <div class="section" id="json-processing">
-<h2>JSON processing<a class="headerlink" href="#json-processing" title="Permalink to this headline">¶</a></h2>
+<h2>JSON processing<a class="headerlink" href="#json-processing" title="Permalink to this headline">Â¶</a></h2>
 <p>JSON, or JavaScript Object Notation, is a minimal, readable format for structuring data.
 (JSON) is a standardized format commonly used to transfer data as text that can be sent over a network.
 It is used by lots of APIs and Databases to transmit data between a server and web application, as an alternative to XML.
@@ -60,7 +60,7 @@ Structural information is derived based on the schema definition embedded in
 JSON string at reading time (Schema-on-Read).</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><em>Please refer to the section ‘Load the files to the internal stage for IPEDS’ in the chapter ‘Introducing data platform’ for creating staged files</em>.</p>
+<p><em>Please refer to the section â€˜Load the files to the internal stage for IPEDSâ€™ in the chapter â€˜Introducing data platformâ€™ for creating staged files</em>.</p>
 </div>
 <p>Enrollments files contains information around enrollment rates in various institutions for the academic years 2017, 2018, and 2019.
 The enrollments are categorized by race, ethnicity, and sex. The data files for enrollments are in JSON format and the staged file is invoked using <strong>&#64;IPEDS_EFFY</strong>.
@@ -175,7 +175,7 @@ WHERE RIGHT(REPLACE(S.metadata$filename,&#39;_rv.json.gz&#39;,&#39;&#39;),4) = 2
 </div>
 </div>
 <div class="section" id="ingesting-json-data">
-<h2>Ingesting JSON data<a class="headerlink" href="#ingesting-json-data" title="Permalink to this headline">¶</a></h2>
+<h2>Ingesting JSON data<a class="headerlink" href="#ingesting-json-data" title="Permalink to this headline">Â¶</a></h2>
 <p>For storing enrollment data from the staged file, we have added an OD table called <strong>od_Enrollment</strong>.
 Here is the CREATE command for the OD table.</p>
 <div class="toggle docutils container">
@@ -445,7 +445,7 @@ $$;
 </div>
 </div>
 <div class="section" id="servicing-layer-transforming-json-data">
-<h2>Servicing layer Transforming JSON data<a class="headerlink" href="#servicing-layer-transforming-json-data" title="Permalink to this headline">¶</a></h2>
+<h2>Servicing layer Transforming JSON data<a class="headerlink" href="#servicing-layer-transforming-json-data" title="Permalink to this headline">Â¶</a></h2>
 <p>We have created a table for <strong>Enrollment</strong> in the servicing layer. The
 Enrollment table has links to the
 dimension table <strong>AcademicInstitution</strong>. The relationship represents the star schema of
@@ -515,7 +515,7 @@ Here is the script for creating the table Enrollment.</p>
 <p>The stored procedure <strong>pr_Enrollment_Load</strong> is used for loading
 the servicing layer table. The stored procedure loads data for specific years based on the parameter passed to it.
 Each time when this stored procedure is called, it deletes records from Enrollment
-for that year and then re-inserts them to Enrollment from that year’s od_Enrollment.</p>
+for that year and then re-inserts them to Enrollment from that yearâ€™s od_Enrollment.</p>
 <p>We are interested in determining the distribution of data that has been imputed vs reported.
 To do so, we read the imputation column to obtain the total number of imputed and reported variable counts,
 which we store in <strong>VariablesReportedCount</strong> and  <strong>VariablesImputedCount</strong>.
@@ -843,7 +843,7 @@ RETURN &quot;success&quot; $$;
 </div>
 </div>
 <div class="section" id="executing-load-procedures">
-<h2>Executing load procedures<a class="headerlink" href="#executing-load-procedures" title="Permalink to this headline">¶</a></h2>
+<h2>Executing load procedures<a class="headerlink" href="#executing-load-procedures" title="Permalink to this headline">Â¶</a></h2>
 <p>Data is available in OD table and transformation logic is ready to move data to the servicing layer. We are ready to
 populate the servicing load. Load procedure will accept academic year parameter.
 For the specified academic year during the execution, stored procedure will delete data from the
@@ -857,7 +857,7 @@ servicing layer and load it from OD.</p>
 </div>
 </div>
 <div class="section" id="summary">
-<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">Â¶</a></h2>
 <p>In this chapter, we analyzed the annual enrollment data of various institutions.
 We discussed the JSON-formatted data ingestion process. JSON data can be loaded directly into table
 columns of type VARIANT. These VARIANT columns
