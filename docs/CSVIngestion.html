@@ -61,15 +61,9 @@ Files in the CSV format can be imported to and exported from programs that store
 <p class="admonition-title">Note</p>
 <p><em>Please refer to the section 'Load the files to the internal stage for IPEDS' in the chapter 'Introducing data platform' for creating staged files</em>.</p>
 </div>
-<p>Academic institution data files are received in CSV format. The academic institution dataset contain high-level information about institutions in US
+<p>Academic institution data files (HD2017, HD2018, and HD2019) are received in CSV format.
+The academic institution dataset contain high-level information about institutions in US
 for the years 2017, 2018 and 2019, respectively.</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>HD2017.csv</p></li>
-<li><p>HD2018.csv</p></li>
-<li><p>HD2019.csv</p></li>
-</ul>
-</div></blockquote>
 <p>In this case, <strong>&#64;IPEDS_HD</strong>  is the staged file containing information about the academic institutions. Staged files are identified by the &#64; character prefixed to the name.
 The staged file &#64;IPEDS_HD is available in the internal Snowflake stage.
 Data is retrieved using the SQL command <strong>SELECT $&lt;column_number&gt;</strong> from the staged files created using CSV format.
@@ -95,9 +89,8 @@ FROM @IPEDS_HD WHERE metadata$file_row_number &gt; 1;
 </div>
 <p>The attributes from the staged file do not hold column names and types. We need to create a schema on the read
 for each of the $1, $2,,, $n columns in the staged file &#64;IPEDS_HD. This is accomplished by using mapping documents
-between staged layer and column names in OD tables (
-<a class="reference external" href="https://versatiledp.github.io/SnowflakeEnriched/Mapping/AcademicInstitute.htm"   target="_blank">SnowflakeEnriched/Mapping/AcademicInstitute</a>
-).</p>
+between staged layer and column names in OD tables. Mapping document for CSV file is available at below URL:</p>
+<p>(<a class="reference external" href="https://versatiledp.github.io/SnowflakeEnriched/Mapping/AcademicInstitute.htm"   target="_blank">https://versatiledp.github.io/SnowflakeEnriched/Mapping/AcademicInstitute.htm</a>).</p>
 </div>
 <div class="section" id="ingesting-csv-data">
 <h2>Ingesting CSV data<a class="headerlink" href="#ingesting-csv-data" title="Permalink to this headline">¶</a></h2>
@@ -657,32 +650,34 @@ The DATETIME columns RecordCreateDateTime and RecordUpdateDateTime are added for
 The following columns belong to CarnegieClassification and are stored in the dimension table in JSON format.
 Hence, the column CarnegieClassification is created with the VARIANT data type.</p>
 <blockquote>
-<div><ul class="simple">
-<li><p>CarnegieClassification2000</p></li>
-<li><p>CarnegieClassification20052010Basic</p></li>
-<li><p>CarnegieClassification2015Basic</p></li>
-<li><p>CarnegieClassification2015UndergraduateProgram</p></li>
-<li><p>CarnegieClassification2015GraduateProgram</p></li>
-<li><p>CarnegieClassification2015UndergraduateProfile</p></li>
-<li><p>CarnegieClassification2015EnrollmentProfile</p></li>
-<li><p>CarnegieClassification2015SizeSetting</p></li>
-</ul>
+<div><div class="line-block">
+<div class="line">CarnegieClassification2000</div>
+<div class="line">CarnegieClassification20052010Basic</div>
+<div class="line">CarnegieClassification2015Basic</div>
+<div class="line">CarnegieClassification2015UndergraduateProgram</div>
+<div class="line">CarnegieClassification2015GraduateProgram</div>
+<div class="line">CarnegieClassification2015UndergraduateProfile</div>
+<div class="line">CarnegieClassification2015EnrollmentProfile</div>
+<div class="line">CarnegieClassification2015SizeSetting</div>
+</div>
 </div></blockquote>
-<p><strong>Web address transformation</strong></p>
+<div class="line-block">
+<div class="line"><strong>Web address transformation</strong></div>
+</div>
 <p>Similarly, we have grouped together the below columns holding various web addresses under
 the name WebAddress and stored in a JSON format.
 Thus, another VARIANT data type column WebAddress is also created.</p>
 <blockquote>
-<div><ul class="simple">
-<li><p>InstitutionsWebAddress</p></li>
-<li><p>AdmissionsOfficeWebAddress</p></li>
-<li><p>FinancialAidOfficeWebAddress</p></li>
-<li><p>OnlineApplicationWebAddress</p></li>
-<li><p>NetPriceCalculatorWebAddress</p></li>
-<li><p>VeteransMilitaryServiceTuitionPoliciesWebAddress</p></li>
-<li><p>StudentRightAthleteGraduationRateWebAddress</p></li>
-<li><p>DisabilityServicesWebAddress</p></li>
-</ul>
+<div><div class="line-block">
+<div class="line">InstitutionsWebAddress</div>
+<div class="line">AdmissionsOfficeWebAddress</div>
+<div class="line">FinancialAidOfficeWebAddress</div>
+<div class="line">OnlineApplicationWebAddress</div>
+<div class="line">NetPriceCalculatorWebAddress</div>
+<div class="line">VeteransMilitaryServiceTuitionPoliciesWebAddress</div>
+<div class="line">StudentRightAthleteGraduationRateWebAddress</div>
+<div class="line">DisabilityServicesWebAddress</div>
+</div>
 </div></blockquote>
 </div>
 <div class="section" id="load-dimension-table">
@@ -1179,24 +1174,24 @@ In our case, from 2018 we have noticed the following structural
 changes in the input files generated from the source system.</p>
 <p>The following new columns are added to files from 2018 onwards.</p>
 <blockquote>
-<div><ul class="simple">
-<li><p>CarnegieClassification2018Basic</p></li>
-<li><p>CarnegieClassification2018UndergraduateProgram</p></li>
-<li><p>CarnegieClassification2018GraduateProgram</p></li>
-<li><p>CarnegieClassification2018UndergraduateProfile</p></li>
-<li><p>CarnegieClassification2018EnrollmentProfile</p></li>
-<li><p>CarnegieClassification2018SizeSetting</p></li>
-</ul>
+<div><div class="line-block">
+<div class="line">CarnegieClassification2018Basic</div>
+<div class="line">CarnegieClassification2018UndergraduateProgram</div>
+<div class="line">CarnegieClassification2018GraduateProgram</div>
+<div class="line">CarnegieClassification2018UndergraduateProfile</div>
+<div class="line">CarnegieClassification2018EnrollmentProfile</div>
+<div class="line">CarnegieClassification2018SizeSetting</div>
+</div>
 </div></blockquote>
 <p>And the following columns are deleted from the academic institution files from 2018 onwards.</p>
 <blockquote>
-<div><ul class="simple">
-<li><p>CarnegieClassification2015UndergraduateProgram</p></li>
-<li><p>CarnegieClassification2015GraduateProgram</p></li>
-<li><p>CarnegieClassification2015UndergraduateProfile</p></li>
-<li><p>CarnegieClassification2015EnrollmentProfile</p></li>
-<li><p>CarnegieClassification2015SizeSetting</p></li>
-</ul>
+<div><div class="line-block">
+<div class="line">CarnegieClassification2015UndergraduateProgram</div>
+<div class="line">CarnegieClassification2015GraduateProgram</div>
+<div class="line">CarnegieClassification2015UndergraduateProfile</div>
+<div class="line">CarnegieClassification2015EnrollmentProfile</div>
+<div class="line">CarnegieClassification2015SizeSetting</div>
+</div>
 </div></blockquote>
 <p>Also, there are some changes in the position of a few existing columns in the file.</p>
 <p>Our goal is to process both old and new files using the same process to load od_AcademicInstitution.
