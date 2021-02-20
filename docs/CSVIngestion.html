@@ -550,8 +550,8 @@ CALL pr_od_AcademicInstitution_Load(2017::FLOAT);
 </div>
 </div>
 </div>
-<div class="section" id="servicing-layer-entity-for-csv-data">
-<h2>Servicing layer entity for CSV data<a class="headerlink" href="#servicing-layer-entity-for-csv-data" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="servicing-layer-for-csv">
+<h2>Servicing layer for CSV<a class="headerlink" href="#servicing-layer-for-csv" title="Permalink to this headline">¶</a></h2>
 <p>We have built a dimension table called <strong>AcademicInstitution</strong> in the servicing layer.
 This dimension table will be used by fact tables at the servicing layer in forthcoming chapters.</p>
 <p>In general, a dimension table contains keys, columns, and other attributes that are associated with the business key.
@@ -2139,8 +2139,8 @@ try {
 </pre></div>
 </div>
 </div>
-<div class="section" id="merge-using-the-hash-key">
-<h2>MERGE using the hash key<a class="headerlink" href="#merge-using-the-hash-key" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="merge-using-hash-key">
+<h2>MERGE using hash key<a class="headerlink" href="#merge-using-hash-key" title="Permalink to this headline">¶</a></h2>
 <p>In the hash key stored procedure, we join the source and target tables using the business key InstitutionIdentifier.
 When a matching record is found, we compare individual
 columns between the source and target tables using hash keys to find any column values changed in the source.
@@ -2757,10 +2757,10 @@ We will learn about JSON ingestion in the next chapter.</p>
 <li class="toctree-l3"><a class="reference internal" href="#loading-operational-datastore-table-for-csv">Loading operational datastore table for CSV</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#servicing-layer-entity-for-csv-data">Servicing layer entity for CSV data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#servicing-layer-for-csv">Servicing layer for CSV</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#load-dimension-table">Load dimension table</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#schema-drift">Schema drift</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#merge-using-the-hash-key">MERGE using the hash key</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#merge-using-hash-key">MERGE using hash key</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#summary">Summary</a></li>
 </ul>
 </li>
