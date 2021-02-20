@@ -43,12 +43,12 @@
 <blockquote>
 <div><ul class="simple">
 <li><p>Ingest Parquet files from the staged Snowflake region.</p></li>
-<li><p>Servicing layer for Parquet data.</p></li>
-<li><p>Loading servicing layer from Parquet data.</p></li>
+<li><p>Design servicing layer for Parquet data.</p></li>
+<li><p>Load servicing layer from Parquet data.</p></li>
 </ul>
 </div></blockquote>
-<div class="section" id="parquet-processing">
-<h2>Parquet processing<a class="headerlink" href="#parquet-processing" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="parquet-data-processing">
+<h2>Parquet data processing<a class="headerlink" href="#parquet-data-processing" title="Permalink to this headline">¶</a></h2>
 <p>Apache Parquet is a column-oriented binary file format that provides optimizations
 to speed up the process and is a far more efficient file format than CSV or JSON.
 It is known for its features like performance, data compression, and ability to handle a
@@ -59,14 +59,15 @@ If a row-based file format like CSV was used, the entire table would have to hav
 loaded in memory, resulting in increased I/O and worse performance.
 Snowflake manages Parquet files similar to semi-structured JSON data from VARIANT type.
 Snowflake allows loading Parquet data directly into relational tables from the staged file.</p>
+<p>The admission statistics files are in Parquet format.
+These files contain information about the number of applicants by various categories:
+admission test scores, SAT/ACT percentile scores, and so on.
+We have loaded these files in the staging environment of the Snowflake.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p><em>Please refer to the section 'Load the files to the internal stage for IPEDS' in the chapter 'Introducing data platform' for creating staged files</em>.</p>
 </div>
-<p>The admission statistics contain information about the number of applicants by various categories:
-admission test scores, SAT/ACT percentile scores, and so on.
-These statistics are stored in Parquet format.
-Parquet data is retrieved from <strong>&#64;IPEDS_ADM</strong> staged file using the following code.</p>
+<p>Parquet data is retrieved from <strong>&#64;IPEDS_ADM</strong> staged file using the following code.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT P.$1 Parquetdata FROM  @IPEDS_ADM P;
 </pre></div>
 </div>
@@ -656,7 +657,7 @@ where a file has records for multiple destination entities.</p>
 <li class="toctree-l1"><a class="reference internal" href="JSONIngestion.html">JSON ingestion</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ORCIngestion.html">ORC ingestion</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Parquet ingestion</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#parquet-processing">Parquet processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#parquet-data-processing">Parquet data processing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ingesting-parquet-data">Ingesting Parquet data</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#load-stored-procedure">Load stored procedure</a></li>
 </ul>

@@ -52,18 +52,17 @@
 <li><p>Perform SQL MERGE using the hash key.</p></li>
 </ul>
 </div></blockquote>
-<div class="section" id="csv-processing">
-<h2>CSV  processing<a class="headerlink" href="#csv-processing" title="Permalink to this headline">¶</a></h2>
-<p>CSV stands for comma-separated values. Its data fields are most often separated, or delimited, by a comma.
-CSV is a simple file format used to store tabular data, such as a spreadsheet or database.
-Files in the CSV format can be imported to and exported from programs that store data in tables.</p>
+<div class="section" id="csv-data-processing">
+<h2>CSV data processing<a class="headerlink" href="#csv-data-processing" title="Permalink to this headline">¶</a></h2>
+<p>CSV stands for comma-separated values. In most of the cases data fields are delimited by comma or pipe.
+It is a simple file format used to store tabular data, such as a spreadsheet or database.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p><em>Please refer to the section 'Load the files to the internal stage for IPEDS' in the chapter 'Introducing data platform' for creating staged files</em>.</p>
 </div>
-<p>Academic institution data files (HD2017, HD2018, and HD2019) are received in CSV format.
-The academic institution dataset contain high-level information about institutions in US
-for the years 2017, 2018 and 2019, respectively.</p>
+<p>The academic institution (HDR) dataset contain high-level information about institutions in US
+for the years 2017, 2018 and 2019, respectively.
+These files (HD2017, HD2018, and HD2019) are received in CSV format.</p>
 <p>In this case, <strong>&#64;IPEDS_HD</strong>  is the staged file containing information about the academic institutions. Staged files are identified by the &#64; character prefixed to the name.
 The staged file &#64;IPEDS_HD is available in the internal Snowflake stage.
 Data is retrieved using the SQL command <strong>SELECT $&lt;column_number&gt;</strong> from the staged files created using CSV format.
@@ -2746,7 +2745,7 @@ We will learn about JSON ingestion in the next chapter.</p>
 <li class="toctree-l1"><a class="reference internal" href="IntroducingSnowflake.html">Introducing Snowflake</a></li>
 <li class="toctree-l1"><a class="reference internal" href="IntroducingDataplatform.html">Introducing data platform</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">CSV ingestion</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#csv-processing">CSV  processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#csv-data-processing">CSV data processing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ingesting-csv-data">Ingesting CSV data</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#managing-metadata-of-the-staged-file">Managing metadata of the staged file</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#loading-operational-datastore-table-for-csv">Loading operational datastore table for CSV</a></li>

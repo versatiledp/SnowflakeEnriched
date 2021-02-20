@@ -47,23 +47,27 @@
 <li><p>Executing load procedures.</p></li>
 </ul>
 </div></blockquote>
-<div class="section" id="json-processing">
-<h2>JSON processing<a class="headerlink" href="#json-processing" title="Permalink to this headline">¶</a></h2>
-<p>JSON, or JavaScript Object Notation, is a minimal, readable format for structuring data.
-(JSON) is a standardized format commonly used to transfer data as text that can be sent over a network.
-It is used by lots of APIs and Databases to transmit data between a server and web application, as an alternative to XML.
-JSON is easy for both humans and machines to read.</p>
+<div class="section" id="json-data-processing">
+<h2>JSON data processing<a class="headerlink" href="#json-data-processing" title="Permalink to this headline">¶</a></h2>
+<p>JSON stands for JavaScript Object Notation. It is a minimal readable format for semi-structured data.
+It is a standardized format commonly used to transfer data as text that can be sent over a network.
+JSON is used by lots of APIs and databases to
+transmit data between servers and web applications.
+It is alternative to XML and easy for both humans and machines to read.</p>
 <p>Snowflake allows loading JSON data directly into relational tables. We can query this
 data with SQL and join it to other data without doing any transformations.
 At load time, Snowflake parses the JSON based on the key-value pairs.
 Structural information is derived based on the schema definition embedded in
 JSON string at reading time (Schema-on-Read).</p>
+<p>Enrollment files are in JSON format.
+These files contains information around enrollment rates in various institutions for the academic years 2017, 2018, and 2019.
+The enrollments are categorized by race, ethnicity, sex, etc..
+We have loaded these files in the staging environment of the Snowflake.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p><em>Please refer to the section  'Load the files to the internal stage for IPEDS ' in the chapter  'Introducing data platform ' for creating staged files</em>.</p>
 </div>
-<p>Enrollments files contains information around enrollment rates in various institutions for the academic years 2017, 2018, and 2019.
-The enrollments are categorized by race, ethnicity, and sex. The data files for enrollments are in JSON format and the staged file is invoked using <strong>&#64;IPEDS_EFFY</strong>.
+<p>The staged enrollment files are invoked using <strong>&#64;IPEDS_EFFY</strong>.
 JSON data from the staged file is retrieved using the following code.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT N.$1 JASONdata FROM  @IPEDS_EFFY N;
 </pre></div>
@@ -844,10 +848,11 @@ RETURN &quot;success&quot; $$;
 </div>
 <div class="section" id="executing-load-procedures">
 <h2>Executing load procedures<a class="headerlink" href="#executing-load-procedures" title="Permalink to this headline">¶</a></h2>
-<p>Data is available in OD table and transformation logic is ready to move data to the servicing layer. We are ready to
-populate the servicing load. Load procedure will accept academic year parameter.
-For the specified academic year during the execution, stored procedure will delete data from the
-servicing layer and load it from OD.</p>
+<p>Data is available in OD table and it is ready for further processing.
+Transformation logic is coded in the stored procedure (SP) to process specific academic year.
+Stored procedure deletes data from the
+servicing layer, if there exsists any data for the given academic year.
+Then we load data from the OD source.</p>
 <p>We execute this procedure to load data for years 2017, 2018, and 2019.</p>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">TRUNCATE</span> <span class="n">TABLE</span> <span class="n">Enrollment</span><span class="p">;</span>
 <span class="n">CALL</span> <span class="n">pr_Enrollment_Load</span><span class="p">(</span><span class="mi">2017</span><span class="p">::</span><span class="n">FLOAT</span><span class="p">);</span>
@@ -912,7 +917,7 @@ files coming from the HDFS system.</p>
 <li class="toctree-l1"><a class="reference internal" href="IntroducingDataplatform.html">Introducing data platform</a></li>
 <li class="toctree-l1"><a class="reference internal" href="CSVIngestion.html">CSV ingestion</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">JSON ingestion</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#json-processing">JSON processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#json-data-processing">JSON data processing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ingesting-json-data">Ingesting JSON data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#servicing-layer-transforming-json-data">Servicing layer Transforming JSON data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#executing-load-procedures">Executing load procedures</a></li>

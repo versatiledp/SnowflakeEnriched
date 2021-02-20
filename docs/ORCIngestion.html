@@ -42,32 +42,36 @@
 <p>This section explains:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>ORC Processing.</p></li>
+<li><p>ORC data processing.</p></li>
 <li><p>JSON functions.</p></li>
 <li><p>Ingesting ORC data.</p></li>
 <li><p>Alternative approach to manage wide column files.</p></li>
-<li><p>Servicing layer desing for ORC.</p></li>
+<li><p>Servicing layer design to hold processed ORC data.</p></li>
 <li><p>Loading ORC data to the servicing layer.</p></li>
 </ul>
 </div></blockquote>
-<div class="section" id="orc-processing">
-<h2>ORC processing<a class="headerlink" href="#orc-processing" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="orc-data-processing">
+<h2>ORC data processing<a class="headerlink" href="#orc-data-processing" title="Permalink to this headline">¶</a></h2>
 <p>Optimized Row Columnar(ORC) is a self-describing type-aware columnar
 file format designed for Hadoop workloads. It is optimized for large streaming reads.
 By storing data in a columnar format it allows user to read, decompress,
 and process only the values that are
 required for the current process.
 Snowflake manages AVRO and ORC files similar to semi-structured JSON data from VARIANT type.</p>
-<p>Snowflake allows loading ORC data directly into relational tables from the staged file.
-ORC data is stored as a JSON document. JSON document processing can be used to transform ORC data.
-In this chapter, we are using few Snowflake native functions to work with semi-structured JSON data.
+<p>Snowflake allows loading ORC data directly into relational tables from the staged files.
+ORC data is stored as a JSON document.
+In this chapter, we are using few Snowflake native functions to work with the semi-structured JSON data.
 We can query ORC data with SQL and join it to other data without doing any transformations.</p>
+<p>Institutional charge files are in ORC format.
+These files contain data on student charges for a full academic year.
+The files include the information about the cost of attendance,
+published tuition and required fees, books and supplies, room and board, and other expenses.
+We have loaded these files in the staging environment of the Snowflake.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p><em>Please refer to the section 'Load the files to the internal stage for IPEDS' in the chapter 'Introducing data platform' for creating staged files</em>.</p>
 </div>
-<p>Institutional charge files contain data on student charges for a full academic year. These files include the information about the price of attendance,
-published tuition and required fees, books and supplies, room and board, and other expenses. Institutional charge ORC data from the staged file <strong>&#64;IPEDS_IC</strong>
+<p>Institutional charge ORC data from the staged file <strong>&#64;IPEDS_IC</strong>
 is retrieved using the following code.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT O.$1 JASONdata FROM  @IPEDS_IC O;
 </pre></div>
@@ -1067,9 +1071,9 @@ $$
 </div>
 <div class="section" id="data-analysis">
 <h2>Data analysis<a class="headerlink" href="#data-analysis" title="Permalink to this headline">¶</a></h2>
-<p>The ORC files of institutional charges dataset categorizes fees for graduate programs
+<p>The ORC files of institutional charge  datasets categorizes fees for graduate programs
 like Medicine, Dentistry, Pharmacy, Law, etc., as a different set of attributes.
-Another group of columns provides details of In-State and Out-of-State students tuition fees.
+Another group of columns provide details of In-State and Out-of-State students tuition fees.
 Expenses such as books/supplies, boarding, and resources, are also available in these data files.</p>
 <p>The information in this wide column file is broadly categorized into 4 groups described below.</p>
 <p><strong>Institutional charge (General)</strong></p>
@@ -1088,9 +1092,8 @@ are charged less than out-of-state. This set of attributes will provide insight 
 on-campus expenses are available in this section of the file.</p>
 <p>ORC dataset is extremely denormalized file coming from the big data platform.
 To serve this data for reporting engine,
-we need to rethink servicing layer strucutre differently than just loading data into the single servicing layer table.
-Deeper inside of data helps us to understand,
-the attributes of the OD table are categorized into a core group and the 3 groups shown below.</p>
+we need to architect servicing layer strucutre differently.
+The attributes of the OD table are categorized into a core group and the 3 groups as shown below.</p>
 <div class="section" id="charges-by-the-academic-branch">
 <h3>Charges by the academic branch<a class="headerlink" href="#charges-by-the-academic-branch" title="Permalink to this headline">¶</a></h3>
 <p>This section covers the fees charged by different professional colleges.</p>
@@ -1177,7 +1180,8 @@ the attributes of the OD table are categorized into a core group and the 3 group
 <div class="section" id="servicing-layer-entities-for-orc">
 <h2>Servicing layer entities for ORC<a class="headerlink" href="#servicing-layer-entities-for-orc" title="Permalink to this headline">¶</a></h2>
 <p>After analyzing dataset, we decided to add the following entities to the servicing layer.
-These entities will be populated in the transformation logic. All these tables will hold numeric data associated with the
+These entities will be populated in the transformation logic.
+All these tables will hold numeric data associated with the
 specific type of charges. While processing the InstitutionalCharge dataset, data is
 normalized from the OD layer and mapped to the servicing layer tables.
 The fact tables for institutional charge data called:</p>
@@ -2980,7 +2984,7 @@ In the next chapter, we will be creating a Snowflake pipeline to ingest Parquet 
 <li class="toctree-l1"><a class="reference internal" href="CSVIngestion.html">CSV ingestion</a></li>
 <li class="toctree-l1"><a class="reference internal" href="JSONIngestion.html">JSON ingestion</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">ORC ingestion</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#orc-processing">ORC processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#orc-data-processing">ORC data processing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#functions-to-manage-json">Functions to manage JSON</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ingesting-orc-data">Ingesting ORC data</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#operational-data-od-table">Operational data (OD) table</a></li>
