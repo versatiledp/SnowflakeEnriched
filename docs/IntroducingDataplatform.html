@@ -120,7 +120,7 @@ universities, technical institutions, and vocational institutions.</p>
 <p>From IPEDS, we are downloading the files listed below. Data is downloaded for the three academic years (2017, 2018, and 2019).</p>
 <p><strong>Academic institution [HDR]</strong></p>
 <p>These files contain directory information for every institution in the IPEDS universe.
-The files include the name, address, city, state, zip code, and various URL links to the institution’s home page,
+The files include the name, address, city, state, zip code, and various URL links to the institution's home page,
 admissions, and financial aid offices, and net price calculator.</p>
 <p><strong>Enrollment 12-Month [EFFY]</strong></p>
 <p>These files contain the unduplicated headcount of students enrolled over a
@@ -292,7 +292,7 @@ granted to all layers of the data platform.</p>
 <h2>Ingesting Snowflake stage<a class="headerlink" href="#ingesting-snowflake-stage" title="Permalink to this headline">¶</a></h2>
 <p>Data files are received in various formats like CSV, ORC, Parquet, and JSON. These files are available in the folders by year. They are brought into Snowflake staged files using the PUT command.
 Each staged file contains the entire data for that specific year. From these staged files, OD tables are populated.
-Using these OD tables, servicing layer tables of the data-warehouse are populated. Snowflake’s stored procedures, views, and functions are used for ETL/ELT processes.</p>
+Using these OD tables, servicing layer tables of the data-warehouse are populated. Snowflake's stored procedures, views, and functions are used for ETL/ELT processes.</p>
 <p>Internal named stage needs to be created for each of the file formats before loading data.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
