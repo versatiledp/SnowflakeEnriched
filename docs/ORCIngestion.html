@@ -50,6 +50,9 @@
 <li><p>Loading ORC data to the servicing layer.</p></li>
 </ul>
 </div></blockquote>
+<div class="figure align-center">
+<img alt="images/blankline.jpg" src="images/blankline.jpg" />
+</div>
 <div class="section" id="orc-data-processing">
 <h2>ORC data processing<a class="headerlink" href="#orc-data-processing" title="Permalink to this headline">�</a></h2>
 <p>Optimized Row Columnar(ORC) is a self-describing type-aware columnar
@@ -271,10 +274,8 @@ FROM @FooballStg;
 <div class="figure align-center">
 <img alt="images/latteralflatten0.jpg" src="images/latteralflatten0.jpg" />
 </div>
-<dl class="simple">
-<dt>Following scripts used to create table <em>S_PLAYERS</em> with a column of</dt><dd><p>VARIANT data type and it is used to store semi-structured data.</p>
-</dd>
-</dl>
+<p>Following scripts used to create table <em>S_PLAYERS</em> with a column of
+VARIANT data type and it is used to store semi-structured data.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>DROP TABLE IF EXISTS S_PLAYERS;
 CREATE TABLE IF NOT EXISTS S_PLAYERS
 (PLAYER_DATA VARIANT
@@ -1097,83 +1098,75 @@ The attributes of the OD table are categorized into a core group and the 3 group
 <div class="section" id="charges-by-the-academic-branch">
 <h3>Charges by the academic branch<a class="headerlink" href="#charges-by-the-academic-branch" title="Permalink to this headline">�</a></h3>
 <p>This section covers the fees charged by different professional colleges.</p>
-<p><strong>Chiropractic</strong></p>
 <blockquote>
-<div><ul class="simple">
-<li><p>Chiropractic_InStateTuition</p></li>
-<li><p>Chiropractic_InStateRequiredFees</p></li>
-<li><p>Chiropractic_OutOfStateTuition</p></li>
-<li><p>Chiropractic_OutOfStateRequiredFees</p></li>
-</ul>
-</div></blockquote>
-<p><strong>Medicine</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><p>Medicine_InStateTuition</p></li>
-<li><p>Medicine_InStateRequiredFees</p></li>
-<li><p>Medicine_OutOfStateTuition</p></li>
-<li><p>Medicine_OutOfStateRequiredFees</p></li>
-</ul>
+<div><div class="line-block">
+<div class="line"><strong>Chiropractic</strong></div>
+<div class="line">Chiropractic_InStateTuition</div>
+<div class="line">Chiropractic_InStateRequiredFees</div>
+<div class="line">Chiropractic_OutOfStateTuition</div>
+<div class="line">Chiropractic_OutOfStateRequiredFees</div>
+</div>
+<div class="line-block">
+<div class="line"><strong>Medicine</strong></div>
+<div class="line">Medicine_InStateTuition</div>
+<div class="line">Medicine_InStateRequiredFees</div>
+<div class="line">Medicine_OutOfStateTuition</div>
+<div class="line">Medicine_OutOfStateRequiredFees</div>
+</div>
 </div></blockquote>
 </div>
 <div class="section" id="charges-by-residency-type">
 <h3>Charges by residency type<a class="headerlink" href="#charges-by-residency-type" title="Permalink to this headline">�</a></h3>
-<p><strong>InDistrictTuition</strong></p>
+<p>This section covers instate and outstate tuition differences.</p>
 <blockquote>
-<div><ul class="simple">
-<li><p>PublishedInDistrictTuitionYear0</p></li>
-<li><p>PublishedInDistrictTuitionYear1</p></li>
-<li><p>PublishedInDistrictTuitionYear2</p></li>
-<li><p>PublishedInDistrictTuitionYear3</p></li>
-</ul>
-</div></blockquote>
-<p><strong>InDistrictFees</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><p>PublishedInDistrictFeesYear0</p></li>
-<li><p>PublishedInDistrictFeesYear1</p></li>
-<li><p>PublishedInDistrictFeesYear2</p></li>
-<li><p>PublishedInDistrictFeesYear3</p></li>
-</ul>
-</div></blockquote>
-<p><strong>InDistrictTuitionFees</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><p>PublishedInDistrictTuitionFeesYear0</p></li>
-<li><p>PublishedInDistrictTuitionFeesYear1</p></li>
-<li><p>PublishedInDistrictTuitionFeesYear2</p></li>
-<li><p>PublishedInDistrictTuitionFeesYear3</p></li>
-</ul>
-</div></blockquote>
-<p><strong>InStateTuition</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><p>PublishedInStateTuitionYear0</p></li>
-<li><p>PublishedInStateTuitionYear1</p></li>
-<li><p>PublishedInStateTuitionYear2</p></li>
-<li><p>PublishedInStateTuitionYear3</p></li>
-</ul>
+<div><div class="line-block">
+<div class="line"><strong>InDistrictTuition</strong></div>
+<div class="line">PublishedInDistrictTuitionYear0</div>
+<div class="line">PublishedInDistrictTuitionYear1</div>
+<div class="line">PublishedInDistrictTuitionYear2</div>
+<div class="line">PublishedInDistrictTuitionYear3</div>
+</div>
+<div class="line-block">
+<div class="line"><strong>InDistrictFees</strong></div>
+<div class="line">PublishedInDistrictFeesYear0</div>
+<div class="line">PublishedInDistrictFeesYear1</div>
+<div class="line">PublishedInDistrictFeesYear2</div>
+<div class="line">PublishedInDistrictFeesYear3</div>
+</div>
+<div class="line-block">
+<div class="line"><strong>InDistrictTuitionFees</strong></div>
+<div class="line">PublishedInDistrictTuitionFeesYear0</div>
+<div class="line">PublishedInDistrictTuitionFeesYear1</div>
+<div class="line">PublishedInDistrictTuitionFeesYear2</div>
+<div class="line">PublishedInDistrictTuitionFeesYear3</div>
+</div>
+<div class="line-block">
+<div class="line"><strong>InStateTuition</strong></div>
+<div class="line">PublishedInStateTuitionYear0</div>
+<div class="line">PublishedInStateTuitionYear1</div>
+<div class="line">PublishedInStateTuitionYear2</div>
+<div class="line">PublishedInStateTuitionYear3</div>
+</div>
 </div></blockquote>
 </div>
 <div class="section" id="institutional-charge-by-category">
 <h3>Institutional charge by category<a class="headerlink" href="#institutional-charge-by-category" title="Permalink to this headline">�</a></h3>
-<p><strong>BooksSupplies</strong></p>
+<p>This section covers the cost of room board, books, and supplies.</p>
 <blockquote>
-<div><ul class="simple">
-<li><p>BooksSuppliesYear0</p></li>
-<li><p>BooksSuppliesYear1</p></li>
-<li><p>BooksSuppliesYear2</p></li>
-<li><p>BooksSuppliesYear3</p></li>
-</ul>
-</div></blockquote>
-<p><strong>OnCampusRoomBoard</strong></p>
-<blockquote>
-<div><ul class="simple">
-<li><p>OnCampusRoomBoardYear0</p></li>
-<li><p>OnCampusRoomBoardYear1</p></li>
-<li><p>OnCampusRoomBoardYear2</p></li>
-<li><p>OnCampusRoomBoardYear3</p></li>
-</ul>
+<div><div class="line-block">
+<div class="line"><strong>BooksSupplies</strong></div>
+<div class="line">BooksSuppliesYear0</div>
+<div class="line">BooksSuppliesYear1</div>
+<div class="line">BooksSuppliesYear2</div>
+<div class="line">BooksSuppliesYear3</div>
+</div>
+<div class="line-block">
+<div class="line"><strong>OnCampusRoomBoard</strong></div>
+<div class="line">OnCampusRoomBoardYear0</div>
+<div class="line">OnCampusRoomBoardYear1</div>
+<div class="line">OnCampusRoomBoardYear2</div>
+<div class="line">OnCampusRoomBoardYear3</div>
+</div>
 </div></blockquote>
 </div>
 </div>
@@ -1186,13 +1179,16 @@ specific type of charges. While processing the InstitutionalCharge dataset, data
 normalized from the OD layer and mapped to the servicing layer tables.
 The fact tables for institutional charge data called:</p>
 <blockquote>
-<div><ul class="simple">
-<li><p><strong>InstitutionalCharge</strong></p></li>
-<li><p><strong>InstitutionalChargeByAcademicBranch</strong></p></li>
-<li><p><strong>InstitutionalChargeByResidencyType</strong></p></li>
-<li><p><strong>InstitutionalChargeByCategory</strong></p></li>
-</ul>
+<div><div class="line-block">
+<div class="line"><strong>InstitutionalCharge</strong></div>
+<div class="line"><strong>InstitutionalChargeByAcademicBranch</strong></div>
+<div class="line"><strong>InstitutionalChargeByResidencyType</strong></div>
+<div class="line"><strong>InstitutionalChargeByCategory</strong></div>
+</div>
 </div></blockquote>
+<div class="figure align-center">
+<img alt="images/blankline.jpg" src="images/blankline.jpg" />
+</div>
 <p>All these fact tables have links to the
 dimension table <strong>AcademicInstitution</strong>. The relationship represents the star schema of
 dimensional modelling architecture. This is made possible by
@@ -2217,6 +2213,9 @@ JSON data structure is easy to consume in the Snowflake data processing, as we w
 <li><p>Charges by residency type</p></li>
 <li><p>Charges by category</p></li>
 </ul>
+<div class="figure align-center">
+<img alt="images/blankline.jpg" src="images/blankline.jpg" />
+</div>
 <p>These JSON objects are added as three columns in the OD table of data type VARIANT.</p>
 <p>The following script will create the table for our alternative approach.</p>
 <div class="toggle docutils container">
@@ -2555,6 +2554,9 @@ $$
 <li><p>v_od_InstitutionalChargeByCategory</p></li>
 </ul>
 </div></blockquote>
+<div class="figure align-center">
+<img alt="images/blankline.jpg" src="images/blankline.jpg" />
+</div>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Create OD InstitutionalChargeByAcademicBranch view for an alternative approach</p>

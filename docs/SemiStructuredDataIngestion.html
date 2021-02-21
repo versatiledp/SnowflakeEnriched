@@ -47,6 +47,9 @@
 <li><p>Process data for multiple tables in the servicing layer.</p></li>
 </ul>
 </div></blockquote>
+<div class="figure align-center">
+<img alt="images/blankline.jpg" src="images/blankline.jpg" />
+</div>
 <p>Transactional system generates data into a variety of layouts like undefined formats and variable blocked files. Undefined format consists of records and blocks with no predefined single structure. Variable blocked format places several variable-length records with an additional block descriptor.</p>
 <p>In our case,
 a single lookup file generated from the source system contains data for
@@ -56,14 +59,14 @@ a relational database. But, it has some properties that make it easier to analyz
 With some additional transformation logic, we can store them in the relation database.</p>
 <p>Data for multiple entities listed below is available in a single file.</p>
 <blockquote>
-<div><ul class="simple">
-<li><p>Institution status</p></li>
-<li><p>Carnegie classification</p></li>
-<li><p>Economic bureau region</p></li>
-<li><p>TitleIV eligibility code</p></li>
-<li><p>Institution type</p></li>
-<li><p><strong>etc</strong></p></li>
-</ul>
+<div><div class="line-block">
+<div class="line">Institution status</div>
+<div class="line">Carnegie classification</div>
+<div class="line">Economic bureau region</div>
+<div class="line">TitleIV eligibility code</div>
+<div class="line">Institution type</div>
+<div class="line"><strong>…</strong></div>
+</div>
 </div></blockquote>
 <div class="section" id="multiformat-data-layout">
 <h2>Multiformat data layout<a class="headerlink" href="#multiformat-data-layout" title="Permalink to this headline">¶</a></h2>
@@ -269,24 +272,26 @@ $$;
 </div>
 <p>On executing the above stored procedure, the following tables are added and loaded with data from the single staged file.</p>
 <blockquote>
-<div><ul class="simple">
-<li><p>od_InstitutionStatus</p></li>
-<li><p>od_CoreBasedStatisticalArea</p></li>
-<li><p>od_CBSATypeMetropolitan</p></li>
-<li><p>od_CarnegieClassification2005</p></li>
-<li><p>od_StateCongressionalDistricID</p></li>
-<li><p>od_InstitutionControl</p></li>
-<li><p>od_CountryCode</p></li>
-<li><p><strong>etc</strong></p></li>
-<li><p>od_IdentificationNumberMultiCampusOrganization</p></li>
-<li><p>od_MultiinstitutionMulticampusOrganization</p></li>
-<li><p>od_FIPSStateCode</p></li>
-<li><p>od_GraduateOffering</p></li>
-<li><p>od_NewEnglandArea</p></li>
-<li><p>od_EconomicBureauRegion</p></li>
-<li><p>od_TitleIVEligibilityCode</p></li>
-<li><p>od_InstitutionOpenGeneralPublic</p></li>
-</ul>
+<div><div class="line-block">
+<div class="line">od_InstitutionStatus</div>
+<div class="line">od_CoreBasedStatisticalArea</div>
+<div class="line">od_CBSATypeMetropolitan</div>
+<div class="line">od_CarnegieClassification2005</div>
+<div class="line">od_StateCongressionalDistricID</div>
+<div class="line">od_InstitutionControl</div>
+<div class="line">od_CountryCode</div>
+<div class="line-block">
+<div class="line"><strong>…</strong></div>
+</div>
+<div class="line">od_IdentificationNumberMultiCampusOrganization</div>
+<div class="line">od_MultiinstitutionMulticampusOrganization</div>
+<div class="line">od_FIPSStateCode</div>
+<div class="line">od_GraduateOffering</div>
+<div class="line">od_NewEnglandArea</div>
+<div class="line">od_EconomicBureauRegion</div>
+<div class="line">od_TitleIVEligibilityCode</div>
+<div class="line">od_InstitutionOpenGeneralPublic</div>
+</div>
 </div></blockquote>
 </div>
 <div class="section" id="servicing-layer-merge-data-load">

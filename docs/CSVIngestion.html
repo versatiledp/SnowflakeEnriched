@@ -88,8 +88,7 @@ FROM @IPEDS_HD WHERE metadata$file_row_number &gt; 1;
 </div>
 <p>The attributes from the staged file do not hold column names and types. We need to create a schema on the read
 for each of the $1, $2,,, $n columns in the staged file &#64;IPEDS_HD. This is accomplished by using mapping documents
-between staged layer and column names in OD tables. Mapping document for CSV file is available at below URL:</p>
-<p>(<a class="reference external" href="https://versatiledp.github.io/SnowflakeEnriched/Mapping/AcademicInstitute.htm"   target="_blank">https://versatiledp.github.io/SnowflakeEnriched/Mapping/AcademicInstitute.htm</a>).</p>
+between staged layer and column names in OD tables. Mapping document available at: <a class="reference external" href="https://versatiledp.github.io/SnowflakeEnriched/Mapping/AcademicInstitute.htm"   target="_blank">https://versatiledp.github.io/SnowflakeEnriched/Mapping/AcademicInstitute.htm</a>.</p>
 </div>
 <div class="section" id="ingesting-csv-data">
 <h2>Ingesting CSV data<a class="headerlink" href="#ingesting-csv-data" title="Permalink to this headline">¶</a></h2>
@@ -342,6 +341,9 @@ The retrieved records are then inserted into the OD table.</p>
 <li><p>Check the results of snowflake.execute call.</p></li>
 </ul>
 </div></blockquote>
+<div class="figure align-center">
+<img alt="images/blankline.jpg" src="images/blankline.jpg" />
+</div>
 <p>A stored procedure is created with a <strong>CREATE PROCEDURE</strong> command and executed with a <strong>CALL</strong> command.</p>
 <p>Here is the script for creating the Snowflake stored procedure pr_od_AcademicInstitution_Load.</p>
 <div class="toggle docutils container">
@@ -1182,6 +1184,9 @@ changes in the input files generated from the source system.</p>
 <div class="line">CarnegieClassification2018SizeSetting</div>
 </div>
 </div></blockquote>
+<div class="figure align-center">
+<img alt="images/blankline.jpg" src="images/blankline.jpg" />
+</div>
 <p>And the following columns are deleted from the academic institution files from 2018 onwards.</p>
 <blockquote>
 <div><div class="line-block">
@@ -1219,6 +1224,9 @@ change along with table change in the tables od_AcademicInstitution and Academic
 <li><p>Stored procedure pr_AcademicInstitution_Load processes dimension table.</p></li>
 </ul>
 </div></blockquote>
+<div class="figure align-center">
+<img alt="images/blankline.jpg" src="images/blankline.jpg" />
+</div>
 <p>The script for v_od_AcademicInstitution is updated to accommodate file layout changes:</p>
 <div class="toggle docutils container">
 <div class="header docutils container">

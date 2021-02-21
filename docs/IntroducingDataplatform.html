@@ -114,7 +114,7 @@ IPEDS  <a class="reference external" href="https://nces.ed.gov/ipeds"  target="_
 is the primary source for information on U.S. Colleges,
 universities, technical institutions, and vocational institutions.</p>
 <div class="figure align-center">
-<img alt="images/IPEDSScreenShot.png" src="images/IPEDSScreenShot.png" />
+<img alt="images/blankline.jpg" src="images/blankline.jpg" />
 </div>
 <p>All of the data used in this book is downloaded from <a class="reference external" href="https://nces.ed.gov/ipeds/use-the-data"   target="_blank">https://nces.ed.gov/ipeds/use-the-data</a>.</p>
 <p>From IPEDS, we are downloading the files listed below. Data is downloaded for the three academic years (2017, 2018, and 2019).</p>
@@ -142,16 +142,10 @@ state name given state code, etc..</p>
 <p><em>Disclaimer: We have modified this data to explore Snowflake functionality. Therefore, analytics results from this book
 should not be used as a replacement for the original data and its results.
 Please refer to the NCES website for actual statistics and research on academic institutions.</em></p>
-<dl>
-<dt><em>Utilities to convert the CSV files into different data formats are available at:</em></dt><dd><div class="line-block">
-<div class="line"><a class="reference external" href="https://github.com/versatiledp/SnowflakeEnriched/tree/master/utilities"   target="_blank">https://github.com/versatiledp/SnowflakeEnriched/tree/master/utilities</a></div>
-</div>
-</dd>
-<dt><em>All the data files used throughout this book are available to download at:</em></dt><dd><div class="line-block">
-<div class="line"><a class="reference external" href="https://github.com/versatiledp/SnowflakeEnriched/tree/master/data/input"  target="_blank">https://github.com/versatiledp/SnowflakeEnriched/tree/master/data/input</a></div>
-</div>
-</dd>
-</dl>
+<p><em>Utilities to convert the CSV files into different data formats are available at:</em>
+<a class="reference external" href="https://github.com/versatiledp/SnowflakeEnriched/tree/master/utilities"   target="_blank">https://github.com/versatiledp/SnowflakeEnriched/tree/master/utilities</a></p>
+<p><em>All the data files used throughout this book are available to download at:</em>
+<a class="reference external" href="https://github.com/versatiledp/SnowflakeEnriched/tree/master/data/input"  target="_blank">https://github.com/versatiledp/SnowflakeEnriched/tree/master/data/input</a></p>
 </div>
 <p>These files are coming to the data platform in the format like CSV, JSON, ORC, Parquet, and Multi-format.</p>
 <div class="section" id="academic-institution-hdr">
@@ -279,6 +273,9 @@ that are named properly with business centeric column names with appropriate dat
 <li><p>Extracting data from CSV, JSON, ORC, and Parquet.</p></li>
 <li><p>Combining data from multiple columns to Single JSON objects.</p></li>
 </ul>
+<div class="figure align-center">
+<img alt="images/blankline.jpg" src="images/blankline.jpg" />
+</div>
 <p>The diagram below shows the data flow process between files and the final destination in Snowflake.</p>
 <div class="figure align-center">
 <img alt="images/ingestionlayout.jpg" src="images/ingestionlayout.jpg" />
@@ -321,6 +318,9 @@ Using these OD tables, servicing layer tables of the data-warehouse are populate
 <li><p>Comma separated with no header</p></li>
 </ul>
 </div></blockquote>
+<div class="figure align-center">
+<img alt="images/blankline.jpg" src="images/blankline.jpg" />
+</div>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">--</span> <span class="n">Number</span> <span class="n">of</span> <span class="n">header</span> <span class="n">lines</span> <span class="n">at</span> <span class="n">the</span> <span class="n">start</span> <span class="n">of</span> <span class="n">the</span> <span class="n">file</span><span class="o">.</span>
 <span class="o">--</span> <span class="n">The</span> <span class="n">COPY</span> <span class="n">command</span> <span class="n">skips</span> <span class="n">header</span> <span class="n">lines</span> <span class="n">when</span> <span class="n">loading</span> <span class="n">data</span>
 <span class="o">--</span> <span class="n">All</span> <span class="n">these</span> <span class="n">file</span> <span class="n">formats</span> <span class="n">can</span> <span class="n">be</span> <span class="n">used</span> <span class="n">to</span> <span class="n">create</span> <span class="n">different</span> <span class="n">stage</span> <span class="n">areas</span>

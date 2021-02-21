@@ -60,14 +60,24 @@ The following diagram shows the relationship between different entities we have 
 <li><p>Data table with state codes and enrollment segments.</p></li>
 <li><p>Tuition cost details by various public colleges.</p></li>
 </ul>
+<div class="figure align-center">
+<img alt="images/blankline.jpg" src="images/blankline.jpg" />
+</div>
 <p>In this book, all the business insights are generated using <strong>Google Colab</strong>, which provides a Jupyter notebook environment.
-Login to the Google account and launch the Colab using URL <a class="reference external" href="https://colab.research.google.com/notebooks/intro.ipynb"  target="_blank" >https://colab.research.google.com/notebooks/intro.ipynb</a>.</p>
+Login to the Google account and launch the Colab using URL</p>
+<p><a class="reference external" href="https://colab.research.google.com/notebooks/intro.ipynb"  target="_blank" >https://colab.research.google.com/notebooks/intro.ipynb</a>.</p>
+<div class="figure align-center">
+<img alt="images/blankline.jpg" src="images/blankline.jpg" />
+</div>
 <p>Steps for running all the notesbooks for this chapter:</p>
 <ul class="simple">
 <li><p>Download Colab notebooks used in this chapter.</p></li>
 <li><p>Upload these notebooks to Colab using File-&gt;Upload Notebook option.</p></li>
 <li><p>Execute the notebook code.</p></li>
 </ul>
+<div class="figure align-center">
+<img alt="images/blankline.jpg" src="images/blankline.jpg" />
+</div>
 <p>Colab notebook upload launch pad as shown below.</p>
 <div class="figure align-center">
 <img alt="images/colab.JPG" src="images/colab.JPG" />
@@ -85,9 +95,12 @@ Login to the Google account and launch the Colab using URL <a class="reference e
 <li><p>Get the user input</p></li>
 <li><p>Display the results</p></li>
 </ul>
+<div class="figure align-center">
+<img alt="images/blankline.jpg" src="images/blankline.jpg" />
+</div>
 <p><strong>The code covers the following steps for the user.</strong></p>
-<p>It installs the pre-requisites Snowflake connector drivers from
-<a class="reference external" href="https://docs.snowflake.com/en/user-guide/python-connector.html"  target="_blank">https://docs.snowflake.com/en/user-guide/python-connector.html</a></p>
+<p>It installs the pre-requisites Snowflake connector drivers from</p>
+<p><a class="reference external" href="https://docs.snowflake.com/en/user-guide/python-connector.html"  target="_blank">https://docs.snowflake.com/en/user-guide/python-connector.html</a></p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>pip install snowflake-connector-python
 </pre></div>
 </div>
@@ -118,7 +131,7 @@ on various segments using bar, donut, and pie charts.</p>
 <h3>Steps<a class="headerlink" href="#steps" title="Permalink to this headline">¶</a></h3>
 <blockquote>
 <div><ul>
-<li><p>Join <strong>AcademicInstitution</strong> to the lookup tables  <strong>EconomicBureauRegion</strong>, <strong>HighestLevelOffering</strong>, <strong>Institutionalcategory</strong>, <strong>InstitutionControl</strong>, and <strong>Institutionlevel</strong>.</p></li>
+<li><p>Join the <strong>AcademicInstitution</strong> tables to the lookup entities <strong>EconomicBureauRegion</strong>, <strong>HighestLevelOffering</strong>, <strong>Institutionalcategory</strong>, <strong>InstitutionControl</strong>, and <strong>Institutionlevel</strong>.</p></li>
 <li><p>Filter for active institutions with defined economic bureau region and highest level offering.</p></li>
 <li><p>Convert economic region descriptions to the business defined economic region descriptions.</p></li>
 <li><p>Plot the institution counts by:</p>
@@ -133,6 +146,9 @@ on various segments using bar, donut, and pie charts.</p>
 </li>
 </ul>
 </div></blockquote>
+<div class="figure align-center">
+<img alt="images/blankline.jpg" src="images/blankline.jpg" />
+</div>
 </div>
 <div class="section" id="expected-output">
 <h3>Expected output<a class="headerlink" href="#expected-output" title="Permalink to this headline">¶</a></h3>
@@ -329,26 +345,24 @@ Enter Snowflake password:··········
 <div class="section" id="enrollment-segment-by-state">
 <h2>Enrollment segment by state<a class="headerlink" href="#enrollment-segment-by-state" title="Permalink to this headline">¶</a></h2>
 <p>In this visual, we are presenting enrollments details for the segments as listed below by states:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>Total men</p></li>
-<li><p>Total women</p></li>
-<li><p>White men</p></li>
-<li><p>White women</p></li>
-<li><p>Black/African American men</p></li>
-<li><p>Black/African American women</p></li>
-<li><p>Hispanic/Latino men</p></li>
-<li><p>Hispanic/Latino women</p></li>
-<li><p>Nonresident alien men</p></li>
-<li><p>Nonresident alien women</p></li>
-<li><p>Asian men</p></li>
-<li><p>Asian women</p></li>
-<li><p>American Indian &amp; Alaska native men</p></li>
-<li><p>American Indian &amp; Alaska native women</p></li>
-<li><p>Native Hawaiian men</p></li>
-<li><p>Native Hawaiian women</p></li>
-</ul>
-</div></blockquote>
+<div class="line-block">
+<div class="line">Total men</div>
+<div class="line">Total women</div>
+<div class="line">White men</div>
+<div class="line">White women</div>
+<div class="line">Black/African American men</div>
+<div class="line">Black/African American women</div>
+<div class="line">Hispanic/Latino men</div>
+<div class="line">Hispanic/Latino women</div>
+<div class="line">Nonresident alien men</div>
+<div class="line">Nonresident alien women</div>
+<div class="line">Asian men</div>
+<div class="line">Asian women</div>
+<div class="line">American Indian &amp; Alaska native men</div>
+<div class="line">American Indian &amp; Alaska native women</div>
+<div class="line">Native Hawaiian men</div>
+<div class="line">Native Hawaiian women</div>
+</div>
 <div class="section" id="id1">
 <h3>Steps<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <blockquote>
@@ -357,14 +371,7 @@ Enter Snowflake password:··········
 <li><p>Filter degree-granting schools in a specific state.</p></li>
 <li><p>Aggregate enrollment at various levels like <em>TotalMen</em>, <em>TotalWomen</em>, <em>WhiteMen</em>, <em>WhiteWomen</em>, etc..</p></li>
 <li><p>Allow users to select academic year.</p></li>
-<li><dl class="simple">
-<dt>Transpose data from rows to column.</dt><dd><ol class="loweralpha simple">
-<li><p>Convert all the rows (state code) to columns.</p></li>
-<li><p>Convert all the column names (enrollment type) to rows.</p></li>
-</ol>
-</dd>
-</dl>
-</li>
+<li><p>Transpose data from rows to column (Convert all the rows [state code] to columns and convert all the column names [enrollment type] to rows).</p></li>
 <li><p>Display data in the HTML table format.</p></li>
 </ul>
 </div></blockquote>
