@@ -1084,40 +1084,30 @@ Fees vary significantly from state to state, public to private, and ranking of i
 <p>The details of the fees by academic subjects like dentistry, medicine, optometry, osteopathic medicine, pharmacy, podiatry,
 veterinary medicine, and law by institutions
 for in-state and out-of-state students are available in this section.</p>
-<p><strong>Institutional charge by residency type</strong></p>
-<p>The residency type determines different fee structures in public
-universities for the same courses. Normally, in-state students
-are charged less than out-of-state. This set of attributes will provide insight into those patterns.</p>
-<p><strong>Institutional charge by category</strong></p>
-<p>Various fees like on-campus boarding, books/supplies, and other
-on-campus expenses are available in this section of the file.</p>
-<p>ORC dataset is extremely denormalized file coming from the big data platform.
-To serve this data for reporting engine,
-we need to architect servicing layer strucutre differently.
-The attributes of the OD table are categorized into a core group and the 3 groups as shown below.</p>
-<div class="section" id="charges-by-the-academic-branch">
-<h3>Charges by the academic branch<a class="headerlink" href="#charges-by-the-academic-branch" title="Permalink to this headline">¶</a></h3>
-<p>This section covers the fees charged by different professional colleges.</p>
+<p>For example, the following data attributes represent tuition and fees for instate as well as out-of-state students
+attending chiropractic and medical schools.</p>
 <blockquote>
 <div><div class="line-block">
-<div class="line"><strong>Chiropractic</strong></div>
+<div class="line"><em>Chiropractic</em></div>
 <div class="line">Chiropractic_InStateTuition</div>
 <div class="line">Chiropractic_InStateRequiredFees</div>
 <div class="line">Chiropractic_OutOfStateTuition</div>
 <div class="line">Chiropractic_OutOfStateRequiredFees</div>
 </div>
 <div class="line-block">
-<div class="line"><strong>Medicine</strong></div>
+<div class="line"><em>Medicine</em></div>
 <div class="line">Medicine_InStateTuition</div>
 <div class="line">Medicine_InStateRequiredFees</div>
 <div class="line">Medicine_OutOfStateTuition</div>
 <div class="line">Medicine_OutOfStateRequiredFees</div>
 </div>
 </div></blockquote>
-</div>
-<div class="section" id="charges-by-residency-type">
-<h3>Charges by residency type<a class="headerlink" href="#charges-by-residency-type" title="Permalink to this headline">¶</a></h3>
-<p>This section covers instate and outstate tuition differences.</p>
+<p><strong>Institutional charge by residency type</strong></p>
+<p>The residency type determines different fee structures in public
+universities for the same courses. Normally, in-state students
+are charged less than out-of-state. This set of attributes will provide insight into those patterns.</p>
+<p>Published tuition and fees by residency type for the first four years of college education are stored
+in the following attributes.</p>
 <blockquote>
 <div><div class="line-block">
 <div class="line"><strong>InDistrictTuition</strong></div>
@@ -1148,10 +1138,10 @@ The attributes of the OD table are categorized into a core group and the 3 group
 <div class="line">PublishedInStateTuitionYear3</div>
 </div>
 </div></blockquote>
-</div>
-<div class="section" id="institutional-charge-by-category">
-<h3>Institutional charge by category<a class="headerlink" href="#institutional-charge-by-category" title="Permalink to this headline">¶</a></h3>
-<p>This section covers the cost of room board, books, and supplies.</p>
+<p><strong>Institutional charge by category</strong></p>
+<p>Various fees like on-campus boarding, books/supplies, and other
+on-campus expenses are available in this section of the file.</p>
+<p>The cost of the other expenses for the first four years are stored in the following attributes.</p>
 <blockquote>
 <div><div class="line-block">
 <div class="line"><strong>BooksSupplies</strong></div>
@@ -1168,7 +1158,10 @@ The attributes of the OD table are categorized into a core group and the 3 group
 <div class="line">OnCampusRoomBoardYear3</div>
 </div>
 </div></blockquote>
-</div>
+<p>ORC dataset is extremely denormalized file coming from the big data platform.
+To serve this data for reporting engine,
+we need to architect servicing layer strucutre differently.
+The attributes of the OD table are categorized into a core group and the 3 groups as shown below.</p>
 </div>
 <div class="section" id="servicing-layer-entities-for-orc">
 <h2>Servicing layer entities for ORC<a class="headerlink" href="#servicing-layer-entities-for-orc" title="Permalink to this headline">¶</a></h2>
@@ -1231,6 +1224,8 @@ of the dimension table AcademicInstitution to these fact tables.</p>
 </div>
 </div>
 <p>InstitutionalChargeByAcademicBranch Entity:</p>
+<p><strong>BranchName</strong> attribute is used for academic branches like medicine and chiropractic.
+Instate and out-of-state category is available in the <strong>ChargeType</strong> column.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Create InstitutionalChargeByAcademicBranch entity</p>
@@ -1245,6 +1240,9 @@ of the dimension table AcademicInstitution to these fact tables.</p>
 </pre></div>
 </div>
 </div>
+<p><strong>ResidencyType</strong> attribute for general admission is used to identify
+indistrict and out-of-district categories.
+<strong>PublishedYear</strong> column is used to represent program year.</p>
 <p>InstitutionalChargeByResidencyType Entity:</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
@@ -1261,6 +1259,8 @@ of the dimension table AcademicInstitution to these fact tables.</p>
 </div>
 </div>
 <p>InstitutionalChargeByCategory Entity:</p>
+<p>Type of expense category is available in the attribute <strong>CategoryType</strong>.
+<strong>PublishedYear</strong> column is used to identify program year.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Create InstitutionalChargeByCategory entity</p>
@@ -2993,12 +2993,7 @@ In the next chapter, we will be creating a Snowflake pipeline to ingest Parquet 
 <li class="toctree-l3"><a class="reference internal" href="#od-table-load">OD table load</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#data-analysis">Data analysis</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#charges-by-the-academic-branch">Charges by the academic branch</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#charges-by-residency-type">Charges by residency type</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#institutional-charge-by-category">Institutional charge by category</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="#data-analysis">Data analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#servicing-layer-entities-for-orc">Servicing layer entities for ORC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#data-preparation-for-servicing-layer-load">Data preparation for servicing layer load</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#alternative-approach-for-data-preparation">Alternative approach for data preparation</a></li>
