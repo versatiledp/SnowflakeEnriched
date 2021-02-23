@@ -108,7 +108,7 @@ and analyzing data related to education in the U.S. and other nations.
 NCES is located within the U.S. Department of Education and the Institute of Education Sciences.
 NCES fulfills a Congressional mandate to collect, collate, analyze, and report complete statistics
 on the condition of American education; conduct and publish reports; and review and report on
-education activities internationally. The Integrated Postsecondary Education Data System (IPEDS),
+education activities internationally. The Integrated Postsecondary Education Data System (IPEDS)
 established as the core postsecondary education data collection program for NCES.
 IPEDS  <a class="reference external" href="https://nces.ed.gov/ipeds"  target="_blank">https://nces.ed.gov/ipeds</a>
 is the primary source for information on U.S. Colleges,
@@ -181,7 +181,7 @@ major Hadoop implementations.</p>
 <div class="figure align-center">
 <img alt="images/orcIngestion.jpg" src="images/orcIngestion.jpg" />
 </div>
-<p>Data from different source systems are brought to Hadoop enviornment for big data processing. We would use ORC files
+<p>Data from different source systems are brought to Hadoop environment for big data processing. We would use ORC files
 coming out of Hadoop and ingest into Snowflake.</p>
 <p>To create ORC file for simulation in this book, we have used second python convertor.
 This python code migrated CSV files from IPEDS universe to
@@ -218,10 +218,10 @@ Create folder <strong>C:\Snowflake\data\input\</strong> and copy downloaded file
 The files in this book are loaded from the above folder to the Snowflake stage area using SnowSQL CLI.</p>
 </div>
 </div>
-<div class="section" id="snowflake-data-pillers">
-<h2>Snowflake data pillers<a class="headerlink" href="#snowflake-data-pillers" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="snowflake-data-pillars">
+<h2>Snowflake data pillars<a class="headerlink" href="#snowflake-data-pillars" title="Permalink to this headline">¶</a></h2>
 <p>For the project in this book, we will be using Snowflake staged files, transient tables, and master tables.
-Transient tables are referenced as operational data tables through out the book.
+Transient tables are referenced as operational data tables throughout the book.
 Master tables are also called as the servicing layer entities.
 Snowflake staged files, transient tables along with the source system
 represent data source layer.
@@ -251,7 +251,7 @@ These are initial physical tables created in Snowflake and consists of data
 that has undergone little to no transformation.
 The OD table structure very closely resembles that of the staged file with proper data types and column names, alongside
 additional columns to help track data lineage. The OD also serves as transient place to store data coming from
-the source systems. It allows us have all the data within the bounds ready for processing and modeling</p>
+the source systems. It allows us to have all the data within the bounds ready for processing and modeling</p>
 </div>
 <div class="section" id="servicing-layer">
 <h3>Servicing layer<a class="headerlink" href="#servicing-layer" title="Permalink to this headline">¶</a></h3>
@@ -259,16 +259,16 @@ the source systems. It allows us have all the data within the bounds ready for p
 ready for consumption to the business intelligence layer.
 OD tables serve as input to the transformation process to populate servicing layer tables.
 This is our master schema with transformed data. It contains correctly modeled tables,
-that are named properly with business centeric column names with appropriate data types.</p>
+that are named properly with business centric column names with appropriate data types.</p>
 </div>
 <div class="section" id="dataflow-summary">
 <h3>Dataflow summary<a class="headerlink" href="#dataflow-summary" title="Permalink to this headline">¶</a></h3>
 <p>The data cleaning and transformation takes place while moving data from OD into service layer.</p>
 <ul class="simple">
-<li><p>Standardising all date formats and time zones.</p></li>
+<li><p>Standardizing all date formats and time zones.</p></li>
 <li><p>Rounding numbers.</p></li>
 <li><p>Cleaning strings and character data.</p></li>
-<li><p>Standardising data to be of the same format.</p></li>
+<li><p>Synthesizing data to be of the same format.</p></li>
 <li><p>Splitting out data into multiple columns.</p></li>
 <li><p>Extracting data from CSV, JSON, ORC, and Parquet.</p></li>
 <li><p>Combining data from multiple columns to Single JSON objects.</p></li>
@@ -498,7 +498,7 @@ we can check their availability in the internal stage area by executing the code
 If there are any issues in the staged area, drop staged area using <strong>remove &#64;StageAreaName</strong>.
 Example to drop ADM file stage area, execute the command remove &#64;IPEDS_ADM.
 To recreate dropped staged area, we will need to re-run the
-create staged area and load data file code again .</p>
+create staged area and load data file code again.</p>
 </div>
 </div>
 <div class="section" id="summary">
@@ -579,7 +579,7 @@ our first set of CSV files from the source system.</p>
 <li class="toctree-l3"><a class="reference internal" href="#code-mapping-data">Code mapping data</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#snowflake-data-pillers">Snowflake data pillers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#snowflake-data-pillars">Snowflake data pillars</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#staged-file">Staged file</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#operational-datastore-od">Operational datastore (OD)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#servicing-layer">Servicing layer</a></li>

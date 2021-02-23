@@ -60,7 +60,7 @@ enable to fetch only the required columns and values,
 load those in memory and answer the query.
 If a row-based file format like CSV was used, the entire table would have to have been
 loaded in memory, resulting in increased I/O and worse performance.
-Snowflake manages Parquet files similar to semi-structured JSON data from VARIANT type.
+Snowflake manages Parquet files like semi-structured JSON data from VARIANT type.
 Snowflake allows loading Parquet data directly into relational tables from the staged file.</p>
 <p>The admission statistics files are in Parquet format.
 These files contain information about the number of applicants by various categories:
@@ -608,8 +608,8 @@ $$;
 This data processing architecture is similar to that of CSV files and is made easily consumable
 by Snowflake. We loaded 3 years of admission statistics files in the staged area. We added
 the OD table, and the fact table for the servicing layer.</p>
-<p>Data engineers have to deal with multiple file layout situations along with CSV, JSON, ORC, and Parquet formats.
-Most notable examples is the file having multiple record layouts.
+<p>Data engineers must deal with multiple file layout situations along with CSV, JSON, ORC, and Parquet formats.
+Most notable examples are the file having multiple record layouts.
 In the next chapter, we will cover one of these situations,
 where a file has records for multiple destination entities.</p>
 <div class="admonition note">

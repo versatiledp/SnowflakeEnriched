@@ -549,7 +549,7 @@ CALL pr_od_AcademicInstitution_Load(2017::FLOAT);
 <p>We have built a dimension table called <strong>AcademicInstitution</strong> in the servicing layer.
 This dimension table will be used by fact tables at the servicing layer in forthcoming chapters.</p>
 <p>In general, a dimension table contains keys, columns, and other attributes that are associated with the business key.
-A system-generated key (primary key) is used to uniquely identify a row in the dimension and it is also known as a surrogate key. In dimensional data warehouse architecture,
+A system-generated key (primary key) is used to uniquely identify a row in the dimension, and it is also known as a surrogate key. In dimensional data warehouse architecture,
 the surrogate key is placed in the fact table and a foreign key is defined to establish the relationship between the two tables.</p>
 <p>In the case of the dimension table AcademicInstitution, we have defined the
 column <strong>AcademicInstitutionUniqueDWSID</strong> as the primary key.
@@ -1215,7 +1215,7 @@ We have added the new columns to the OD table using <strong>ALTER TABLE</strong>
 This has made it possible to ingest files with different structures for 2017 and more recent years.</p>
 <p>The deleted columns are populated with NULL values for the year greater than 2017.
 Newly added columns are mapped with NULL for the year 2017.</p>
-<p>We have to modify the following Snowflake data objects (views/stored procedures) to incorporate the above structural
+<p>We must modify the following Snowflake data objects (views/stored procedures) to incorporate the above structural
 change along with table change in the tables od_AcademicInstitution and AcademicInstitution.</p>
 <blockquote>
 <div><ul class="simple">

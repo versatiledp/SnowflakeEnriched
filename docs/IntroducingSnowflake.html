@@ -39,7 +39,7 @@
             
   <div class="section" id="introducing-snowflake">
 <h1>Introducing Snowflake<a class="headerlink" href="#introducing-snowflake" title="Permalink to this headline">¶</a></h1>
-<p>Snowflake is elastic data warehousing service.
+<p>Snowflake is a fully-managed elastic cloud data warehousing service.
 It handles infrastructure, optimization, availability, and data protection.
 It is a cloud-based SaaS (Software-as-a-Service) data management solution that makes it possible for
 organizations to:</p>
@@ -47,7 +47,7 @@ organizations to:</p>
 <li><p>Bring all their business data together in one place for analysis.</p></li>
 <li><p>Allow all analysts, applications, or even customers to have shared access to the data.</p></li>
 <li><p>Focus on analyzing data without worrying about hardware, software, or database tuning.</p></li>
-<li><p>Utilize the SQL skills data, the community already has built.</p></li>
+<li><p>Utilize the SQL skills, the community already has built.</p></li>
 <li><p>Leverage the existing ecosystem of tools to manage, extract transform load (<strong>ETL</strong>) or extract load transform (<strong>ELT</strong>) process.</p></li>
 <li><p>Integrate the current business intelligence stack like Tableau, PowerBI, and other open-source tools like D3.js and Plotly seamlessly.</p></li>
 </ul>
@@ -84,7 +84,7 @@ Snowflake also provides excellent data durability, and availability.</p>
 <p>Snowflake defines a virtual warehouse as a cluster of compute resources.
 The warehouse provides all the resources like CPU, memory, and temporary storage
 required to start using Snowflake. This warehouse defaults to auto-suspend mode if there are no activities.</p>
-<p>All data in Snowflake is maintained in databases. Each database consists of one or more schemas.
+<p>All data in Snowflake is maintained in database objects. Each database consists of one or more schemas.
 Schemas are logical groupings of database objects like tables, views, and functions.</p>
 </div>
 <div class="section" id="advantages">
@@ -102,7 +102,7 @@ Schemas are logical groupings of database objects like tables, views, and functi
 </div>
 <div class="section" id="data-features">
 <h3>Data features<a class="headerlink" href="#data-features" title="Permalink to this headline">¶</a></h3>
-<p>In Snowflake, data can be ingested from a variety of data
+<p>In Snowflake, data can be ingested from various sources in variety of data
 formats like CSV, Parquet, ORC, and XML data sources.
 It supports JSON to a great extent, and furthermore:</p>
 <ul class="simple">
@@ -157,10 +157,13 @@ for 1 day and can be configured up to 90 days.</p>
 <li><p>Snowpipe to automate the load of large data set across multiple platforms.</p></li>
 </ul>
 </div></blockquote>
+<div class="figure align-center">
+
+</div>
 <p>Snowflake supports a wide range of third-party tools like Informatica, Talend, and Azure Data Factory.</p>
 <div class="section" id="snowflake-web">
 <h3>Snowflake web<a class="headerlink" href="#snowflake-web" title="Permalink to this headline">¶</a></h3>
-<p>The Snowflake web interface provides a convenient wizard that allows a selection of specific tables.
+<p>The Snowflake web interface provides a convenient wizard to load data to a specific table.
 Using the LOAD button, we can easily ingest a limited amount of data.
 The wizard simplifies the load by combining the staging and data loading phases into a single
 operation. Also, it automatically deletes the staged file after loading.</p>
@@ -169,13 +172,14 @@ operation. Also, it automatically deletes the staged file after loading.</p>
 <h3>SnowSQL CLI Client<a class="headerlink" href="#snowsql-cli-client" title="Permalink to this headline">¶</a></h3>
 <p>SnowSQL CLI is the command-line client interface for Snowflake. It executes SQL queries
 and performs all DDL and DML operations. It is an easy way to access Snowflake from the command line and has
-the same capabilities as the Snowflake UI.</p>
+the same capabilities as the Snowflake UI. It also allows to load data from local file system  to Snowflake
+stage.</p>
 </div>
 <div class="section" id="snowpipe">
 <h3>Snowpipe<a class="headerlink" href="#snowpipe" title="Permalink to this headline">¶</a></h3>
 <p>Snowpipe is a mechanism to load high frequency or streaming data.
 It can load data in a near real-time manner. It also allows for the processing of data in micro-batches.
-Micro-batch processing is very similar to traditional batch processing in that data is usually processed as a group.
+Micro-batch processing is similar to traditional batch processing in that data is usually processed as a group.
 Snowpipe is a serverless architecture
 and does not use virtual warehouse resources. It has its own resources that are managed by Snowflake instances.</p>
 <p>Snowpipe makes REST API available to load data from:</p>
@@ -205,12 +209,13 @@ Once logged in, we land in the Snowflake account home page as shown below.</p>
 <div class="figure align-center">
 <img alt="images/Snowflakepane.JPG" src="images/Snowflakepane.JPG" />
 </div>
-<p>This interface looks similar to other SQL toolsets, with the navigational menu bar at top of the page.
-We get database pane on the left side, worksheet area in the middle, and results pane at the bottom.
+<p>This interface looks similar to other SQL toolsets with navigation bar at top of the page.
+Database pane is on the left side, worksheet in the middle, and results pane at the bottom.
 Worksheet area is used to write and execute the SQL Code.
 Results of the query execution are rendered in the result pane.</p>
 <p>Now we are ready to execute our first Snowflake command. Let us add a new database called <strong>IPEDS</strong> here.</p>
-<p>Go to worksheet, use the the following command and execute from query pane.</p>
+<p>Create new worksheet by choosing Worksheets option from top navigational menu.
+Go to worksheet, use the following command in worksheet area and execute the command by clicking Run button.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>CREATE DATABASE IPEDS;
 </pre></div>
 </div>
@@ -230,12 +235,12 @@ USE SCHEMA PUBLIC;
 </div>
 <div class="section" id="id1">
 <h3>SnowSQL CLI Client<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
-<p>We are ready to work in the newly added Snowflake database. Client components are required to connect this
-database from a local machine. Now, let us install Snowflake CLI on our machine.</p>
+<p>We are ready to work in the newly added Snowflake database.
+Client components are required to connect to this database and stage files from a local machine. Now, let us install Snowflake CLI on our machine.</p>
 <div class="figure align-center">
 <img alt="images/SnowflakeCLI.png" src="images/SnowflakeCLI.png" />
 </div>
-<p>After login to Snowflake account, choose help download option to download SnowSQL CLI.</p>
+<p>Login to Snowflake account, choose Help and download option to get SnowSQL CLI.</p>
 <blockquote>
 <div><div class="line-block">
 <div class="line">Windows version of SnowSQL can also be downloaded from:</div>
@@ -244,10 +249,6 @@ database from a local machine. Now, let us install Snowflake CLI on our machine.
 <div class="line-block">
 <div class="line">You can find installation and configuration instructions under:</div>
 <div class="line"><a class="reference external" href="https://docs.snowflake.com/en/user-guide/snowsql-install-config.html"" target="_blank" target="_blank" >https://docs.snowflake.com/en/user-guide/snowsql-install-config.html</a>.</div>
-</div>
-<div class="line-block">
-<div class="line">The SnowSQL CLI can also be downloaded from:</div>
-<div class="line"><a class="reference external" href="https://docs.snowflake.com/en/user-guide/snowsql-install-config.html"" target="_blank" target="_blank" >https://docs.snowflake.com/en/user-guide/snowsql-install-config.html</a></div>
 </div>
 </div></blockquote>
 <p>After SnowSQL CLI is installed, go to <strong>Command prompt</strong>.
@@ -277,7 +278,7 @@ from the SQL prompt as shown below.</p>
 </div>
 <p>We have successfully created Snowflake account
 and learned how to run queries in Snowflake web using worksheet.
-Also connected to the Snowflake account from our desktop using SnowSQL CLI.
+Also connected to the Snowflake account from desktop using SnowSQL CLI.
 Now, we are ready to work on our project.</p>
 </div>
 </div>

@@ -63,7 +63,7 @@ At load time, Snowflake parses the JSON based on the key-value pairs.
 Structural information is derived based on the schema definition embedded in
 JSON string at reading time (Schema-on-Read).</p>
 <p>Enrollment files are in JSON format.
-These files contains information around enrollment rates in various institutions for the academic years 2017, 2018, and 2019.
+These files contain information around enrollment rates in various institutions for the academic years 2017, 2018, and 2019.
 The enrollments are categorized by race, ethnicity, sex, etc..
 We have loaded these files in the staging environment of the Snowflake.</p>
 <div class="admonition note">
@@ -537,7 +537,7 @@ The data transformation needed to get ImputationVarPercent and ReportedVarPercen
 <li><p>Multiple JavaScript variables are used.</p></li>
 <li><p>Single SQL command/text is assigned to one JavaScript variable.</p></li>
 <li><p>These variables are combined into a string array.</p></li>
-<li><p>For loop is used to execute all SQL commands by calling <strong>snowflake.execute</strong> and passing the javascript variable.</p></li>
+<li><p>For loop is used to execute all SQL commands by calling <strong>snowflake.execute</strong> and passing the Javascript variable.</p></li>
 <li><p>Check the results on each call of snowflake.execute.</p></li>
 </ul>
 </div></blockquote>
@@ -874,7 +874,7 @@ We discussed the JSON-formatted data ingestion process. JSON data can be loaded 
 columns of type VARIANT. These VARIANT columns
 are queried using SQL SELECT statements that reference JSON document elements by the hierarchical paths.
 We also explored building transformation logic in stored procedures to map additional attributes.</p>
-<p>In the majority of the current big data platform, high volume data is ingested in the Hadoop Distributed File System (HDFS).
+<p>In most of the current big data platform, high volume data is ingested in the Hadoop Distributed File System (HDFS).
 In the next chapter, we will cover how to ingest ORC
 files coming from the HDFS system.</p>
 <div class="admonition note">

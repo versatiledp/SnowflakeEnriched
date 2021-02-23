@@ -55,12 +55,12 @@
 </div>
 <div class="section" id="orc-data-processing">
 <h2>ORC data processing<a class="headerlink" href="#orc-data-processing" title="Permalink to this headline">¶</a></h2>
-<p>Optimized Row Columnar(ORC) is a self-describing type-aware columnar
+<p>Optimized Row Columnar (ORC) is a self-describing type-aware columnar
 file format designed for Hadoop workloads. It is optimized for large streaming reads.
-By storing data in a columnar format it allows user to read, decompress,
+By storing data in a columnar format, it allows user to read, decompress,
 and process only the values that are
 required for the current process.
-Snowflake manages AVRO and ORC files similar to semi-structured JSON data from VARIANT type.</p>
+Snowflake manages AVRO and ORC files like semi-structured JSON data from VARIANT type.</p>
 <p>Snowflake allows loading ORC data directly into relational tables from the staged files.
 ORC data is stored as a JSON document.
 In this chapter, we are using few Snowflake native functions to work with the semi-structured JSON data.
@@ -1276,8 +1276,8 @@ of the dimension table AcademicInstitution to these fact tables.</p>
 </div>
 </div>
 </div>
-<div class="section" id="data-prepration-for-servicing-layer-load">
-<h2>Data prepration for servicing layer load<a class="headerlink" href="#data-prepration-for-servicing-layer-load" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="data-preparation-for-servicing-layer-load">
+<h2>Data preparation for servicing layer load<a class="headerlink" href="#data-preparation-for-servicing-layer-load" title="Permalink to this headline">¶</a></h2>
 <p>In our case, data is stored in the OD layer in a pivoted record structure. We will need to unpivot these attributes to load
 the servicing layer.</p>
 <p>We can unpivot data structure in a traditional SQL environment by creating a UNION on underlying attributes.</p>
@@ -2198,8 +2198,8 @@ to v_od_InstitutionalChargeByResidencyType and v_od_InstitutionalChargeByAcademi
 </div>
 </div>
 </div>
-<div class="section" id="alternative-approach-for-data-prepration">
-<h2>Alternative approach for data prepration<a class="headerlink" href="#alternative-approach-for-data-prepration" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="alternative-approach-for-data-preparation">
+<h2>Alternative approach for data preparation<a class="headerlink" href="#alternative-approach-for-data-preparation" title="Permalink to this headline">¶</a></h2>
 <p>Alternative approach is to bring data from staged files to the OD table in the above groups.
 We use these data groups to load the servicing layer and simplify unpivot logic. Also make it easy to adjust the load
 process, if the new groups gets added in the furture. This will need some transformation as part of ingestion process.</p>
@@ -3000,8 +3000,8 @@ In the next chapter, we will be creating a Snowflake pipeline to ingest Parquet 
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#servicing-layer-entities-for-orc">Servicing layer entities for ORC</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#data-prepration-for-servicing-layer-load">Data prepration for servicing layer load</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#alternative-approach-for-data-prepration">Alternative approach for data prepration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#data-preparation-for-servicing-layer-load">Data preparation for servicing layer load</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#alternative-approach-for-data-preparation">Alternative approach for data preparation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#data-load-into-the-servicing-layer">Data load into the servicing layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#summary">Summary</a></li>
 </ul>

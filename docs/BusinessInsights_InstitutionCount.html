@@ -75,10 +75,10 @@ on various segments using bar, donut, and pie charts.</p>
 </div>
 <div class="section" id="notebook-code">
 <h2>Notebook code<a class="headerlink" href="#notebook-code" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">snowflake</span><span class="o">-</span><span class="n">connector</span><span class="o">-</span><span class="n">python</span><span class="o">==</span><span class="mf">2.3</span><span class="o">.</span><span class="mi">6</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">snowflake</span><span class="o">-</span><span class="n">connector</span><span class="o">-</span><span class="n">python</span><span class="o">==</span><span class="mf">2.3</span><span class="o">.</span><span class="mi">6</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span>
 </pre></div>
 </div>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#read required information to connect to Snowflake database</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#read required information to connect to Snowflake database</span>
 <span class="kn">from</span> <span class="nn">getpass</span> <span class="kn">import</span> <span class="n">getpass</span>
 <span class="n">accountName</span> <span class="o">=</span> <span class="n">getpass</span><span class="p">(</span><span class="s1">&#39;Enter Snowflake account name:&#39;</span><span class="p">)</span>
 <span class="n">userName</span> <span class="o">=</span> <span class="n">getpass</span><span class="p">(</span><span class="s1">&#39;Enter Snowflake user name:&#39;</span><span class="p">)</span>
@@ -89,12 +89,10 @@ on various segments using bar, donut, and pie charts.</p>
 <span class="n">warehouseName</span> <span class="o">=</span> <span class="s1">&#39;COMPUTE_WH&#39;</span><span class="c1">#@param{type:&quot;string&quot;}</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Enter Snowflake account name:··········
-Enter Snowflake user name:··········
-Enter Snowflake password:··········
-</pre></div>
-</div>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Source System to gather Statistics from</span>
+<pre class="literal-block">Enter Snowflake account name:<strong>********</strong>
+Enter Snowflake user name:<strong>********</strong>
+Enter Snowflake password:<strong>********</strong></pre>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Source System to gather Statistics from</span>
 <span class="kn">import</span> <span class="nn">snowflake.connector</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
@@ -174,7 +172,7 @@ Enter Snowflake password:··········
     <span class="n">ctx</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="n">dfER</span> <span class="o">=</span> <span class="n">dfInst</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Economic Region&#39;</span><span class="p">]</span>
                     <span class="p">,</span><span class="n">as_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="s1">&#39;Count&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 <span class="n">dfER</span> <span class="o">=</span> <span class="n">dfER</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Count&#39;</span><span class="p">],</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -190,7 +188,7 @@ Enter Snowflake password:··········
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Education offering</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Education offering</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="n">dfER</span> <span class="o">=</span> <span class="n">dfInst</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Education offering&#39;</span><span class="p">]</span>
                     <span class="p">,</span><span class="n">as_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="s1">&#39;Count&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
@@ -213,7 +211,7 @@ Enter Snowflake password:··········
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Institution Type.</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Institution Type.</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="n">dfER</span> <span class="o">=</span> <span class="n">dfInst</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Institution Type&#39;</span><span class="p">]</span>
                     <span class="p">,</span><span class="n">as_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="s1">&#39;Count&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
@@ -234,7 +232,7 @@ Enter Snowflake password:··········
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Program Offering.</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Program Offering.</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="n">dfER</span> <span class="o">=</span> <span class="n">dfInst</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Program Offering&#39;</span><span class="p">]</span>
                     <span class="p">,</span><span class="n">as_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="s1">&#39;Count&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>

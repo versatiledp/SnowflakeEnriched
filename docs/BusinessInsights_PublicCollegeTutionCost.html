@@ -62,10 +62,10 @@ The result is displayed in HTML table format.</p>
 </div>
 <div class="section" id="notebook-code">
 <h2>Notebook code<a class="headerlink" href="#notebook-code" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">snowflake</span><span class="o">-</span><span class="n">connector</span><span class="o">-</span><span class="n">python</span><span class="o">==</span><span class="mf">2.3</span><span class="o">.</span><span class="mi">6</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">snowflake</span><span class="o">-</span><span class="n">connector</span><span class="o">-</span><span class="n">python</span><span class="o">==</span><span class="mf">2.3</span><span class="o">.</span><span class="mi">6</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span>
 </pre></div>
 </div>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#read required information to connect to Snowflake database</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#read required information to connect to Snowflake database</span>
 <span class="kn">from</span> <span class="nn">getpass</span> <span class="kn">import</span> <span class="n">getpass</span>
 <span class="n">accountName</span> <span class="o">=</span> <span class="n">getpass</span><span class="p">(</span><span class="s1">&#39;Enter Snowflake account name:&#39;</span><span class="p">)</span>
 <span class="n">userName</span> <span class="o">=</span> <span class="n">getpass</span><span class="p">(</span><span class="s1">&#39;Enter Snowflake user name:&#39;</span><span class="p">)</span>
@@ -76,12 +76,10 @@ The result is displayed in HTML table format.</p>
 <span class="n">warehouseName</span> <span class="o">=</span> <span class="s1">&#39;COMPUTE_WH&#39;</span><span class="c1">#@param{type:&quot;string&quot;}</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Enter Snowflake account name:··········
-Enter Snowflake user name:··········
-Enter Snowflake password:··········
-</pre></div>
-</div>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Source System to gather Statistics from</span>
+<pre class="literal-block">Enter Snowflake account name:<strong>********</strong>
+Enter Snowflake user name:<strong>********</strong>
+Enter Snowflake password:<strong>********</strong></pre>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Source System to gather Statistics from</span>
 <span class="kn">import</span> <span class="nn">snowflake.connector</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
@@ -142,14 +140,14 @@ Enter Snowflake password:··········
     <span class="n">ctx</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Select the year for report</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Select the year for report</span>
 <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">Year</span><span class="p">):</span>
   <span class="k">return</span> <span class="n">Year</span>
 <span class="n">w</span> <span class="o">=</span> <span class="n">interactive</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">Year</span> <span class="o">=</span> <span class="n">df1</span><span class="o">.</span><span class="n">ACADEMICYEAR</span> <span class="o">.</span><span class="n">unique</span><span class="p">());</span>
 <span class="n">display</span><span class="p">(</span><span class="n">w</span><span class="p">);</span>
 </pre></div>
 </div>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Select number of institute to be displayed</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#Select number of institute to be displayed</span>
 <span class="n">slider</span><span class="o">=</span><span class="n">widgets</span><span class="o">.</span><span class="n">IntSlider</span><span class="p">(</span>
     <span class="nb">min</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
     <span class="nb">max</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
@@ -161,7 +159,7 @@ Enter Snowflake password:··········
 <span class="n">display</span><span class="p">(</span><span class="n">slider</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add formatting to dataset</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add formatting to dataset</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
 <span class="n">dfFilter</span> <span class="o">=</span> <span class="n">df1</span><span class="p">[</span><span class="n">df1</span><span class="o">.</span><span class="n">ACADEMICYEAR</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">result</span><span class="p">)]</span>
@@ -173,7 +171,7 @@ Enter Snowflake password:··········
 <span class="c1">#print(dfFilter)</span>
 </pre></div>
 </div>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Apply fiter and display the results</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Apply fiter and display the results</span>
 <span class="n">topn</span><span class="o">=</span><span class="n">slider</span><span class="o">.</span><span class="n">value</span>
 <span class="n">dfFilter</span><span class="o">=</span><span class="n">dfFilter</span><span class="o">.</span><span class="n">nlargest</span><span class="p">(</span><span class="n">topn</span><span class="p">,</span><span class="s1">&#39;In State Tuition($)&#39;</span><span class="p">)</span>
 <span class="n">dfFilter</span><span class="o">=</span><span class="n">dfFilter</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;in-state-tution_index&#39;</span><span class="p">])</span>
