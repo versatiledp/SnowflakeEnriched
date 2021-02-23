@@ -104,7 +104,7 @@ Login to the Google account and launch the Colab using URL</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>pip install snowflake-connector-python
 </pre></div>
 </div>
-<p>Then from Colab, it creates connection to the Snowflake database using the Snowflake account, username, password, warehouse, database, and schema.
+<p>From Colab, it creates a connection to the Snowflake database using the Snowflake account, username, password, warehouse, database, and schema.
 These credentials can be stored in a key vault and retrieved at runtime.</p>
 <p>The following example dictates how to create a connection object using login parameters.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>conn = snowflake.connector.connect(
@@ -119,7 +119,7 @@ These credentials can be stored in a key vault and retrieved at runtime.</p>
 </div>
 <p>With the connection, it executes the query in the Snowflake and populate Spark data frame in the Notebook.
 All manipulation before the presentation of data is done using these dataframes in Colab notebooks.</p>
-<p>It uses widgets to interact with the users. Widgets are python objects that have a representation in the browser, often as a control like a slider, textbox, etc. We are using <strong>ipywidgets</strong>
+<p>It uses widgets to interact with the users. Widgets are python objects that have a representation in the browser, often controls a slider, textbox, etc. We are using <strong>ipywidgets</strong>
 to control parameters for dashboards. We are also using these widgets to build interactive GUIs for our notebooks.</p>
 <p>It uses <strong>matplotlib</strong> and <strong>plotly</strong> to create data visualizations. These two libraries
 provide powerful tools to explore, understand, and communicate valuable insights.</p>
@@ -369,7 +369,7 @@ Enter Snowflake password:<strong>********</strong></pre>
 <li><p>Filter degree-granting schools in a specific state.</p></li>
 <li><p>Aggregate enrollment at various levels like <em>TotalMen</em>, <em>TotalWomen</em>, <em>WhiteMen</em>, <em>WhiteWomen</em>, etc..</p></li>
 <li><p>Allow users to select academic year.</p></li>
-<li><p>Transpose data from rows to column (Convert all the rows [state code] to columns and convert all the column names [enrollment type] to rows).</p></li>
+<li><p>Transpose data from rows to column (convert all the rows [state code] to columns and convert all the column names [enrollment type] to rows).</p></li>
 <li><p>Display data in the HTML table format.</p></li>
 </ul>
 </div></blockquote>

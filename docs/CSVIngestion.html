@@ -54,7 +54,7 @@
 </div></blockquote>
 <div class="section" id="csv-data-processing">
 <h2>CSV data processing<a class="headerlink" href="#csv-data-processing" title="Permalink to this headline">¶</a></h2>
-<p>CSV stands for comma-separated values. In most of the cases data fields are delimited by comma or pipe.
+<p>CSV stands for comma-separated values. In most of the cases, data fields are delimited by comma or pipe.
 It is a simple file format used to store tabular data, such as a spreadsheet or database.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -97,7 +97,7 @@ The ELT process will copy the data from staged files to OD tables.
 OD tables are defined by column types and descriptive column names.
 We can add more columns to
 the OD table if necessary. We have added 3 additional columns, namely AcademicYear,
-IngestedFileName, and RowNumber, to the OD table, to use them in the ETL/ELT process and audit purpose.</p>
+IngestedFileName, and RowNumber to the OD table. These columns are used in the ETL/ELT process and audit purpose.</p>
 <p><strong>METADATA$FILENAME</strong> is a pseudo column that identifies the name of each staged data file, including its path in the stage.</p>
 <p><strong>METADATA$FILE_ROW_NUMBER</strong> is a pseudo column that identifies the row number of staged data file.</p>
 <p>Once the column mapping is clearly defined, we have to populate our
@@ -548,7 +548,7 @@ CALL pr_od_AcademicInstitution_Load(2017::FLOAT);
 <h2>Servicing layer for CSV<a class="headerlink" href="#servicing-layer-for-csv" title="Permalink to this headline">¶</a></h2>
 <p>We have built a dimension table called <strong>AcademicInstitution</strong> in the servicing layer.
 This dimension table will be used by fact tables at the servicing layer in forthcoming chapters.</p>
-<p>In general, a dimension table contains keys, columns, and other attributes that are associated with the business key.
+<p>In general, a dimension table contain keys, columns, and other attributes that are associated with the business key.
 A system-generated key (primary key) is used to uniquely identify a row in the dimension, and it is also known as a surrogate key. In dimensional data warehouse architecture,
 the surrogate key is placed in the fact table and a foreign key is defined to establish the relationship between the two tables.</p>
 <p>In the case of the dimension table AcademicInstitution, we have defined the

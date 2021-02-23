@@ -127,7 +127,7 @@ admissions, and financial aid offices, and net price calculator.</p>
 12-month period for both undergraduate and graduate levels. Each record is
 uniquely defined by the variables IPEDS, ID, and the level of enrollment.</p>
 <p><strong>Institutional charges [IC_AY]</strong></p>
-<p>These files contain data on student charges for a full academic year. The price of attendance includes the
+<p>These files contain data on student charges for a full academic year. The cost of attendance includes the
 published tuition and required fees, books and supplies, room and board, and other expenses.</p>
 <p><strong>Admissions and test scores [ADM]</strong></p>
 <p>These files contain information about the undergraduate selection process
@@ -136,7 +136,7 @@ for first-time, degree/certificate-seeking prospective students.</p>
 <p>These files contain data for lookup tables.
 A lookup table acts as a dictionary. It provides descriptions for a business codes.
 Few examples are institute type description for given institute type code,
-state name given state code, etc..</p>
+state name for state code, etc..</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p><em>Disclaimer: We have modified this data to explore Snowflake functionality. Therefore, analytics results from this book
@@ -192,7 +192,7 @@ OD layer is used to process data for the destination layer with additional trans
 <div class="section" id="admissions-and-test-scores-adm">
 <h3>Admissions and test scores [ADM]<a class="headerlink" href="#admissions-and-test-scores-adm" title="Permalink to this headline">¶</a></h3>
 <p>Admission data (ADM) files are available in the Parquet data format.
-Parquet, an open-source file format for Hadoop stores nested data structures in a flat columnar format.
+Parquet, an open-source file format for Hadoop, stores nested data structures in a flat columnar format.
 Compared to a traditional approach where data is stored in a row-oriented approach, Parquet is more efficient
 in terms of storage and performance. It is especially useful for queries that read specific columns
 from a wide table. Parquet provides optimizations to speed up queries.
@@ -238,7 +238,7 @@ Google Colab is used for the consumption layer.</p>
 <div class="section" id="staged-file">
 <h3>Staged file<a class="headerlink" href="#staged-file" title="Permalink to this headline">¶</a></h3>
 <p>All the data from the source system will be brought into the internal staged file location of Snowflake.
-This data is directly from transactional systems or existing big data platforms,
+This data is directly sourced from transactional systems or existing big data platforms,
 with no transformations applied.</p>
 </div>
 <div class="section" id="operational-datastore-od">
@@ -250,8 +250,8 @@ from various sources into a single destination to make it available for further 
 These are initial physical tables created in Snowflake and consists of data
 that has undergone little to no transformation.
 The OD table structure very closely resembles that of the staged file with proper data types and column names, alongside
-additional columns to help track data lineage. The OD also serves as transient place to store data coming from
-the source systems. It allows us to have all the data within the bounds ready for processing and modeling</p>
+additional columns to help track data lineage. The OD also serves as transient location to store data coming from
+the source systems. It allows us to have all the data within the bounds ready for processing and modeling.</p>
 </div>
 <div class="section" id="servicing-layer">
 <h3>Servicing layer<a class="headerlink" href="#servicing-layer" title="Permalink to this headline">¶</a></h3>
@@ -413,9 +413,9 @@ downloaded the files from GitRepo and copied to the folder C:\Snowflake\data\inp
 <p class="admonition-title">Note</p>
 <blockquote>
 <div><div class="line-block">
-<div class="line"><em>Right click on command prompt application in windows machine and run as administrator</em></div>
-<div class="line"><em>Change directory by executing CD C:\Snowflake\data\input from the command prompt</em></div>
-<div class="line"><em>Check content of the folder with DIR command</em></div>
+<div class="line"><em>Right click on command prompt application in windows machine and run as administrator.</em></div>
+<div class="line"><em>Change directory by executing CD C:\Snowflake\data\input from the command prompt.</em></div>
+<div class="line"><em>Check content of the folder with DIR command.</em></div>
 </div>
 </div></blockquote>
 <div class="figure align-center">
@@ -496,8 +496,11 @@ we can check their availability in the internal stage area by executing the code
 </div>
 <p>All the files from the source system are ingested into the Snowflake staged area.
 If there are any issues in the staged area, drop staged area using <strong>remove &#64;StageAreaName</strong>.
-Example to drop ADM file stage area, execute the command remove &#64;IPEDS_ADM.
-To recreate dropped staged area, we will need to re-run the
+Example to drop ADM file stage area, execute the following command.</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>remove @IPEDS_ADM
+</pre></div>
+</div>
+<p>To recreate dropped staged area, we will need to re-run the
 create staged area and load data file code again.</p>
 </div>
 </div>

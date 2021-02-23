@@ -257,7 +257,7 @@ CREATE OR REPLACE stage FooballStg file_format = JSONFORMAT;
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>put file://c:\test\data\fpl-book.json @FooballStg auto_compress=true;
 </pre></div>
 </div>
-<p>List out the player names and their clubs</p>
+<p>List out the player names and their clubs.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT S.$1:Name, S.$1:Club
 FROM @FooballStg as S;
 </pre></div>
@@ -2205,7 +2205,7 @@ We use these data groups to load the servicing layer and simplify unpivot logic.
 process, if the new groups gets added in the furture. This will need some transformation as part of ingestion process.</p>
 <p>We store JSON objects in the OD layer to simplify the load.
 As new attributes are added, it is easy to manage data ingestion.
-JSON data structure is easy to consume in the Snowflake data processing, as we will further detail in the next section.</p>
+JSON data structure is easy to consume in the Snowflake data processing, as we will provide further details in the next section.</p>
 <p><strong>Change in institutional charge operational datastore</strong></p>
 <p>The staged file data is grouped into three JSON objects:</p>
 <ul class="simple">
