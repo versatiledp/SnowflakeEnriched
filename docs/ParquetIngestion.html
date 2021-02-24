@@ -68,7 +68,7 @@ admission test scores, SAT/ACT percentile scores, and so on.
 We have loaded these files in the staging environment of the Snowflake.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><em>Please refer to the section 'Load the files to the internal stage for IPEDS' in the chapter 'Introducing data platform' for creating staged files</em>.</p>
+<p><em>Please refer to the section 'Load the files to internal stage for IPEDS' in the chapter 'Introducing data platform' for creating staged files</em>.</p>
 </div>
 <p>Parquet data is retrieved from <strong>&#64;IPEDS_ADM</strong> staged file using the following code.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>SELECT P.$1 Parquetdata FROM  @IPEDS_ADM P;

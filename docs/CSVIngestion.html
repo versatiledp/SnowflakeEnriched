@@ -58,7 +58,7 @@
 It is a simple file format used to store tabular data, such as a spreadsheet or database.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><em>Please refer to the section 'Load the files to the internal stage for IPEDS' in the chapter 'Introducing data platform' for creating staged files</em>.</p>
+<p><em>Please refer to the section 'Load the files to internal stage for IPEDS' in the chapter 'Introducing data platform' for creating staged files</em>.</p>
 </div>
 <p>The academic institution (HDR) dataset contain high-level information about institutions in US
 for the years 2017, 2018 and 2019, respectively.
@@ -544,7 +544,7 @@ CALL pr_od_AcademicInstitution_Load(2017::FLOAT);
 <h2>Servicing layer for academic institute<a class="headerlink" href="#servicing-layer-for-academic-institute" title="Permalink to this headline">¶</a></h2>
 <p>We have built a dimension table called <strong>AcademicInstitution</strong> in the servicing layer.
 This dimension table will be used by fact tables at the servicing layer in forthcoming chapters.</p>
-<p>In general, a dimension table contain keys, columns, and other attributes that are associated with the business key.
+<p>In general, a dimension table contain key columns and other attributes that are associated with the business key.
 A system-generated key (primary key) is used to uniquely identify a row in the dimension, and it is also known as a surrogate key. In dimensional data warehouse architecture,
 the surrogate key is placed in the fact table and a foreign key is defined to establish the relationship between the two tables.</p>
 <p>In the case of the dimension table AcademicInstitution, we have defined the

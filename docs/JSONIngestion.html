@@ -68,7 +68,7 @@ The enrollments are categorized by race, ethnicity, sex, etc..
 We have loaded these files in the staging environment of the Snowflake.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><em>Please refer to the section  'Load the files to the internal stage for IPEDS ' in the chapter  'Introducing data platform ' for creating staged files</em>.</p>
+<p><em>Please refer to the section  'Load the files to internal stage for IPEDS ' in the chapter  'Introducing data platform ' for creating staged files</em>.</p>
 </div>
 <p>The staged enrollment files are invoked using <strong>&#64;IPEDS_EFFY</strong>.
 JSON data from the staged file is retrieved using the following code.</p>
@@ -535,8 +535,8 @@ The data transformation needed to get ImputationVarPercent and ReportedVarPercen
 <li><p>Runtime language is Javascript.</p></li>
 <li><p>The Procedure returns a string.</p></li>
 <li><p>Multiple JavaScript variables are used.</p></li>
-<li><p>Single SQL command/text is assigned to one JavaScript variable.</p></li>
 <li><p>These variables are combined into a string array.</p></li>
+<li><p>Single SQL command/text is assigned to one JavaScript variable.</p></li>
 <li><p>For loop is used to execute all SQL commands by calling <strong>snowflake.execute</strong> and passing the Javascript variable.</p></li>
 <li><p>Check the results on each call of snowflake.execute.</p></li>
 </ul>
