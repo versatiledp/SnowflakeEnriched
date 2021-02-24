@@ -243,8 +243,7 @@ part of the partition key. In our case, the first 4 characters contain the year 
 </pre></div>
 </div>
 </div>
-<div class="section" id="load-stored-procedure">
-<h3>Load stored procedure<a class="headerlink" href="#load-stored-procedure" title="Permalink to this headline">¶</a></h3>
+<p><strong>Load stored procedure</strong></p>
 <p>Once the OD table is created, we need to populate the table
 with admission statistics data for each year from the staged file.
 For that purpose, we have created a stored procedure called <strong>pr_od_AdmissionStat_Load</strong>.
@@ -383,9 +382,8 @@ $$
 </pre></div>
 </div>
 </div>
-</div>
-<div class="section" id="servicing-layer-for-parquet">
-<h2>Servicing layer for Parquet<a class="headerlink" href="#servicing-layer-for-parquet" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="servicing-layer-for-admission-statistics">
+<h2>Servicing layer for admission statistics<a class="headerlink" href="#servicing-layer-for-admission-statistics" title="Permalink to this headline">¶</a></h2>
 <p>We create a fact table for
 admission statistics called <strong>AdmissionStat</strong>, which has links to the
 dimension table <strong>AcademicInstitution</strong>. The relationship represents the star schema of
@@ -450,8 +448,9 @@ of the dimension table AcademicInstitution to the fact table AdmissionStat.</p>
 </pre></div>
 </div>
 </div>
+</div>
 <div class="section" id="servicing-layer-data-load">
-<h3>Servicing layer data load<a class="headerlink" href="#servicing-layer-data-load" title="Permalink to this headline">¶</a></h3>
+<h2>Servicing layer data load<a class="headerlink" href="#servicing-layer-data-load" title="Permalink to this headline">¶</a></h2>
 <p>The service layer/fact table AdmissionStat is loaded from the OD table od_AdmissionStat by year.
 Every time this fact table is updated, it is loaded with the latest data for that year.
 Therefore, old data loaded for that year is deleted and new data is loaded from the OD table.
@@ -601,7 +600,6 @@ $$;
 </pre></div>
 </div>
 </div>
-</div>
 <div class="section" id="summary">
 <h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
 <p>In this chapter, we went through the data loading process of Parquet files in Snowflake.
@@ -661,14 +659,9 @@ where a file has records for multiple destination entities.</p>
 <li class="toctree-l1"><a class="reference internal" href="ORCIngestion.html">ORC ingestion</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Parquet ingestion</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#parquet-data-processing">Parquet data processing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#ingesting-parquet-data">Ingesting Parquet data</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#load-stored-procedure">Load stored procedure</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#servicing-layer-for-parquet">Servicing layer for Parquet</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#servicing-layer-data-load">Servicing layer data load</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="#ingesting-parquet-data">Ingesting Parquet data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#servicing-layer-for-admission-statistics">Servicing layer for admission statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#servicing-layer-data-load">Servicing layer data load</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#summary">Summary</a></li>
 </ul>
 </li>

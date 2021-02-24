@@ -127,8 +127,7 @@ provide powerful tools to explore, understand, and communicate valuable insights
 <h2>Institution reporting<a class="headerlink" href="#institution-reporting" title="Permalink to this headline">¶</a></h2>
 <p>This visual is targeted to present academic institution information based
 on various segments using bar, donut, and pie charts.</p>
-<div class="section" id="steps">
-<h3>Steps<a class="headerlink" href="#steps" title="Permalink to this headline">¶</a></h3>
+<p><strong>Steps</strong></p>
 <blockquote>
 <div><ul>
 <li><p>Join the <strong>AcademicInstitution</strong> tables to the lookup entities <strong>EconomicBureauRegion</strong>, <strong>HighestLevelOffering</strong>, <strong>Institutionalcategory</strong>, <strong>InstitutionControl</strong>, and <strong>Institutionlevel</strong>.</p></li>
@@ -149,9 +148,7 @@ on various segments using bar, donut, and pie charts.</p>
 <div class="figure align-center">
 
 </div>
-</div>
-<div class="section" id="expected-output">
-<h3>Expected output<a class="headerlink" href="#expected-output" title="Permalink to this headline">¶</a></h3>
+<p><strong>Expected output</strong></p>
 <p><strong>Economic region bar graph</strong></p>
 <img alt="images/output_4_0.png" class="align-center" src="images/output_4_0.png" />
 <p><strong>Education offering donut graph</strong></p>
@@ -160,9 +157,7 @@ on various segments using bar, donut, and pie charts.</p>
 <img alt="images/output_6_0.png" class="align-center" src="images/output_6_0.png" />
 <p><strong>Program offering pie chart</strong></p>
 <img alt="images/output_7_0.png" class="align-center" src="images/output_7_0.png" />
-</div>
-<div class="section" id="notebook-code">
-<h3>Notebook code<a class="headerlink" href="#notebook-code" title="Permalink to this headline">¶</a></h3>
+<p><strong>Notebook code</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">snowflake</span><span class="o">-</span><span class="n">connector</span><span class="o">-</span><span class="n">python</span><span class="o">==</span><span class="mf">2.3</span><span class="o">.</span><span class="mi">6</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span>
 </pre></div>
 </div>
@@ -339,7 +334,6 @@ Enter Snowflake password:<strong>********</strong></pre>
 </pre></div>
 </div>
 </div>
-</div>
 <div class="section" id="enrollment-segment-by-state">
 <h2>Enrollment segment by state<a class="headerlink" href="#enrollment-segment-by-state" title="Permalink to this headline">¶</a></h2>
 <p>In this visual, we are presenting enrollments details for the segments as listed below by states:</p>
@@ -361,8 +355,7 @@ Enter Snowflake password:<strong>********</strong></pre>
 <div class="line">Native Hawaiian men</div>
 <div class="line">Native Hawaiian women</div>
 </div>
-<div class="section" id="id1">
-<h3>Steps<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p><strong>Steps</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><p>Join the <strong>AcademicInstitution</strong> to <strong>Enrollment</strong>.</p></li>
@@ -373,15 +366,11 @@ Enter Snowflake password:<strong>********</strong></pre>
 <li><p>Display data in the HTML table format.</p></li>
 </ul>
 </div></blockquote>
-</div>
-<div class="section" id="id2">
-<h3>Expected output<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p><strong>Expected output</strong></p>
 <div class="figure align-center">
 <img alt="images/BusinessInsights01.JPG" src="images/BusinessInsights01.JPG" />
 </div>
-</div>
-<div class="section" id="id3">
-<h3>Notebook code<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<p><strong>Notebook code</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">snowflake</span><span class="o">-</span><span class="n">connector</span><span class="o">-</span><span class="n">python</span><span class="o">==</span><span class="mf">2.3</span><span class="o">.</span><span class="mi">6</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span>
 </pre></div>
 </div>
@@ -504,13 +493,11 @@ Enter Snowflake password:<strong>********</strong></pre>
 </pre></div>
 </div>
 </div>
-</div>
 <div class="section" id="enrollment-by-geo-location">
 <h2>Enrollment by geo location<a class="headerlink" href="#enrollment-by-geo-location" title="Permalink to this headline">¶</a></h2>
 <p>In this visual, we are presenting total enrollment and percentage by state.
 Enrollment percentage is calculated dividing state-level enrollment by national enrollment.</p>
-<div class="section" id="id4">
-<h3>Steps<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<p><strong>Steps</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><p>Join the <strong>AcademicInstitution</strong> and <strong>Enrollment</strong> to aggregate annual enrollment by state.</p></li>
@@ -520,15 +507,11 @@ Enrollment percentage is calculated dividing state-level enrollment by national 
 <li><p>Display dataset using <strong>Plotly</strong> graph functions for the selected year.</p></li>
 </ul>
 </div></blockquote>
-</div>
-<div class="section" id="id5">
-<h3>Expected output<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<p><strong>Expected output</strong></p>
 <div class="figure align-center">
 <img alt="images/BusinessInsights02.JPG" src="images/BusinessInsights02.JPG" />
 </div>
-</div>
-<div class="section" id="id6">
-<h3>Notebook code<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<p><strong>Notebook code</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">snowflake</span><span class="o">-</span><span class="n">connector</span><span class="o">-</span><span class="n">python</span><span class="o">==</span><span class="mf">2.3</span><span class="o">.</span><span class="mi">6</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span>
 </pre></div>
 </div>
@@ -641,14 +624,12 @@ Enter Snowflake password:<strong>********</strong></pre>
 </pre></div>
 </div>
 </div>
-</div>
 <div class="section" id="public-college-tuition-cost">
 <h2>Public college tuition cost<a class="headerlink" href="#public-college-tuition-cost" title="Permalink to this headline">¶</a></h2>
 <p>This visual generate the list of the public institutions
 having the highest in-state tuition for the selected year.
 The result is displayed in HTML table format.</p>
-<div class="section" id="id7">
-<h3>Steps<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<p><strong>Steps</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><p>Join the tables <strong>AcademicInstitution</strong> with the <strong>InstitutionalCharge</strong>, and <strong>InstitutionControl</strong>.</p></li>
@@ -660,15 +641,11 @@ The result is displayed in HTML table format.</p>
 <li><p>Display data as HTML table.</p></li>
 </ul>
 </div></blockquote>
-</div>
-<div class="section" id="id8">
-<h3>Expected output<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<p><strong>**Expected output</strong></p>
 <div class="figure align-center">
 <img alt="images/BusinessInsights03.JPG" src="images/BusinessInsights03.JPG" />
 </div>
-</div>
-<div class="section" id="id9">
-<h3>Notebook code<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+<p><strong>**Notebook code</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">snowflake</span><span class="o">-</span><span class="n">connector</span><span class="o">-</span><span class="n">python</span><span class="o">==</span><span class="mf">2.3</span><span class="o">.</span><span class="mi">6</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span>
 </pre></div>
 </div>
@@ -789,7 +766,6 @@ Enter Snowflake password:<strong>********</strong></pre>
 </pre></div>
 </div>
 </div>
-</div>
 <div class="section" id="summary">
 <h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
 <p>Google Colab and Jupyter notebook provides a rich programming environment and outstanding analytical experience.
@@ -849,30 +825,10 @@ that would be optimal for tackling business reporting.</p>
 <li class="toctree-l1"><a class="reference internal" href="SemiStructuredDataIngestion.html">Multi-format ingestion</a></li>
 <li class="toctree-l1"><a class="reference internal" href="PipelineOrchestration.html">Workflow orchestration</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Business insights</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#institution-reporting">Institution reporting</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#steps">Steps</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#expected-output">Expected output</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#notebook-code">Notebook code</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#enrollment-segment-by-state">Enrollment segment by state</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id1">Steps</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id2">Expected output</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id3">Notebook code</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#enrollment-by-geo-location">Enrollment by geo location</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id4">Steps</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id5">Expected output</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id6">Notebook code</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#public-college-tuition-cost">Public college tuition cost</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id7">Steps</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id8">Expected output</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id9">Notebook code</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="#institution-reporting">Institution reporting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#enrollment-segment-by-state">Enrollment segment by state</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#enrollment-by-geo-location">Enrollment by geo location</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#public-college-tuition-cost">Public college tuition cost</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#summary">Summary</a></li>
 </ul>
 </li>

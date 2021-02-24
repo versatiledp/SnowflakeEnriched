@@ -40,8 +40,7 @@
 <p>This visual generate the list of the public institutions
 having the highest in-state tuition for the selected year.
 The result is displayed in HTML table format.</p>
-<div class="section" id="steps">
-<h2>Steps<a class="headerlink" href="#steps" title="Permalink to this headline">¶</a></h2>
+<p><strong>Steps</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><p>Join the tables <strong>AcademicInstitution</strong> with the <strong>InstitutionalCharge</strong>, and <strong>InstitutionControl</strong>.</p></li>
@@ -53,15 +52,11 @@ The result is displayed in HTML table format.</p>
 <li><p>Display data as HTML table.</p></li>
 </ul>
 </div></blockquote>
-</div>
-<div class="section" id="expected-output">
-<h2>Expected output<a class="headerlink" href="#expected-output" title="Permalink to this headline">¶</a></h2>
+<p><strong>**Expected output</strong></p>
 <div class="figure align-center">
 <img alt="images/BusinessInsights03.JPG" src="images/BusinessInsights03.JPG" />
 </div>
-</div>
-<div class="section" id="notebook-code">
-<h2>Notebook code<a class="headerlink" href="#notebook-code" title="Permalink to this headline">¶</a></h2>
+<p><strong>**Notebook code</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">snowflake</span><span class="o">-</span><span class="n">connector</span><span class="o">-</span><span class="n">python</span><span class="o">==</span><span class="mf">2.3</span><span class="o">.</span><span class="mi">6</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span>
 </pre></div>
 </div>
@@ -180,7 +175,6 @@ Enter Snowflake password:<strong>********</strong></pre>
 <span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">HTML</span>
 <span class="n">HTML</span><span class="p">(</span><span class="n">dfFilter</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
 </pre></div>
-</div>
 </div>
 </div>
 

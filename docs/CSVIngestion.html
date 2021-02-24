@@ -206,8 +206,7 @@ IngestedFileName = METADATA$FILENAME
 RowNumber  = METADATA$FILE_ROW_NUMBER
 </pre></div>
 </div>
-<div class="section" id="managing-metadata-of-the-staged-file">
-<h3>Managing metadata of the staged file<a class="headerlink" href="#managing-metadata-of-the-staged-file" title="Permalink to this headline">¶</a></h3>
+<p><strong>Managing metadata of the staged file</strong></p>
 <p>We have introduced a Snowflake view in between
 the staged files and operational data (OD) table to manage data processing using extract load and transform (ELT).
 The view is built on top of the staged file to do the necessary mapping and create
@@ -319,9 +318,7 @@ WHERE AcademicYear = 2017;
 </div>
 <p>The ETL process can ingest data for one year at a time and process it. It can drop
 the ingested file from the staged area and process the next year data.</p>
-</div>
-<div class="section" id="loading-operational-datastore-table-for-csv">
-<h3>Loading operational datastore table for CSV<a class="headerlink" href="#loading-operational-datastore-table-for-csv" title="Permalink to this headline">¶</a></h3>
+<p><strong>Loading operational datastore table for academic institution</strong></p>
 <p>Stored procedures are created to perform one or more DML operations.
 They are simply a group of SQL statements that accept some input, perform some task, and may or may not return a value.
 In Snowflake, stored procedures are similar to functions, and can be executed multiple times.</p>
@@ -543,9 +540,8 @@ CALL pr_od_AcademicInstitution_Load(2017::FLOAT);
 <img alt="images/academicInstitute.jpg" src="images/academicInstitute.jpg" />
 </div>
 </div>
-</div>
-<div class="section" id="servicing-layer-for-csv">
-<h2>Servicing layer for CSV<a class="headerlink" href="#servicing-layer-for-csv" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="servicing-layer-for-academic-institute">
+<h2>Servicing layer for academic institute<a class="headerlink" href="#servicing-layer-for-academic-institute" title="Permalink to this headline">¶</a></h2>
 <p>We have built a dimension table called <strong>AcademicInstitution</strong> in the servicing layer.
 This dimension table will be used by fact tables at the servicing layer in forthcoming chapters.</p>
 <p>In general, a dimension table contain keys, columns, and other attributes that are associated with the business key.
@@ -2754,12 +2750,8 @@ We will learn about JSON ingestion in the next chapter.</p>
 <li class="toctree-l1"><a class="reference internal" href="IntroducingDataplatform.html">Introducing data platform</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">CSV ingestion</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#csv-data-processing">CSV data processing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#ingesting-csv-data">Ingesting CSV data</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#managing-metadata-of-the-staged-file">Managing metadata of the staged file</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#loading-operational-datastore-table-for-csv">Loading operational datastore table for CSV</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#servicing-layer-for-csv">Servicing layer for CSV</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ingesting-csv-data">Ingesting CSV data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#servicing-layer-for-academic-institute">Servicing layer for academic institute</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#load-dimension-table">Load dimension table</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#schema-drift">Schema drift</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#merge-using-hash-key">MERGE using hash key</a></li>

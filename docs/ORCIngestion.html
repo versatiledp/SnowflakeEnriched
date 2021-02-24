@@ -510,8 +510,7 @@ WHERE LEFT(MetaData$FileName,4) = 2017;
 </pre></div>
 </div>
 </div>
-<div class="section" id="operational-data-od-table">
-<h3>Operational data (OD) table<a class="headerlink" href="#operational-data-od-table" title="Permalink to this headline">¶</a></h3>
+<p><strong>Operational data (OD) table</strong></p>
 <p>The OD table <strong>od_InstitutionalCharge</strong> is added to load institutional charge data from the staged file.
 It contains all the columns from the staged file &#64;IPEDS_IC.
 The Snowflake script for creating this table is shown below.</p>
@@ -648,9 +647,7 @@ The Snowflake script for creating this table is shown below.</p>
 </pre></div>
 </div>
 </div>
-</div>
-<div class="section" id="od-table-load">
-<h3>OD table load<a class="headerlink" href="#od-table-load" title="Permalink to this headline">¶</a></h3>
+<p><strong>OD table load</strong></p>
 <p>A stored procedure called <strong>pr_od_InstitutionalCharge_Load</strong> is added
 to load the OD table with institutional
 charge records from the staged file.</p>
@@ -1069,7 +1066,6 @@ $$
 </pre></div>
 </div>
 </div>
-</div>
 <div class="section" id="data-analysis">
 <h2>Data analysis<a class="headerlink" href="#data-analysis" title="Permalink to this headline">¶</a></h2>
 <p>The ORC files of institutional charge  datasets categorizes fees for graduate programs
@@ -1163,8 +1159,8 @@ To serve this data for reporting engine,
 we need to architect servicing layer strucutre differently.
 The attributes of the OD table are categorized into a core group and the 3 groups as shown below.</p>
 </div>
-<div class="section" id="servicing-layer-entities-for-orc">
-<h2>Servicing layer entities for ORC<a class="headerlink" href="#servicing-layer-entities-for-orc" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="servicing-layer-entities-for-institutional-charge">
+<h2>Servicing layer entities for institutional charge<a class="headerlink" href="#servicing-layer-entities-for-institutional-charge" title="Permalink to this headline">¶</a></h2>
 <p>After analyzing dataset, we decided to add the following entities to the servicing layer.
 These entities will be populated in the transformation logic.
 All these tables will hold numeric data associated with the
@@ -2988,13 +2984,9 @@ In the next chapter, we will be creating a Snowflake pipeline to ingest Parquet 
 <li class="toctree-l1 current"><a class="current reference internal" href="#">ORC ingestion</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#orc-data-processing">ORC data processing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#functions-to-manage-json">Functions to manage JSON</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#ingesting-orc-data">Ingesting ORC data</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#operational-data-od-table">Operational data (OD) table</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#od-table-load">OD table load</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="#ingesting-orc-data">Ingesting ORC data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#data-analysis">Data analysis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#servicing-layer-entities-for-orc">Servicing layer entities for ORC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#servicing-layer-entities-for-institutional-charge">Servicing layer entities for institutional charge</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#data-preparation-for-servicing-layer-load">Data preparation for servicing layer load</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#alternative-approach-for-data-preparation">Alternative approach for data preparation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#data-load-into-the-servicing-layer">Data load into the servicing layer</a></li>

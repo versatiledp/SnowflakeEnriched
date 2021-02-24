@@ -282,20 +282,23 @@ Now, we are ready to work on our project.</p>
 </div>
 <div class="section" id="staged-area">
 <h2>Staged area<a class="headerlink" href="#staged-area" title="Permalink to this headline">¶</a></h2>
-<p>A stage is a temporary storage area in the Snowflake warehouse. Snowflake supports external and internal staged files.</p>
-<p>External stages are storage locations outside the Snowflake environment in another cloud storage location.
+<p>A stage is a temporary storage area in the Snowflake warehouse.
+It supports both internal and external staged areas.
+External stages are storage locations outside the Snowflake environment in another cloud storage location.
 It could be Amazon S3 storage, Microsoft Azure Storage, or Google Cloud Storage buckets. This provides greater
-flexibility for accessing the data in Snowflake.</p>
-<div class="line-block">
-<div class="line">The internal stage stores data files within Snowflake. Internal stages can be either permanent or temporary.</div>
-</div>
-<div class="line-block">
-<div class="line">The data files can be loaded to Snowflake's internal storage using put command from SnowSQL CLI.</div>
-<div class="line">Internal storage is classified into three categories.</div>
+flexibility for accessing the data in Snowflake.
+The internal stage stores data files within Snowflake. Internal stages can be either permanent or temporary.
+The data files can be loaded to Snowflake's internal storage using <strong>put</strong> command from SnowSQL CLI.
+Internal storage is classified into three categories as listed below.</p>
+<p>Internal storage copies data within the Snowflake warehouse as shown below.</p>
+<div class="figure align-center">
+<img alt="images/InternalStorage.jpg" src="images/InternalStorage.jpg" />
 </div>
 <div class="section" id="user-stage">
 <h3>User stage<a class="headerlink" href="#user-stage" title="Permalink to this headline">¶</a></h3>
-<p>Each Snowflake user is attached to the default stage to store the file. The user stage is only accessible by the specific user.</p>
+<p>Each Snowflake user is attached to the default stage to store the file.
+The user stage is only accessible by the specific user
+and it supports multiple file formats like CSV, JSON, ORC, and Parquet.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>put file://D:\Snowflake\sample_file.csv @~/staged;
 </pre></div>
 </div>
@@ -328,19 +331,18 @@ Table stages do not support setting file format options.</p>
 </div>
 <div class="section" id="internal-named-stage">
 <h3>Internal named stage<a class="headerlink" href="#internal-named-stage" title="Permalink to this headline">¶</a></h3>
-<p>Internal stage is named database objects. This stage is most recommended for loading. It is available to load
-multiple tables. Multiple users have access to the internal named stage. File formats can be specified while creating an internal named stage.</p>
-<p>Internal storage copies data within the Snowflake warehouse as shown below.</p>
-<div class="figure align-center">
-<img alt="images/InternalStorage.jpg" src="images/InternalStorage.jpg" />
-</div>
+<p>This stage is mostly recommended for loading data from the files into Snowflake tables.
+It is available to load
+multiple tables. Multiple users have access to the internal named stage.
+File formats can be specified while creating an internal named stage.</p>
 </div>
 </div>
 <div class="section" id="summary">
 <h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
 <p>This chapter has covered Snowflake architectural components, data features, and the various tools used in data loading.
 Multiple ways of connecting to Snowflake services alongside learning about the supported data formats
-are outlined in this chapter. We also created Snowflake account, connected to database, and executed our first set of queries.
+are outlined in this chapter. We also created Snowflake account,
+learned how to connect, create database, and execute our first set of queries.
 It also summarized various methods for loading files into
 Snowflake using the user stage, table stage, and internal named stage database objects.</p>
 <p>In the next chapter, we will cover modern-day data platforms, data formats, and input datasets used throughout this book.</p>

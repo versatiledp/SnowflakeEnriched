@@ -63,13 +63,13 @@ profitability.</p>
 Each source can be either internal or external to an organization
 and generates data in real-time or in batch mode.
 The <strong>variety</strong> of data formats can be structured, semi-structured, or unstructured.
-The <strong>velocity</strong> (speed of arrival) and <strong>volume</strong> (delivery amount) will differ by source.</p>
+The <strong>velocity</strong> (speed of arrival) and <strong>volume</strong> (delivery amount) of data will differ by source.</p>
 </div>
 <div class="section" id="data-processing-and-storage-layer">
 <h3>Data processing and storage layer<a class="headerlink" href="#data-processing-and-storage-layer" title="Permalink to this headline">¶</a></h3>
-<p>The data processing layer receives data from the data sources, converts the data into a comprehensible
-format for the data servicing and analytics tool, and stores the
-data. For example, large amounts of data are
+<p>The data processing layer receives data from the data sources,
+converts and stores the data into comprehensible format and ready to consume in servicing and analytical layer.
+For example, large amounts of data are
 stored in the Hadoop distributed file system store (HDFS). Large data
 processing is performed through Hadoop/Spark systems. Data may
 undergo format changes as it is processed through these systems. Cloud
@@ -101,26 +101,25 @@ business processes.</p>
 </div>
 <div class="section" id="project-data-source">
 <h2>Project data source<a class="headerlink" href="#project-data-source" title="Permalink to this headline">¶</a></h2>
-<p>This book is designed to use data from the Integrated Postsecondary Education Data System (IPEDS)
-and build analytics echo system using this data.</p>
+<p>This book is designed to use data from Integrated Postsecondary Education Data System (IPEDS)
+and build analytics ecosystem using this data. IPEDS  <a class="reference external" href="https://nces.ed.gov/ipeds"  target="_blank">https://nces.ed.gov/ipeds</a>  is
+established as the core postsecondary education data collection program for NCES.
+It is the primary source for information on U.S. Colleges,
+universities, technical institutions, and vocational institutions.</p>
 <p>The National Center for Education Statistics (NCES) is the primary federal entity for collecting
 and analyzing data related to education in the U.S. and other nations.
 NCES is located within the U.S. Department of Education and the Institute of Education Sciences.
 NCES fulfills a Congressional mandate to collect, collate, analyze, and report complete statistics
 on the condition of American education; conduct and publish reports; and review and report on
-education activities internationally. The Integrated Postsecondary Education Data System (IPEDS)
-established as the core postsecondary education data collection program for NCES.
-IPEDS  <a class="reference external" href="https://nces.ed.gov/ipeds"  target="_blank">https://nces.ed.gov/ipeds</a>
-is the primary source for information on U.S. Colleges,
-universities, technical institutions, and vocational institutions.</p>
+education activities internationally.</p>
 <div class="figure align-center">
 
 </div>
 <p>All of the data used in this book is downloaded from <a class="reference external" href="https://nces.ed.gov/ipeds/use-the-data"   target="_blank">https://nces.ed.gov/ipeds/use-the-data</a>.</p>
-<p>From IPEDS, we are downloading the files listed below. Data is downloaded for the three academic years (2017, 2018, and 2019).</p>
+<p>From IPEDS, we are downloading below listed files for 2017,2018, and 2019 academic years.</p>
 <p><strong>Academic institution [HDR]</strong></p>
-<p>These files contain directory information for every institution in the IPEDS universe.
-The files include the name, address, city, state, zip code, and various URL links to the institution's home page,
+<p>These files contain directory information for every institution in the IPEDS universe and contain data attributes
+like name, address, city, state, zip code, and various URL links to the institution's home page,
 admissions, and financial aid offices, and net price calculator.</p>
 <p><strong>Enrollment 12-Month [EFFY]</strong></p>
 <p>These files contain the unduplicated headcount of students enrolled over a
@@ -142,7 +141,7 @@ state name for state code, etc..</p>
 <p><em>Disclaimer: We have modified this data to explore Snowflake functionality. Therefore, analytics results from this book
 should not be used as a replacement for the original data and its results.
 Please refer to the NCES website for actual statistics and research on academic institutions.</em></p>
-<p><em>Utilities to convert the CSV files into different data formats are available at:</em>
+<p><em>Utilities for converting the CSV files into different data formats are available at:</em>
 <a class="reference external" href="https://github.com/versatiledp/SnowflakeEnriched/tree/master/utilities"   target="_blank">https://github.com/versatiledp/SnowflakeEnriched/tree/master/utilities</a></p>
 <p><em>All the data files used throughout this book are available to download at:</em>
 <a class="reference external" href="https://github.com/versatiledp/SnowflakeEnriched/tree/master/data/input"  target="_blank">https://github.com/versatiledp/SnowflakeEnriched/tree/master/data/input</a></p>
@@ -162,19 +161,22 @@ The OD layer is used to process data for the destination layer with additional t
 </div>
 <div class="section" id="enrollment-12-month-effy">
 <h3>Enrollment 12-Month [EFFY]<a class="headerlink" href="#enrollment-12-month-effy" title="Permalink to this headline">¶</a></h3>
-<p>EFFY data files are in JSON format. JSON is a common open standard file and data interchange format that uses human-readable text to store and transmit data objects consisting of attribute-value pairs and array data types. This data format is used in a diverse range of applications and serves as a replacement for XML in AJAX systems.
+<p>EFFY files received from IPEDS are in CSV format. To simulate JSON data, we used
+Python code <strong>csvToJson.py</strong> to convert CSV files to JSON format.
+JSON is a common open standard file and data interchange format that uses human-readable text to store and transmit data objects consisting of attribute-value pairs and array data types. This data format is used in a diverse range of applications and serves as a replacement for XML in AJAX systems.
 In our use-case, we are ingesting enrollment (EFFY) files in the JSON format directly to Snowflake.
 The following diagram displays the data ingestion architecture for JSON files.</p>
 <div class="figure align-center">
 <img alt="images/jsonIngestion.jpg" src="images/jsonIngestion.jpg" />
 </div>
-<p>In this book, we utilised Python programming to create JSON file used for simulation. Python code is used to convert CSV files from IPEDS universe to JSON format.</p>
 <p>We convert JSON data into relational table structure in OD tables of Snowflake transformation.
 OD layer is used to process data for the destination layer with additional transformation.</p>
 </div>
 <div class="section" id="institutional-charges-ic">
 <h3>Institutional charges [IC]<a class="headerlink" href="#institutional-charges-ic" title="Permalink to this headline">¶</a></h3>
-<p>IC_AY files are available in ORC format. The Optimized Row Columnar (ORC) file format provides a highly efficient way to store Hive data. ORC files improve performance when Hive is reading, writing, and processing data.
+<p>To create ORC file for simulation in this book, Jyputer notebook <strong>csvToOrc.ipynb</strong> is used.
+This Python code migrated CSV files from IPEDS universe to ORC format.
+The Optimized Row Columnar (ORC) file format provides a highly efficient way to store Hive data. ORC files improve performance when Hive is reading, writing, and processing data.
 The compact nature of this format is ideal, and enables skipping over irrelevant parts without needing large, complex, or manually maintained indices.</p>
 <p>The following diagram displays the data ingestion architecture for ORC format files. It provides view around
 major Hadoop implementations.</p>
@@ -183,15 +185,13 @@ major Hadoop implementations.</p>
 </div>
 <p>Data from different source systems are brought to Hadoop environment for big data processing. We would use ORC files
 coming out of Hadoop and ingest into Snowflake.</p>
-<p>To create ORC file for simulation in this book, we have used second python convertor.
-This python code migrated CSV files from IPEDS universe to
-ORC format.</p>
 <p>ORC data is converted into relational table structure in OD tables of Snowflake transformation.
 OD layer is used to process data for the destination layer with additional transformation.</p>
 </div>
 <div class="section" id="admissions-and-test-scores-adm">
 <h3>Admissions and test scores [ADM]<a class="headerlink" href="#admissions-and-test-scores-adm" title="Permalink to this headline">¶</a></h3>
-<p>Admission data (ADM) files are available in the Parquet data format.
+<p>Similar to previous sections, these files are available in CSV format.
+For simulating Parquet data, we have utilized <strong>csvToParquet.ipynb</strong> notebook.
 Parquet, an open-source file format for Hadoop, stores nested data structures in a flat columnar format.
 Compared to a traditional approach where data is stored in a row-oriented approach, Parquet is more efficient
 in terms of storage and performance. It is especially useful for queries that read specific columns
@@ -202,8 +202,6 @@ The following diagram lays out the architecture from data source to Parquet inge
 </div>
 <p>Apache Spark has become the de-facto standard for big data processing recently. Spark output is written in
 Parquet format.</p>
-<p>For simulating Parquet data, we have written yet another utility to convert CSV files from IPEDS universe
-to Parquet files.</p>
 <p>We convert Parquet data into relational table structure in OD tables of Snowflake transformation.
 OD layer is used to process data for the destination layer with additional transformation.</p>
 </div>
@@ -212,8 +210,8 @@ OD layer is used to process data for the destination layer with additional trans
 <p>This Multi-format dataset has a special character delimiter. One file holds data for multiple destination tables, which are
 identified by the value of the first column in the file.</p>
 <p>These files are directly ingested into Snowflake staging from the source system.
-Multiple OD tables will be populated from one lookup file.</p>
-<p>Download the files from GitRepo <a class="reference external" href="https://github.com/versatiledp/SnowflakeEnriched/tree/master/data/input"  target="_blank">https://github.com/versatiledp/SnowflakeEnriched/tree/master/data/input</a> to local machine.
+Multiple lookup OD tables will be populated from one source file.</p>
+<p>Download all the converted source files from GitRepo <a class="reference external" href="https://github.com/versatiledp/SnowflakeEnriched/tree/master/data/input"  target="_blank">https://github.com/versatiledp/SnowflakeEnriched/tree/master/data/input</a> to local machine.
 Create folder <strong>C:\Snowflake\data\input\</strong> and copy downloaded files to this folder.
 The files in this book are loaded from the above folder to the Snowflake stage area using SnowSQL CLI.</p>
 </div>
@@ -226,7 +224,6 @@ Master tables are also called as the servicing layer entities.
 Snowflake staged files, transient tables along with the source system
 represent data source layer.
 Stored procedures are used for data processing.
-Storage and analytical layer is implemented in the transformed servicing entities.
 Google Colab is used for the consumption layer.</p>
 <p>The project work in this book, we seek to:</p>
 <ul class="simple">
@@ -239,7 +236,7 @@ Google Colab is used for the consumption layer.</p>
 <h3>Staged file<a class="headerlink" href="#staged-file" title="Permalink to this headline">¶</a></h3>
 <p>All the data from the source system will be brought into the internal staged file location of Snowflake.
 This data is directly sourced from transactional systems or existing big data platforms,
-with no transformations applied.</p>
+without applying any transformations.</p>
 </div>
 <div class="section" id="operational-datastore-od">
 <h3>Operational datastore (OD)<a class="headerlink" href="#operational-datastore-od" title="Permalink to this headline">¶</a></h3>
