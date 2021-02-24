@@ -288,8 +288,8 @@ keeping track of data pipelines. So, access should be
 granted to all layers of the data platform.</p>
 </div>
 </div>
-<div class="section" id="ingesting-snowflake-stage">
-<h2>Ingesting Snowflake stage<a class="headerlink" href="#ingesting-snowflake-stage" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="ingesting-files-to-snowflake-stage">
+<h2>Ingesting files to Snowflake stage<a class="headerlink" href="#ingesting-files-to-snowflake-stage" title="Permalink to this headline">¶</a></h2>
 <p>Data files are received in various formats like CSV, ORC, Parquet, and JSON. These files are available in the folders by year. They are brought into Snowflake staged files using the PUT command.
 Each staged file contains the entire data for that specific year. From these staged files, OD tables are populated.
 Using these OD tables, servicing layer tables of the data-warehouse are populated. Snowflake's stored procedures, views, and functions are used for ETL/ELT processes.</p>
@@ -586,7 +586,7 @@ our first set of CSV files from the source system.</p>
 <li class="toctree-l3"><a class="reference internal" href="#dataflow-summary">Dataflow summary</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#ingesting-snowflake-stage">Ingesting Snowflake stage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#ingesting-files-to-snowflake-stage">Ingesting files to Snowflake stage</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#create-internal-stage-area-ipeds">Create internal stage area IPEDS</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#load-the-files-to-internal-stage-for-ipeds">Load the files to internal stage for IPEDS</a></li>
 </ul>
