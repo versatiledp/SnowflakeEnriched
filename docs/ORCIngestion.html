@@ -250,6 +250,7 @@ For <em>Premier League</em> he has played five seasons 2014-15, 2015-16, 2017-18
 </div>
 <p>Create the staged file <strong>&#64;FooballStg</strong> using the script shown below.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>DROP STAGE IF EXISTS FooballStg;
+CREATE FILE FORMAT IF NOT EXISTS JSONFORMAT TYPE = JSON;
 CREATE OR REPLACE stage FooballStg file_format = JSONFORMAT;
 </pre></div>
 </div>
