@@ -38,7 +38,7 @@
           <div class="body" role="main">
             
   <div class="section" id="multi-format-ingestion">
-<h1>Multi-format ingestion<a class="headerlink" href="#multi-format-ingestion" title="Permalink to this headline">¶</a></h1>
+<h1>Multi-format ingestion<a class="headerlink" href="#multi-format-ingestion" title="Permalink to this headline">Â¶</a></h1>
 <p>We will learn how to:</p>
 <blockquote>
 <div><ul class="simple">
@@ -65,14 +65,14 @@ With some additional transformation logic, we can store them in the relation dat
 <div class="line">Economic bureau region</div>
 <div class="line">TitleIV eligibility code</div>
 <div class="line">Institution type</div>
-<div class="line">…</div>
+<div class="line">â€¦</div>
 </div>
 </div></blockquote>
 <div class="section" id="multiformat-data-layout">
-<h2>Multiformat data layout<a class="headerlink" href="#multiformat-data-layout" title="Permalink to this headline">¶</a></h2>
+<h2>Multiformat data layout<a class="headerlink" href="#multiformat-data-layout" title="Permalink to this headline">Â¶</a></h2>
 <p>Sample data from the source system is shown in the table below.</p>
 <table class="colwidths-given docutils align-default" id="id1">
-<caption><span class="caption-text">Source system data layout</span><a class="headerlink" href="#id1" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-text">Source system data layout</span><a class="headerlink" href="#id1" title="Permalink to this table">Â¶</a></caption>
 <colgroup>
 <col style="width: 25%" />
 <col style="width: 75%" />
@@ -124,7 +124,7 @@ FROM   @IPEDS_CM t
 </div>
 </div>
 <div class="section" id="dynamic-od-table-creation-and-load">
-<h2>Dynamic OD table creation and load<a class="headerlink" href="#dynamic-od-table-creation-and-load" title="Permalink to this headline">¶</a></h2>
+<h2>Dynamic OD table creation and load<a class="headerlink" href="#dynamic-od-table-creation-and-load" title="Permalink to this headline">Â¶</a></h2>
 <p>We have added a mapping table <strong>CodeDestinationTable</strong> that provides the destination table name for the code.</p>
 <p>The following script will create and load the table called CodeDestinationTable.</p>
 <div class="toggle docutils container">
@@ -280,7 +280,7 @@ $$;
 <div class="line">od_StateCongressionalDistricID</div>
 <div class="line">od_InstitutionControl</div>
 <div class="line">od_CountryCode</div>
-<div class="line">…</div>
+<div class="line">â€¦</div>
 <div class="line">od_IdentificationNumberMultiCampusOrganization</div>
 <div class="line">od_MultiinstitutionMulticampusOrganization</div>
 <div class="line">od_FIPSStateCode</div>
@@ -293,7 +293,7 @@ $$;
 </div></blockquote>
 </div>
 <div class="section" id="servicing-layer-data-load-for-lookup-entities">
-<h2>Servicing layer data load for lookup entities<a class="headerlink" href="#servicing-layer-data-load-for-lookup-entities" title="Permalink to this headline">¶</a></h2>
+<h2>Servicing layer data load for lookup entities<a class="headerlink" href="#servicing-layer-data-load-for-lookup-entities" title="Permalink to this headline">Â¶</a></h2>
 <p>Once data is loaded into the operational data zone, we use a similar approach to
 merge data to the final servicing layer entities.
 We check the existence of these entities dynamically, and missing entities are added in the servicing layer.
@@ -362,7 +362,7 @@ $$;
 </div>
 </div>
 <div class="section" id="summary">
-<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">Â¶</a></h2>
 <p>There is significant flexibility built-in Snowflake to manage a variety of data needs.
 We learned how to load data from a
 single file into multiple entities.
