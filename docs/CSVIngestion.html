@@ -316,8 +316,7 @@ given academic year using the view v_od_AcademicInstitution, as below. As we ing
 WHERE AcademicYear = 2017;
 </pre></div>
 </div>
-<p>The ETL process can ingest data for one year at a time and process it. It can drop
-the ingested file from the staged area and process the next year data.</p>
+<p>The ETL process can ingest data for one year at a time and process it.</p>
 <p><strong>Loading operational datastore table for academic institution</strong></p>
 <p>Stored procedures are created to perform one or more DML operations.
 They are simply a group of SQL statements that accept some input, perform some task, and may or may not return a value.
@@ -327,17 +326,6 @@ one year of data at a time. For this purpose, we have created a stored procedure
 <strong>pr_od_AcademicInstitution_Load</strong>. This stored procedure takes a parameter
 YEAR and retrieves the data from the view v_od_AcademicInstitution for that year.
 The retrieved records are then inserted into the OD table.</p>
-<p>Stored procedures allow us to extend Snowflake SQL by combining it with JavaScript.</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>The procedure is defined with argument.</p></li>
-<li><p>Runtime language is defined as JavaScript.</p></li>
-<li><p>The Procedure returns a string.</p></li>
-<li><p>SQL code (text) is stored in JavaScript variable.</p></li>
-<li><p>Call <strong>snowflake.execute</strong> and pass the JavaScript variable that contains SQL script.</p></li>
-<li><p>Check the results of snowflake.execute call.</p></li>
-</ul>
-</div></blockquote>
 <div class="figure align-center">
 
 </div>
@@ -525,6 +513,14 @@ $$
 </pre></div>
 </div>
 </div>
+<p>This stored procedure</p>
+<blockquote>
+<div><p>-Reads internal staged snowflake data by position placement.
+-Assigns data type to each attribute.
+-Defines an alias (proper) name for each of the internal column names from the file.
+-Inserts data into od_AcademicInstitution.
+-Returns success or failure status after executing these SQL statements.</p>
+</div></blockquote>
 <p>The orchestration engine needs to delete old data from the OD table and load data for specific year from staged file.</p>
 <p>The OD table is truncated and data for 2017 is loaded as below.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>TRUNCATE TABLE od_AcademicInstitution;
@@ -556,12 +552,15 @@ The automatic sequencing is achieved in Snowflake by defining <strong>SEQUENCE</
         <span class="n">SEQ_IPEDS_HD</span> <span class="n">START</span> <span class="o">=</span> <span class="mi">1</span> <span class="n">INCREMENT</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
 </pre></div>
 </div>
-<p>Snowflake stores JSON objects as VARIANT data type.
-VARIANT allows semi-structured data to be loaded. Snowflake automatically discovers the attributes,
-keys, and the structure that exists in the JSON document from VARIANT data type. We can also add statistics that enable optimization.
-Snowflake enables to reverse-engineer a JSON document from relational data.
-<strong>OBJECT_CONSTRUCT</strong> returns a VARIANT object, a JSON document as an output.</p>
 <p>The following Snowflake SQL script is used for creating the AcademicInstitution dimension.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>The VARIANT columns (CarnegieClassification, WebAddress) are added to the dimension table.</p></li>
+<li><p>In data transformation we are converting group of specific attributes from OD table into a JSON object.</p></li>
+<li><p>The VARIANT columns columns are used to store JSON data in the table.</p></li>
+<li><p>The DATETIME columns RecordCreateDateTime and RecordUpdateDateTime are added for auditing data upserts.</p></li>
+</ul>
+</div></blockquote>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Create AcademicInstitution entity</p>
@@ -636,12 +635,12 @@ Snowflake enables to reverse-engineer a JSON document from relational data.
 </pre></div>
 </div>
 </div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p><em>The VARIANT columns (CarnegieClassification, WebAddress) are added to the dimension table.
-These columns are used to store JSON data in the table.
-The DATETIME columns RecordCreateDateTime and RecordUpdateDateTime are added for auditing data upserts.</em></p>
-</div>
+<p>Snowflake stores JSON objects as VARIANT data type.
+VARIANT allows semi-structured data to be loaded. Snowflake automatically discovers the attributes,
+keys, and the structure that exists in the JSON document from VARIANT data type. We can also add statistics that enable optimization.
+Snowflake enables to reverse-engineer a JSON document from relational data.
+<strong>OBJECT_CONSTRUCT</strong> returns a VARIANT object, a JSON document as an output.
+OBJECT_CONSTRUCT construct the object using the attribute names as keys and the associated tuple values as values</p>
 <p><strong>Carnegie classification transformation</strong></p>
 <p>We have grouped together certain columns from the OD table.
 The following columns belong to CarnegieClassification and are stored in the dimension table in JSON format.
@@ -695,7 +694,17 @@ that record is inserted into the dimension table.</p>
 However, Snowflake's time travel feature can be used to view the original data before the update.</p>
 <p>We have created a stored procedure <strong>pr_AcademicInstitution_Load</strong> for merging data from the staging
 table od_AcademicInstitution to the dimension table AcademicInstitution.
-The script to create the stored procedure is given below.</p>
+The Steps in the stored procedure.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Match on the business keys between OD table (source) and servicing table (destination).</p></li>
+<li><p>For matched rows, check if there is any change in attributes between these two tables.</p></li>
+<li><p>If any attributes are changed between source and destination, then update destination from the source data.</p></li>
+<li><p>If there are non-matched rows in the source, insert those rows from source to destination.</p></li>
+<li><p>On successful execution of the SQL code return success else return failure.</p></li>
+</ul>
+</div></blockquote>
+<p>The script to create the stored procedure is given below.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Create AcademicInstitution load stored procedure</p>
@@ -1626,7 +1635,8 @@ in practice we would process only one year of data at a time.</p>
 as changes in ELT and the transformation layer. If data is processed without the change in code,
 it will result into bad attribute value mapping.</em></p>
 </div>
-<p>The stored procedure pr_AcademicInstitution_Load is modified to accommodate the new columns added.</p>
+<p>The stored procedure pr_AcademicInstitution_Load is modified to accommodate the new columns added. This is done
+by adding additional columns to OBJECT_CONSTRUCT(). No other change is needed in the stored procedure.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Alter AcademicInstitution load stored procedure</p>
@@ -2139,15 +2149,19 @@ try {
 </div>
 <div class="section" id="merge-using-hash-key">
 <h2>MERGE using hash key<a class="headerlink" href="#merge-using-hash-key" title="Permalink to this headline">¶</a></h2>
-<p>In the hash key stored procedure, we join the source and target tables using the business key InstitutionIdentifier.
-When a matching record is found, we compare individual
-columns between the source and target tables using hash keys to find any column values changed in the source.
+<p>Academic institution dimension load using a hash key is much the same as the earlier logic
+of comparing individual attributes in the merge load.
+We join the source and target tables using the business key InstitutionIdentifier.
+In this method, we generate the hash key for attributes to be comapred.
+We use the hash key to compare across source and destination for the matched business key rows.
 Hash keys are created using hash functions. In a hash function, a plain text of arbitrary size is
 mapped to fixed-size values called hash keys or bytes. Hash functions use various hashing algorithms such as
 MD5, SHA1, and SHA2 for generating hash keys.</p>
 <p>We created a custom function called <strong>Hash_Key</strong> which accepts an array of text values.
 These values are concatenated using another function <strong>Concat_Columns</strong>, shown below, and return a string value,
 which is then passed to the hash function SHA1 to generate a hash key.</p>
+<p>Here is the script for concatenate the array. It checks data type of each attribute in the array. If data type
+of attribute is valid, then attribute value is used to concatenate.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Create a function to concat AcademicInstitution column</p>
@@ -2174,7 +2188,7 @@ which is then passed to the hash function SHA1 to generate a hash key.</p>
 </pre></div>
 </div>
 </div>
-<p>Here are the scripts for creating the function Hash_Key.</p>
+<p>Here is the script for creating the function Hash_Key.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Create function to Hash data</p>
@@ -2191,6 +2205,17 @@ which is then passed to the hash function SHA1 to generate a hash key.</p>
 </div>
 </div>
 <p>The modified stored procedure is given below.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Match on the business keys between OD table (source) and servicing table (destination).</p></li>
+<li><p>For matched rows,concatenate the attribute values for each row to the string from the source and destination table.</p></li>
+<li><p>Get the hash value for the concatenated strings.</p></li>
+<li><p>Check if there is any change in hash values of the source and destination rows.</p></li>
+<li><p>If hash values are changed, then update destination from the source data.</p></li>
+<li><p>If there are non-matched rows in the source, insert those rows from source to destination.</p></li>
+<li><p>On successful execution of the SQL code return success else return failure.</p></li>
+</ul>
+</div></blockquote>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Create AcademicInstitutionMergeHashByte load procedure</p>

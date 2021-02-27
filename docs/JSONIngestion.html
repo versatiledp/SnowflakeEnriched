@@ -105,8 +105,8 @@ We used :: to cast to a INTEGER data type.
 </pre></div>
 </div>
 <p>We have ingested JSON formatted enrollment data into staged file &#64;IPEDS_EFFY.
-The following SQL shows the content of JSON VARIANT converted to sub-columns with proper data type casting.
-These sub-columns dataset will be used to populate the operational data store.</p>
+The following SQL shows the content of JSON VARIANT converted to Individual identifiable attributes
+with proper data type casting. These columns will be used to populate the operational data store.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Select from Staged file JSON data script</p>
@@ -442,6 +442,19 @@ $$;
 </pre></div>
 </div>
 </div>
+<p>This stored procedure</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Reads internal staged snowflake data by position placement.</p></li>
+<li><p>Assigns data type to each attribute.</p></li>
+<li><p>Defines an alias (proper) name for each of the internal column names from the file.</p></li>
+<li><p>Inserts data into od_Enrollment.</p></li>
+<li><p>Returns success or failure status after executing these SQL statements.</p></li>
+</ul>
+</div></blockquote>
+<div class="figure align-center">
+
+</div>
 <p>We can load data for all three years. Here are the commands to call the stored procedure.</p>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">TRUNCATE</span> <span class="n">TABLE</span> <span class="n">od_Enrollment</span><span class="p">;</span>
 
@@ -523,22 +536,28 @@ Here is the script for creating the table Enrollment.</p>
 the servicing layer table. The stored procedure loads data for specific years based on the parameter passed to it.
 Each time when this stored procedure is called, it deletes records from Enrollment
 for that year and then re-inserts them to Enrollment from that year's od_Enrollment.</p>
+<p>In the Javascript-based stored procedure pr_Enrollment_Load,
+we use 2 variables, <strong>sql_DelCommand</strong>, and <strong>sql_Command</strong>.
+The variable sql_DelCommand contains the SQL commands to delete the records from the fact table for the year passed to the stored procedure.
+The other variable sql_Command contains the main logic for inserting the fact table for that year.</p>
+<p>We have used a <strong>LEFT OUTER JOIN</strong> with AcademicInstitution on InstitutionIdentifier to get the matching
+surrogate key from the dimension table AcademicInstitution.
+If we do not find the matching record, we assign -1 to the corresponding entry of AcademicInstitutionUniqueDWSID in the fact table.
+To achieve this, we use the <strong>IFNULL</strong> command as IFNULL(D.AcademicInstitutionUniqueDWSID, - 1).</p>
 <p>We are interested in determining the distribution of data that has been imputed vs reported.
 To do so, we read the imputation column to obtain the total number of imputed and reported variable counts,
 which we store in <strong>VariablesReportedCount</strong> and  <strong>VariablesImputedCount</strong>.
 Then, we calculate their percentages and store them in <strong>ImputationVarPercent</strong> and <strong>ReportedVarPercent</strong>, respectively.</p>
 <p>The stored procedure script for pr_Enrollment_Load is available below.
 The data transformation needed to get ImputationVarPercent and ReportedVarPercent is performed in the same stored procedure.</p>
+<p>The stored procedure</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>The procedure is defined with argument.</p></li>
-<li><p>Runtime language is Javascript.</p></li>
-<li><p>The Procedure returns a string.</p></li>
-<li><p>Multiple JavaScript variables are used.</p></li>
-<li><p>These variables are combined into a string array.</p></li>
-<li><p>Single SQL command/text is assigned to one JavaScript variable.</p></li>
-<li><p>For loop is used to execute all SQL commands by calling <strong>snowflake.execute</strong> and passing the Javascript variable.</p></li>
-<li><p>Check the results on each call of snowflake.execute.</p></li>
+<li><p>Reads OD table and filter data with academic year based on the parameter value.</p></li>
+<li><p>Deletes data from the servicing layer for academic year.</p></li>
+<li><p>Computes ImputationVarPercent and ReportedVarPercent.</p></li>
+<li><p>Inserts transformed data into Enrollment.</p></li>
+<li><p>Returns success or failure status after executing these SQL statements.</p></li>
 </ul>
 </div></blockquote>
 <div class="figure align-center">

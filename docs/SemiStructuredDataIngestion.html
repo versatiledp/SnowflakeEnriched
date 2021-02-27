@@ -296,9 +296,17 @@ $$;
 </div>
 <div class="section" id="servicing-layer-data-load-for-lookup-entities">
 <h2>Servicing layer data load for lookup entities<a class="headerlink" href="#servicing-layer-data-load-for-lookup-entities" title="Permalink to this headline">¶</a></h2>
-<p>Once data is loaded into the operational data zone, we use a similar approach to merge data to the final servicing layer entities.
-We check the existence of these entities dynamically, and missing entities are added. Data is merged from the OD to these entities using
-<strong>pr_CodeMapping_Load</strong>.</p>
+<p>Once data is loaded into the operational data zone, we use a similar approach to
+merge data to the final servicing layer entities.
+We check the existence of these entities dynamically, and missing entities are added in the servicing layer.
+The data is merged from the OD to destination entities using
+<strong>pr_CodeMapping_Load</strong>. Data population is done using SQL merge. Code from the OD table (source)
+is used as a business key to join the servicing table (destination).
+If there is any change in the values of attributes and business keys match between source
+and destination then the destination is updated. For any missing business keys at the destination,
+the data is added from the source to the destination.</p>
+<p>The whole process of checking missing entities, adding if any, and merging data is performed
+for each look-up table in the loop.</p>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Create CodeMapping load stored procedure</p>
