@@ -299,13 +299,6 @@ Internal storage is classified into three categories as listed below.</p>
 <p>Each Snowflake user is attached to the default stage for storing data files.
 The user stage is only accessible by the specific user
 and it supports multiple file formats like CSV, JSON, ORC, and Parquet.</p>
-<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>put file://D:\Snowflake\sample_file.csv @~/staged;
-</pre></div>
-</div>
-<p>The file will be uploaded to the user stage and a user can verify the same using <strong>list</strong> command.</p>
-<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>list @~/staged;
-</pre></div>
-</div>
 <p>The user stages are referenced using &#64;~.</p>
 <p>For example, use <strong>list &#64;~</strong> to list the files in a user stage.</p>
 </div>
@@ -316,18 +309,8 @@ single table stage area.
 Table stages are storage locations held within a table object.
 This is helpful when files only need to be loaded into the specific table.
 Table stages do not support setting file format options.</p>
-<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>put file://D:\Snowflake\sample_file.csv @%test;
-</pre></div>
-</div>
-<p>Users can also specify the subfolder within the table stage to upload the files.</p>
-<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>put file://D:\Snowflake\sample_file.csv @%test/sample_csv/;
-</pre></div>
-</div>
 <p>The table stages are referenced using <strong>&#64;%&lt;tableName&gt;</strong>.</p>
-<p>For example, to list the files in a table stage:</p>
-<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>list @%test
-</pre></div>
-</div>
+<p>Execute command <strong>list &#64;%test</strong> to list the files in a table stage.</p>
 </div>
 <div class="section" id="internal-named-stage">
 <h3>Internal named stage<a class="headerlink" href="#internal-named-stage" title="Permalink to this headline">¶</a></h3>
