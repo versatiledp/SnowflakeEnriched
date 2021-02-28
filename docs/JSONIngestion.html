@@ -54,11 +54,11 @@
 <h2>JSON data processing<a class="headerlink" href="#json-data-processing" title="Permalink to this headline">¶</a></h2>
 <p>JSON stands for JavaScript Object Notation. It is a minimal readable format for semi-structured data.
 It is a standardized format commonly used to transfer data as text that can be sent over a network.
-JSON is used by lots of APIs and databases to
+JSON is used by majority of APIs and databases to
 transmit data between servers and web applications.
-It is alternative to XML and easy for both humans and machines to read.</p>
-<p>Snowflake allows loading JSON data directly into relational tables. We can query this
-data with SQL and join it to other data without doing any transformations.
+It is an alternative to XML and easy for both humans and machines to read.</p>
+<p>Snowflake allows loading JSON data directly into relational tables. We can query JSON
+data by joining with other relational entities. This can be achieved without doing any data transformations.
 At load time, Snowflake parses the JSON based on the key-value pairs.
 Structural information is derived based on the schema definition embedded in
 JSON string at reading time (Schema-on-Read).</p>
@@ -267,6 +267,19 @@ we will be populating the OD table with JSON-formatted data from the source syst
 We employ an extract-and-load approach using stored procedures to load OD tables.
 The stored procedure <strong>pr_od_Enrollment_Load</strong> has an input parameter called YEAR.
 Here is the Snowflake script for creating the stored procedure pr_od_Enrollment_Load.</p>
+<p>This stored procedure:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Reads staged Snowflake data by position placement.</p></li>
+<li><p>Assigns data type to each attribute.</p></li>
+<li><p>Defines an alias (proper) name for each of the internal column names from the file.</p></li>
+<li><p>Inserts data into od_Enrollment.</p></li>
+<li><p>Returns success or failure status after executing SQL statements.</p></li>
+</ul>
+</div></blockquote>
+<div class="figure align-center">
+
+</div>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Create OD Enrollment entity load stored procedure</p>
@@ -441,19 +454,6 @@ return &quot;success&quot;
 $$;
 </pre></div>
 </div>
-</div>
-<p>This stored procedure</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>Reads internal staged snowflake data by position placement.</p></li>
-<li><p>Assigns data type to each attribute.</p></li>
-<li><p>Defines an alias (proper) name for each of the internal column names from the file.</p></li>
-<li><p>Inserts data into od_Enrollment.</p></li>
-<li><p>Returns success or failure status after executing these SQL statements.</p></li>
-</ul>
-</div></blockquote>
-<div class="figure align-center">
-
 </div>
 <p>We can load data for all three years. Here are the commands to call the stored procedure.</p>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">TRUNCATE</span> <span class="n">TABLE</span> <span class="n">od_Enrollment</span><span class="p">;</span>
@@ -876,7 +876,7 @@ RETURN &quot;success&quot; $$;
 <p>Data is available in OD table and it is ready for further processing.
 Transformation logic is coded in the stored procedure (SP) to process specific academic year.
 Stored procedure deletes data from the
-servicing layer, if there exsists any data for the given academic year.
+servicing layer, if there exists any data for the given academic year.
 Then we load data from the OD source.</p>
 <p>We execute this procedure to load data for years 2017, 2018, and 2019.</p>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">TRUNCATE</span> <span class="n">TABLE</span> <span class="n">Enrollment</span><span class="p">;</span>

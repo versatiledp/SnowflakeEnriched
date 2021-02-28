@@ -88,7 +88,7 @@ FROM @IPEDS_HD WHERE metadata$file_row_number &gt; 1;
 </div>
 <p>The attributes from the staged file do not hold column names and types. We need to create a schema on the read
 for each of the $1, $2,,, $n columns in the staged file &#64;IPEDS_HD. This is accomplished by using mapping documents
-between staged layer and column names in OD tables. Mapping document available at: <a class="reference external" href="https://versatiledp.github.io/SnowflakeEnriched/Mapping/AcademicInstitute.htm"   target="_blank">https://versatiledp.github.io/SnowflakeEnriched/Mapping/AcademicInstitute.htm</a>.</p>
+between staged layer and column names in OD tables. Mapping document is available at: <a class="reference external" href="https://versatiledp.github.io/SnowflakeEnriched/Mapping/AcademicInstitute.htm"   target="_blank">https://versatiledp.github.io/SnowflakeEnriched/Mapping/AcademicInstitute.htm</a>.</p>
 </div>
 <div class="section" id="ingesting-csv-data">
 <h2>Ingesting CSV data<a class="headerlink" href="#ingesting-csv-data" title="Permalink to this headline">¶</a></h2>
@@ -330,7 +330,20 @@ The retrieved records are then inserted into the OD table.</p>
 
 </div>
 <p>A stored procedure is created with a <strong>CREATE PROCEDURE</strong> command and executed with a <strong>CALL</strong> command.</p>
-<p>Here is the script for creating the Snowflake stored procedure pr_od_AcademicInstitution_Load.</p>
+<p>Here is the script for creating the Snowflake stored procedure pr_od_AcademicInstitution_Load.
+This stored procedure:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Reads staged Snowflake data by position placement.</p></li>
+<li><p>Assigns data type to each attribute.</p></li>
+<li><p>Defines an alias (proper) name for each of the internal column names from the file.</p></li>
+<li><p>Inserts data into od_AcademicInstitution.</p></li>
+<li><p>Returns success or failure status after executing SQL statements.</p></li>
+</ul>
+</div></blockquote>
+<div class="figure align-center">
+
+</div>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Create OD AcademicInstitution load stored procedure</p>
@@ -513,14 +526,6 @@ $$
 </pre></div>
 </div>
 </div>
-<p>This stored procedure</p>
-<blockquote>
-<div><p>-Reads internal staged snowflake data by position placement.
--Assigns data type to each attribute.
--Defines an alias (proper) name for each of the internal column names from the file.
--Inserts data into od_AcademicInstitution.
--Returns success or failure status after executing these SQL statements.</p>
-</div></blockquote>
 <p>The orchestration engine needs to delete old data from the OD table and load data for specific year from staged file.</p>
 <p>The OD table is truncated and data for 2017 is loaded as below.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>TRUNCATE TABLE od_AcademicInstitution;
@@ -556,7 +561,7 @@ The automatic sequencing is achieved in Snowflake by defining <strong>SEQUENCE</
 <blockquote>
 <div><ul class="simple">
 <li><p>The VARIANT columns (CarnegieClassification, WebAddress) are added to the dimension table.</p></li>
-<li><p>In data transformation we are converting group of specific attributes from OD table into a JSON object.</p></li>
+<li><p>A group of attributes from OD table are converted into a JSON object during the transformation.</p></li>
 <li><p>The VARIANT columns columns are used to store JSON data in the table.</p></li>
 <li><p>The DATETIME columns RecordCreateDateTime and RecordUpdateDateTime are added for auditing data upserts.</p></li>
 </ul>
@@ -693,15 +698,15 @@ that record is inserted into the dimension table.</p>
 <p>We are using Type 1 slowly changing dimension, in which new data overwrites existing data.
 However, Snowflake's time travel feature can be used to view the original data before the update.</p>
 <p>We have created a stored procedure <strong>pr_AcademicInstitution_Load</strong> for merging data from the staging
-table od_AcademicInstitution to the dimension table AcademicInstitution.
-The Steps in the stored procedure.</p>
+table od_AcademicInstitution to the dimension table AcademicInstitution.</p>
+<p>The Steps in stored procedure:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>Match on the business keys between OD table (source) and servicing table (destination).</p></li>
-<li><p>For matched rows, check if there is any change in attributes between these two tables.</p></li>
-<li><p>If any attributes are changed between source and destination, then update destination from the source data.</p></li>
-<li><p>If there are non-matched rows in the source, insert those rows from source to destination.</p></li>
-<li><p>On successful execution of the SQL code return success else return failure.</p></li>
+<li><p>For matched rows, check if there is any change in attributes values between these two tables.</p></li>
+<li><p>If any attribute values are changed, then update destination from source.</p></li>
+<li><p>If there are non-matched rows in the source, insert those rows to destination.</p></li>
+<li><p>On successful execution of the SQL code return success otherwise return failure.</p></li>
 </ul>
 </div></blockquote>
 <p>The script to create the stored procedure is given below.</p>
@@ -2205,15 +2210,16 @@ of attribute is valid, then attribute value is used to concatenate.</p>
 </div>
 </div>
 <p>The modified stored procedure is given below.</p>
+<p>The Steps in stored procedure:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>Match on the business keys between OD table (source) and servicing table (destination).</p></li>
-<li><p>For matched rows,concatenate the attribute values for each row to the string from the source and destination table.</p></li>
+<li><p>For business key matched rows, create concatenated string with the attribute values.</p></li>
 <li><p>Get the hash value for the concatenated strings.</p></li>
-<li><p>Check if there is any change in hash values of the source and destination rows.</p></li>
+<li><p>Check if there is any change in hash values between the source and destination.</p></li>
 <li><p>If hash values are changed, then update destination from the source data.</p></li>
-<li><p>If there are non-matched rows in the source, insert those rows from source to destination.</p></li>
-<li><p>On successful execution of the SQL code return success else return failure.</p></li>
+<li><p>If there are non-matched rows in the source, insert those rows to destination.</p></li>
+<li><p>On successful execution of the SQL code return success otherwise return failure.</p></li>
 </ul>
 </div></blockquote>
 <div class="toggle docutils container">

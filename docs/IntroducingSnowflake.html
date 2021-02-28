@@ -45,9 +45,9 @@ It is a cloud-based SaaS (Software-as-a-Service) data management solution that m
 organizations to:</p>
 <ul class="simple">
 <li><p>Bring all their business data together in one place for analysis.</p></li>
-<li><p>Allow all analysts, applications, or even customers to have shared access to the data.</p></li>
+<li><p>Allow all applications, analysts, or even customers to have shared access to the data.</p></li>
 <li><p>Focus on analyzing data without worrying about hardware, software, or database tuning.</p></li>
-<li><p>Utilize the SQL skills, the community already has built.</p></li>
+<li><p>Utilize the SQL skills, the community has already built.</p></li>
 <li><p>Leverage the existing ecosystem of tools to manage, extract transform load (<strong>ETL</strong>) or extract load transform (<strong>ELT</strong>) process.</p></li>
 <li><p>Integrate the current business intelligence stack like Tableau, PowerBI, and other open-source tools like D3.js and Plotly seamlessly.</p></li>
 </ul>
@@ -154,7 +154,7 @@ for 1 day and can be configured up to 90 days.</p>
 <div><ul class="simple">
 <li><p>Web interface to load a small amount of data.</p></li>
 <li><p>SnowSQL CLI for the bulk load.</p></li>
-<li><p>Snowpipe to automate the load of large data set across multiple platforms.</p></li>
+<li><p>Snowpipe to automate the load of large dataset across multiple platforms.</p></li>
 </ul>
 </div></blockquote>
 <div class="figure align-center">
@@ -164,7 +164,7 @@ for 1 day and can be configured up to 90 days.</p>
 <div class="section" id="snowflake-web">
 <h3>Snowflake web<a class="headerlink" href="#snowflake-web" title="Permalink to this headline">¶</a></h3>
 <p>The Snowflake web interface provides a convenient wizard to load data to a specific table.
-Using the LOAD button, we can easily ingest a limited amount of data.
+Using the LOAD button, we can easily ingest limited amount of data.
 The wizard simplifies the load by combining the staging and data loading phases into a single
 operation. Also, it automatically deletes the staged file after loading.</p>
 </div>
@@ -179,7 +179,7 @@ stage.</p>
 <h3>Snowpipe<a class="headerlink" href="#snowpipe" title="Permalink to this headline">¶</a></h3>
 <p>Snowpipe is a mechanism to load high frequency or streaming data.
 It can load data in a near real-time manner. It also allows for the processing of data in micro-batches.
-Micro-batch processing is similar to traditional batch processing in that data is usually processed as a group.
+Micro-batch processing is similar to traditional batch processing where data is usually processed as a group.
 Snowpipe is a serverless architecture
 and does not use virtual warehouse resources. It has its own resources that are managed by Snowflake instances.</p>
 <p>Snowpipe makes REST API available to load data from:</p>
@@ -288,7 +288,7 @@ External stages are storage locations outside the Snowflake environment in anoth
 It could be Amazon S3 storage, Microsoft Azure Storage, or Google Cloud Storage buckets. This provides greater
 flexibility for accessing the data in Snowflake.
 The internal stage stores data files within Snowflake. Internal stages can be either permanent or temporary.
-The data files can be loaded to Snowflake's internal storage using <strong>put</strong> command from SnowSQL CLI.
+The data files can be loaded to Snowflake's internal storage using <strong>PUT</strong> command from SnowSQL CLI.
 Internal storage is classified into three categories as listed below.</p>
 <p>Internal storage copies data within the Snowflake warehouse as shown below.</p>
 <div class="figure align-center">
@@ -296,7 +296,7 @@ Internal storage is classified into three categories as listed below.</p>
 </div>
 <div class="section" id="user-stage">
 <h3>User stage<a class="headerlink" href="#user-stage" title="Permalink to this headline">¶</a></h3>
-<p>Each Snowflake user is attached to the default stage to store the file.
+<p>Each Snowflake user is attached to the default stage for storing data files.
 The user stage is only accessible by the specific user
 and it supports multiple file formats like CSV, JSON, ORC, and Parquet.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>put file://D:\Snowflake\sample_file.csv @~/staged;
@@ -334,7 +334,8 @@ Table stages do not support setting file format options.</p>
 <p>This stage is mostly recommended for loading data from the files into Snowflake tables.
 It is available to load
 multiple tables. Multiple users have access to the internal named stage.
-File formats can be specified while creating an internal named stage.</p>
+File formats can be specified while creating an internal named stage.
+Throughout this book, we have used internal named stages for storing files of various data formats.</p>
 </div>
 </div>
 <div class="section" id="summary">

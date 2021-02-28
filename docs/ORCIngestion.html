@@ -88,7 +88,7 @@ specifying column names and data types.</p>
 </div>
 <div class="section" id="functions-to-manage-json">
 <h2>Functions to manage JSON<a class="headerlink" href="#functions-to-manage-json" title="Permalink to this headline">¶</a></h2>
-<p>JSON data sets are a simple concatenation of multiple key-value pairs.
+<p>JSON datasets are a simple concatenation of multiple key-value pairs.
 In this section, we are going to cover few new Snowflake functions like FLATTEN(),
 ARRAY_SIZE(), LATERAL FLATTEN(), and PARSE_JSON().</p>
 <p>These functions are used to query the semi-structured data and convert
@@ -655,6 +655,19 @@ charge records from the staged file.</p>
 <p>This stored procedure takes the YEAR parameter and retrieves the records
 from the staged file for that year.</p>
 <p>Here is the script for creating the stored procedure.</p>
+<p>This stored procedure:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Reads staged Snowflake data by position placement.</p></li>
+<li><p>Assigns data type to each attribute.</p></li>
+<li><p>Defines an alias (proper) name for each of the internal column names from the file.</p></li>
+<li><p>Inserts data into od_InstitutionalCharge.</p></li>
+<li><p>Returns success or failure status after executing SQL statements.</p></li>
+</ul>
+</div></blockquote>
+<div class="figure align-center">
+
+</div>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Create OD InstitutionalCharge entity load stored procedure</p>
@@ -1057,19 +1070,6 @@ $$
 ;
 </pre></div>
 </div>
-</div>
-<p>This stored procedure</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>Reads internal staged snowflake data by position placement.</p></li>
-<li><p>Assigns data type to each attribute.</p></li>
-<li><p>Defines an alias (proper) name for each of the internal column names from the file.</p></li>
-<li><p>Inserts data into od_InstitutionalCharge.</p></li>
-<li><p>Returns success or failure status after executing these SQL statements.</p></li>
-</ul>
-</div></blockquote>
-<div class="figure align-center">
-
 </div>
 <p>The procedure is called to process various years as below.</p>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">TRUNCATE</span> <span class="n">TABLE</span> <span class="n">od_InstitutionalCharge</span><span class="p">;</span>
@@ -2641,7 +2641,7 @@ There are four stored procedures that use these data sources and process them in
 taking the academic year as their input parameter.
 For the given year, these procedures will delete existing data from the destination tables and transform and load data from the OD layer.</p>
 <p>The od_InstitutionalCharge and three views added are input data sources for these stored procedures.</p>
-<p>The stored procedures</p>
+<p>The stored procedure:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>Reads OD table and views, filter data with academic year based on the parameter value.</p></li>
@@ -2653,7 +2653,7 @@ For the given year, these procedures will delete existing data from the destinat
 <div class="figure align-center">
 
 </div>
-<p>The following code is used to create these objects.</p>
+<p>The following code is used to create Institutional charge load procedures.</p>
 <p><strong>Institutional charge (General) load</strong></p>
 <div class="toggle docutils container">
 <div class="header docutils container">

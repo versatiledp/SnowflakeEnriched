@@ -58,7 +58,7 @@ It is known for its features like performance, data compression, and ability to 
 wide variety of encoding types. Parquet files
 enable to fetch only the required columns and values,
 load those in memory and answer the query.
-If a row-based file format like CSV was used, the entire table would have to have been
+If a row-based file format like CSV was used, the entire dataset is
 loaded in memory, resulting in increased I/O and worse performance.
 Snowflake manages Parquet files like semi-structured JSON data from VARIANT type.
 Snowflake allows loading Parquet data directly into relational tables from the staged file.</p>
@@ -251,6 +251,19 @@ This stored procedure takes the YEAR parameter and retrieves the records from th
 The parameter YEAR is compared against the first 4 characters of <strong>METADATA$FileName</strong> in the staging file
 and retrieves records for that year.</p>
 <p>Here is the script for creating the stored procedure.</p>
+<p>This stored procedure:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Reads staged Snowflake data by position placement.</p></li>
+<li><p>Assigns data type to each attribute.</p></li>
+<li><p>Defines an alias (proper) name for each of the internal column names from the file.</p></li>
+<li><p>Inserts data into od_AdmissionStat.</p></li>
+<li><p>Returns success or failure status after executing SQL statements.</p></li>
+</ul>
+</div></blockquote>
+<div class="figure align-center">
+
+</div>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Create OD AdmissionStat load stored procedure</p>
@@ -373,19 +386,6 @@ $$
 </pre></div>
 </div>
 </div>
-<p>This stored procedure</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>Reads internal staged snowflake data by position placement.</p></li>
-<li><p>Assigns data type to each attribute.</p></li>
-<li><p>Defines an alias (proper) name for each of the internal column names from the file.</p></li>
-<li><p>Inserts data into od_AdmissionStat.</p></li>
-<li><p>Returns success or failure status after executing these SQL statements.</p></li>
-</ul>
-</div></blockquote>
-<div class="figure align-center">
-
-</div>
 <p>The OD table is truncated and loaded by calling the stored procedure as below.</p>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">TRUNCATE</span> <span class="n">TABLE</span> <span class="n">od_AdmissionStat</span><span class="p">;</span>
 
@@ -468,6 +468,18 @@ of the dimension table AcademicInstitution to the fact table AdmissionStat.</p>
 Every time this fact table is updated, it is loaded with the latest data for that year.
 Therefore, old data loaded for that year is deleted and new data is loaded from the OD table.</p>
 <p>Here is the Snowflake stored procedure for processing the AdmissionStat table.</p>
+<p>The stored procedure:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Reads OD table and filter data with academic year based on the parameter value.</p></li>
+<li><p>Deletes data from the servicing layer for academic year.</p></li>
+<li><p>Inserts transformed data into AdmissionStat.</p></li>
+<li><p>Returns success or failure status after executing these SQL statements.</p></li>
+</ul>
+</div></blockquote>
+<div class="figure align-center">
+
+</div>
 <div class="toggle docutils container">
 <div class="header docutils container">
 <p>Show/Hide script for: Create AdmissionStat load stored procedure</p>
@@ -597,18 +609,6 @@ return &quot;success&quot;
 $$;
 </pre></div>
 </div>
-</div>
-<p>The stored procedure</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>Reads OD table and filter data with academic year based on the parameter value.</p></li>
-<li><p>Deletes data from the servicing layer for academic year.</p></li>
-<li><p>Inserts transformed data into AdmissionStat.</p></li>
-<li><p>Returns success or failure status after executing these SQL statements.</p></li>
-</ul>
-</div></blockquote>
-<div class="figure align-center">
-
 </div>
 <p>This code snippet loads historical data for the admission stat table.</p>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CALL</span> <span class="n">pr_AdmissionStat_Load</span><span class="p">(</span><span class="mi">2017</span><span class="p">::</span><span class="n">FLOAT</span><span class="p">);</span>

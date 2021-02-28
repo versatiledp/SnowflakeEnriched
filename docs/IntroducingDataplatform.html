@@ -164,16 +164,18 @@ that are named properly with business centric column names with appropriate data
 <blockquote>
 <div><ul class="simple">
 <li><p>The procedure is defined with argument.</p></li>
-<li><p>Runtime language is Javascript.</p></li>
+<li><p>JavaScript is the runtime language.</p></li>
 <li><p>The Procedure returns a string success or failure.</p></li>
-<li><p>To execute single SQL statment, SQL script is assigned to JavaScript varibale and <strong>snowflake.execute</strong>  is called by passing this Javascript variable.</p></li>
-<li><p>For mulitple SQL statment, multiple JavaScript variables are used.</p></li>
+<li><p>To execute single SQL statment, SQL script is assigned to <strong>JavaScript</strong> variable and <strong>snowflake.execute</strong>  is called by passing this JavaScript variable.</p></li>
+<li><p>For mulitple SQL statments, different JavaScript variables are used.</p></li>
 <li><p>These variables are combined into a string array.</p></li>
-<li><p>Single SQL command/text is assigned to one JavaScript variable.</p></li>
-<li><p>For loop is used to execute all SQL commands by calling snowflake.execute and passing the Javascript variable.</p></li>
+<li><p>For loop is used to execute all SQL commands by calling snowflake.execute and passing the JavaScript variable.</p></li>
 <li><p>Results are checked on each call of snowflake.execute.</p></li>
 </ul>
 </div></blockquote>
+<div class="figure align-center">
+
+</div>
 <p>Not all data from OD tables may land up in the servicing layer.
 In data science (DS), data attributes from the staged and OD layer may be needed to build predictive analytics.
 Thus, the DS team and data transformation team are the major consumers of this data.</p>
@@ -188,11 +190,11 @@ and build dashboards and reports. The best place for business users to perform t
 <p>This book is designed to use data from Integrated Postsecondary Education Data System (IPEDS)
 and build analytics ecosystem using this data. IPEDS  <a class="reference external" href="https://nces.ed.gov/ipeds"  target="_blank">https://nces.ed.gov/ipeds</a>  is
 established as the core postsecondary education data collection program for NCES.
-It is the primary source for information on U.S. Colleges,
+It is the primary source for information on US Colleges,
 universities, technical institutions, and vocational institutions.</p>
 <p>The National Center for Education Statistics (NCES) is the primary federal entity for collecting
-and analyzing data related to education in the U.S. and other nations.
-NCES is located within the U.S. Department of Education and the Institute of Education Sciences.
+and analyzing data related to education in the US and other nations.
+NCES is located within the US Department of Education and the Institute of Education Sciences.
 NCES fulfills a Congressional mandate to collect, collate, analyze, and report complete statistics
 on the condition of American education; conduct and publish reports; and review and report on
 education activities internationally.</p>
@@ -200,7 +202,7 @@ education activities internationally.</p>
 
 </div>
 <p>All of the data used in this book is downloaded from <a class="reference external" href="https://nces.ed.gov/ipeds/use-the-data"   target="_blank">https://nces.ed.gov/ipeds/use-the-data</a>.</p>
-<p>From IPEDS, we are downloading below listed files for 2017,2018, and 2019 academic years.</p>
+<p>From IPEDS, we are downloading below listed files for 2017, 2018, and 2019 academic years.</p>
 <p><strong>Academic institution [HDR]</strong></p>
 <p>These files contain directory information for every institution in the IPEDS universe and contain data attributes
 like name, address, city, state, zip code, and various URL links to the institution's home page,
@@ -217,9 +219,9 @@ published tuition and required fees, books and supplies, room and board, and oth
 for first-time, degree/certificate-seeking prospective students.</p>
 <p><strong>Code mapping data</strong></p>
 <p>These files contain data for lookup tables.
-A lookup table acts as a dictionary. It provides descriptions for a business codes.
-Few examples are institute type description for given institute type code,
-state name for state code, etc..</p>
+A lookup table acts as a dictionary. It provides descriptions for each business codes.
+For example: Institute type description for the given institute type code,
+State name for the state code, etc..</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p><em>Disclaimer: We have modified this data to explore Snowflake functionality. Therefore, analytics results from this book
@@ -230,12 +232,12 @@ Please refer to the NCES website for actual statistics and research on academic 
 <p><em>All the data files used throughout this book are available to download at:</em>
 <a class="reference external" href="https://github.com/versatiledp/SnowflakeEnriched/tree/master/data/input"  target="_blank">https://github.com/versatiledp/SnowflakeEnriched/tree/master/data/input</a></p>
 </div>
-<p>These files are coming to the data platform in the format like CSV, JSON, ORC, Parquet, and Multi-format.</p>
+<p>These files are available to process in various formats like CSV, JSON, ORC, Parquet, and Multi-format.</p>
 <div class="section" id="academic-institution-hdr">
 <h3>Academic institution [HDR]<a class="headerlink" href="#academic-institution-hdr" title="Permalink to this headline">¶</a></h3>
-<p>These files are available in CSV format at the source system.
-The institutional characteristics header files are directly ingested into
-Snowflake staging from the source system. The following diagram displays
+<p>Academic institution files are available in CSV format at the source system.
+They are directly ingested into Snowflake staging from the source system.
+The following diagram displays
 data flow between the source system and the Snowflake destination.</p>
 <div class="figure align-center">
 <img alt="images/csvIngestion.jpg" src="images/csvIngestion.jpg" />
@@ -257,7 +259,8 @@ The following diagram displays the data ingestion architecture for JSON files.</
 </div>
 <div class="section" id="institutional-charges-ic">
 <h3>Institutional charges [IC]<a class="headerlink" href="#institutional-charges-ic" title="Permalink to this headline">¶</a></h3>
-<p>To create ORC file for simulation in this book, Jyputer notebook <strong>csvToOrc.ipynb</strong> is used.
+<p>Institutional charges files are available in CSV format at the source system.
+To create ORC file for simulation in this book, Jupyter notebook <strong>csvToOrc.ipynb</strong> is used.
 This Python code migrated CSV files from IPEDS universe to ORC format.
 The Optimized Row Columnar (ORC) file format provides a highly efficient way to store Hive data. ORC files improve performance when Hive is reading, writing, and processing data.
 The compact nature of this format is ideal, and enables skipping over irrelevant parts without needing large, complex, or manually maintained indices.</p>
@@ -275,7 +278,8 @@ OD layer is used to process data for the destination layer with additional trans
 <h3>Admissions and test scores [ADM]<a class="headerlink" href="#admissions-and-test-scores-adm" title="Permalink to this headline">¶</a></h3>
 <p>Similar to previous sections, these files are available in CSV format.
 For simulating Parquet data, we have utilized <strong>csvToParquet.ipynb</strong> notebook.
-Parquet, an open-source file format for Hadoop, stores nested data structures in a flat columnar format.
+Parquet is an open-source file format for Hadoop and Spark.
+It stores nested data structures in a flat columnar format.
 Compared to a traditional approach where data is stored in a row-oriented approach, Parquet is more efficient
 in terms of storage and performance. It is especially useful for queries that read specific columns
 from a wide table. Parquet provides optimizations to speed up queries.
