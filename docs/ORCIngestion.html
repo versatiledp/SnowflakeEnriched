@@ -38,7 +38,7 @@
           <div class="body" role="main">
             
   <div class="section" id="orc-ingestion">
-<h1>ORC ingestion<a class="headerlink" href="#orc-ingestion" title="Permalink to this headline">¶</a></h1>
+<h1>ORC ingestion<a class="headerlink" href="#orc-ingestion" title="Permalink to this headline">Â¶</a></h1>
 <p>This section explains:</p>
 <blockquote>
 <div><ul class="simple">
@@ -54,7 +54,7 @@
 
 </div>
 <div class="section" id="orc-data-processing">
-<h2>ORC data processing<a class="headerlink" href="#orc-data-processing" title="Permalink to this headline">¶</a></h2>
+<h2>ORC data processing<a class="headerlink" href="#orc-data-processing" title="Permalink to this headline">Â¶</a></h2>
 <p>Optimized Row Columnar (ORC) is a self-describing type-aware columnar
 file format designed for Hadoop workloads. It is optimized for large streaming reads.
 By storing data in a columnar format, it allows user to read, decompress,
@@ -87,7 +87,7 @@ is retrieved using the following code.</p>
 specifying column names and data types.</p>
 </div>
 <div class="section" id="functions-to-manage-json">
-<h2>Functions to manage JSON<a class="headerlink" href="#functions-to-manage-json" title="Permalink to this headline">¶</a></h2>
+<h2>Functions to manage JSON<a class="headerlink" href="#functions-to-manage-json" title="Permalink to this headline">Â¶</a></h2>
 <p>JSON datasets are a simple concatenation of multiple key-value pairs.
 In this section, we are going to cover few new Snowflake functions like FLATTEN(),
 ARRAY_SIZE(), LATERAL FLATTEN(), and PARSE_JSON().</p>
@@ -357,7 +357,7 @@ FROM
 </div>
 </div>
 <div class="section" id="ingesting-orc-data">
-<h2>Ingesting ORC data<a class="headerlink" href="#ingesting-orc-data" title="Permalink to this headline">¶</a></h2>
+<h2>Ingesting ORC data<a class="headerlink" href="#ingesting-orc-data" title="Permalink to this headline">Â¶</a></h2>
 <p>The staged file &#64;IPEDS_IC is used for keeping track of various institution charges.
 We can retrieve the details of a particular year, exemplified by the Snowflake SQL query
 seen below to select all rows for the year 2017 from staged ORC data.
@@ -658,9 +658,8 @@ from the staged file for that year.</p>
 <p>This stored procedure:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>Reads staged Snowflake data by position placement.</p></li>
-<li><p>Assigns data type to each attribute.</p></li>
-<li><p>Defines an alias (proper) name for each of the internal column names from the file.</p></li>
+<li><p>Reads staged ORC file (Reading ORC is like reading JSON formatted data).</p></li>
+<li><p>Assigns data type to each attribute and defines alias.</p></li>
 <li><p>Inserts data into od_InstitutionalCharge.</p></li>
 <li><p>Returns success or failure status after executing SQL statements.</p></li>
 </ul>
@@ -1081,7 +1080,7 @@ $$
 </div>
 </div>
 <div class="section" id="data-analysis">
-<h2>Data analysis<a class="headerlink" href="#data-analysis" title="Permalink to this headline">¶</a></h2>
+<h2>Data analysis<a class="headerlink" href="#data-analysis" title="Permalink to this headline">Â¶</a></h2>
 <p>The ORC files of institutional charge  datasets categorizes fees for graduate programs
 like Medicine, Dentistry, Pharmacy, Law, etc., as a different set of attributes.
 Another group of columns provide details of In-State and Out-of-State students tuition fees.
@@ -1174,7 +1173,7 @@ we need to architect servicing layer strucutre differently.
 The attributes of the OD table are categorized into a core group and the 3 groups as shown below.</p>
 </div>
 <div class="section" id="servicing-layer-entities-for-institutional-charges">
-<h2>Servicing layer entities for institutional charges<a class="headerlink" href="#servicing-layer-entities-for-institutional-charges" title="Permalink to this headline">¶</a></h2>
+<h2>Servicing layer entities for institutional charges<a class="headerlink" href="#servicing-layer-entities-for-institutional-charges" title="Permalink to this headline">Â¶</a></h2>
 <p>After analyzing dataset, we decided to add the following entities to the servicing layer.
 These entities will be populated in the transformation logic.
 All these tables will hold numeric data associated with the
@@ -1287,7 +1286,7 @@ indistrict and out-of-district categories.
 </div>
 </div>
 <div class="section" id="data-preparation-for-servicing-layer-load">
-<h2>Data preparation for servicing layer load<a class="headerlink" href="#data-preparation-for-servicing-layer-load" title="Permalink to this headline">¶</a></h2>
+<h2>Data preparation for servicing layer load<a class="headerlink" href="#data-preparation-for-servicing-layer-load" title="Permalink to this headline">Â¶</a></h2>
 <p>In our case, data is stored in the OD layer in a pivoted record structure. We will need to unpivot these attributes to load
 the servicing layer.</p>
 <p>We can unpivot data structure in a traditional SQL environment by creating a UNION on underlying attributes.</p>
@@ -2209,7 +2208,7 @@ to v_od_InstitutionalChargeByResidencyType and v_od_InstitutionalChargeByAcademi
 </div>
 </div>
 <div class="section" id="alternative-approach-for-data-preparation">
-<h2>Alternative approach for data preparation<a class="headerlink" href="#alternative-approach-for-data-preparation" title="Permalink to this headline">¶</a></h2>
+<h2>Alternative approach for data preparation<a class="headerlink" href="#alternative-approach-for-data-preparation" title="Permalink to this headline">Â¶</a></h2>
 <p>Alternative approach is to bring data from staged files to the OD table in the above groups.
 We use these data groups to load the servicing layer and simplify unpivot logic. Also make it easy to adjust the load
 process, if the new groups gets added in the furture. This will need some transformation as part of ingestion process.</p>
@@ -2635,16 +2634,17 @@ The JSON VARIANT data type is used to these views:</p>
 </div>
 </div>
 <div class="section" id="servicing-layer-data-load">
-<h2>Servicing layer data load<a class="headerlink" href="#servicing-layer-data-load" title="Permalink to this headline">¶</a></h2>
-<p>We will be using the OD table od_InstitutionalCharge and the above three views to finally land data to its destination.
-There are four stored procedures that use these data sources and process them into the respective servicing layer tables,
-taking the academic year as their input parameter.
-For the given year, these procedures will delete existing data from the destination tables and transform and load data from the OD layer.</p>
-<p>The od_InstitutionalCharge and three views added are input data sources for these stored procedures.</p>
-<p>The stored procedure:</p>
+<h2>Servicing layer data load<a class="headerlink" href="#servicing-layer-data-load" title="Permalink to this headline">Â¶</a></h2>
+<p>We will be using the OD table od_InstitutionalCharge and the above three views to
+land data in the destination.
+There are four stored procedures (SPs). These SPs sources and transforms data before loading into
+to the respective servicing layer tables.
+ALl these SPs have academic year as input parameter.</p>
+<p>These stored procedures:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>Reads OD table and views, filter data with academic year based on the parameter value.</p></li>
+<li><p>Reads OD table and views (IC ByAcademicBranch, ByCategory, and ByResidencyType).</p></li>
+<li><p>Filter data with academic year based on the parameter value.</p></li>
 <li><p>Deletes data from the servicing layer for academic year.</p></li>
 <li><p>Inserts transformed data into respective service layer tables.</p></li>
 <li><p>Returns success or failure status after executing these SQL statements.</p></li>
@@ -2957,7 +2957,7 @@ are loaded by calling these stored procedures:</p>
 </div>
 </div>
 <div class="section" id="summary">
-<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">Â¶</a></h2>
 <p>Ingesting ORC files in Snowflake is as easy as ingesting JSON data. We learned about a variety of transformations, moving data from
 the landing layer to the servicing layer. We also covered how to unpivot data stored in the OD layer
 and load into the servicing layer.

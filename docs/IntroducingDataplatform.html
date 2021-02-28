@@ -38,7 +38,7 @@
           <div class="body" role="main">
             
   <div class="section" id="introducing-data-platform">
-<h1>Introducing data platform<a class="headerlink" href="#introducing-data-platform" title="Permalink to this headline">¶</a></h1>
+<h1>Introducing data platform<a class="headerlink" href="#introducing-data-platform" title="Permalink to this headline">Â¶</a></h1>
 <p>The modern data architecture allows enterprises to ingest data coming from
 multiple systems, in a variety of data formats, at different speeds, and at unknown
 intervals. The layered data platform design makes it easy to process big
@@ -46,7 +46,7 @@ data efficiently. It enables organizations to quickly deploy new analytical
 business-driven solutions to drive revenue and
 profitability.</p>
 <div class="section" id="pillars-of-data-platform">
-<h2>Pillars of data platform<a class="headerlink" href="#pillars-of-data-platform" title="Permalink to this headline">¶</a></h2>
+<h2>Pillars of data platform<a class="headerlink" href="#pillars-of-data-platform" title="Permalink to this headline">Â¶</a></h2>
 <p>There are four main pillars of the modern data platform:</p>
 <ul class="simple">
 <li><p>Data source layer</p></li>
@@ -58,7 +58,7 @@ profitability.</p>
 <img alt="images/DataPlatform.jpg" src="images/DataPlatform.jpg" />
 </div>
 <div class="section" id="data-source-layer">
-<h3>Data source layer<a class="headerlink" href="#data-source-layer" title="Permalink to this headline">¶</a></h3>
+<h3>Data source layer<a class="headerlink" href="#data-source-layer" title="Permalink to this headline">Â¶</a></h3>
 <p>Data source layer receives data from various sources.
 Each source can be either internal or external to an organization
 and generates data in real-time or in batch mode.
@@ -66,7 +66,7 @@ The <strong>variety</strong> of data formats can be structured, semi-structured,
 The <strong>velocity</strong> (speed of arrival) and <strong>volume</strong> (delivery amount) of data will differ by source.</p>
 </div>
 <div class="section" id="data-processing-and-storage-layer">
-<h3>Data processing and storage layer<a class="headerlink" href="#data-processing-and-storage-layer" title="Permalink to this headline">¶</a></h3>
+<h3>Data processing and storage layer<a class="headerlink" href="#data-processing-and-storage-layer" title="Permalink to this headline">Â¶</a></h3>
 <p>The data processing layer receives data from the data sources,
 converts and stores the data into comprehensible format and ready to consume in servicing and analytical layer.
 For example, large amounts of data are
@@ -82,7 +82,7 @@ are used as standalone solutions for big data processing, or in
 combination with the Hadoop/Spark ecosystems.</p>
 </div>
 <div class="section" id="analytical-layer">
-<h3>Analytical layer<a class="headerlink" href="#analytical-layer" title="Permalink to this headline">¶</a></h3>
+<h3>Analytical layer<a class="headerlink" href="#analytical-layer" title="Permalink to this headline">Â¶</a></h3>
 <p>The Analytical layer reads the data ingested and transformed by the data
 processing and storage layer of the big data ecosystem. This layer consists of a variety of data
 for different user requirements and
@@ -92,7 +92,7 @@ libraries, SQL libraries, and a number of other toolsets
 are utilized in this layer to understand the underlying data landscape.</p>
 </div>
 <div class="section" id="consumption-layer">
-<h3>Consumption layer<a class="headerlink" href="#consumption-layer" title="Permalink to this headline">¶</a></h3>
+<h3>Consumption layer<a class="headerlink" href="#consumption-layer" title="Permalink to this headline">Â¶</a></h3>
 <p>The consumption layer is also called the business intelligence layer. This layer
 receives results from the analytical layer and presents the results
 using visualization tools and
@@ -100,7 +100,7 @@ business processes.</p>
 </div>
 </div>
 <div class="section" id="snowflake-data-pillars">
-<h2>Snowflake data pillars<a class="headerlink" href="#snowflake-data-pillars" title="Permalink to this headline">¶</a></h2>
+<h2>Snowflake data pillars<a class="headerlink" href="#snowflake-data-pillars" title="Permalink to this headline">Â¶</a></h2>
 <p>For the project in this book, we will be using Snowflake staged files, transient tables, and master tables.
 Transient tables are referenced as operational data tables throughout the book.
 Master tables are also called as the servicing layer entities.
@@ -116,13 +116,13 @@ Google Colab is used for the consumption layer.</p>
 <li><p>Create descriptive analytics for use-cases laid out by businesses.</p></li>
 </ul>
 <div class="section" id="staged-file">
-<h3>Staged file<a class="headerlink" href="#staged-file" title="Permalink to this headline">¶</a></h3>
+<h3>Staged file<a class="headerlink" href="#staged-file" title="Permalink to this headline">Â¶</a></h3>
 <p>All the data from the source system will be brought into the internal staged file location of Snowflake.
 This data is directly sourced from transactional systems or existing big data platforms,
 without applying any transformations.</p>
 </div>
 <div class="section" id="operational-datastore-od">
-<h3>Operational datastore (OD)<a class="headerlink" href="#operational-datastore-od" title="Permalink to this headline">¶</a></h3>
+<h3>Operational datastore (OD)<a class="headerlink" href="#operational-datastore-od" title="Permalink to this headline">Â¶</a></h3>
 <p>An operational datastore (OD) is a central store that provides a snapshot of
 the latest data from multiple transactional systems.
 It enables organizations to combine data in its original format
@@ -134,7 +134,7 @@ additional columns to help track data lineage. The OD also serves as transient l
 the source systems. It allows us to have all the data within the bounds ready for processing and modeling.</p>
 </div>
 <div class="section" id="servicing-layer">
-<h3>Servicing layer<a class="headerlink" href="#servicing-layer" title="Permalink to this headline">¶</a></h3>
+<h3>Servicing layer<a class="headerlink" href="#servicing-layer" title="Permalink to this headline">Â¶</a></h3>
 <p>This layer consists of the data that has undergone all sorts of transformations and it is
 ready for consumption to the business intelligence layer.
 OD tables serve as input to the transformation process to populate servicing layer tables.
@@ -142,7 +142,7 @@ This is our master schema with transformed data. It contains correctly modeled t
 that are named properly with business centric column names with appropriate data types.</p>
 </div>
 <div class="section" id="dataflow-summary">
-<h3>Dataflow summary<a class="headerlink" href="#dataflow-summary" title="Permalink to this headline">¶</a></h3>
+<h3>Dataflow summary<a class="headerlink" href="#dataflow-summary" title="Permalink to this headline">Â¶</a></h3>
 <p>The data cleaning and transformation takes place while moving data from OD into service layer.</p>
 <ul class="simple">
 <li><p>Standardizing all date formats and time zones.</p></li>
@@ -176,17 +176,17 @@ that are named properly with business centric column names with appropriate data
 <div class="figure align-center">
 
 </div>
-<p>Not all data from OD tables may land up in the servicing layer.
-In data science (DS), data attributes from the staged and OD layer may be needed to build predictive analytics.
-Thus, the DS team and data transformation team are the major consumers of this data.</p>
+<p>Not all data from staged files and OD tables may land up in the servicing layer.</p>
 <p>Data engineering create the business logic-based transformations of transient data store. They are
-responsible for metadata management, and keeping track of data pipelines.</p>
+responsible for metadata management and keeping track of data pipelines.</p>
 <p>Normally, business users like to use tools such as PowerBI and Tableau to perform descriptive analytics
-and build dashboards and reports. The best place for business users to perform these analytics is the service layer.</p>
+and build reports, dashboards. The service layer is the best place for business users to get their data needs.</p>
+<p>And finally, data scientist like to perform experiments with raw and transformed data combined.
+They may use the staged and OD attributes along with servicing layer to build predictive analytics.</p>
 </div>
 </div>
 <div class="section" id="project-data-source">
-<h2>Project data source<a class="headerlink" href="#project-data-source" title="Permalink to this headline">¶</a></h2>
+<h2>Project data source<a class="headerlink" href="#project-data-source" title="Permalink to this headline">Â¶</a></h2>
 <p>This book is designed to use data from Integrated Postsecondary Education Data System (IPEDS)
 and build analytics ecosystem using this data. IPEDS  <a class="reference external" href="https://nces.ed.gov/ipeds"  target="_blank">https://nces.ed.gov/ipeds</a>  is
 established as the core postsecondary education data collection program for NCES.
@@ -234,9 +234,12 @@ Please refer to the NCES website for actual statistics and research on academic 
 </div>
 <p>These files are available to process in various formats like CSV, JSON, ORC, Parquet, and Multi-format.</p>
 <div class="section" id="academic-institution-hdr">
-<h3>Academic institution [HDR]<a class="headerlink" href="#academic-institution-hdr" title="Permalink to this headline">¶</a></h3>
+<h3>Academic institution [HDR]<a class="headerlink" href="#academic-institution-hdr" title="Permalink to this headline">Â¶</a></h3>
 <p>Academic institution files are available in CSV format at the source system.
-They are directly ingested into Snowflake staging from the source system.
+CSV is comma-separated values. It is a simple basic file format.
+Each line of tabular data is saved as a record.
+Record consist of multiple fields separated by commas.
+CSV files are directly ingested into Snowflake staging from the source system.
 The following diagram displays
 data flow between the source system and the Snowflake destination.</p>
 <div class="figure align-center">
@@ -246,7 +249,7 @@ data flow between the source system and the Snowflake destination.</p>
 The OD layer is used to process data for the destination layer with additional transformations.</p>
 </div>
 <div class="section" id="enrollment-12-month-effy">
-<h3>Enrollment 12-Month [EFFY]<a class="headerlink" href="#enrollment-12-month-effy" title="Permalink to this headline">¶</a></h3>
+<h3>Enrollment 12-Month [EFFY]<a class="headerlink" href="#enrollment-12-month-effy" title="Permalink to this headline">Â¶</a></h3>
 <p>EFFY files received from IPEDS are in CSV format. To simulate JSON data, we used
 Python code <strong>csvToJson.py</strong> to convert CSV files to JSON format.
 JSON is a common open standard file and data interchange format that uses human-readable text to store and transmit data objects consisting of attribute-value pairs and array data types. This data format is used in a diverse range of applications and serves as a replacement for XML in AJAX systems.
@@ -258,7 +261,7 @@ The following diagram displays the data ingestion architecture for JSON files.</
 <p>We convert JSON data into relational table structure in the Snowflake transformation.</p>
 </div>
 <div class="section" id="institutional-charges-ic">
-<h3>Institutional charges [IC]<a class="headerlink" href="#institutional-charges-ic" title="Permalink to this headline">¶</a></h3>
+<h3>Institutional charges [IC]<a class="headerlink" href="#institutional-charges-ic" title="Permalink to this headline">Â¶</a></h3>
 <p>Institutional charges files are available in CSV format at the source system.
 To create ORC file for simulation in this book, Jupyter notebook <strong>csvToOrc.ipynb</strong> is used.
 This Python code migrated CSV files from IPEDS universe to ORC format.
@@ -275,7 +278,7 @@ coming out of Hadoop and ingest into Snowflake.</p>
 OD layer is used to process data for the destination layer with additional transformation.</p>
 </div>
 <div class="section" id="admissions-and-test-scores-adm">
-<h3>Admissions and test scores [ADM]<a class="headerlink" href="#admissions-and-test-scores-adm" title="Permalink to this headline">¶</a></h3>
+<h3>Admissions and test scores [ADM]<a class="headerlink" href="#admissions-and-test-scores-adm" title="Permalink to this headline">Â¶</a></h3>
 <p>Similar to previous sections, these files are available in CSV format.
 For simulating Parquet data, we have utilized <strong>csvToParquet.ipynb</strong> notebook.
 Parquet is an open-source file format for Hadoop and Spark.
@@ -293,7 +296,7 @@ The following diagram lays out the architecture to ingest Parquet data from Apac
 OD layer is used to process data for the destination layer with additional transformation.</p>
 </div>
 <div class="section" id="code-mapping-data">
-<h3>Code mapping data<a class="headerlink" href="#code-mapping-data" title="Permalink to this headline">¶</a></h3>
+<h3>Code mapping data<a class="headerlink" href="#code-mapping-data" title="Permalink to this headline">Â¶</a></h3>
 <p>This Multi-format dataset has a special character delimiter. One file holds data for multiple destination tables, which are
 identified by the value of the first column in the file.</p>
 <p>These files are directly ingested into Snowflake staging from the source system.
@@ -305,7 +308,7 @@ The files in this book are loaded from the above folder to the Snowflake stage a
 </div>
 </div>
 <div class="section" id="ingesting-files-to-snowflake-stage">
-<h2>Ingesting files to Snowflake stage<a class="headerlink" href="#ingesting-files-to-snowflake-stage" title="Permalink to this headline">¶</a></h2>
+<h2>Ingesting files to Snowflake stage<a class="headerlink" href="#ingesting-files-to-snowflake-stage" title="Permalink to this headline">Â¶</a></h2>
 <p>Data files are received in various formats like CSV, ORC, Parquet, and JSON. These files are available in the folders by year. They are brought into Snowflake staged files using the PUT command.
 Each staged file contains the entire data for that specific year. From these staged files, OD tables are populated.
 Using these OD tables, servicing layer tables of the data-warehouse are populated. Snowflake's stored procedures, views, and functions are used for ETL/ELT processes.</p>
@@ -321,7 +324,7 @@ Using these OD tables, servicing layer tables of the data-warehouse are populate
 </div>
 </div>
 <div class="section" id="create-internal-stage-area-ipeds">
-<h3>Create internal stage area IPEDS<a class="headerlink" href="#create-internal-stage-area-ipeds" title="Permalink to this headline">¶</a></h3>
+<h3>Create internal stage area IPEDS<a class="headerlink" href="#create-internal-stage-area-ipeds" title="Permalink to this headline">Â¶</a></h3>
 <p>First, create the file formats and stage area for the following data formats:</p>
 <blockquote>
 <div><ul class="simple">
@@ -418,7 +421,7 @@ we can validate their availability.</p>
 </div></blockquote>
 </div>
 <div class="section" id="load-the-files-to-internal-stage-for-ipeds">
-<h3>Load the files to internal stage for IPEDS<a class="headerlink" href="#load-the-files-to-internal-stage-for-ipeds" title="Permalink to this headline">¶</a></h3>
+<h3>Load the files to internal stage for IPEDS<a class="headerlink" href="#load-the-files-to-internal-stage-for-ipeds" title="Permalink to this headline">Â¶</a></h3>
 <p>In this section, we are ingesting all the files to the Snowflake staging area. We assume you have
 downloaded the files from GitRepo and copied to the folder C:\Snowflake\data\input\.</p>
 <div class="admonition note">
@@ -515,7 +518,7 @@ creating and loading the staged area.</p>
 </div>
 </div>
 <div class="section" id="summary">
-<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">Â¶</a></h2>
 <p>This chapter summarizes, data files, file formats, and processes used to simplify
 and streamline bulk loading data into various
 internal staging areas.

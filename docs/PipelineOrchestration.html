@@ -38,30 +38,30 @@
           <div class="body" role="main">
             
   <div class="section" id="workflow-orchestration">
-<h1>Workflow orchestration<a class="headerlink" href="#workflow-orchestration" title="Permalink to this headline">¶</a></h1>
+<h1>Workflow orchestration<a class="headerlink" href="#workflow-orchestration" title="Permalink to this headline">Â¶</a></h1>
 <p>This chapter explains how to administer the Snowflake transformations
 through a single point of entry
 without using any third-party tools.</p>
 <div class="section" id="configuration">
-<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">Â¶</a></h2>
 <p>Workflow configuration is done by listing the Snowflake procedures to
 execute in a pre-defined sequential order. The source and destination tables used in the transformation are
 listed in the configuration table along
 with the stored procedure.</p>
 </div>
 <div class="section" id="administration">
-<h2>Administration<a class="headerlink" href="#administration" title="Permalink to this headline">¶</a></h2>
+<h2>Administration<a class="headerlink" href="#administration" title="Permalink to this headline">Â¶</a></h2>
 <p>Workflow administration executes the list of stored procedures in the order defined by the
 <strong>IPEDS_Workflow</strong> table. For each procedure execution, it checks the row counts from the source and destination tables.
 At the end, it logs the details in the <strong>IPEDS_Audit</strong> table for further analysis.</p>
 </div>
 <div class="section" id="audit">
-<h2>Audit<a class="headerlink" href="#audit" title="Permalink to this headline">¶</a></h2>
+<h2>Audit<a class="headerlink" href="#audit" title="Permalink to this headline">Â¶</a></h2>
 <p>Workflow audit provides the details of the executions as well as row counts before and after.
 This audit table can be used to identify the number of records processed in each execution.</p>
 </div>
 <div class="section" id="data-setup">
-<h2>Data setup<a class="headerlink" href="#data-setup" title="Permalink to this headline">¶</a></h2>
+<h2>Data setup<a class="headerlink" href="#data-setup" title="Permalink to this headline">Â¶</a></h2>
 <p>We have added a workflow table with attributes given below.</p>
 <blockquote>
 <div><ul class="simple">
@@ -434,7 +434,7 @@ It also creates any missing tables before the load.</p>
 </div>
 </div>
 <div class="section" id="summary">
-<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">Â¶</a></h2>
 <p>In this chapter, we learned how to manage data transformation using a workflow tool built from Snowflake.
 This process helps in navigating data lineage across staged files, operational data tables, and servicing layer entities.
 It works for cases where we have a one-to-one mapping between source and destination tables.

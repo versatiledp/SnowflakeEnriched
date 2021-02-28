@@ -38,7 +38,7 @@
           <div class="body" role="main">
             
   <div class="section" id="json-ingestion">
-<h1>JSON ingestion<a class="headerlink" href="#json-ingestion" title="Permalink to this headline">¶</a></h1>
+<h1>JSON ingestion<a class="headerlink" href="#json-ingestion" title="Permalink to this headline">Â¶</a></h1>
 <p>We will learn about:</p>
 <blockquote>
 <div><ul class="simple">
@@ -51,7 +51,7 @@
 
 </div>
 <div class="section" id="json-data-processing">
-<h2>JSON data processing<a class="headerlink" href="#json-data-processing" title="Permalink to this headline">¶</a></h2>
+<h2>JSON data processing<a class="headerlink" href="#json-data-processing" title="Permalink to this headline">Â¶</a></h2>
 <p>JSON stands for JavaScript Object Notation. It is a minimal readable format for semi-structured data.
 It is a standardized format commonly used to transfer data as text that can be sent over a network.
 JSON is used by majority of APIs and databases to
@@ -182,7 +182,7 @@ WHERE RIGHT(REPLACE(S.metadata$filename,&#39;_rv.json.gz&#39;,&#39;&#39;),4) = 2
 </div>
 </div>
 <div class="section" id="ingesting-json-data">
-<h2>Ingesting JSON data<a class="headerlink" href="#ingesting-json-data" title="Permalink to this headline">¶</a></h2>
+<h2>Ingesting JSON data<a class="headerlink" href="#ingesting-json-data" title="Permalink to this headline">Â¶</a></h2>
 <p>For storing enrollment data from the staged file, we have added an OD table called <strong>od_Enrollment</strong>.
 Here is the CREATE command for the OD table.</p>
 <div class="toggle docutils container">
@@ -465,7 +465,7 @@ $$;
 </div>
 </div>
 <div class="section" id="servicing-layer-for-enrollment">
-<h2>Servicing layer for enrollment<a class="headerlink" href="#servicing-layer-for-enrollment" title="Permalink to this headline">¶</a></h2>
+<h2>Servicing layer for enrollment<a class="headerlink" href="#servicing-layer-for-enrollment" title="Permalink to this headline">Â¶</a></h2>
 <p>We have created a table for <strong>Enrollment</strong> in the servicing layer. The
 Enrollment table has links to the
 dimension table <strong>AcademicInstitution</strong>. The relationship represents the star schema of
@@ -549,14 +549,16 @@ To do so, we read the imputation column to obtain the total number of imputed an
 which we store in <strong>VariablesReportedCount</strong> and  <strong>VariablesImputedCount</strong>.
 Then, we calculate their percentages and store them in <strong>ImputationVarPercent</strong> and <strong>ReportedVarPercent</strong>, respectively.</p>
 <p>The stored procedure script for pr_Enrollment_Load is available below.
-The data transformation needed to get ImputationVarPercent and ReportedVarPercent is performed in the same stored procedure.</p>
+The data transformation needed to get ImputationVarPercent and ReportedVarPercent is performed in the same stored procedure.
+The parameter YEAR is compared against the first 4 characters of <strong>METADATA$FileName</strong> in the staging file
+and retrieves records for that year.</p>
 <p>The stored procedure</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>Reads OD table and filter data with academic year based on the parameter value.</p></li>
 <li><p>Deletes data from the servicing layer for academic year.</p></li>
-<li><p>Computes ImputationVarPercent and ReportedVarPercent.</p></li>
 <li><p>Inserts transformed data into Enrollment.</p></li>
+<li><p>Updates enrollment entity with computed variables ImputationVarPercent and ReportedVarPercent.</p></li>
 <li><p>Returns success or failure status after executing these SQL statements.</p></li>
 </ul>
 </div></blockquote>
@@ -872,7 +874,7 @@ RETURN &quot;success&quot; $$;
 </div>
 </div>
 <div class="section" id="executing-load-procedures">
-<h2>Executing load procedures<a class="headerlink" href="#executing-load-procedures" title="Permalink to this headline">¶</a></h2>
+<h2>Executing load procedures<a class="headerlink" href="#executing-load-procedures" title="Permalink to this headline">Â¶</a></h2>
 <p>Data is available in OD table and it is ready for further processing.
 Transformation logic is coded in the stored procedure (SP) to process specific academic year.
 Stored procedure deletes data from the
@@ -887,7 +889,7 @@ Then we load data from the OD source.</p>
 </div>
 </div>
 <div class="section" id="summary">
-<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">Â¶</a></h2>
 <p>In this chapter, we analyzed the annual enrollment data of various institutions.
 We discussed the JSON-formatted data ingestion process. JSON data can be loaded directly into table
 columns of type VARIANT. These VARIANT columns

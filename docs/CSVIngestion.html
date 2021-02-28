@@ -38,7 +38,7 @@
           <div class="body" role="main">
             
   <div class="section" id="csv-ingestion">
-<h1>CSV ingestion<a class="headerlink" href="#csv-ingestion" title="Permalink to this headline">¶</a></h1>
+<h1>CSV ingestion<a class="headerlink" href="#csv-ingestion" title="Permalink to this headline">Â¶</a></h1>
 <p>This section explains how to:</p>
 <blockquote>
 <div><ul class="simple">
@@ -53,14 +53,14 @@
 </ul>
 </div></blockquote>
 <div class="section" id="csv-data-processing">
-<h2>CSV data processing<a class="headerlink" href="#csv-data-processing" title="Permalink to this headline">¶</a></h2>
+<h2>CSV data processing<a class="headerlink" href="#csv-data-processing" title="Permalink to this headline">Â¶</a></h2>
 <p>CSV stands for comma-separated values. In most of the cases, data fields are delimited by comma or pipe.
 It is a simple file format used to store tabular data, such as a spreadsheet or database.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p><em>Please refer to the section 'Load the files to internal stage for IPEDS' in the chapter 'Introducing data platform' for creating staged files</em>.</p>
 </div>
-<p>The academic institution (HDR) dataset contain high-level information about institutions in US
+<p>The academic institution (HDR) dataset contain high-level information about institutions in US. We downloaded the files
 for the years 2017, 2018 and 2019, respectively.
 These files (HD2017, HD2018, and HD2019) are received in CSV format.</p>
 <p>In this case, <strong>&#64;IPEDS_HD</strong>  is the staged file containing information about the academic institutions. Staged files are identified by the &#64; character prefixed to the name.
@@ -91,7 +91,7 @@ for each of the $1, $2,,, $n columns in the staged file &#64;IPEDS_HD. This is a
 between staged layer and column names in OD tables. Mapping document is available at: <a class="reference external" href="https://versatiledp.github.io/SnowflakeEnriched/Mapping/AcademicInstitute.htm"   target="_blank">https://versatiledp.github.io/SnowflakeEnriched/Mapping/AcademicInstitute.htm</a>.</p>
 </div>
 <div class="section" id="ingesting-csv-data">
-<h2>Ingesting CSV data<a class="headerlink" href="#ingesting-csv-data" title="Permalink to this headline">¶</a></h2>
+<h2>Ingesting CSV data<a class="headerlink" href="#ingesting-csv-data" title="Permalink to this headline">Â¶</a></h2>
 <p>Operational data (OD) tables are physical tables populated from the corresponding staged files.
 The ELT process will copy the data from staged files to OD tables.
 OD tables are defined by column types and descriptive column names.
@@ -542,7 +542,7 @@ CALL pr_od_AcademicInstitution_Load(2017::FLOAT);
 </div>
 </div>
 <div class="section" id="servicing-layer-for-academic-institute">
-<h2>Servicing layer for academic institute<a class="headerlink" href="#servicing-layer-for-academic-institute" title="Permalink to this headline">¶</a></h2>
+<h2>Servicing layer for academic institute<a class="headerlink" href="#servicing-layer-for-academic-institute" title="Permalink to this headline">Â¶</a></h2>
 <p>We have built a dimension table called <strong>AcademicInstitution</strong> in the servicing layer.
 This dimension table will be used by fact tables at the servicing layer in forthcoming chapters.</p>
 <p>In general, a dimension table contain key columns and other attributes that are associated with the business key.
@@ -682,7 +682,7 @@ Thus, another VARIANT data type column WebAddress is also created.</p>
 </div></blockquote>
 </div>
 <div class="section" id="load-dimension-table">
-<h2>Load dimension table<a class="headerlink" href="#load-dimension-table" title="Permalink to this headline">¶</a></h2>
+<h2>Load dimension table<a class="headerlink" href="#load-dimension-table" title="Permalink to this headline">Â¶</a></h2>
 <p>Once the dimension table is created, we need to load the dimension table AcademicInstitution
 with data from the operational data table od_AcademicInstitution.
 This is made possible by using the Snowflake <strong>MERGE</strong> command.</p>
@@ -702,10 +702,10 @@ table od_AcademicInstitution to the dimension table AcademicInstitution.</p>
 <p>The Steps in stored procedure:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>Match on the business keys between OD table (source) and servicing table (destination).</p></li>
-<li><p>For matched rows, check if there is any change in attributes values between these two tables.</p></li>
-<li><p>If any attribute values are changed, then update destination from source.</p></li>
-<li><p>If there are non-matched rows in the source, insert those rows to destination.</p></li>
+<li><p>Join on the business keys between OD table (source) and servicing table (destination).</p></li>
+<li><p>For matched rows, check there is any change in attributes values between these two tables.</p></li>
+<li><p>If any attribute values are changed, update destination from source.</p></li>
+<li><p>All the non-matched rows in the source, insert to destination.</p></li>
 <li><p>On successful execution of the SQL code return success otherwise return failure.</p></li>
 </ul>
 </div></blockquote>
@@ -1179,7 +1179,7 @@ SELECT * FROM AcademicInstitution
 </div>
 </div>
 <div class="section" id="schema-drift">
-<h2>Schema drift<a class="headerlink" href="#schema-drift" title="Permalink to this headline">¶</a></h2>
+<h2>Schema drift<a class="headerlink" href="#schema-drift" title="Permalink to this headline">Â¶</a></h2>
 <p>Structural changes in the incoming data files are quite common in a data warehouse environment.
 In our case, from 2018 we have noticed the following structural
 changes in the input files generated from the source system.</p>
@@ -2153,7 +2153,7 @@ try {
 </div>
 </div>
 <div class="section" id="merge-using-hash-key">
-<h2>MERGE using hash key<a class="headerlink" href="#merge-using-hash-key" title="Permalink to this headline">¶</a></h2>
+<h2>MERGE using hash key<a class="headerlink" href="#merge-using-hash-key" title="Permalink to this headline">Â¶</a></h2>
 <p>Academic institution dimension load using a hash key is much the same as the earlier logic
 of comparing individual attributes in the merge load.
 We join the source and target tables using the business key InstitutionIdentifier.
@@ -2213,12 +2213,12 @@ of attribute is valid, then attribute value is used to concatenate.</p>
 <p>The Steps in stored procedure:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>Match on the business keys between OD table (source) and servicing table (destination).</p></li>
-<li><p>For business key matched rows, create concatenated string with the attribute values.</p></li>
+<li><p>Join the business keys between OD table (source) and servicing table (destination).</p></li>
+<li><p>The rows with matching keys, create concatenated string of the attribute values.</p></li>
 <li><p>Get the hash value for the concatenated strings.</p></li>
-<li><p>Check if there is any change in hash values between the source and destination.</p></li>
-<li><p>If hash values are changed, then update destination from the source data.</p></li>
-<li><p>If there are non-matched rows in the source, insert those rows to destination.</p></li>
+<li><p>Check any change in hash values between the source and destination.</p></li>
+<li><p>If hash values are changed, update destination from the source.</p></li>
+<li><p>ALl the non-matched rows in the source, insert to destination.</p></li>
 <li><p>On successful execution of the SQL code return success otherwise return failure.</p></li>
 </ul>
 </div></blockquote>
@@ -2721,7 +2721,7 @@ try {
 </div>
 </div>
 <div class="section" id="summary">
-<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">Â¶</a></h2>
 <p>In this chapter, we traveled through the process of loading and processing academic institution files
 for the years 2017, 2018, and 2019. We created a staged file and a corresponding operational data table to store
 institution details by year. We discussed in detail the views and stored procedures used to populate
