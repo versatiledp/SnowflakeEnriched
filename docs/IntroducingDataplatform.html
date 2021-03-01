@@ -236,7 +236,7 @@ Please refer to the NCES website for actual statistics and research on academic 
 <div class="section" id="academic-institution-hdr">
 <h3>Academic institution [HDR]<a class="headerlink" href="#academic-institution-hdr" title="Permalink to this headline">¶</a></h3>
 <p>Academic institution files are available in CSV format at the source system.
-CSV is comma-separated values. It is a simple basic file format.
+CSV is a simple basic comma-separated file format.
 Each line of tabular data is saved as a record.
 Record consist of multiple fields separated by commas.
 CSV files are directly ingested into Snowflake staging from the source system.
@@ -424,18 +424,18 @@ we can validate their availability.</p>
 <h3>Load the files to internal stage for IPEDS<a class="headerlink" href="#load-the-files-to-internal-stage-for-ipeds" title="Permalink to this headline">¶</a></h3>
 <p>In this section, we are ingesting all the files to the Snowflake staging area. We assume you have
 downloaded the files from GitRepo and copied to the folder C:\Snowflake\data\input\.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<div class="line-block">
-<div class="line"><em>Right click on command prompt application in windows machine and run as administrator.</em></div>
-<div class="line"><em>Change directory by executing CD C:\Snowflake\data\input from the command prompt.</em></div>
-<div class="line"><em>Check content of the folder with DIR command.</em></div>
-</div>
 <blockquote>
-<div><div class="figure align-center">
+<div><ul class="simple">
+<li><p>Right click on command prompt application in windows machine and run as administrator.</p></li>
+<li><p>Change directory by executing CD C:\Snowflake\data\input from the command prompt.</p></li>
+<li><p>Check content of the folder with DIR command.</p></li>
+</ul>
+</div></blockquote>
+<div class="figure align-center">
 <img alt="images/inputfileList.JPG" src="images/inputfileList.JPG" />
 </div>
-</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
 <div class="line-block">
 <div class="line"><em>Connect to the Snowflake database using SnowSQL CLI</em>.</div>
 <div class="line"><em>Execute all the commands listed below in this section from SnowSQL CLI</em>.</div>
@@ -502,6 +502,9 @@ we can check their availability in the internal stage area by executing the code
 </div>
 <div class="figure align-center">
 <img alt="images/csvOther.JPG" src="images/csvOther.JPG" />
+</div>
+<div class="figure align-center">
+
 </div>
 <p>Terminate the current session as shown below.</p>
 <div class="highlight-rst notranslate"><div class="highlight"><pre><span></span>!exit
